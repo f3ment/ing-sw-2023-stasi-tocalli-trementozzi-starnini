@@ -3,11 +3,19 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.example</groupId>
+<<<<<<< HEAD
   <artifactId>project_software23</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>project_software23</name>
+=======
+  <artifactId>ing-sw-2023</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>ing-sw-2023</name>
+>>>>>>> 19fb0f635e50504eaeba6a20cf93f5c12fd225fd
   <url>http://maven.apache.org</url>
 
   <properties>
