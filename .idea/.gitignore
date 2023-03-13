@@ -1,13 +1,3 @@
-# Default ignored files
-/shelf/
-/workspace.xml
-# Editor-based HTTP Client requests
-/httpRequests/
-# Datasource local storage ignored files
-/dataSources/
-/dataSources.local.xml
-<<<<<<< HEAD
-=======
 # Created by https://www.toptal.com/developers/gitignore/api/windows,linux,java,maven,intellij
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,linux,java,maven,intellij
 
@@ -211,4 +201,3 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,linux,java,maven,intellij
->>>>>>> 19fb0f635e50504eaeba6a20cf93f5c12fd225fd
