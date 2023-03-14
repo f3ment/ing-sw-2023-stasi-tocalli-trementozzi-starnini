@@ -1,13 +1,13 @@
 package model.entities;
 
 public class ItemTiles {
-    Type item_type;
+    Type itemType;
 
     public ItemTiles(Type item_type){
-        this.item_type=item_type;
+        this.itemType=itemType;
     }
 
-    public Type getItem_type(){
-        return item_type;
+    public Type getType(){
+        return itemType;
     }
 }
