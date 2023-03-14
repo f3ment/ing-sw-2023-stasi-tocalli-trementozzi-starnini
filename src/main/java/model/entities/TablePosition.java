@@ -5,10 +5,9 @@ public class TablePosition {
     private PersonalGoal currentPGoal;
     private Bookshelf bookshelf;
 
-    public TablePosition(Player player, PersonalGoal pg, Bookshelf bookshelf){
+    public TablePosition(Player player, PersonalGoal pg){
         this.currentPlayer = player;
         this.currentPGoal =  pg;
-        this.bookshelf = bookshelf;
     }
 
     public Player getPlayer(){
@@ -21,6 +20,10 @@ public class TablePosition {
 
     public Bookshelf getBookshelf() {
         return bookshelf;
+    }
+
+    public void setBookshelf(Bookshelf bookshelf) {
+        this.bookshelf = bookshelf;
     }
 }
 

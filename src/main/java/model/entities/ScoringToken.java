@@ -1,13 +1,13 @@
 package model.entities;
 
 public class ScoringToken extends Token{
-    int retro_number;
+    int roman_number;
     public ScoringToken(int score,int retro_number) {
         super(score);
-        this.retro_number = retro_number;
+        this.roman_number = roman_number;
     }
 
-    public int getRetro_number() {
-        return retro_number;
+    public int getNumber() {
+        return roman_number;
     }
 }
