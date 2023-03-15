@@ -38,4 +38,15 @@ public class Bookshelf {
         min=actualColumnLength.stream().min() ;
 
     }
+    public ItemTiles getItem(int i, int j){
+        return items[i][j];
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getLength() {
+        return length;
+    }
 }
