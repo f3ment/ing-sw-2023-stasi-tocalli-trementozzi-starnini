@@ -11,8 +11,8 @@ public class CheckCross extends CommonGoal{
     private Boolean completed;
     private Stack stack;
 
-    public CheckCross(){
-        super();
+    public CheckCross(int romanNumber, int numberPlayers){
+        super(romanNumber, numberPlayers);
     }
 
 

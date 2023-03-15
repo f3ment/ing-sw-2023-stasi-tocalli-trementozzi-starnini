@@ -6,8 +6,8 @@ import model.ScoringToken;
 public class CheckMultipleColumn extends CommonGoal{
     private int repetitons;
 
-    public CheckMultipleColumn ( int repetitons){
-        super();
+    public CheckMultipleColumn (int repetitons, int romanNumber, int playerNumber){
+        super(romanNumber, playerNumber);
         this.repetitons = repetitons;
     }
 

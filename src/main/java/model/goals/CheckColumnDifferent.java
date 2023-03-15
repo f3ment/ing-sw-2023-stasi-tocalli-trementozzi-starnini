@@ -1,5 +1,5 @@
 package model.goals;
 
-public class CheckMaxThreeDiff extends CommonGoal{
+public class CheckColumnDifferent extends CommonGoal{
     Boolean direction;// 0->orizzontale , 1 -> verticale
 }

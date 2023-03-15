@@ -14,8 +14,8 @@ public class CheckEightEquals extends CommonGoal{
     private Boolean completed;
     private Stack stack;
 
-    public CheckEightEquals(){
-        super();
+    public CheckEightEquals(int romanNumber, int numberPlayers){
+        super(romanNumber, numberPlayers);
     }
 
     @Override

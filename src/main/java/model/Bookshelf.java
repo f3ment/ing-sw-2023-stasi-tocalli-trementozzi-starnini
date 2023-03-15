@@ -7,16 +7,17 @@ public class Bookshelf {
     private Boolean full;
 
     private int length , height;
-    private int[] actualColumnLength;
 
     private ArrayList<Integer> actualColumnLength;
     private ItemTiles[][] items;
     private int choosenColumn;
 
     public Bookshelf(){
-        items= new ItemTiles[5][6];
-        actualColumnLength= new ArrayList<Integer>(5);
-        full=false;
+        this.items= new ItemTiles[5][6];
+        this.actualColumnLength= new ArrayList<Integer>(5);
+        this.full=false;
+        this.height = 6;
+        this.length = 5;
     }
 
     public void insert(ItemTiles card) throws Exception{
@@ -35,8 +36,7 @@ public class Bookshelf {
 
     public int getMaxDrowable(){
         int min;
-        min=actualColumnLength.stream().min() ;
-
+        //min=actualColumnLength.stream().min() ;
     }
     public ItemTiles getItem(int i, int j){
         return items[i][j];

@@ -10,8 +10,8 @@ public class CheckSquare extends CommonGoal{
     private Boolean completed;
     private Stack stack;
 
-    public CheckSquare(){
-        super();
+    public CheckSquare(int romanNumber, int numberPlayers){
+        super(romanNumber, numberPlayers);
     }
 
     @Override

@@ -1,5 +1,8 @@
 package model.entities;
 
+import model.ItemTiles;
+import model.TablePosition;
+
 public class Player {
     private String username;
     private boolean status;
@@ -37,7 +40,7 @@ public class Player {
     }
 
     public void insert(int column){
-        currentPosition.getBookshelf().insert(ItemTiles[] mano );
+        currentPosition.getBookshelf().insert(ItemTiles card );
     }
 
 
