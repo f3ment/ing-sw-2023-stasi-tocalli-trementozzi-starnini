@@ -1,5 +1,7 @@
 package model;
 
+import model.goals.CommonGoal;
+
 public class Stack {
     private ScoringToken[] scoringTokens;
     private ScoringToken top;

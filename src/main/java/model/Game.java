@@ -1,5 +1,8 @@
 package model;
 
+import model.board.Board;
+import model.goals.CommonGoal;
+
 import java.util.List;
 
 public class Game {

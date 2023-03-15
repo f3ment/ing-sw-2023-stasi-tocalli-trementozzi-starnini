@@ -1,4 +1,4 @@
-package model;
+package model.goals;
 
 
 import com.sun.tools.javac.util.Pair;
