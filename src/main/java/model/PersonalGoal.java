@@ -1,4 +1,4 @@
-package model.entities;
+package model;
 
 
 import com.sun.tools.javac.util.Pair;

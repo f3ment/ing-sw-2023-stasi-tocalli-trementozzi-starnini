@@ -1,4 +1,4 @@
-package model.entities;
+package model;
 
 public class EndGameToken extends Token{
     public EndGameToken(int score){

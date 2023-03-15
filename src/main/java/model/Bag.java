@@ -1,8 +1,6 @@
-package model.entities;
+package model;
 
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.random.RandomGenerator;
 
 public class Bag {
         private ItemTiles[] items; //pila

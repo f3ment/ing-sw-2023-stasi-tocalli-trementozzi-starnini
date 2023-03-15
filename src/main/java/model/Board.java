@@ -1,4 +1,4 @@
-package model.entities;
+package model;
 
 public class Board {
     private Box[][] board;
