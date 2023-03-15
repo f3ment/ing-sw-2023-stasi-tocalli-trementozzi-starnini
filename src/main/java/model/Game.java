@@ -1,4 +1,7 @@
-package model.entities;
+package model;
+
+import model.board.Board;
+import model.goals.CommonGoal;
 
 import java.util.List;
 

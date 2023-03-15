@@ -1,4 +1,4 @@
-package model.entities;
+package model;
 
 public class ScoringToken extends Token{
     int roman_number;

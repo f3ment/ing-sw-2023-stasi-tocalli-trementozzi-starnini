@@ -1,4 +1,4 @@
-package model.entities;
+package model;
 
 public enum Type {
     CATS,BOOKS,GAMES,FRAMES,TROPHIES,PLANTS

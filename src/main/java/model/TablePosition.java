@@ -1,4 +1,6 @@
-package model.entities;
+package model;
+
+import model.goals.PersonalGoal;
 
 public class TablePosition {
     private Player currentPlayer;

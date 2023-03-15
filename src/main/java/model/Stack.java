@@ -1,4 +1,6 @@
-package model.entities;
+package model;
+
+import model.goals.CommonGoal;
 
 public class Stack {
     private ScoringToken[] scoringTokens;

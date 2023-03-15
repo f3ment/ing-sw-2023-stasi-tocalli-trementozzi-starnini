@@ -1,6 +1,10 @@
-package model.entities;
+package model.board;
 
-public class Board {
+import model.Box;
+import model.EndGameToken;
+import model.ItemTiles;
+
+public abstract class Board {
     private Box[][] board;
     private EndGameToken token;
 
