@@ -7,6 +7,8 @@ import model.ItemTiles;
 public abstract class Board {
     private Box[][] board;
     private EndGameToken token;
+
+
     public Board(){
         board = new Box[9][9];
         for(int i =0; i<9; i++){
