@@ -1,6 +1,6 @@
 package model;
 
-import model.board.Board;
+import model.board.FourBoard;
 import model.goals.CommonGoal;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public class Game {
     private CommonGoal secondCommonGoal;
     private List<TablePosition> tablePositionList;
     private List<Player> playerList;
-    private Board board;
+    private FourBoard board;
 
 
     /*
