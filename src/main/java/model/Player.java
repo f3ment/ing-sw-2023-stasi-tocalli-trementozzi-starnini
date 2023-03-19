@@ -1,19 +1,21 @@
 package model;
 
+import model.board.Board;
+
+import java.util.ArrayList;
+
 public class Player {
     private String username;
     private boolean status;
     private int score;
-    private int currentDrowable;
-
+    private ArrayList<ItemTiles> cards;
     private TablePosition currentPosition;
 
 
     public Player(TablePosition currentPosition,String username){
-
         this.currentPosition=currentPosition;
         this.username=username;
-
+        cards = new ArrayList(3);
     }
 
     public String getUsername(){
@@ -28,16 +30,17 @@ public class Player {
         return score;
     }
 
-    public int getCurrentDrowable() {
-        return currentDrowable;
-    }
 
     public void setStatus(boolean status){
         this.status=status;
     }
 
-    public void insert(int column, ItemTiles card) throws Exception {
+    public void insertInBookshelf(int column, ItemTiles card) throws Exception {
         currentPosition.getBookshelf().insert(card);
+    }
+
+    public void drawFromBoard(Board box, int i, int j){
+        this.cards.add(box.draw(i,j));
     }
 
 }

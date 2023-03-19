@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Bookshelf {
     private Boolean full;
 
-    private int length , height;
+    private final int length , height;
 
     private ArrayList<Integer> actualColumnLength;
     private ItemTiles[][] items;
@@ -14,7 +14,7 @@ public class Bookshelf {
     public Bookshelf(){
         this.items = new ItemTiles[6][5];
         this.actualColumnLength= new ArrayList<Integer>(5);
-        this.full=false;
+        this.full = false;
         this.height = 6;
         this.length = 5;
     }
@@ -35,10 +35,10 @@ public class Bookshelf {
 
     public int getMaxDrowable(){
         int min;
-        //min=actualColumnLength.stream().min() ;
+        min = actualColumnLength.stream().reduce(0, ( a, b)-> a<b ? a : b);
+        return Math.min(length - min, 3);
     }
     public ItemTiles getItem(int i, int j){
-
         return items[i][j];
     }
 
@@ -54,4 +54,13 @@ public class Bookshelf {
         return this.actualColumnLength;
     }
 
+    public boolean isFull(){
+        for(int i : actualColumnLength){
+            if(i!=6){
+                return false;
+            }
+        }
+        this.full = true;
+        return true;
+    }
 }

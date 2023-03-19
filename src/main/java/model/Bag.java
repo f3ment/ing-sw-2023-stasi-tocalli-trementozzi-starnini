@@ -38,6 +38,7 @@ public class Bag {
 
         public ItemTiles extract () throws NegativeArraySizeException{
                 /*
+                        todo
                         randomizziamo su actuallength che rapprseneta lunghezza di estraibili
                         poi diminuisco axtulength e scambio indirizzo estratto con actualLength prima di decrementare
                 */
