@@ -1,5 +1,53 @@
 package model.goals;
 
+import model.Bookshelf;
+import model.ScoringToken;
+import model.Stack;
+
 public class CheckColumnDifferent extends CommonGoal{
-    Boolean direction;// 0->orizzontale , 1 -> verticale
+    private int repetitions;
+    private boolean strategy; //false -> 3 max different for 3 columns , true -> verticale 2
+    private int romanNumber;
+    private boolean completed;
+    private Stack stack;
+
+    public CheckColumnDifferent(int romanNumber, int playerNumber,
+                                int repetitions, boolean strategy){
+        super(romanNumber, playerNumber);
+        this.repetitions = repetitions;
+        this.strategy = strategy;
+    }
+
+    @Override
+    public ScoringToken validate(Bookshelf bookshelf) throws Exception {
+        int flag = 0;
+        int rep = 0;
+        int counterDiffTypes;
+
+        for(int j=0; j< bookshelf.getLength(); j++){
+            counterDiffTypes = 0;
+            for(int i=1; i < bookshelf.getHeight(); i++){
+
+                flag = 0;
+                for(int k = 0; k < i; k++){
+                    if(bookshelf.getItem(i,j).getType().equals(
+                            bookshelf.getItem(k, j).getType())){
+                        flag = 1;
+                    }
+                }
+                if(flag == 0){
+                    counterDiffTypes++;
+                }
+            }
+
+            if(counterDiffTypes == 3 && !strategy){
+                rep++;
+            }else if(counterDiffTypes == 6 && strategy){
+                rep++;
+            }
+        }
+
+        if(rep == repetitions) return stack.pop();
+        else return null;
+    }
 }

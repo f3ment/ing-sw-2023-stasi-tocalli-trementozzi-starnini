@@ -11,14 +11,14 @@ public class CheckRowDifferent extends CommonGoal{
     private Boolean completed;
     private Stack stack;
 
-    CheckRowDifferent(int romanNumber, int playerNumber, int repetitions, Boolean strategy){
+    public CheckRowDifferent(int romanNumber, int playerNumber, int repetitions, Boolean strategy){
         super(romanNumber, playerNumber);
         this.repetitions = repetitions;
         this.strategy = strategy;
     }
 
     @Override
-    public ScoringToken validate(Bookshelf bookshelf) {
+    public ScoringToken validate(Bookshelf bookshelf) throws Exception{
         int flag = 0;
         int rep = 0;
         int counterDiffTypes;
@@ -28,7 +28,8 @@ public class CheckRowDifferent extends CommonGoal{
             for (int j=1; j < bookshelf.getLength(); j++){
                 flag = 0;
                 for(int k =0; k<j; k++){
-                    if(bookshelf.getItem(i,j).getType().equals(bookshelf.getItem(i, k).getType())) {
+                    if(bookshelf.getItem(i,j).getType().equals(
+                            bookshelf.getItem(i, k).getType())) {
                         flag = 1;
                     }
                 }

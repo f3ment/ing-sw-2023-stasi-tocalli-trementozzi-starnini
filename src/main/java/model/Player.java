@@ -1,8 +1,5 @@
 package model;
 
-import model.ItemTiles;
-import model.TablePosition;
-
 public class Player {
     private String username;
     private boolean status;

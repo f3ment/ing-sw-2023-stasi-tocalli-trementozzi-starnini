@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.stream.Stream;
 
 public class Bookshelf {
     private Boolean full;
@@ -13,7 +12,7 @@ public class Bookshelf {
     private int choosenColumn;
 
     public Bookshelf(){
-        this.items= new ItemTiles[5][6];
+        this.items = new ItemTiles[6][5];
         this.actualColumnLength= new ArrayList<Integer>(5);
         this.full=false;
         this.height = 6;
@@ -39,6 +38,7 @@ public class Bookshelf {
         //min=actualColumnLength.stream().min() ;
     }
     public ItemTiles getItem(int i, int j){
+
         return items[i][j];
     }
 
@@ -49,4 +49,9 @@ public class Bookshelf {
     public int getLength() {
         return length;
     }
+
+    public ArrayList getColumnsSize(){
+        return this.actualColumnLength;
+    }
+
 }

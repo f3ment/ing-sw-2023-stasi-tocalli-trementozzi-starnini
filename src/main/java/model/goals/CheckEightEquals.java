@@ -6,7 +6,6 @@ import model.Stack;
 import model.Type;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class CheckEightEquals extends CommonGoal{
 
