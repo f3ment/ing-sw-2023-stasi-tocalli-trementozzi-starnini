@@ -1,5 +1,6 @@
 package model.board;
 
+import model.Bag;
 import model.Box;
 import model.EndGameToken;
 import model.ItemTiles;
@@ -52,17 +53,18 @@ public class FourBoard {
     public void setToken(EndGameToken token) {
         this.token = token;
     }
-    public void setBox(ItemTiles content){
+    public boolean setBox(Bag bag){
         for(int i=0;i<9;i++){
             for(int j=0;j<9;j++){
                 if(getBox(i,j)!=null){  //todo gestire eccezzione casella non valida
                     if(getBox(i,j).getItemContained()==null){
                         getBox(i,j).setContent(content);
-                        break;
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 
     public int getMaxHeight() {

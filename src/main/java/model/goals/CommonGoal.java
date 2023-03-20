@@ -12,7 +12,7 @@ public abstract class CommonGoal{
     public CommonGoal(int romanNumber, int numberPlayers){
         this.romanNumber = romanNumber;
         //todo implement stack creator
-        // stack = new Stack(numberPlayers,);
+        stack = new Stack(numberPlayers,this);
         this.completed = false;
     }
     public abstract ScoringToken validate(Bookshelf bookshelf) throws Exception;

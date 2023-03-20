@@ -1,5 +1,6 @@
 package model;
 
+import com.sun.tools.javac.jvm.Items;
 import model.board.FourBoard;
 import model.board.ThreeBoard;
 import model.board.TwoBoard;
@@ -37,6 +38,8 @@ public class Game {
         int index;
         boolean[] nums= new boolean[12];
         ArrayList<CommonGoal> commonGoals;
+        boolean res; //fill up board
+        ItemTiles item; // fill up board
 
         this.playerNumber = playerNumber;
         this.bag = new Bag();
@@ -92,21 +95,37 @@ public class Game {
         this.secondCommonGoal = commonGoals.get(index);
         this.secondCommonGoal.setRomanNumber(2);
 
+        do{
+            item = bag.extract();
+        }while(board.setBox(item));
+
         for(int i = 0; i< board.getMaxHeight(); i++){
             for(int j = 0; j< board.getMaxLength(); j++){
                 board.setBox(bag.extract());
             }
         }
+
     }
     /*
      *  TO DO: metodi setter e getter, metodi creator.
      */
 
 
-    public void validateCommonGoal(TablePosition tablePosition){}
+    public void validateCommonGoal(TablePosition tablePosition){
+
+    }
     public void validatePersonalGoal(TablePosition tablePosition){}
-    public void validateAdjacent(TablePosition tablePosition){}
-    public void fillBoard(){}
+    public void validateAdjacent(TablePosition tablePosition){
+        tablePosition.getBookshelf().
+
+    }
+    public void fillBoard(){
+        ItemTiles item;
+        do{
+            item = bag.extract();
+        }while(board.setBox(item));
+
+    }
     public void setEndGame(){}
     public void setCurrentPosition(){
         int newCurrentIndex=tablePositionList.indexOf(currentPosition)+1;

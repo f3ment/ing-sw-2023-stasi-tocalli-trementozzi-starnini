@@ -7,7 +7,7 @@ public class Stack {
     private ScoringToken top;
     private int dim;
     CommonGoal commongoal;
-    public Stack(int dim,ScoringToken[] pila, CommonGoal goal){
+    public Stack(int dim, CommonGoal goal){
         this.dim=dim;
         scoringTokens= new ScoringToken[dim];
         scoringTokens=pila;
