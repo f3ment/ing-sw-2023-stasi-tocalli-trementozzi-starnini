@@ -109,8 +109,8 @@ public class Game {
             tablePosition.getPlayer().setToken(1,secondCommonGoal.validate(tablePosition.getBookshelf()));
         }
     }
-
     public void validatePersonalGoal(TablePosition tablePosition){}
+
     public void validateAdjacent(TablePosition tablePosition){
         tablePosition.getBookshelf().
     }

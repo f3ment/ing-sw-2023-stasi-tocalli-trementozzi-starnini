@@ -7,7 +7,7 @@ import java.security.GeneralSecurityException;
 
 //todo implement windows
 public class PersonalGoal {
-    private Pair<Integer, Integer>[] windows;
+    private Pair< , Pair<int,int> >[] windows;
     private int done;
     public PersonalGoal(int index){
         //todo
