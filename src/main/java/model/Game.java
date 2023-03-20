@@ -115,10 +115,71 @@ public class Game {
 
     }
     public void validatePersonalGoal(TablePosition tablePosition){}
-    public void validateAdjacent(TablePosition tablePosition){
-        tablePosition.getBookshelf().
 
+    //validateAdjacent(position,0,0,0,batrix di false,null,true,0)
+    public int validateAdjacent(TablePosition tablePosition,int i,int j,int count,boolean[][] batrix,Type type,boolean starting,int score){
+        Bookshelf validateshelf= tablePosition.getBookshelf();
+        if(batrix[i][j]==false&&validateshelf.getItem(i,j)!=null&&starting==false) {
+            if(validateshelf.getItem(i,j).getType().equals(type)){
+                    count++;
+                    if(i<validateshelf.getHeight()-1) {
+                        count = count+validateAdjacent(tablePosition, i + 1, j, count, batrix, type, starting,score);
+                    }
+                    if(j<validateshelf.getLength()-1){
+                        count = count+validateAdjacent(tablePosition, i , j+1, count, batrix, type, starting,score);
+                    }
+                    if(count>=3){
+                        batrix[i][j]=true;
+                    }
+                    return count;
+            }else{
+                return count;
+            }
+        }else if(starting==true&&validateshelf.getItem(i,j)!=null) {
+            if (i < validateshelf.getHeight() - 1) {
+                count = validateAdjacent(tablePosition, i + 1, j, 0, batrix, validateshelf.getItem(i, j).getType(), false, score);
+            }
+            if (j < validateshelf.getLength() - 1) {
+                count = count + validateAdjacent(tablePosition, i, j + 1, 0, batrix, validateshelf.getItem(i, j).getType(), false, score);
+            }
+            if (count == 3) {
+                score = score + 2;
+                batrix[i][j] = true;
+                starting = false;
+            } else if (count == 4) {
+                score = score + 3;
+                batrix[i][j] = true;
+                starting = false;
+            } else if (count == 5) {
+                score = score + 5;
+                batrix[i][j] = true;
+                starting = false;
+            } else if (count >= 6) {
+                score = score + 8;
+                batrix[i][j] = true;
+                starting = false;
+            }
+            count = 0;
+
+            if (j < validateshelf.getLength() - 1) {
+                score = validateAdjacent(tablePosition, i, j + 1, count, batrix, null, true, score);
+            } else if (i < validateshelf.getHeight() - 1) {
+                score = validateAdjacent(tablePosition, i + 1, 0, count, batrix, null, true, score);
+            }
+            return score;
+        }else if(batrix[i][j]==true|| validateshelf.getItem(i,j)==null){
+            if (j < validateshelf.getLength() - 1) {
+                score = validateAdjacent(tablePosition, i, j + 1, 0, batrix, null, true, score);
+            } else if (i < validateshelf.getHeight() - 1) {
+                score = validateAdjacent(tablePosition, i + 1, 0, 0, batrix, null, true, score);
+            }
+            return score;
+        }
+        return score;
     }
+
+
+
     public void fillBoard(){
         ItemTiles item;
         do{
