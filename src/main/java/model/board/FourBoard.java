@@ -54,17 +54,22 @@ public class FourBoard {
         this.token = token;
     }
     public boolean setBox(Bag bag){
+        ItemTiles item;
         for(int i=0;i<9;i++){
             for(int j=0;j<9;j++){
                 if(getBox(i,j)!=null){  //todo gestire eccezzione casella non valida
-                    if(getBox(i,j).getItemContained()==null){
-                        getBox(i,j).setContent(content);
-                        return true;
+                    item = bag.extract();
+                    if(item != null){
+                        if(getBox(i,j).getItemContained()==null){
+                            getBox(i,j).setContent(item);
+                        }
+                    }else{
+                        return false; //bag is empty
                     }
                 }
             }
         }
-        return false;
+        return true; //board is full
     }
 
     public int getMaxHeight() {
