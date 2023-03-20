@@ -9,11 +9,15 @@ public abstract class CommonGoal{
     private Boolean completed;
     private Stack stack;
 
-    CommonGoal(int romanNumber, int numberPlayers){
+    public CommonGoal(int romanNumber, int numberPlayers){
         this.romanNumber = romanNumber;
         //todo implement stack creator
         // stack = new Stack(numberPlayers,);
         this.completed = false;
     }
     public abstract ScoringToken validate(Bookshelf bookshelf) throws Exception;
+
+    public void setRomanNumber(int romanNumber) {
+        this.romanNumber = romanNumber;
+    }
 }

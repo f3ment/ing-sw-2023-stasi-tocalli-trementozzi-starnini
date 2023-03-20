@@ -1,6 +1,6 @@
 package model;
 
-import model.board.Board;
+import model.board.FourBoard;
 
 import java.util.ArrayList;
 
@@ -39,7 +39,7 @@ public class Player {
         currentPosition.getBookshelf().insert(card);
     }
 
-    public void drawFromBoard(Board box, int i, int j){
+    public void drawFromBoard(FourBoard box, int i, int j){
         this.cards.add(box.draw(i,j));
     }
 

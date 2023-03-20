@@ -9,7 +9,8 @@ import java.security.GeneralSecurityException;
 public class PersonalGoal {
     private Pair<Integer, Integer>[] windows;
     private int done;
-    PersonalGoal(){
+    public PersonalGoal(int index){
+        //todo
         //if a goal is obtained, done will be incremented by one, until 6
         //in this way at the end of the game we know how many goals has been achieved.
         done = 0;

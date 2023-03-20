@@ -4,9 +4,7 @@ import model.Box;
 import model.EndGameToken;
 
 public class ThreeBoard extends FourBoard {
-    private Box[][] board;{
-
-    }
+    private Box[][] board;
     private EndGameToken token;
 
     public ThreeBoard(){

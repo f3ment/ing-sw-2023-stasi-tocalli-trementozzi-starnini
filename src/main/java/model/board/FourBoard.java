@@ -7,12 +7,14 @@ import model.ItemTiles;
 public class FourBoard {
     private Box[][] board;
     private EndGameToken token;
-
+    private int maxLength, maxHeight;
 
     public FourBoard(){
-        board = new Box[9][9];
-        for(int i =0; i<9; i++){
-            for (int j =0 ; j < 9; j++){
+        this.maxLength = 9;
+        this.maxHeight = 9;
+        board = new Box[maxLength][maxHeight];
+        for(int i =0; i<maxHeight; i++){
+            for (int j =0 ; j < maxLength; j++){
                 if (    (i == 0 && ( j<=2 || j>=5 )) ||
                         (j == 0 && ( i<=2 || i>=5 )) ||
                         (i == 8 && ( j<=2 || j>=5 )) ||
@@ -61,5 +63,13 @@ public class FourBoard {
                 }
             }
         }
+    }
+
+    public int getMaxHeight() {
+        return maxHeight;
+    }
+
+    public int getMaxLength() {
+        return maxLength;
     }
 }

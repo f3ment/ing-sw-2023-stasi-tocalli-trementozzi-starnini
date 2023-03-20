@@ -1,35 +1,30 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Bag {
-        private ItemTiles[] items; //pila
-        private int[] took;
-        private int actualLength;
+        private ArrayList<ItemTiles> items; //pila
         public Bag(){
-                this.items = new ItemTiles[132];
-                this.took = new int[132];
-                this.actualLength = 132;
-                for(int i =0 ; i <132 ; i++){
-                        took[i] = i;
+                this.items = new ArrayList<ItemTiles>();
+
+                for(int i =0 ; i <22 ; i++){
+                        items.add(new ItemTiles(Type.CATS));
                 }
                 for(int i =0 ; i <22 ; i++){
-                        items[i] = new ItemTiles(Type.CATS);
+                        items.add(new ItemTiles(Type.BOOKS));
                 }
                 for(int i =0 ; i <22 ; i++){
-                        items[i] = new ItemTiles(Type.BOOKS);
+                        items.add(new ItemTiles(Type.GAMES));
                 }
                 for(int i =0 ; i <22 ; i++){
-                        items[i] = new ItemTiles(Type.GAMES);
+                        items.add(new ItemTiles(Type.FRAMES));
                 }
                 for(int i =0 ; i <22 ; i++){
-                        items[i] = new ItemTiles(Type.FRAMES);
+                        items.add(new ItemTiles(Type.PLANTS));
                 }
                 for(int i =0 ; i <22 ; i++){
-                        items[i] = new ItemTiles(Type.PLANTS);
-                }
-                for(int i =0 ; i <22 ; i++){
-                        items[i] = new ItemTiles(Type.TROPHIES);
+                        items.add(new ItemTiles(Type.TROPHIES));
                 }
 
         }
@@ -37,25 +32,16 @@ public class Bag {
         //singolo item perché per refillare la box diventa difficile altrimenti
 
         public ItemTiles extract () throws NegativeArraySizeException{
-                /*
-                        todo
-                        randomizziamo su actuallength che rapprseneta lunghezza di estraibili
-                        poi diminuisco axtulength e scambio indirizzo estratto con actualLength prima di decrementare
-                */
                 int randomIndex;
-                Random rand;
-                ItemTiles tmp;
-                if(actualLength <=0){
+                Random rand = new Random();
+                if(items.size() == 0){
                         throw new NegativeArraySizeException();
                 }else{
-                        //randomIndex = rand.nextInt(0, actualLength);
-                        tmp = items[randomIndex];
-                        items[randomIndex] = items[actualLength];
-                        items[actualLength] = tmp;
-                        actualLength--;
+                        randomIndex = rand.nextInt(items.size());
+                        return items.remove(randomIndex);
                 }
         }
         public int getLeftItems(){
-                return actualLength;
+                return items.size();
         }
 }

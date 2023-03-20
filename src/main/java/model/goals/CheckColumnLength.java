@@ -11,7 +11,7 @@ public class CheckColumnLength extends CommonGoal{
     private Boolean completed;
     private Stack stack;
 
-    CheckColumnLength(int romanNumber, int numberPlayers){
+    public CheckColumnLength(int romanNumber, int numberPlayers){
         super(romanNumber, numberPlayers);
 
     }

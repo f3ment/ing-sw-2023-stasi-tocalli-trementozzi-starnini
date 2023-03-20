@@ -12,11 +12,12 @@ public class Bookshelf {
     private int choosenColumn;
 
     public Bookshelf(){
-        this.items = new ItemTiles[6][5];
-        this.actualColumnLength= new ArrayList<Integer>(5);
-        this.full = false;
         this.height = 6;
         this.length = 5;
+        this.items = new ItemTiles[this.height][this.length];
+        this.actualColumnLength= new ArrayList<Integer>(5);
+        this.full = false;
+
     }
 
     public void insert(ItemTiles card) throws Exception{

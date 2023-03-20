@@ -7,9 +7,13 @@ public class TablePosition {
     private PersonalGoal currentPGoal;
     private Bookshelf bookshelf;
 
-    public TablePosition(Player player, PersonalGoal pg){
-        this.currentPlayer = player;
+    private boolean firstPosition;
+
+    public TablePosition(String player, PersonalGoal pg, Bookshelf bookshelf){
+        this.currentPlayer = new Player(this, player);
         this.currentPGoal =  pg;
+        this.bookshelf = bookshelf;
+        this.firstPosition = false;
     }
 
     public Player getPlayer(){
@@ -26,6 +30,10 @@ public class TablePosition {
 
     public void setBookshelf(Bookshelf bookshelf) {
         this.bookshelf = bookshelf;
+    }
+
+    public void setFirstPosition(boolean firstPosition) {
+        this.firstPosition = firstPosition;
     }
 }
 

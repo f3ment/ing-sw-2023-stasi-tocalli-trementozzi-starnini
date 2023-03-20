@@ -5,7 +5,6 @@ import model.ScoringToken;
 import model.Stack;
 
 public class CheckCross extends CommonGoal{
-
     private int romanNumber;
     private Boolean completed;
     private Stack stack;
