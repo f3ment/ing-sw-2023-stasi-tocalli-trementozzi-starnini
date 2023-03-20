@@ -11,11 +11,13 @@ public class Player {
     private ArrayList<ItemTiles> cards;
     private TablePosition currentPosition;
 
+    ArrayList<ScoringToken> tokens; //common goal
 
     public Player(TablePosition currentPosition,String username){
         this.currentPosition=currentPosition;
         this.username=username;
         cards = new ArrayList(3);
+        tokens = new ArrayList<ScoringToken>(2);
     }
 
     public String getUsername(){
@@ -30,6 +32,17 @@ public class Player {
         return score;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void setToken(int index,ScoringToken token) {
+        this.tokens.add(index, token);
+        this.setScore(this.getScore() + token.getScore());
+    }
+    public ScoringToken getToken(int index){
+        return this.tokens.get(index);
+    }
 
     public void setStatus(boolean status){
         this.status=status;

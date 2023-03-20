@@ -10,7 +10,20 @@ public class Stack {
     public Stack(int dim, CommonGoal goal){
         this.dim=dim;
         scoringTokens= new ScoringToken[dim];
-        scoringTokens=pila;
+        switch (dim){
+            case 2:
+                scoringTokens[0] = new ScoringToken(4, goal.getRomanNumber());
+                scoringTokens[1] = new ScoringToken(8, goal.getRomanNumber());
+            case 3:
+                scoringTokens[0] = new ScoringToken(4, goal.getRomanNumber());
+                scoringTokens[1] = new ScoringToken(6, goal.getRomanNumber());
+                scoringTokens[2] = new ScoringToken(8, goal.getRomanNumber());
+            case 4:
+                scoringTokens[0] = new ScoringToken(2, goal.getRomanNumber());
+                scoringTokens[1] = new ScoringToken(4, goal.getRomanNumber());
+                scoringTokens[2] = new ScoringToken(6, goal.getRomanNumber());
+                scoringTokens[3] = new ScoringToken(8, goal.getRomanNumber());
+        }
         top=scoringTokens[dim-1];
         this.commongoal=goal;
     }

@@ -38,8 +38,6 @@ public class Game {
         int index;
         boolean[] nums= new boolean[12];
         ArrayList<CommonGoal> commonGoals;
-        boolean res; //fill up board
-        ItemTiles item; // fill up board
 
         this.playerNumber = playerNumber;
         this.bag = new Bag();
@@ -95,26 +93,24 @@ public class Game {
         this.secondCommonGoal = commonGoals.get(index);
         this.secondCommonGoal.setRomanNumber(2);
 
-        do{
-            item = bag.extract();
-        }while(board.setBox(item));
-
-        for(int i = 0; i< board.getMaxHeight(); i++){
-            for(int j = 0; j< board.getMaxLength(); j++){
-                board.setBox(bag.extract());
-            }
+        board.setBox(bag);
+        }
+    public void validateCommonGoal(TablePosition tablePosition) throws Exception {
+        ScoringToken res;
+        //check if player at current tableposition has already achieved the first commmon goal
+        if(tablePosition.getPlayer().getToken(0) == null){
+            //add token to current player returned from validate
+            tablePosition.getPlayer().setToken(0, firstCommonGoal.validate(tablePosition.getBookshelf()));
         }
 
-    }
-    /*
-     *  TO DO: metodi setter e getter, metodi creator.
-     */
-
-
-    public void validateCommonGoal(TablePosition tablePosition){
-
+        //check if player at current tableposition has already achieved the second commmon goal
+        if(tablePosition.getPlayer().getToken(1) == null){
+            //add token to current player returned from validate
+            tablePosition.getPlayer().setToken(1,secondCommonGoal.validate(tablePosition.getBookshelf()));
+        }
     }
     public void validatePersonalGoal(TablePosition tablePosition){}
+
 
     //validateAdjacent(position,0,0,0,batrix di false,null,true,0)
     public int validateAdjacent(TablePosition tablePosition,int i,int j,int count,boolean[][] batrix,Type type,boolean starting,int score){
@@ -178,14 +174,8 @@ public class Game {
         return score;
     }
 
-
-
-    public void fillBoard(){
-        ItemTiles item;
-        do{
-            item = bag.extract();
-        }while(board.setBox(item));
-
+    public boolean fillBoard(){
+        return this.board.setBox(this.bag);
     }
     public void setEndGame(){}
     public void setCurrentPosition(){
