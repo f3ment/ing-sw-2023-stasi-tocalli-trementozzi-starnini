@@ -114,7 +114,9 @@ public class Game {
     public void validateCommonGoal(TablePosition tablePosition){
 
     }
-    public void validatePersonalGoal(TablePosition tablePosition){}
+    public void validatePersonalGoal(TablePosition tablePosition){
+
+    }
     public void validateAdjacent(TablePosition tablePosition){
         tablePosition.getBookshelf().
 

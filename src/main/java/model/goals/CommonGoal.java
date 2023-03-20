@@ -11,7 +11,6 @@ public abstract class CommonGoal{
 
     public CommonGoal(int romanNumber, int numberPlayers){
         this.romanNumber = romanNumber;
-        //todo implement stack creator
         stack = new Stack(numberPlayers,this);
         this.completed = false;
     }
@@ -19,5 +18,9 @@ public abstract class CommonGoal{
 
     public void setRomanNumber(int romanNumber) {
         this.romanNumber = romanNumber;
+    }
+
+    public int getRomanNumber() {
+        return romanNumber;
     }
 }
