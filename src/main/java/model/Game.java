@@ -113,9 +113,80 @@ public class Game {
     }
     public void validatePersonalGoal(TablePosition tablePosition){}
 
+    //validateAdjacent(position,0,0,0,batrix di false,null,true,0,occupied di false)
+
     public void validateAdjacent(TablePosition tablePosition){
-        tablePosition.getBookshelf();
+        boolean[][] batrix = new boolean[6][5];
+        boolean[][] occupied = new boolean[6][5];
+        int res;
+        res = validateAdjacentRecursive(tablePosition, 0, 0,0, batrix, null, true, 0, occupied);
+        tablePosition.getPlayer().setScore(tablePosition.getPlayer().getScore() + res );
     }
+    public int validateAdjacentRecursive(TablePosition tablePosition,int i,int j,int count,boolean[][] batrix,Type type,boolean starting,int score,boolean[][] occupied){
+        Bookshelf validateshelf= tablePosition.getBookshelf();
+        if(!batrix[i][j] && validateshelf.getItem(i,j)!=null && !starting && !occupied[i][j]) {
+            if(validateshelf.getItem(i,j).getType().equals(type)){
+                    count++;
+                    occupied[i][j]=true;
+                    if(i<validateshelf.getHeight()-1) {
+                        count = count+validateAdjacentRecursive(tablePosition, i + 1, j, count, batrix, type, false,score,occupied);
+                    }
+                    if(j<validateshelf.getLength()-1){
+                        count = count+validateAdjacentRecursive(tablePosition, i , j+1, count, batrix, type, false,score,occupied);
+                    }
+                    if(count>=3){
+                        batrix[i][j]=true;
+                    }
+                    occupied[i][j]=false;
+                    return count;
+            }else{
+                return count;
+            }
+        }else if(starting==true&&validateshelf.getItem(i,j)!=null) {
+            occupied[i][j]=true;
+            if (i < validateshelf.getHeight() - 1) {
+                count = validateAdjacentRecursive(tablePosition, i + 1, j, 0, batrix, validateshelf.getItem(i, j).getType(), false, score,occupied);
+            }
+            if (j < validateshelf.getLength() - 1) {
+                count = count + validateAdjacentRecursive(tablePosition, i, j + 1, 0, batrix, validateshelf.getItem(i, j).getType(), false, score,occupied);
+            }
+            if (count == 3) {
+                score = score + 2;
+                batrix[i][j] = true;
+                starting = false;
+            } else if (count == 4) {
+                score = score + 3;
+                batrix[i][j] = true;
+                starting = false;
+            } else if (count == 5) {
+                score = score + 5;
+                batrix[i][j] = true;
+                starting = false;
+            } else if (count >= 6) {
+                score = score + 8;
+                batrix[i][j] = true;
+                starting = false;
+            }
+            count = 0;
+            occupied[i][j]=false;
+
+            if (j < validateshelf.getLength() - 1) {
+                score = validateAdjacentRecursive(tablePosition, i, j + 1, count, batrix, null, true, score,occupied);
+            } else if (i < validateshelf.getHeight() - 1) {
+                score = validateAdjacentRecursive(tablePosition, i + 1, 0, count, batrix, null, true, score,occupied);
+            }
+            return score;
+        }else if(batrix[i][j]==true|| validateshelf.getItem(i,j)==null){
+            if (j < validateshelf.getLength() - 1) {
+                score = validateAdjacentRecursive(tablePosition, i, j + 1, 0, batrix, null, true, score,occupied);
+            } else if (i < validateshelf.getHeight() - 1) {
+                score = validateAdjacentRecursive(tablePosition, i + 1, 0, 0, batrix, null, true, score,occupied);
+            }
+            return score;
+        }
+        return score;
+    }
+
     public boolean fillBoard(){
         return this.board.setBox(this.bag);
     }
