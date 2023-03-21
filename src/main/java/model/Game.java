@@ -112,31 +112,34 @@ public class Game {
     public void validatePersonalGoal(TablePosition tablePosition){}
 
 
-    //validateAdjacent(position,0,0,0,batrix di false,null,true,0)
-    public int validateAdjacent(TablePosition tablePosition,int i,int j,int count,boolean[][] batrix,Type type,boolean starting,int score){
+    //validateAdjacent(position,0,0,0,batrix di false,null,true,0,occupied di false)
+    public int validateAdjacent(TablePosition tablePosition,int i,int j,int count,boolean[][] batrix,Type type,boolean starting,int score,boolean[][] occupied){
         Bookshelf validateshelf= tablePosition.getBookshelf();
-        if(batrix[i][j]==false&&validateshelf.getItem(i,j)!=null&&starting==false) {
+        if(batrix[i][j]==false&&validateshelf.getItem(i,j)!=null&&starting==false&&occupied[i][j]==false) {
             if(validateshelf.getItem(i,j).getType().equals(type)){
                     count++;
+                    occupied[i][j]=true;
                     if(i<validateshelf.getHeight()-1) {
-                        count = count+validateAdjacent(tablePosition, i + 1, j, count, batrix, type, starting,score);
+                        count = count+validateAdjacent(tablePosition, i + 1, j, count, batrix, type, false,score,occupied);
                     }
                     if(j<validateshelf.getLength()-1){
-                        count = count+validateAdjacent(tablePosition, i , j+1, count, batrix, type, starting,score);
+                        count = count+validateAdjacent(tablePosition, i , j+1, count, batrix, type, false,score,occupied);
                     }
                     if(count>=3){
                         batrix[i][j]=true;
                     }
+                    occupied[i][j]=false;
                     return count;
             }else{
                 return count;
             }
         }else if(starting==true&&validateshelf.getItem(i,j)!=null) {
+            occupied[i][j]=true;
             if (i < validateshelf.getHeight() - 1) {
-                count = validateAdjacent(tablePosition, i + 1, j, 0, batrix, validateshelf.getItem(i, j).getType(), false, score);
+                count = validateAdjacent(tablePosition, i + 1, j, 0, batrix, validateshelf.getItem(i, j).getType(), false, score,occupied);
             }
             if (j < validateshelf.getLength() - 1) {
-                count = count + validateAdjacent(tablePosition, i, j + 1, 0, batrix, validateshelf.getItem(i, j).getType(), false, score);
+                count = count + validateAdjacent(tablePosition, i, j + 1, 0, batrix, validateshelf.getItem(i, j).getType(), false, score,occupied);
             }
             if (count == 3) {
                 score = score + 2;
@@ -156,18 +159,19 @@ public class Game {
                 starting = false;
             }
             count = 0;
+            occupied[i][j]=false;
 
             if (j < validateshelf.getLength() - 1) {
-                score = validateAdjacent(tablePosition, i, j + 1, count, batrix, null, true, score);
+                score = validateAdjacent(tablePosition, i, j + 1, count, batrix, null, true, score,occupied);
             } else if (i < validateshelf.getHeight() - 1) {
-                score = validateAdjacent(tablePosition, i + 1, 0, count, batrix, null, true, score);
+                score = validateAdjacent(tablePosition, i + 1, 0, count, batrix, null, true, score,occupied);
             }
             return score;
         }else if(batrix[i][j]==true|| validateshelf.getItem(i,j)==null){
             if (j < validateshelf.getLength() - 1) {
-                score = validateAdjacent(tablePosition, i, j + 1, 0, batrix, null, true, score);
+                score = validateAdjacent(tablePosition, i, j + 1, 0, batrix, null, true, score,occupied);
             } else if (i < validateshelf.getHeight() - 1) {
-                score = validateAdjacent(tablePosition, i + 1, 0, 0, batrix, null, true, score);
+                score = validateAdjacent(tablePosition, i + 1, 0, 0, batrix, null, true, score,occupied);
             }
             return score;
         }
