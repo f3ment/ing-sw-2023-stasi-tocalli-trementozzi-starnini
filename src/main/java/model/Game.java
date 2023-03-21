@@ -1,6 +1,7 @@
 package model;
 
 import com.sun.tools.javac.jvm.Items;
+import com.sun.tools.javac.util.Pair;
 import model.board.FourBoard;
 import model.board.ThreeBoard;
 import model.board.TwoBoard;
@@ -9,10 +10,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
+import java.util.*;
 
 
 public class Game {
@@ -27,6 +25,8 @@ public class Game {
     private List<TablePosition> tablePositionList;
     private FourBoard board;
     private List<Bookshelf> bookshelves;
+
+    private List<Map<Type , Pair<Integer , Integer>>> PersonalGoalDeck;
 
 
     // The Game constructor:
@@ -49,6 +49,20 @@ public class Game {
             bookshelves.add(new Bookshelf());
         }
 
+        //initializes the personal goal deck with 12 cards
+        //every card is an hashmap of 6 couplets of key (Type) and value (pair of coordinates)
+        PersonalGoalDeck = new ArrayList<Map<Type , Pair<Integer , Integer>>>();
+
+        for(int i=0; i<12; i++){
+            PersonalGoalDeck.add(new HashMap<Type , Pair<Integer , Integer>>());
+        }
+        for(int i=0; i<12; i++){
+            int j=0;
+            for(Type type : Type.values()){
+                PersonalGoalDeck.get(i).put(type , new Pair<>((i*j)%5,(i+j)%6));
+                j++;
+            }
+        }
 
 
         this.tablePositionList = new ArrayList<TablePosition>();
@@ -56,8 +70,8 @@ public class Game {
             do{
                 index =1+randomInt.nextInt(11);
             }while(nums[index-1]);
-                nums[index]=true;
-            this.tablePositionList.add(i, new TablePosition(usernames.get(i), new PersonalGoal(index), this.bookshelves.get(i)));
+            nums[index]=true;
+            this.tablePositionList.add(i, new TablePosition(usernames.get(i), new PersonalGoal(PersonalGoalDeck.get(index)), this.bookshelves.get(i)));
         }
 
         index= randomInt.nextInt(3);
@@ -100,7 +114,7 @@ public class Game {
         this.board.setBox(bag);
 
         this.finish = false;
-        }
+    }
     public void validateCommonGoal(TablePosition tablePosition) throws Exception {
         ScoringToken res;
         //check if player at current tableposition has already achieved the first commmon goal
@@ -130,23 +144,23 @@ public class Game {
         Bookshelf validateshelf= tablePosition.getBookshelf();
         if(!batrix[i][j] && validateshelf.getItem(i,j)!=null && !starting && !occupied[i][j]) {
             if(validateshelf.getItem(i,j).getType().equals(type)){
-                    count++;
-                    occupied[i][j]=true;
-                    if(i<validateshelf.getHeight()-1) {
-                        count = count+validateAdjacentRecursive(tablePosition, i + 1, j, count, batrix, type, false,score,occupied);
-                    }
-                    if(j<validateshelf.getLength()-1){
-                        count = count+validateAdjacentRecursive(tablePosition, i , j+1, count, batrix, type, false,score,occupied);
-                    }
-                    if(count>=3){
-                        batrix[i][j]=true;
-                    }
-                    occupied[i][j]=false;
-                    return count;
+                count++;
+                occupied[i][j]=true;
+                if(i<validateshelf.getHeight()-1) {
+                    count = count+validateAdjacentRecursive(tablePosition, i + 1, j, count, batrix, type, false,score,occupied);
+                }
+                if(j<validateshelf.getLength()-1){
+                    count = count+validateAdjacentRecursive(tablePosition, i , j+1, count, batrix, type, false,score,occupied);
+                }
+                if(count>=3){
+                    batrix[i][j]=true;
+                }
+                occupied[i][j]=false;
+                return count;
             }else{
                 return count;
             }
-        }else if(starting && validateshelf.getItem(i,j)!=null) {
+        }else if(starting==true&&validateshelf.getItem(i,j)!=null) {
             occupied[i][j]=true;
             if (i < validateshelf.getHeight() - 1) {
                 count = validateAdjacentRecursive(tablePosition, i + 1, j, 0, batrix, validateshelf.getItem(i, j).getType(), false, score,occupied);
@@ -207,23 +221,4 @@ public class Game {
         currentPosition=tablePositionList.get(newCurrentIndex);
     }
 
-    public Player getFirstPlayer() {
-        return firstPlayer;
-    }
-
-    public Bag getBag() {
-        return bag;
-    }
-
-    public TablePosition getCurrentPosition() {
-        return currentPosition;
-    }
-
-    public boolean isFinish() {
-        return finish;
-    }
-
-    public FourBoard getBoard() {
-        return board;
-    }
 }

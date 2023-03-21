@@ -18,4 +18,8 @@ public abstract class CommonGoal{
     public int getRomanNumber() {
         return romanNumber;
     }
+
+    public void setRomanNumber(int romanNumber) {
+        this.romanNumber = romanNumber;
+    }
 }
