@@ -7,8 +7,9 @@ import java.security.GeneralSecurityException;
 
 //todo implement windows
 public class PersonalGoal {
-    private Pair< , Pair<int,int> >[] windows;
+    private [] windows;
     private int done;
+
     public PersonalGoal(int index){
         /*todo
             if a goal is obtained, done will be incremented by one, until 6

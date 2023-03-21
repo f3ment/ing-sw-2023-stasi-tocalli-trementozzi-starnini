@@ -15,11 +15,6 @@ public abstract class CommonGoal{
         this.completed = false;
     }
     public abstract ScoringToken validate(Bookshelf bookshelf) throws Exception;
-
-    public void setRomanNumber(int romanNumber) {
-        this.romanNumber = romanNumber;
-    }
-
     public int getRomanNumber() {
         return romanNumber;
     }

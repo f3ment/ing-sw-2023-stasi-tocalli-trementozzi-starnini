@@ -31,7 +31,7 @@ public class Bag {
 
         //singolo item perché per refillare la box diventa difficile altrimenti
 
-        public ItemTiles extract () throws NegativeArraySizeException{
+        public ItemTiles extract() throws NegativeArraySizeException{
                 int randomIndex;
                 Random rand = new Random();
                 if(items.size() == 0){
