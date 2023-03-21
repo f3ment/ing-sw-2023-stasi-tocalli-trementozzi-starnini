@@ -203,4 +203,23 @@ public class Game {
         currentPosition=tablePositionList.get(newCurrentIndex);
     }
 
+    public Player getFirstPlayer() {
+        return firstPlayer;
+    }
+
+    public Bag getBag() {
+        return bag;
+    }
+
+    public TablePosition getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public boolean isFinish() {
+        return finish;
+    }
+
+    public FourBoard getBoard() {
+        return board;
+    }
 }

@@ -27,7 +27,7 @@ public class Player {
     public boolean getStatus(){
         return status;
     }
-
+//turno attrim00tk-y
     public int getScore() {
         return score;
     }
@@ -56,4 +56,7 @@ public class Player {
         this.cards.add(box.draw(i,j));
     }
 
+    public TablePosition getCurrentPosition() {
+        return currentPosition;
+    }
 }
