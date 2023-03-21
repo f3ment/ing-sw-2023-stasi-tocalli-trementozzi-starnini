@@ -24,7 +24,6 @@ public class Bookshelf {
         if(actualColumnLength.get(choosenColumn)!=6){
             items[actualColumnLength.get(choosenColumn)][choosenColumn]=card;
             actualColumnLength.set(choosenColumn, actualColumnLength.get(choosenColumn) +1);
-
         }else{
             throw new Exception();
         }

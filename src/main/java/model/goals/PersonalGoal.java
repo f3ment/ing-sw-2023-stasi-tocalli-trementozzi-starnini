@@ -11,10 +11,15 @@ import java.security.GeneralSecurityException;
 public class PersonalGoal {
     private Map<Type , Pair<int ,int>>;
     private int done;
-    public PersonalGoal(int index) {
 
 
 
+
+    public PersonalGoal(int index){
+        /*todo
+            if a goal is obtained, done will be incremented by one, until 6
+            in this way at the end of the game we know how many goals has been achieved.
+        */
         done = 0;
     }
 
