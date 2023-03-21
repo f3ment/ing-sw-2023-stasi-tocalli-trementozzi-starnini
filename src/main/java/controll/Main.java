@@ -30,11 +30,13 @@ public class Main {
         currentPosition=currentPlayer.getCurrentPosition();
         System.out.print("How many card do you wanna throw? ");
         numberCardsThrowable= myInput.nextInt();
-        x=myInput.nextInt();
-        y=myInput.nextInt();
-        //controlli vari
-        for(int i=0;)
-        currentPlayer.drawFromBoard(currentMatch.getBoard(),x,y);
+
+        // TODO controlli vari
+        for(int i=0;i<numberCardsThrowable;i++) {
+            x=myInput.nextInt();
+            y=myInput.nextInt();
+            currentPlayer.drawFromBoard(currentMatch.getBoard(), x, y);
+        }
 
 
 
