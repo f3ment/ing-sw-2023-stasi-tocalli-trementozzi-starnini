@@ -1,20 +1,25 @@
 package model.goals;
 
+import java.util.Iterator;
+import java.util.Map;
 
 import com.sun.tools.javac.util.Pair;
+import model.Bookshelf;
+import model.ScoringToken;
+import model.Type;
 
 import java.security.GeneralSecurityException;
 
 //todo implement windows
 public class PersonalGoal {
-    private [] windows;
+    private Map<Type, Pair<Integer, Integer>> windows;
     private int done;
-
-    public PersonalGoal(int index){
+    public PersonalGoal(Map<Type, Pair<Integer, Integer>> windows){
         /*todo
             if a goal is obtained, done will be incremented by one, until 6
             in this way at the end of the game we know how many goals has been achieved.
         */
+        this.windows = windows;
         done = 0;
     }
 
@@ -25,7 +30,6 @@ public class PersonalGoal {
     public void incrementDone() {
         this.done ++;
     }
-
     //creare una exception se done è maggiore di 6 o minore di 0
     public int getScore() throws IndexOutOfBoundsException {
         if(this.done < 0 || this.done >6) throw new IndexOutOfBoundsException();
@@ -46,5 +50,17 @@ public class PersonalGoal {
                 return 12;
         }
         return 0;
+    }
+
+    public int validate(Bookshelf bookshelf){
+        Pair elem;
+        done = 0;
+        for(Type e : windows.keySet()){
+            elem = (Pair) windows.get(e);
+            if(bookshelf.getItem((Integer) elem.fst, (Integer) elem.snd).getType().equals(e)){
+                done++;
+            }
+        }
+        return getScore();
     }
 }
