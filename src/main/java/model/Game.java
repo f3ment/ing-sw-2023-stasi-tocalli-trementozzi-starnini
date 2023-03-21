@@ -14,7 +14,7 @@ import java.util.Random;
 
 
 public class Game {
-
+    private boolean finish;
     private int playerNumber;
     private TablePosition currentPosition;
     private Player firstPlayer;
@@ -93,7 +93,9 @@ public class Game {
         this.secondCommonGoal = commonGoals.get(index);
         this.secondCommonGoal.setRomanNumber(2);
 
-        board.setBox(bag);
+        this.board.setBox(bag);
+
+        this.finish = false;
         }
     public void validateCommonGoal(TablePosition tablePosition) throws Exception {
         ScoringToken res;
@@ -112,12 +114,16 @@ public class Game {
     public void validatePersonalGoal(TablePosition tablePosition){}
 
     public void validateAdjacent(TablePosition tablePosition){
-        tablePosition.getBookshelf().
+        tablePosition.getBookshelf();
     }
     public boolean fillBoard(){
         return this.board.setBox(this.bag);
     }
-    public void setEndGame(){}
+
+    //todo chiamata isFull della bookshelf che a sua volta chiama setEndGame
+    public void setEndGame(boolean finish){
+        this.finish = finish;
+    }
     public void setCurrentPosition(){
         int newCurrentIndex=tablePositionList.indexOf(currentPosition)+1;
         if(newCurrentIndex==tablePositionList.size()){
