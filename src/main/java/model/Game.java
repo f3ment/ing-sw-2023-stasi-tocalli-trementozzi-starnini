@@ -5,7 +5,9 @@ import model.board.FourBoard;
 import model.board.ThreeBoard;
 import model.board.TwoBoard;
 import model.goals.*;
+import org.json.simple.parser.ParseException;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +35,7 @@ public class Game {
     // -initializes all the game attributes relative to the game and the board
     // -randomly assigns player's personal goal and chooses two game's common goals
 
-    public Game(int playerNumber, ArrayList<String> usernames){
+    public Game(int playerNumber, ArrayList<String> usernames)  {
         Random randomInt = new Random();
         int index;
         boolean[] nums= new boolean[12];
@@ -46,6 +48,8 @@ public class Game {
         for(int i = 0 ; i < playerNumber; i++){
             bookshelves.add(new Bookshelf());
         }
+
+
 
         this.tablePositionList = new ArrayList<TablePosition>();
         for(int i = 0; i < playerNumber; i++){
