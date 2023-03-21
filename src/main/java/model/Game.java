@@ -146,7 +146,7 @@ public class Game {
             }else{
                 return count;
             }
-        }else if(starting==true&&validateshelf.getItem(i,j)!=null) {
+        }else if(starting && validateshelf.getItem(i,j)!=null) {
             occupied[i][j]=true;
             if (i < validateshelf.getHeight() - 1) {
                 count = validateAdjacentRecursive(tablePosition, i + 1, j, 0, batrix, validateshelf.getItem(i, j).getType(), false, score,occupied);

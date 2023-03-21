@@ -1,6 +1,6 @@
 package model;
 
-public class ScoringToken extends Token{
+public class ScoringToken extends EndGameToken {
     int roman_number;
     public ScoringToken(int score,int retro_number) {
         super(score);

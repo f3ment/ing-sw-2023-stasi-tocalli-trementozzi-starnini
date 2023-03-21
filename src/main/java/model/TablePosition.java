@@ -35,5 +35,9 @@ public class TablePosition {
     public void setFirstPosition(boolean firstPosition) {
         this.firstPosition = firstPosition;
     }
+
+    public boolean isFirstPosition() {
+        return firstPosition;
+    }
 }
 
