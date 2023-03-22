@@ -27,23 +27,31 @@ public class Main {
             usernames.add(player);
         }
         currentMatch=new Game(numPlayers,usernames);
-        currentPlayer=currentMatch.getFirstPlayer();
+
+
+        currentPlayer=currentMatch.getCurrentPosition().getPlayer();
         currentPosition=currentPlayer.getCurrentPosition();
         System.out.println("How many card do you wanna throw? ");
         numberCardsThrowable= myInput.nextInt();
 
         // TODO controlli vari
-        for(int i=0;i<numberCardsThrowable;i++) {
+        for(int i=0;i<numberCardsThrowable; i++) {
             x=myInput.nextInt();
             y=myInput.nextInt();
             currentPlayer.drawFromBoard(currentMatch.getBoard(), x, y);
         }
+
         choosencolumn=myInput.nextInt();
         //TODO controlli sulla bookshelf
-        currentPlayer.getCards();
+
+        mano = currentPlayer.getCards();
+
         index=myInput.nextInt();
-        currentPlayer.getCard(index);
-        currentPlayer.insertInBookshelf(choosencolumn,);
+        try{
+            currentPlayer.insertInBookshelf(choosencolumn,currentPlayer.getCard(index));
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
 
 
 

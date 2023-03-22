@@ -1,23 +1,50 @@
 package model;
-
+import model.board.Board;
 import model.board.FourBoard;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class Player {
-    private String username;
+    private final String username;
     private boolean status;
     private int score;
     private ArrayList<ItemTiles> cards;
-    private TablePosition currentPosition;
+    private final TablePosition currentPosition;
+
+
+    /*
+     * Apertura file di configurazione
+     * */
+    String configFilePath = "./src/main/resources/config.properties";
+    Properties prop = new Properties();
+
+    FileInputStream ip;
+
+    {
+        try {
+            ip = new FileInputStream(configFilePath);
+            prop.load(ip);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     ArrayList<ScoringToken> tokens; //common goal
 
     public Player(TablePosition currentPosition,String username){
         this.currentPosition=currentPosition;
         this.username=username;
-        cards = new ArrayList(3);
-        tokens = new ArrayList<ScoringToken>(2);
+        cards = new ArrayList(Integer.parseInt(
+                prop.getProperty("cards.maxDrowable")));
+        tokens = new ArrayList<ScoringToken>(Integer.parseInt(
+                prop.getProperty("cards.maxCommonGoal")));
     }
 
     public String getUsername(){
@@ -36,6 +63,7 @@ public class Player {
         this.score = score;
     }
 
+    //token ottenuto dal common goal e score sommato  allo score del player
     public void setToken(int index,ScoringToken token) {
         this.tokens.add(index, token);
         this.setScore(this.getScore() + token.getScore());
@@ -54,7 +82,7 @@ public class Player {
         cards.remove(card);
     }
 
-    public void drawFromBoard(FourBoard box, int i, int j){
+    public void drawFromBoard(Board box, int i, int j){
         this.cards.add(box.draw(i,j));
     }
 

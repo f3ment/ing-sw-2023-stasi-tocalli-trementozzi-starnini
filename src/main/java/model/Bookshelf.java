@@ -8,12 +8,28 @@ import java.util.Properties;
 
 public class Bookshelf {
     private Boolean full;
-
     private final int length , height;
-
-    private ArrayList<Integer> actualColumnLength;
+    private ArrayList<Integer> actualColumnLength; //ogni colonna è rappresentato da un numero per gli elementi contenuti
     private ItemTiles[][] items;
     private int choosenColumn;
+
+    /*
+     * Apertura file di configurazione
+     * */
+    String configFilePath = "./src/main/resources/config.properties";
+    Properties prop = new Properties();
+    FileInputStream ip;
+    {
+        try {
+            ip = new FileInputStream(configFilePath);
+            prop.load(ip);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private int maxDrowable = Integer.parseInt(prop.getProperty("cards.maxDrowable"));
 
     public Bookshelf() throws FileNotFoundException, IOException {
         //this.height = 6;
@@ -26,13 +42,13 @@ public class Bookshelf {
         this.length=Integer.parseInt(prop.getProperty("bookshelf.width"));
 
         this.items = new ItemTiles[this.height][this.length];
-        this.actualColumnLength= new ArrayList<Integer>(5);
+        this.actualColumnLength= new ArrayList<Integer>(this.length);
         this.full = false;
 
     }
 
     public void insert(ItemTiles card) throws Exception{
-        if(actualColumnLength.get(choosenColumn)!=6){
+        if(actualColumnLength.get(choosenColumn)!=this.height){
             items[actualColumnLength.get(choosenColumn)][choosenColumn]=card;
             actualColumnLength.set(choosenColumn, actualColumnLength.get(choosenColumn) +1);
         }else{
@@ -47,7 +63,7 @@ public class Bookshelf {
     public int getMaxDrowable(){
         int min;
         min = actualColumnLength.stream().reduce(0, ( a, b)-> a<b ? a : b);
-        return Math.min(length - min, 3);
+        return Math.min(length - min, maxDrowable);
     }
     public ItemTiles getItem(int i, int j){
         return items[i][j];
@@ -67,7 +83,7 @@ public class Bookshelf {
 
     public boolean isFull(){
         for(int i : actualColumnLength){
-            if(i!=6){
+            if(i!=this.height){
                 return false;
             }
         }

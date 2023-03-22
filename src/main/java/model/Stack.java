@@ -10,6 +10,7 @@ public class Stack {
     public Stack(int dim, CommonGoal goal){
         this.dim=dim;
         scoringTokens= new ScoringToken[dim];
+        //todo scalabilità
         switch (dim){
             case 2:
                 scoringTokens[0] = new ScoringToken(4, goal.getRomanNumber());
@@ -23,6 +24,7 @@ public class Stack {
                 scoringTokens[1] = new ScoringToken(4, goal.getRomanNumber());
                 scoringTokens[2] = new ScoringToken(6, goal.getRomanNumber());
                 scoringTokens[3] = new ScoringToken(8, goal.getRomanNumber());
+
         }
         top=scoringTokens[dim-1];
         this.commongoal=goal;

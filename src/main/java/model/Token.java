@@ -1,10 +1,10 @@
 package model;
 
-public class EndGameToken {
+public class Token {
     private int score;
     private TablePosition position;
 
-    public EndGameToken(int score){
+    public Token(int score){
         this.score = score;
         this.position = null;
     }

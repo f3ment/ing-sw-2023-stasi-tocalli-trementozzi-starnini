@@ -2,17 +2,41 @@ package model.board;
 
 import model.Bag;
 import model.Box;
-import model.EndGameToken;
+import model.Token;
 import model.ItemTiles;
 
-public class FourBoard {
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
+
+public class FourBoard implements Board{
     private Box[][] board;
-    private EndGameToken token;
+    private Token token;
     private int maxLength, maxHeight;
 
+    /*
+     * Apertura file di configurazione
+     * */
+    String configFilePath = "./src/main/resources/config.properties";
+    Properties prop = new Properties();
+
+    FileInputStream ip;
+
+    {
+        try {
+            ip = new FileInputStream(configFilePath);
+            prop.load(ip);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public FourBoard(){
-        this.maxLength = 9;
-        this.maxHeight = 9;
+        this.maxLength = Integer.parseInt(prop.getProperty("board.width"));
+        this.maxHeight = Integer.parseInt(prop.getProperty("board.height"));
         board = new Box[maxLength][maxHeight];
         for(int i =0; i<maxHeight; i++){
             for (int j =0 ; j < maxLength; j++){
@@ -32,7 +56,7 @@ public class FourBoard {
             }
         }
         //new Box(true, null);
-        token = new EndGameToken(1);
+        token = new Token(1);
     }
 
     public Box getBox(int i, int j) throws IndexOutOfBoundsException{
@@ -50,14 +74,15 @@ public class FourBoard {
         return res;
     }
 
-    public void setToken(EndGameToken token) {
+    public void setToken(Token token) {
         this.token = token;
     }
     public boolean setBox(Bag bag){
         ItemTiles item;
         for(int i=0;i<9;i++){
             for(int j=0;j<9;j++){
-                if(getBox(i,j)!=null){  //todo gestire eccezzione casella non valida
+                if(getBox(i,j)!=null){
+                    //todo gestire eccezzione casella non valida
                     item = bag.extract();
                     if(item != null){
                         if(getBox(i,j).getItemContained()==null){

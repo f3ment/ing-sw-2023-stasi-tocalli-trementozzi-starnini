@@ -1,7 +1,7 @@
 package model;
 
 public class Box {
-    private boolean valid;
+    private boolean valid; //casella in cui si può piazzare un ItemTile
     private ItemTiles content;
 
     public Box(boolean valid,ItemTiles content){

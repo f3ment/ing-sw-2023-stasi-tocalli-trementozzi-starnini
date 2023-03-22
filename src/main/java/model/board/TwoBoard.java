@@ -1,13 +1,13 @@
 package model.board;
 
 import model.Box;
-import model.EndGameToken;
+import model.Token;
 
 public class TwoBoard extends ThreeBoard {
     private Box[][] board;{
 
     }
-    private EndGameToken token;
+    private Token token;
 
     public TwoBoard(){
         super();

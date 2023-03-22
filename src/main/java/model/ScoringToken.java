@@ -1,7 +1,9 @@
 package model;
 
-public class ScoringToken extends EndGameToken {
-    int roman_number;
+public class ScoringToken extends Token {
+    private int roman_number;
+    private int score;
+    private TablePosition position;
     public ScoringToken(int score,int retro_number) {
         super(score);
         this.roman_number = roman_number;
