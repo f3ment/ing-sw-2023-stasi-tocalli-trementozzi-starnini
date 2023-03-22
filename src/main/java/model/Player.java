@@ -49,7 +49,9 @@ public class Player {
     }
 
     public void insertInBookshelf(int column, ItemTiles card) throws Exception {
+        currentPosition.getBookshelf().setChoosenColumn(column);
         currentPosition.getBookshelf().insert(card);
+        cards.remove(card);
     }
 
     public void drawFromBoard(FourBoard box, int i, int j){
@@ -59,4 +61,13 @@ public class Player {
     public TablePosition getCurrentPosition() {
         return currentPosition;
     }
+
+    public ArrayList<ItemTiles> getCards() {
+        return cards;
+    }
+
+    public ItemTiles getCard(int index) {
+        return cards.get(index);
+    }
+
 }
