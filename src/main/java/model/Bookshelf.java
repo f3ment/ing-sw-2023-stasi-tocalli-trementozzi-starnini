@@ -1,6 +1,10 @@
 package model;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class Bookshelf {
     private Boolean full;
@@ -11,9 +15,16 @@ public class Bookshelf {
     private ItemTiles[][] items;
     private int choosenColumn;
 
-    public Bookshelf(){
-        this.height = 6;
-        this.length = 5;
+    public Bookshelf() throws FileNotFoundException, IOException {
+        //this.height = 6;
+        //this.length = 5;
+        String configFilePath = "./src/main/resources/config.properties";
+        Properties prop = new Properties();
+        FileInputStream ip = new FileInputStream(configFilePath);
+        prop.load(ip);
+        this.height=Integer.parseInt(prop.getProperty("bookshelf.height"));
+        this.length=Integer.parseInt(prop.getProperty("bookshelf.width"));
+
         this.items = new ItemTiles[this.height][this.length];
         this.actualColumnLength= new ArrayList<Integer>(5);
         this.full = false;
