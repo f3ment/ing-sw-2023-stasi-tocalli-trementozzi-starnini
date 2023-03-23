@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.sun.tools.javac.util.Pair;
 import model.Bookshelf;
 import model.ScoringToken;
 import model.Type;
@@ -15,8 +16,6 @@ import java.util.Properties;
 
 //todo implement windows
 public class PersonalGoal {
-
-
 
     /*
      * Apertura file di configurazione
@@ -35,20 +34,16 @@ public class PersonalGoal {
         }
     }
 
-
-
-
-
-    //private Map<Type, Pair<Integer, Integer>> windows;
+    private Map<String, Map<String, String>> windows;
     private int done;
-    //public PersonalGoal(Map<Type, Pair<Integer, Integer>> windows){
+    public PersonalGoal(Map<String, Map<String, String>> windows){
         /*todo
             if a goal is obtained, done will be incremented by one, until 6
             in this way at the end of the game we know how many goals has been achieved.
         */
-        //this.windows = windows;
-      //  done = 0;
-    //}
+        this.windows = windows;
+        this.done = 0;
+    }
 
     public int getDone(){
         return this.done;
@@ -62,14 +57,13 @@ public class PersonalGoal {
     }
 
     public int validate(Bookshelf bookshelf){
-        /*Pair elem;
-        done = 0;
-        for(Type e : windows.keySet()){
-            elem = (Pair) windows.get(e);
-            if(bookshelf.getItem((Integer) elem.fst, (Integer) elem.snd).getType().equals(e)){
+        Map<String, String> elem;
+        for(String e : windows.keySet()){
+            elem = (Map<String, String>) windows.get(e);
+            if(bookshelf.getItem((Integer) Integer.valueOf(elem.get("X")), (Integer) Integer.valueOf(elem.get("Y"))).getType().toString().equals(e)){
                 done++;
             }
-        }*/
+        }
         return getScore();
     }
 }

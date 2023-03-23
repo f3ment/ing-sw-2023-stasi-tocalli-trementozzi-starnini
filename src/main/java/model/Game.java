@@ -1,6 +1,7 @@
 package model;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import model.board.Board;
 import model.goals.*;
 
@@ -21,6 +22,7 @@ public class Game {
     private final List<TablePosition> tablePositionList;
     private Board board;
     private final List<Bookshelf> bookshelves;
+
 
     //private   <Map<Type , Pair<Integer , Integer>>> PersonalGoalDeck;
     //private   <Map<Type , Pair<Integer , Integer>>> PersonalGoalDeck;
@@ -77,19 +79,16 @@ public class Game {
         //PersonalGoalDeck = new ArrayList<Map<Type , Pair<Integer , Integer>>>();
 
         // 1. JSON file to Java object
-        Object object = gson.fromJson(new FileReader("./src/main/resources/personalGoals.json"), Object.class);
+        Map<String, Map<String, Map<String, String>>> windows = gson.fromJson(new FileReader("./src/main/resources/personalGoals.json"),
+                new TypeToken<Map<String, Map<String, Map<String, String>>>>() {}.getType());
+        //Best Practice
+        //object.forEach((key, value) -> value.values().forEach(i -> System.out.println(i.get("X"))));
 
-        /*for(int i=0; i<12; i++){
-            PersonalGoalDeck.add(new HashMap<Type , Pair<Integer , Integer>>());
-        }
-        for(int i=0; i<12; i++){
-            int j=0;
-            for(Type type : Type.values()){
-                PersonalGoalDeck.get(i).put(type , new Pair<>((i*j)%5,(i+j)%6));
-                j++;
-            }
-        }
-        */
+        // Ours
+        /*object.entrySet().stream().forEach(e-> {
+            e.getValue().entrySet().stream().map(
+                    k -> k.getValue()).forEach(i -> System.out.println(i.get("X")));
+        });*/
 
         this.tablePositionList = new ArrayList<TablePosition>();
         for(int i = 0; i < playerNumber; i++){
@@ -97,7 +96,8 @@ public class Game {
                 index =1+randomInt.nextInt(11);
             }while(nums[index-1]);
             nums[index]=true;
-            this.tablePositionList.add(i, new TablePosition(usernames.get(i), new PersonalGoal(PersonalGoalDeck.get(index)), this.bookshelves.get(i)));
+            index =1+randomInt.nextInt(12);
+            this.tablePositionList.add(i, new TablePosition(usernames.get(i), new PersonalGoal(windows.remove(Integer.toString(index))), this.bookshelves.get(i)));
         }
 
         index= randomInt.nextInt(playerNumber);
