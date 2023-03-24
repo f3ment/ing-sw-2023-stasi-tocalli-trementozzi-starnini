@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.sun.tools.javac.util.Pair;
 import model.Bookshelf;
 import model.ScoringToken;
 import model.Type;

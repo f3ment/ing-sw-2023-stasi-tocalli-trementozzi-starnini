@@ -1,4 +1,4 @@
-import model.*;
+/*import model.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -26,7 +26,7 @@ public class Main {
             player = myInput.nextLine();
             usernames.add(player);
         }
-        currentMatch=new Game(numPlayers,usernames);
+        //currentMatch=new Game(numPlayers,usernames);
 
 
         currentPlayer=currentMatch.getCurrentPosition().getPlayer();
@@ -44,7 +44,7 @@ public class Main {
         choosencolumn=myInput.nextInt();
         //TODO controlli sulla bookshelf
 
-        mano = currentPlayer.getCards();
+        //mano = currentPlayer.getCards();
 
         index=myInput.nextInt();
         try{
@@ -56,4 +56,4 @@ public class Main {
 
 
     }
-}
+}*/
