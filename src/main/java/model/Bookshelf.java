@@ -40,8 +40,16 @@ public class Bookshelf {
         prop.load(ip);
         this.height=Integer.parseInt(prop.getProperty("bookshelf.height"));
         this.length=Integer.parseInt(prop.getProperty("bookshelf.width"));
-
         this.items = new ItemTiles[this.height][this.length];
+
+        // <Aggiunto per prova testing>
+        for(int i=0; i<this.height; i++){
+            for(int j=0; j<this.length; j++){
+                this.items[i][j] = new ItemTiles(Type.CATS,1);
+            }
+        }
+        // </Aggiunto per prova testing>
+
         this.actualColumnLength= new ArrayList<Integer>(this.length);
         this.full = false;
 
