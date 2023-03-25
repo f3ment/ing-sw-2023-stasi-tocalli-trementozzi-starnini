@@ -11,7 +11,7 @@ public abstract class CommonGoal{
 
     public CommonGoal(int romanNumber, int numberPlayers){
         this.romanNumber = romanNumber;
-        stack = new Stack(numberPlayers,this);
+        this.stack = new Stack(numberPlayers,this);
         this.completed = false;
     }
     public abstract ScoringToken validate(Bookshelf bookshelf) throws Exception;

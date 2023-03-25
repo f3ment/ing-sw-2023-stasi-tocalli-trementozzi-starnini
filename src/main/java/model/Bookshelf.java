@@ -38,11 +38,13 @@ public class Bookshelf {
         Properties prop = new Properties();
         FileInputStream ip = new FileInputStream(configFilePath);
         prop.load(ip);
-        this.height=Integer.parseInt(prop.getProperty("bookshelf.height"));
-        this.length=Integer.parseInt(prop.getProperty("bookshelf.width"));
-
+        this.height =Integer.parseInt(prop.getProperty("bookshelf.height"));
+        this.length =Integer.parseInt(prop.getProperty("bookshelf.width"));
         this.items = new ItemTiles[this.height][this.length];
-        this.actualColumnLength= new ArrayList<Integer>(this.length);
+        this.actualColumnLength= new ArrayList<Integer>();
+        for(int i = 0; i< this.length; i++){
+            this.actualColumnLength.add(0);
+        }
         this.full = false;
 
     }
@@ -50,14 +52,18 @@ public class Bookshelf {
     public void insert(ItemTiles card) throws Exception{
         if(actualColumnLength.get(choosenColumn)!=this.height){
             items[actualColumnLength.get(choosenColumn)][choosenColumn]=card;
-            actualColumnLength.set(choosenColumn, actualColumnLength.get(choosenColumn) +1);
+            actualColumnLength.set(choosenColumn, actualColumnLength.get(choosenColumn)+1);
         }else{
             throw new Exception();
         }
     }
 
-    public void setChoosenColumn(int choosenColumn) {
-        this.choosenColumn = choosenColumn;
+    public void setChoosenColumn(int choosenColumn) throws Exception{
+        if(choosenColumn >=0 && choosenColumn <this.length){
+            this.choosenColumn = choosenColumn;
+        }else{
+            throw new Exception();
+        }
     }
 
     public int getMaxDrowable(){
