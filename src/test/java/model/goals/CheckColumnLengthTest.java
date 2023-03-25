@@ -3,6 +3,12 @@ import model.Bookshelf;
 import model.ItemTiles;
 import model.ScoringToken;
 import model.Type;
+
+import java.util.Arrays;
+
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+/*
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
-
+*/
 
 class CheckColumnLengthTest {
     private Bookshelf bookshelf;
@@ -94,7 +100,6 @@ class CheckColumnLengthTest {
 
     void validateDecresc(){
         CommonGoal cm = new CheckColumnLength(1 , 4);
-
         try{
             bookshelf = new Bookshelf();
 
@@ -125,7 +130,6 @@ class CheckColumnLengthTest {
             scoringToken = new ScoringToken(6, 1);
 
             assertNull(cm.validate(bookshelf));
-
 
             bookshelf = new Bookshelf();
 
