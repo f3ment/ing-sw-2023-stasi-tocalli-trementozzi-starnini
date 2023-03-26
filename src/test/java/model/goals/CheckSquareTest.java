@@ -17,6 +17,7 @@ public class CheckSquareTest {
     void validate() {
         CommonGoal cm = new CheckSquare(1,4);
         try{
+            //AssertTrue
             bookshelf = new Bookshelf();
 
             // Column 0
@@ -61,6 +62,52 @@ public class CheckSquareTest {
 
             scoringToken = new ScoringToken(8,1);
             assertTrue(scoringToken.getScore() == cm.validate(bookshelf).getScore());
+
+            bookshelf = new Bookshelf();
+
+            // Column 0
+            bookshelf.setChoosenColumn(0);
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            bookshelf.insert(new ItemTiles(Type.TROPHIES, 1));
+            bookshelf.insert(new ItemTiles(Type.TROPHIES, 1));
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+
+            // Column 1
+            bookshelf.setChoosenColumn(1);
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            bookshelf.insert(new ItemTiles(Type.TROPHIES, 1));
+            bookshelf.insert(new ItemTiles(Type.TROPHIES, 1));
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+
+            // Column 2
+            bookshelf.setChoosenColumn(2);
+            bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+            bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+
+            // Column 3
+            bookshelf.setChoosenColumn(3);
+            bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+            bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+            bookshelf.insert(new ItemTiles(Type.BOOKS, 1));
+            bookshelf.insert(new ItemTiles(Type.BOOKS, 1));
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+
+            // Column 4
+            bookshelf.setChoosenColumn(4);
+            bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+            bookshelf.insert(new ItemTiles(Type.BOOKS, 1));
+            bookshelf.insert(new ItemTiles(Type.BOOKS, 1));
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            bookshelf.insert(new ItemTiles(Type.BOOKS, 1));
+
+            scoringToken = new ScoringToken(6,1);
+            assertTrue(scoringToken.getScore() == cm.validate(bookshelf).getScore());
+
 
         }catch(Exception e) {
             System.out.println("Non riuscito!");

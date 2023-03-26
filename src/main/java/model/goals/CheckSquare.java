@@ -78,7 +78,7 @@ public class CheckSquare extends CommonGoal{
                         /* ENGLISH VERSION (REMOVE ITALIAN VERSION TOO) */
                         found++;
                         if(found==2) return stack.pop();
-                        
+
                     }
                 }
 
