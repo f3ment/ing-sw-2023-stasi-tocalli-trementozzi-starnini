@@ -12,6 +12,9 @@ public class CheckSquare extends CommonGoal{
 
     public CheckSquare(int romanNumber, int numberPlayers){
         super(romanNumber, numberPlayers);
+        this.romanNumber = romanNumber;
+        this.stack = new Stack(numberPlayers, this);
+        this.completed = false;
     }
 
     @Override
@@ -36,7 +39,7 @@ public class CheckSquare extends CommonGoal{
                         batrix[i+1][j+1] = true;
                         rep++;
                         if(rep == 2){
-                            return stack.pop();
+                            return this.stack.pop();
                         }
                     }
 

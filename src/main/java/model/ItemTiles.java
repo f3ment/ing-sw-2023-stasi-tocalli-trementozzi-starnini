@@ -6,7 +6,7 @@ public class ItemTiles {
     //todo possono esistere carte diverse
     public ItemTiles(Type item_type, int id){
         this.id = id;
-        this.itemType=itemType;
+        this.itemType=item_type;
     }
 
     public Type getType(){
