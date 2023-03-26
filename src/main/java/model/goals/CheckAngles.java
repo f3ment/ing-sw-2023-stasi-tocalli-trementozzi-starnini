@@ -10,13 +10,20 @@ public class CheckAngles extends CommonGoal{
     private Stack stack;
     public  CheckAngles(int romanNumber, int numberPlayers){
         super(romanNumber,numberPlayers);
+        this.romanNumber = romanNumber;
+        this.stack = new Stack(numberPlayers,this);
+        this.completed = false;
     }
 
     @Override
     public ScoringToken validate(Bookshelf bookshelf) {
-        if(bookshelf.getItem(0,0).getType().equals(bookshelf.getItem(0, bookshelf.getLength()-1).getType())  &&
-           bookshelf.getItem(0,0).getType().equals(bookshelf.getItem(bookshelf.getHeight()-1, bookshelf.getLength()-1).getType())  &&
-           bookshelf.getItem(0,0).getType().equals(bookshelf.getItem(bookshelf.getHeight()-1, 0).getType())){
+        if(bookshelf.getItem(0,0)!=null &&
+                bookshelf.getItem(0,bookshelf.getLength()-1)!=null &&
+                bookshelf.getItem(bookshelf.getHeight()-1,0)!=null &&
+                bookshelf.getItem(bookshelf.getHeight()-1, bookshelf.getLength()-1) != null &&
+                bookshelf.getItem(0,0).getType().equals(bookshelf.getItem(0, bookshelf.getLength()-1).getType())  &&
+                bookshelf.getItem(0,0).getType().equals(bookshelf.getItem(bookshelf.getHeight()-1, bookshelf.getLength()-1).getType())  &&
+                bookshelf.getItem(0,0).getType().equals(bookshelf.getItem(bookshelf.getHeight()-1, 0).getType())){
             return stack.pop();
         }else{
             return null;
