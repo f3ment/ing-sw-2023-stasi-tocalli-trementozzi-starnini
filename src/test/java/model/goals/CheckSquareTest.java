@@ -27,6 +27,16 @@ public class CheckSquareTest {
             bookshelf.insert(new ItemTiles(Type.CATS, 1));
             bookshelf.insert(new ItemTiles(Type.CATS, 1));
 
+            // Column 2
+            bookshelf.setChoosenColumn(2);
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+
+            // Column 3
+            bookshelf.setChoosenColumn(3);
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+
             scoringToken = new ScoringToken(8,1);
             assertEquals(scoringToken, cm.validate(bookshelf));
 
