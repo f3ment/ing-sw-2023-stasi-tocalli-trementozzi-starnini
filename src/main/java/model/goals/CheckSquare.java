@@ -17,6 +17,7 @@ public class CheckSquare extends CommonGoal{
         this.completed = false;
     }
 
+
     @Override
     public ScoringToken validate(Bookshelf bookshelf) throws Exception{
         boolean[][] batrix = new boolean[bookshelf.getHeight()][bookshelf.getLength()];
@@ -48,4 +49,11 @@ public class CheckSquare extends CommonGoal{
         }
         return null;
     }
+    /*@Override
+    public ScoringToken validate(Bookshelf bookshelf) throws Exception{
+        boolean[][] batrix = new boolean[bookshelf.getHeight()][bookshelf.getLength()];
+        int found=0;
+    }*/
+
 }
+

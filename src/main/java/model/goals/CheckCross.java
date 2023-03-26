@@ -16,7 +16,7 @@ public class CheckCross extends CommonGoal{
 
     // null = false
     @Override
-    public ScoringToken validate(Bookshelf bookshelf) {
+    public ScoringToken validate(Bookshelf bookshelf)  {
 
         for(int i=0; i< bookshelf.getHeight(); i++){
             for(int j=0; j< bookshelf.getLength(); j++){

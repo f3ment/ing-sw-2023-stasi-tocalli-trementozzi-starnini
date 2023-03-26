@@ -55,7 +55,7 @@ public class PersonalGoal {
         return Integer.parseInt(prop.getProperty("score."+done+"goal"));
     }
 
-    public int validate(Bookshelf bookshelf){
+    public int validate(Bookshelf bookshelf) {
         Map<String, String> elem;
         for(String e : windows.keySet()){
             elem = (Map<String, String>) windows.get(e);

@@ -19,7 +19,7 @@ public class CheckGroupsSameType extends CommonGoal{
     }
 
     @Override
-    public ScoringToken validate(Bookshelf bookshelf) {
+    public ScoringToken validate(Bookshelf bookshelf)  {
         boolean[][] batrix = new boolean[bookshelf.getHeight()][bookshelf.getLength()];
         int rep = 0;
         boolean flag = false;
