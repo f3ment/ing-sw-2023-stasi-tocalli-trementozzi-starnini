@@ -75,11 +75,16 @@ public class CheckSquare extends CommonGoal{
                         batrix[i][j+1] = true;
                         batrix[i+1][j] = true;
                         batrix[i+1][j+1] = true;
+                        /* ENGLISH VERSION (REMOVE ITALIAN VERSION TOO)
+                        found++;
+                        if(found==2) return stack.pop();
+                         */
                     }
                 }
 
             }
         }
+        // <ITALIAN VERSION>
         //CHECK THAT THERE ARE AT LEAST TWO SQUARE OF THE SAME CARD'S TYPE
         for(int i=0; i< bookshelf.getHeight(); i++){
             for(int j=0; j<bookshelf.getLength(); j++){
@@ -101,6 +106,7 @@ public class CheckSquare extends CommonGoal{
                 }
             }
         }
+        // </ITALIAN VERSION>
         return null;
     }
 
