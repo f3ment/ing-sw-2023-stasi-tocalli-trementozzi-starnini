@@ -38,8 +38,8 @@ public class Bookshelf {
         Properties prop = new Properties();
         FileInputStream ip = new FileInputStream(configFilePath);
         prop.load(ip);
-        this.height =Integer.parseInt(prop.getProperty("bookshelf.height"));
-        this.length =Integer.parseInt(prop.getProperty("bookshelf.width"));
+        this.height = Integer.parseInt(prop.getProperty("bookshelf.height"));
+        this.length = Integer.parseInt(prop.getProperty("bookshelf.width"));
         this.items = new ItemTiles[this.height][this.length];
         this.actualColumnLength= new ArrayList<Integer>();
         for(int i = 0; i< this.length; i++){
