@@ -71,8 +71,12 @@ public class Bookshelf {
         min = actualColumnLength.stream().reduce(0, ( a, b)-> a<b ? a : b);
         return Math.min(length - min, maxDrowable);
     }
-    public ItemTiles getItem(int i, int j){
-        return items[i][j];
+    public ItemTiles getItem(int i, int j) throws Exception{
+        if(items[i][j] != null){
+            return items[i][j];
+        }else{
+            throw new Exception();
+        }
     }
 
     public int getHeight() {

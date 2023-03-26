@@ -57,12 +57,19 @@ public class PersonalGoal {
 
     public int validate(Bookshelf bookshelf){
         Map<String, String> elem;
-        for(String e : windows.keySet()){
+        this.done = 0;
+        for (String e : windows.keySet()) {
             elem = (Map<String, String>) windows.get(e);
-            if(bookshelf.getItem((Integer) Integer.valueOf(elem.get("X")), (Integer) Integer.valueOf(elem.get("Y"))).getType().toString().equals(e)){
-                done++;
+            try{
+                if (bookshelf.getItem((Integer) Integer.valueOf(elem.get("X")), (Integer) Integer.valueOf(elem.get("Y"))).getType().toString().equals(e)) {
+                    done++;
+                }
+            }catch (Exception ex){
+                continue;
             }
+
         }
         return getScore();
+
     }
 }

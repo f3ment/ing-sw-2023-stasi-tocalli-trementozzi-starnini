@@ -142,7 +142,7 @@ public class Game {
 
     //validateAdjacent(position,0,0,0,batrix di false,null,true,0,occupied di false)
 
-    public void validateAdjacent(TablePosition tablePosition){
+    public void validateAdjacent(TablePosition tablePosition) throws Exception{
         boolean[][] batrix = new boolean[tablePosition.getBookshelf().getHeight()]
                 [tablePosition.getBookshelf().getLength()];
         boolean[][] occupied = new boolean[tablePosition.getBookshelf().getHeight()]
@@ -152,7 +152,7 @@ public class Game {
         tablePosition.getPlayer().setScore(tablePosition.getPlayer().getScore() + res );
     }
 
-    public int validateAdjacentRecursive(TablePosition tablePosition,int i,int j,int count,boolean[][] batrix,Type type,boolean starting,int score,boolean[][] occupied){
+    public int validateAdjacentRecursive(TablePosition tablePosition,int i,int j,int count,boolean[][] batrix,Type type,boolean starting,int score,boolean[][] occupied) throws Exception{
         Bookshelf validateshelf= tablePosition.getBookshelf();
         if(!batrix[i][j] && validateshelf.getItem(i,j)!=null && !starting && !occupied[i][j]) {
             if(validateshelf.getItem(i,j).getType().equals(type)){
