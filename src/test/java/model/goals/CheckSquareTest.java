@@ -5,7 +5,10 @@ import model.ItemTiles;
 import model.ScoringToken;
 import model.Type;
 
+import java.util.Arrays;
+
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 
 public class CheckSquareTest {
     private Bookshelf bookshelf;
@@ -40,10 +43,11 @@ public class CheckSquareTest {
             scoringToken = new ScoringToken(8,1);
             assertEquals(scoringToken, cm.validate(bookshelf));
 
-
         }catch(Exception e) {
             System.out.println("Non riuscito!");
             System.out.println(e.getMessage());
+            System.out.println(Arrays.toString(e.getStackTrace()));
+
         }
     }
 }
