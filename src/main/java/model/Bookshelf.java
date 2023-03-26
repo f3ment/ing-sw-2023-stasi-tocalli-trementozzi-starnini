@@ -72,8 +72,8 @@ public class Bookshelf {
         return Math.min(length - min, maxDrowable);
     }
     public ItemTiles getItem(int i, int j)  {
-        return items[i][j];
-
+        if(items[i][j]!=null) return items[i][j];
+        else throw new NullPointerException();
     }
 
     public int getHeight() {
