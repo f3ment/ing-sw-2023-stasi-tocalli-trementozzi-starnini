@@ -44,6 +44,9 @@ public class Bookshelf {
         this.actualColumnLength= new ArrayList<Integer>();
         for(int i = 0; i< this.length; i++){
             this.actualColumnLength.add(0);
+            for(int j = 0; j< this.height; j++){
+
+            }
         }
         this.full = false;
 

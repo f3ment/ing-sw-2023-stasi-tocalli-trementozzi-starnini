@@ -3,7 +3,8 @@ package model;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import model.board.Board;
-import model.goals.*;
+import model.goals.CommonGoal;
+import model.goals.PersonalGoal;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
