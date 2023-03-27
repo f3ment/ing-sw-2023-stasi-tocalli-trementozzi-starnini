@@ -30,6 +30,7 @@ public class CheckEightEquals extends CommonGoal{
         try{
             for (i = 0; i < bookshelf.getLength(); i++) {
                 for (j = 0; j < bookshelf.getHeight(); j++) {
+
                     Counter.put(bookshelf.getItem(i, j).getType(), Counter.get(bookshelf.getItem(i, j).getType()) + 1);
                     for (Type key : Counter.keySet()) {
                         if (Counter.get(key) >= 8) return stack.pop();

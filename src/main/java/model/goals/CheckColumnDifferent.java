@@ -26,10 +26,11 @@ public class CheckColumnDifferent extends CommonGoal{
         int flag = 0;
         int rep = 0;
         int counterDiffTypes;
+        int i,j;
 
-        for(int j=0; j< bookshelf.getLength(); j++){
+        for( j=0; j< bookshelf.getLength(); j++){
             counterDiffTypes = 1;
-            for(int i=1; i < bookshelf.getHeight(); i++){
+            for( i=1; i < bookshelf.getHeight(); i++){
 
                 flag = 0;
                 try {
@@ -46,12 +47,12 @@ public class CheckColumnDifferent extends CommonGoal{
                     break;
                 }
             }
-
-            if(counterDiffTypes == 3 && !strategy){
+            if(counterDiffTypes <= 3 && !strategy && i == bookshelf.getHeight()){
                 rep++;
             }else if(counterDiffTypes == 6 && strategy){
                 rep++;
             }
+
         }
 
         if(rep >= repetitions) return stack.pop();
