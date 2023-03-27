@@ -15,6 +15,9 @@ public class CheckEightEquals extends CommonGoal{
 
     public CheckEightEquals(int romanNumber, int numberPlayers){
         super(romanNumber, numberPlayers);
+        this.romanNumber = romanNumber;
+        this.stack = new Stack(numberPlayers,this);
+        this.completed = false;
     }
 
     @Override
@@ -30,9 +33,15 @@ public class CheckEightEquals extends CommonGoal{
         try{
             for (i = 0; i < bookshelf.getLength(); i++) {
                 for (j = 0; j < bookshelf.getHeight(); j++) {
-                    Counter.put(bookshelf.getItem(i, j).getType(), Counter.get(bookshelf.getItem(i, j).getType()) + 1);
-                    for (Type key : Counter.keySet()) {
-                        if (Counter.get(key) >= 8) return stack.pop();
+
+                    try {
+                        Type type = bookshelf.getItem(i, j).getType();
+                        Counter.put(type, Counter.get(type) + 1);
+                        for (Type key : Counter.keySet()) {
+                            if (Counter.get(key) >= 8) return stack.pop();
+                        }
+                    }catch (Exception e){
+                        continue;
                     }
                 }
             }
