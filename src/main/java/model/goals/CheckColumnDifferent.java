@@ -16,27 +16,34 @@ public class CheckColumnDifferent extends CommonGoal{
         super(romanNumber, playerNumber);
         this.repetitions = repetitions;
         this.strategy = strategy;
+        this.romanNumber = romanNumber;
+        this.stack = new Stack(playerNumber,this);
+        this.completed = false;
     }
 
     @Override
-    public ScoringToken validate(Bookshelf bookshelf) throws Exception {
+    public ScoringToken validate(Bookshelf bookshelf) {
         int flag = 0;
         int rep = 0;
         int counterDiffTypes;
 
         for(int j=0; j< bookshelf.getLength(); j++){
-            counterDiffTypes = 0;
+            counterDiffTypes = 1;
             for(int i=1; i < bookshelf.getHeight(); i++){
 
                 flag = 0;
-                for(int k = 0; k < i; k++){
-                    if(bookshelf.getItem(i,j).getType().equals(
-                            bookshelf.getItem(k, j).getType())){
-                        flag = 1;
+                try {
+                    for(int k = 0; k < i; k++){
+                        if (bookshelf.getItem(i, j).getType().equals(
+                                bookshelf.getItem(k, j).getType())) {
+                            flag = 1;
+                        }
                     }
-                }
-                if(flag == 0){
-                    counterDiffTypes++;
+                    if(flag == 0){
+                        counterDiffTypes++;
+                    }
+                }catch (Exception e){
+                    break;
                 }
             }
 
@@ -47,7 +54,7 @@ public class CheckColumnDifferent extends CommonGoal{
             }
         }
 
-        if(rep == repetitions) return stack.pop();
+        if(rep >= repetitions) return stack.pop();
         else return null;
     }
 }
