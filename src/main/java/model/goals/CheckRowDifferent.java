@@ -6,7 +6,7 @@ import model.Stack;
 
 public class CheckRowDifferent extends CommonGoal{
     private int repetitions;
-    private Boolean strategy; // false->orizzontale 5 , true -> orizzontale 3
+    private Boolean strategy; // false->orizzontale 5 e repetitions=2 , true -> orizzontale 3 = 4
     private int romanNumber;
     private Boolean completed;
     private Stack stack;
@@ -38,7 +38,7 @@ public class CheckRowDifferent extends CommonGoal{
                 }
             }
 
-            if(counterDiffTypes == 3 && strategy ){
+            if(counterDiffTypes <= 3&& counterDiffTypes > 0 && strategy ){
                 rep ++;
             }else if(counterDiffTypes == 5 && !strategy){
                 rep ++;

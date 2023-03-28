@@ -13,77 +13,71 @@ import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
-class CheckEightEqualsTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+
+
+class CheckCrossTest {
     private Bookshelf bookshelf;
     private ScoringToken scoringToken;
-
     private CommonGoal cm;
+
     @Test
     void validate() {
 
-        this.cm = new CheckEightEquals(1,4);
+        this.cm = new CheckCross(1,4);
 
         try {
 
-            //testing positive case: #CATS == 8
+            //testing positive: CATS cross at the down left corner
 
             bookshelf = new Bookshelf();
 
+
             bookshelf.setChoosenColumn(0);
             bookshelf.insert(new ItemTiles(Type.CATS,1));
-            bookshelf.insert(new ItemTiles(Type.CATS,1));
-            bookshelf.insert(new ItemTiles(Type.FRAMES,1));
-            bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+            bookshelf.insert(new ItemTiles(Type.PLANTS,1));
             bookshelf.insert(new ItemTiles(Type.CATS,1));
 
-            bookshelf.setChoosenColumn(3);
 
+
+            bookshelf.setChoosenColumn(1);
+            bookshelf.insert(new ItemTiles(Type.PLANTS,1));
             bookshelf.insert(new ItemTiles(Type.CATS,1));
-            bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
-            bookshelf.insert(new ItemTiles(Type.GAMES,1));
             bookshelf.insert(new ItemTiles(Type.PLANTS,1));
 
-            bookshelf.setChoosenColumn(4);
-
-            bookshelf.insert(new ItemTiles(Type.CATS,1));
-            bookshelf.insert(new ItemTiles(Type.CATS,1));
-            bookshelf.insert(new ItemTiles(Type.CATS,1));
-
             bookshelf.setChoosenColumn(2);
-
             bookshelf.insert(new ItemTiles(Type.CATS,1));
+            bookshelf.insert(new ItemTiles(Type.GAMES,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+
 
             scoringToken = new ScoringToken(8 , 1);
             assertTrue(scoringToken.getScore() == cm.validate(bookshelf).getScore());
 
-            //testing negative case: #CATS = 7
+
+            //testing negative case
 
             bookshelf = new Bookshelf();
 
             bookshelf.setChoosenColumn(0);
             bookshelf.insert(new ItemTiles(Type.CATS,1));
+            bookshelf.insert(new ItemTiles(Type.PLANTS,1));
             bookshelf.insert(new ItemTiles(Type.CATS,1));
-            bookshelf.insert(new ItemTiles(Type.FRAMES,1));
+
+            bookshelf.setChoosenColumn(1);
             bookshelf.insert(new ItemTiles(Type.BOOKS,1));
             bookshelf.insert(new ItemTiles(Type.CATS,1));
-
-            bookshelf.setChoosenColumn(3);
-
-            bookshelf.insert(new ItemTiles(Type.CATS,1));
-            bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
             bookshelf.insert(new ItemTiles(Type.GAMES,1));
+
+
+            bookshelf.setChoosenColumn(2);
             bookshelf.insert(new ItemTiles(Type.PLANTS,1));
-
-            bookshelf.setChoosenColumn(4);
-
-            bookshelf.insert(new ItemTiles(Type.CATS,1));
-            bookshelf.insert(new ItemTiles(Type.CATS,1));
             bookshelf.insert(new ItemTiles(Type.CATS,1));
 
             scoringToken = new ScoringToken(8, 1);
 
             assertNull(cm.validate(bookshelf));
-
 
             System.out.println("Test passato!");
         }
@@ -94,3 +88,6 @@ class CheckEightEqualsTest {
         }
     }
 }
+
+//todo implements other corner cases
+
