@@ -38,7 +38,7 @@ public class CheckRowDifferent extends CommonGoal{
                 }
             }
 
-            if(counterDiffTypes <= 3 && strategy ){
+            if(counterDiffTypes <= 3&& counterDiffTypes > 0 && strategy ){
                 rep ++;
             }else if(counterDiffTypes == 5 && !strategy){
                 rep ++;
