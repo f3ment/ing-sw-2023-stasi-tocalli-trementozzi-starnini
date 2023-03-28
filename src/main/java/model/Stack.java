@@ -33,7 +33,12 @@ public class Stack {
     }
 
     public ScoringToken pop(){
-         return this.scoringTokens.remove(scoringTokens.size()-1);
+        if(scoringTokens.size() == 0){
+            commongoal.setCompleted(true);
+            return null;
+        }else{
+            return this.scoringTokens.remove(scoringTokens.size()-1);
+        }
     }
     public ScoringToken getTop(){
         return this.top;

@@ -22,7 +22,6 @@ public class Game {
     private final CommonGoal secondCommonGoal;
     private final List<TablePosition> tablePositionList;
     private Board board;
-    private final List<Bookshelf> bookshelves;
 
 
     //private   <Map<Type , Pair<Integer , Integer>>> PersonalGoalDeck;
@@ -57,7 +56,7 @@ public class Game {
         }
     }
 
-    public Game(int playerNumber, ArrayList<String> usernames) throws IOException {
+    public Game(ArrayList<Player> usernames) throws IOException {
         Random randomInt = new Random();
         int index;
         boolean[] nums= new boolean[12];
@@ -67,13 +66,8 @@ public class Game {
 
 
 
-        this.playerNumber = playerNumber;
+        this.playerNumber = usernames.size();
         this.bag = new Bag();
-
-        this.bookshelves = new ArrayList<Bookshelf>();
-        for(int i = 0 ; i < playerNumber; i++){
-            bookshelves.add(new Bookshelf());
-        }
 
         //initializes the personal goal deck with 12 cards
         //every card is an hashmap of 6 couplets of key (Type) and value (pair of coordinates)
@@ -98,10 +92,10 @@ public class Game {
             }while(nums[index-1]);
             nums[index]=true;
             index =1+randomInt.nextInt(12);
-            this.tablePositionList.add(i, new TablePosition(usernames.get(i), new PersonalGoal(windows.remove(Integer.toString(index))), this.bookshelves.get(i)));
+            this.tablePositionList.add(i, new TablePosition(usernames.get(i), new PersonalGoal(windows.remove(Integer.toString(index))), new Bookshelf()));
         }
 
-        index= randomInt.nextInt(playerNumber);
+        index = randomInt.nextInt(playerNumber);
         tablePositionList.get(index).setFirstPosition(true);
         firstPlayer = tablePositionList.get(index).getPlayer();
         currentPosition = tablePositionList.get(index);

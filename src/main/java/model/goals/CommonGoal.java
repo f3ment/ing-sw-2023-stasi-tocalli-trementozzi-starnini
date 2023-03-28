@@ -22,4 +22,8 @@ public abstract class CommonGoal{
     public void setRomanNumber(int romanNumber) {
         this.romanNumber = romanNumber;
     }
+
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
+    }
 }
