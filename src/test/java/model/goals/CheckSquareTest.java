@@ -4,6 +4,8 @@ import model.Bookshelf;
 import model.ItemTiles;
 import model.ScoringToken;
 import model.Type;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
@@ -15,9 +17,9 @@ public class CheckSquareTest {
 
     @org.junit.jupiter.api.Test
     void validate() {
-        CommonGoal cm = new CheckSquare(1,4);
         try{
-            //AssertTrue
+            CommonGoal cm = new CheckSquare(1,4);
+
             bookshelf = new Bookshelf();
 
             // Column 0
@@ -61,7 +63,7 @@ public class CheckSquareTest {
             bookshelf.insert(new ItemTiles(Type.CATS, 1));
 
             scoringToken = new ScoringToken(8,1);
-            assertTrue(scoringToken.getScore() == cm.validate(bookshelf).getScore());
+            assertEquals(scoringToken.getScore(), cm.validate(bookshelf).getScore());
 
             bookshelf = new Bookshelf();
 
@@ -106,8 +108,10 @@ public class CheckSquareTest {
             bookshelf.insert(new ItemTiles(Type.BOOKS, 1));
 
             scoringToken = new ScoringToken(6,1);
-            assertTrue(scoringToken.getScore() == cm.validate(bookshelf).getScore());
+            assertEquals(scoringToken.getScore(), cm.validate(bookshelf).getScore());
 
+            bookshelf = new Bookshelf();
+            assertNull(cm.validate(bookshelf));
 
         }catch(Exception e) {
             System.out.println("Non riuscito!");

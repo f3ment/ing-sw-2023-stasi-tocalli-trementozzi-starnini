@@ -63,10 +63,10 @@ public class CheckSquare extends CommonGoal{
         for(int i=0; i< bookshelf.getHeight()-1; i++) {
             for (int j = 0; j < bookshelf.getLength()-1; j++) {
                 if(batrix[i][j]) {continue;}
-                if(bookshelf.getItem(i,j) == null) throw new Exception();
-                if(bookshelf.getItem(i,j+1) == null) throw new Exception();
-                if(bookshelf.getItem(i+1,j) == null) throw new Exception();
-                if(bookshelf.getItem(i+1,j+1) == null) throw new Exception();
+                if(bookshelf.getItem(i,j) == null) break;
+                if(bookshelf.getItem(i,j+1) == null) break;
+                if(bookshelf.getItem(i+1,j) == null) break;
+                if(bookshelf.getItem(i+1,j+1) == null) break;
                 if( bookshelf.getItem(i,j).getType().equals(bookshelf.getItem(i,j+1).getType()) &&
                         bookshelf.getItem(i,j).getType().equals(bookshelf.getItem(i+1,j).getType()) &&
                         bookshelf.getItem(i,j).getType().equals(bookshelf.getItem(i+1, j+1).getType())){

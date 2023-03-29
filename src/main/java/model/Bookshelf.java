@@ -78,7 +78,8 @@ public class Bookshelf {
         if(items[i][j] != null){
             return items[i][j];
         }else{
-            throw new Exception();
+            return null;
+            //throw new Exception();
         }
     }
 
