@@ -6,7 +6,7 @@ import model.Stack;
 
 public class CheckRowDifferent extends CommonGoal{
     private int repetitions;
-    private Boolean strategy; // false->orizzontale 5 e repetitions=2 , true -> orizzontale 3 = 4
+    private Boolean strategy; // false->orizzontale 5 e repetitions=2 , true -> orizzontale 3 diff
 
     public CheckRowDifferent(int romanNumber, int playerNumber, int repetitions, Boolean strategy){
         super(romanNumber, playerNumber);
@@ -25,7 +25,6 @@ public class CheckRowDifferent extends CommonGoal{
             counterDiffTypes = 1;
             for (j=1; j < bookshelf.getLength(); j++){
                 flag = 0;
-
                 try{
                     for (int k = 0; k < j; k++) {
                         if (bookshelf.getItem(i, j).getType().equals(
@@ -40,15 +39,15 @@ public class CheckRowDifferent extends CommonGoal{
                     break;
                 }
             }
-
             if(counterDiffTypes <= 3 && strategy && j == bookshelf.getLength() ){
                 rep ++;
             }else if(counterDiffTypes == 5 && !strategy){
                 rep ++;
             }
+
         }
 
-        if(rep == repetitions){
+        if(rep >= repetitions){
             return getStack().pop();
         }else{
             return null;
