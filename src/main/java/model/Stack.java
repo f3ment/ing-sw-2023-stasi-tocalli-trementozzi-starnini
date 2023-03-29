@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 public class Stack {
     private ArrayList<ScoringToken> scoringTokens;
-    private ScoringToken top;
     private int dim;
     CommonGoal commongoal;
     public Stack(int dim, CommonGoal goal){
@@ -33,15 +32,18 @@ public class Stack {
     }
 
     public ScoringToken pop(){
-        if(scoringTokens.size() == 0){
+        if(scoringTokens.size() == 1){
             commongoal.setCompleted(true);
-            return null;
         }else{
-            return this.scoringTokens.remove(scoringTokens.size()-1);
+            if(scoringTokens.size() == 0){
+                return null;
+            }
         }
+        return this.scoringTokens.remove(scoringTokens.size()-1);
     }
-    public ScoringToken getTop(){
-        return this.top;
+
+    public boolean IsEmpty(){
+        return scoringTokens.isEmpty();
     }
 
 }
