@@ -80,15 +80,11 @@ public class FourBoard implements Board{
         ItemTiles item;
         for(int i=0;i<9;i++){
             for(int j=0;j<9;j++){
-                if(getBox(i,j)!=null){
-                    //todo gestire eccezzione casella non valida
-                    item = bag.extract();
-                    if(item != null){
-                        if(getBox(i,j).getItemContained()==null){
-                            getBox(i,j).setContent(item);
-                        }
-                    }else{
-                        return false; //bag is empty
+                if(getBox(i,j).getItemContained()==null && getBox(i, j).getValid()){
+                    try{
+                        getBox(i,j).setContent(bag.extract());
+                    }catch(Exception e){
+                        return false;
                     }
                 }
             }
