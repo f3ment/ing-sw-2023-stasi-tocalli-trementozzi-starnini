@@ -15,27 +15,33 @@ public class CheckRowDifferent extends CommonGoal{
     }
 
     @Override
-    public ScoringToken validate(Bookshelf bookshelf) throws Exception{
+    public ScoringToken validate(Bookshelf bookshelf) {
         int flag = 0;
         int rep = 0;
         int counterDiffTypes;
+        int i, j;
 
-        for (int i=0; i < bookshelf.getHeight(); i++){
-            counterDiffTypes = 0;
-            for (int j=1; j < bookshelf.getLength(); j++){
+        for ( i=0; i < bookshelf.getHeight(); i++){
+            counterDiffTypes = 1;
+            for (j=1; j < bookshelf.getLength(); j++){
                 flag = 0;
-                for(int k =0; k<j; k++){
-                    if(bookshelf.getItem(i,j).getType().equals(
-                            bookshelf.getItem(i, k).getType())) {
-                        flag = 1;
+
+                try{
+                    for (int k = 0; k < j; k++) {
+                        if (bookshelf.getItem(i, j).getType().equals(
+                                bookshelf.getItem(i, k).getType())) {
+                            flag = 1;
+                        }
                     }
-                }
-                if(flag == 0){
-                    counterDiffTypes++;
+                    if (flag == 0) {
+                        counterDiffTypes++;
+                    }
+                }catch (Exception e){
+                    break;
                 }
             }
 
-            if(counterDiffTypes <= 3&& counterDiffTypes > 0 && strategy ){
+            if(counterDiffTypes <= 3 && strategy && j == bookshelf.getLength() ){
                 rep ++;
             }else if(counterDiffTypes == 5 && !strategy){
                 rep ++;

@@ -20,10 +20,11 @@ class CheckRowDifferentTest {
     @Test
     void validate() {
         repetitions=2;
-        this.cm = new CheckRowDifferent(1,4,repetitions,false);  //test 5
+        this.cm = new CheckRowDifferent(1,4,repetitions,false);  //test 5 diff elements, 2 lines
 
         try{
             this.bookshelf = new Bookshelf();
+
             bookshelf.setChoosenColumn(0);
             bookshelf.insert(new ItemTiles(Type.CATS,1));
             bookshelf.insert(new ItemTiles(Type.FRAMES,1));
@@ -33,7 +34,6 @@ class CheckRowDifferentTest {
             bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
 
             bookshelf.setChoosenColumn(1);
-
             bookshelf.insert(new ItemTiles(Type.FRAMES,1));
             bookshelf.insert(new ItemTiles(Type.PLANTS,1));
             bookshelf.insert(new ItemTiles(Type.BOOKS,1));
@@ -42,30 +42,32 @@ class CheckRowDifferentTest {
             bookshelf.insert(new ItemTiles(Type.CATS,1));
 
             bookshelf.setChoosenColumn(2);
-
-
             bookshelf.insert(new ItemTiles(Type.PLANTS,1));
             bookshelf.insert(new ItemTiles(Type.BOOKS,1));
             bookshelf.insert(new ItemTiles(Type.GAMES,1));
             bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
             bookshelf.insert(new ItemTiles(Type.FRAMES,1));
 
             bookshelf.setChoosenColumn(3);
             bookshelf.insert(new ItemTiles(Type.BOOKS,1));
             bookshelf.insert(new ItemTiles(Type.GAMES,1));
+            bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
             bookshelf.insert(new ItemTiles(Type.CATS,1));
             bookshelf.insert(new ItemTiles(Type.FRAMES,1));
             bookshelf.insert(new ItemTiles(Type.PLANTS,1));
 
+
             bookshelf.setChoosenColumn(4);
+            bookshelf.insert(new ItemTiles(Type.GAMES,1));
             bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
             bookshelf.insert(new ItemTiles(Type.CATS,1));
             bookshelf.insert(new ItemTiles(Type.FRAMES,1));
             bookshelf.insert(new ItemTiles(Type.PLANTS,1));
             bookshelf.insert(new ItemTiles(Type.BOOKS,1));
-            bookshelf.insert(new ItemTiles(Type.GAMES,1));
 
             this.scoringToken = new ScoringToken(8, 1);
+
             assertTrue(this.scoringToken.getScore() == cm.validate(bookshelf).getScore() &&
                     this.scoringToken.getNumber() == cm.validate(bookshelf).getNumber());
 
@@ -118,8 +120,9 @@ class CheckRowDifferentTest {
                     this.scoringToken.getNumber() == cm.validate(bookshelf).getNumber());
 
             assertNull(cm.validate(bookshelf));
-
+            System.out.println("Test passato!");
         }catch (Exception e){
+            System.out.println("Test non passato!");
             System.out.println(e.getMessage());
             System.out.println(Arrays.toString(e.getStackTrace()));
 
