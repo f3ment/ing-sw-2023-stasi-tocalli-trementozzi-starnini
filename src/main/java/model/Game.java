@@ -120,14 +120,14 @@ public class Game {
     public void validateCommonGoal(TablePosition tablePosition) throws Exception {
         ScoringToken res;
         //check if player at current tableposition has already achieved the first commmon goal
-        if(tablePosition.getPlayer().getToken(0) == null && !firstCommonGoal.getCompleted()){
+        if(tablePosition.getPlayer().getToken(firstCommonGoal.getRomanNumber()-1) == null && !firstCommonGoal.getCompleted()){
             //add token to current player returned from validate
-            tablePosition.getPlayer().setToken(0, firstCommonGoal.validate(tablePosition.getBookshelf()));
+            tablePosition.getPlayer().setToken(firstCommonGoal.getRomanNumber()-1, firstCommonGoal.validate(tablePosition.getBookshelf()));
         }
         //check if player at current tableposition has already achieved the second commmon goal
-        if(tablePosition.getPlayer().getToken(1) == null && !firstCommonGoal.getCompleted()){
+        if(tablePosition.getPlayer().getToken(firstCommonGoal.getRomanNumber()-1) == null && !firstCommonGoal.getCompleted()){
             //add token to current player returned from validate
-            tablePosition.getPlayer().setToken(1,secondCommonGoal.validate(tablePosition.getBookshelf()));
+            tablePosition.getPlayer().setToken(firstCommonGoal.getRomanNumber()-1,secondCommonGoal.validate(tablePosition.getBookshelf()));
         }
     }
     public void validatePersonalGoal(TablePosition tablePosition){
