@@ -7,8 +7,8 @@ public class TablePosition {
     private final PersonalGoal currentPGoal;
     private final Bookshelf bookshelf;
     private boolean firstPosition;
-    public TablePosition(Player player, PersonalGoal pg, Bookshelf bookshelf){
-        this.currentPlayer = player;
+    public TablePosition(String username, PersonalGoal pg, Bookshelf bookshelf){
+        this.currentPlayer = new Player(this,username);
         this.currentPGoal =  pg;
         this.bookshelf = bookshelf;
         this.firstPosition = false;

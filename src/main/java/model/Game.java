@@ -56,7 +56,7 @@ public class Game {
         }
     }
 
-    public Game(ArrayList<Player> usernames) throws IOException {
+    public Game(ArrayList<String> usernames) throws IOException {
         Random randomInt = new Random();
         int index;
         boolean[] nums= new boolean[12];
