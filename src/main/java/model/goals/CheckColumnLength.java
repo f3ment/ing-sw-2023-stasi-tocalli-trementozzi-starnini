@@ -7,15 +7,10 @@ import model.Stack;
 import java.util.ArrayList;
 
 public class CheckColumnLength extends CommonGoal{
-    private int romanNumber;
-    private Boolean completed;
-    private Stack stack;
 
     public CheckColumnLength(int romanNumber, int numberPlayers){
         super(romanNumber, numberPlayers);
-        this.romanNumber = romanNumber;
-        this.stack = new Stack(numberPlayers,this);
-        this.completed = false;
+
     }
 
     @Override
@@ -32,7 +27,7 @@ public class CheckColumnLength extends CommonGoal{
             }
         }
         if(flagDecresc || flagCresc ){
-            return this.stack.pop();
+            return getStack().pop();
         }else{
             return null;
         }

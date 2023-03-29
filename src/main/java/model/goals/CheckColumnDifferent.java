@@ -7,18 +7,12 @@ import model.Stack;
 public class CheckColumnDifferent extends CommonGoal{
     private int repetitions;
     private boolean strategy; //false -> 3 max different for 3 columns , true -> verticale 2
-    private int romanNumber;
-    private boolean completed;
-    private Stack stack;
 
     public CheckColumnDifferent(int romanNumber, int playerNumber,
                                 int repetitions, boolean strategy){
         super(romanNumber, playerNumber);
         this.repetitions = repetitions;
         this.strategy = strategy;
-        this.romanNumber = romanNumber;
-        this.stack = new Stack(playerNumber,this);
-        this.completed = false;
     }
 
     @Override
@@ -55,7 +49,7 @@ public class CheckColumnDifferent extends CommonGoal{
 
         }
 
-        if(rep >= repetitions) return stack.pop();
+        if(rep >= repetitions) return getStack().pop();
         else return null;
     }
 }

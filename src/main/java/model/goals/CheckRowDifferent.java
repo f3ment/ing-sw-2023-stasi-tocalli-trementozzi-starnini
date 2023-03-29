@@ -7,9 +7,6 @@ import model.Stack;
 public class CheckRowDifferent extends CommonGoal{
     private int repetitions;
     private Boolean strategy; // false->orizzontale 5 e repetitions=2 , true -> orizzontale 3 = 4
-    private int romanNumber;
-    private Boolean completed;
-    private Stack stack;
 
     public CheckRowDifferent(int romanNumber, int playerNumber, int repetitions, Boolean strategy){
         super(romanNumber, playerNumber);
@@ -46,7 +43,7 @@ public class CheckRowDifferent extends CommonGoal{
         }
 
         if(rep == repetitions){
-            return stack.pop();
+            return getStack().pop();
         }else{
             return null;
         }

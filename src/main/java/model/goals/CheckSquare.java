@@ -6,15 +6,8 @@ import model.Stack;
 
 public class CheckSquare extends CommonGoal{
 
-    private int romanNumber;
-    private Boolean completed;
-    private Stack stack;
-
     public CheckSquare(int romanNumber, int numberPlayers){
         super(romanNumber, numberPlayers);
-        this.romanNumber = romanNumber;
-        this.stack = new Stack(numberPlayers, this);
-        this.completed = false;
     }
 
 /*
@@ -74,7 +67,7 @@ public class CheckSquare extends CommonGoal{
                             batrix[i + 1][j + 1] = true;
                             /* ENGLISH VERSION (REMOVE ITALIAN VERSION TOO) */
                             found++;
-                            if (found == 2) return stack.pop();
+                            if (found == 2) return getStack().pop();
 
                         }
                     }

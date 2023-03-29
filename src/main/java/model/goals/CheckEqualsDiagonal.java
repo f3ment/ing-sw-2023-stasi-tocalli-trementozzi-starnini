@@ -6,15 +6,9 @@ import model.Stack;
 
 public class CheckEqualsDiagonal extends CommonGoal{
 
-    private int romanNumber;
-    private Boolean completed;
-    private Stack stack;
 
     public CheckEqualsDiagonal(int romanNumber, int numberPlayers){
         super(romanNumber, numberPlayers);
-        this.romanNumber = romanNumber;
-        this.stack = new Stack(numberPlayers,this);
-        this.completed = false;
     }
 
     @Override
@@ -36,7 +30,7 @@ public class CheckEqualsDiagonal extends CommonGoal{
                 toSudEastDiag(bookshelf, 1, 0) ||
                 toSudWestDiag(bookshelf, 0, 4) ||
                 toSudWestDiag(bookshelf, 1, 4))
-        { return stack.pop(); } else return null;
+        { return getStack().pop(); } else return null;
     }
 
     private boolean toSudEastDiag (Bookshelf bookshelf, int i, int j){
