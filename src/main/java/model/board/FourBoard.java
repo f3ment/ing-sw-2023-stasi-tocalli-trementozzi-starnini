@@ -60,8 +60,7 @@ public class FourBoard implements Board{
     }
 
     public Box getBox(int i, int j) throws IndexOutOfBoundsException{
-        if(!board[i][j].getValid()){
-            //todo gestione eccezione
+        if(board[i][j] == null){
             throw new IndexOutOfBoundsException();
         }else{
             return board[i][j];
