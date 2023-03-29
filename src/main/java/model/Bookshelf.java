@@ -54,7 +54,7 @@ public class Bookshelf {
 
     public void insert(ItemTiles card) throws Exception{
         if(actualColumnLength.get(choosenColumn)!=this.height){
-            items[actualColumnLength.get(choosenColumn)][choosenColumn]=card;
+            items[getHeight()-1-actualColumnLength.get(choosenColumn)][choosenColumn]=card;
             actualColumnLength.set(choosenColumn, actualColumnLength.get(choosenColumn)+1);
         }else{
             throw new Exception();
