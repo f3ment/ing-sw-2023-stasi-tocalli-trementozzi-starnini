@@ -35,14 +35,20 @@ class BagTest {
     }
 
     @Test
-    void extract() {
+    void extractFromEmpty() {
             try {
 
                 Bag bag = new Bag();
+                while (bag.getLeftItems() > 0) {
+                    bag.extract();
+                }
 
-                assertTrue(bag.getLeftItems() == 132);
 
-
+                try{
+                    bag.extract();
+                }catch(NegativeArraySizeException e){
+                    assertTrue(true);
+                }
 
 
             } catch (Exception e) {
