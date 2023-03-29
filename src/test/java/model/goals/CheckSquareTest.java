@@ -110,14 +110,36 @@ public class CheckSquareTest {
             scoringToken = new ScoringToken(6,1);
             assertEquals(scoringToken.getScore(), cm.validate(bookshelf).getScore());
 
+            //Managing NULL bookshelf
             bookshelf = new Bookshelf();
             assertNull(cm.validate(bookshelf));
+
+            bookshelf = new Bookshelf();
+
+            //Managing 2False Square bookshelf
+            bookshelf.setChoosenColumn(0);
+            bookshelf.insert(new ItemTiles(Type.GAMES,1));
+            bookshelf.insert(new ItemTiles(Type.GAMES,1));
+
+            bookshelf.setChoosenColumn(1);
+            bookshelf.insert(new ItemTiles(Type.GAMES,1));
+            bookshelf.insert(new ItemTiles(Type.GAMES,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+
+            bookshelf.setChoosenColumn(2);
+            bookshelf.insert(new ItemTiles(Type.GAMES,1));
+            bookshelf.insert(new ItemTiles(Type.GAMES,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+
+            scoringToken = new ScoringToken(4,1);
+            assertEquals(scoringToken.getScore(), cm.validate(bookshelf).getScore());
 
         }catch(Exception e) {
             System.out.println("Non riuscito!");
             System.out.println(e.getMessage());
             System.out.println(Arrays.toString(e.getStackTrace()));
-
         }
     }
 }
