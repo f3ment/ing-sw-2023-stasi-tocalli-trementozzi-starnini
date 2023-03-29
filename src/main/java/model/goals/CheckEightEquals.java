@@ -8,16 +8,8 @@ import model.Type;
 import java.util.HashMap;
 
 public class CheckEightEquals extends CommonGoal{
-
-    private int romanNumber;
-    private Boolean completed;
-    private Stack stack;
-
     public CheckEightEquals(int romanNumber, int numberPlayers){
         super(romanNumber, numberPlayers);
-        this.romanNumber = romanNumber;
-        this.stack = new Stack(numberPlayers,this);
-        this.completed = false;
     }
 
     @Override
@@ -38,7 +30,7 @@ public class CheckEightEquals extends CommonGoal{
                         Type type = bookshelf.getItem(i, j).getType();
                         Counter.put(type, Counter.get(type) + 1);
                         for (Type key : Counter.keySet()) {
-                            if (Counter.get(key) >= 8) return stack.pop();
+                            if (Counter.get(key) >= 8) return getStack().pop();
                         }
                     }catch (Exception e){
                         continue;

@@ -5,18 +5,11 @@ import model.ScoringToken;
 import model.Stack;
 
 public class CheckGroupsSameType extends CommonGoal{
-
-        private int romanNumber;
-        private boolean completed;
-        private Stack stack;
         private int repetitions;
         private int groupLength; //true -> 4 , false -> 2
 
     public CheckGroupsSameType(int romanNumber, int numberPlayers, int groupLength, int repetitions){
         super(romanNumber, numberPlayers);
-        this.romanNumber = romanNumber;
-        this.stack = new Stack(numberPlayers, this);
-        this.completed = false;
         this.groupLength = groupLength;
         this.repetitions = repetitions;
     }
@@ -74,7 +67,7 @@ public class CheckGroupsSameType extends CommonGoal{
                         }
                     }
                     if (rep == repetitions) {
-                        return stack.pop();
+                        return getStack().pop();
                     }
                 }
             }
