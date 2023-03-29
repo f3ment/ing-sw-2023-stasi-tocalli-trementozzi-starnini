@@ -52,21 +52,17 @@ public class ThreeBoard extends FourBoard {
                 ) {
                     board[i][j] = new Box(false, null);
                 }else{
-                    board[i][j] = new Box(true, null);
+                    if((i==0&&j==4)||(i==1&&j==5)||(i==3&&j==1)||(i==4&&j==0)||(i==4&&j==8)||(i==5&&j==7)||(i==7&&j==3)||(i==8&&j==4)){
+                        board[i][j] = new Box(false, null);
+                    }else{
+                        board[i][j] = new Box(true, null);
+                    }
                 }
             }
         }
         //new Box(true, null);
         token = new Token(1);
-        board[0][4]= new Box(false, null);
-        board[1][5]=new Box(false, null);
-        board[3][1]=new Box(false, null);
-        board[4][0]=new Box(false, null);
-        board[4][8]=new Box(false, null);
-        board[5][7]=new Box(false, null);
-        board[7][3]=new Box(false, null);
-        board[8][4]=new Box(false, null);
-        //altre caselle non valide
+
 
     }
 }

@@ -2,6 +2,7 @@ package model;
 
 import model.board.Board;
 import model.board.FourBoard;
+import model.board.TwoBoard;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -97,9 +98,10 @@ class BoardGeneratorTest {
 
         BoardGenerator generators = new BoardGenerator(2);
         boolean q= generators.getBoard().getBox(0,3).getValid();
+        System.out.println(q);
         assertTrue(q==false);
         boolean o= generators.getBoard().getBox(0,4).getValid();
-        /*assertTrue(o==false);
+        assertTrue(o==false);
         Boolean vaw= generators.getBoard().getBox(1,5).getValid();
         assertTrue(vaw==false);
         Boolean valipo= generators.getBoard().getBox(2,2).getValid();
@@ -127,6 +129,6 @@ class BoardGeneratorTest {
         Boolean molina= generators.getBoard().getBox(8,4).getValid();
         assertTrue(molina==false);
         Boolean sensuous= generators.getBoard().getBox(8,5).getValid();
-        assertTrue(sensuous==false);*/
+        assertTrue(sensuous==false);
     }
 }
