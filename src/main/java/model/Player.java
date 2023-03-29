@@ -36,7 +36,7 @@ public class Player {
     }
 
 
-    ArrayList<ScoringToken> tokens; //common goal
+     ArrayList<ScoringToken> tokens; //common goal
 
     public Player(TablePosition currentPosition,String username){
         this.currentPosition=currentPosition;
@@ -45,6 +45,7 @@ public class Player {
                 prop.getProperty("cards.maxDrowable")));
         tokens = new ArrayList<ScoringToken>(Integer.parseInt(
                 prop.getProperty("cards.maxCommonGoal")));
+        this.score = 0;
     }
 
     public String getUsername(){
@@ -54,7 +55,7 @@ public class Player {
     public boolean getStatus(){
         return status;
     }
-//turno attrim00tk-y
+
     public int getScore() {
         return score;
     }
@@ -63,9 +64,8 @@ public class Player {
         this.score = score;
     }
 
-    //token ottenuto dal common goal e score sommato  allo score del player
-    public void setToken(int index,ScoringToken token) {
-        this.tokens.add(index, token);
+    public void setToken(ScoringToken token) {
+        this.tokens.add(token.getNumber()-1, token);
         this.setScore(this.getScore() + token.getScore());
     }
     public ScoringToken getToken(int index){
