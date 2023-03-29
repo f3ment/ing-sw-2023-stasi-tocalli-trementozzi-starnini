@@ -22,5 +22,6 @@ public class ThreeBoard extends FourBoard {
         this.setNewBox(8, 4, false);
         //altre caselle non valide
 
+
     }
 }
