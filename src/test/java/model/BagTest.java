@@ -16,5 +16,6 @@ class BagTest {
             bag.extract();
         }
 
+
     }
 }
