@@ -119,7 +119,7 @@ class CheckRowDifferentTest {
             assertTrue(this.scoringToken.getScore() == cm.validate(bookshelf).getScore() &&
                     this.scoringToken.getNumber() == cm.validate(bookshelf).getNumber());
 
-            assertNull(cm.validate(bookshelf));
+            assertNull(cm.validate(new Bookshelf())); //empty bookshelf
             System.out.println("Test passato!");
         }catch (Exception e){
             System.out.println("Test non passato!");
