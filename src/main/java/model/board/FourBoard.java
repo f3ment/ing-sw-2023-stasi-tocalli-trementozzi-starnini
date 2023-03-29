@@ -60,10 +60,10 @@ public class FourBoard implements Board{
     }
 
     public Box getBox(int i, int j) throws IndexOutOfBoundsException{
-        if(board[i][j] == null){
+        if(this.board[i][j]==null){
             throw new IndexOutOfBoundsException();
         }else{
-            return board[i][j];
+            return this.board[i][j];
         }
     }
 
@@ -78,9 +78,9 @@ public class FourBoard implements Board{
     }
     public boolean setBox(Bag bag){
         ItemTiles item;
-        for(int i=0;i<9;i++){
-            for(int j=0;j<9;j++){
-                if(getBox(i,j).getItemContained()==null && getBox(i, j).getValid()){
+        for(int i=0;i<this.maxHeight;i++){
+            for(int j=0;j<this.maxLength;j++){
+                if(getBox(i,j).getItemContained()==null&&getBox(i,j).getValid()){
                     try{
                         getBox(i,j).setContent(bag.extract());
                     }catch(Exception e){
@@ -91,6 +91,11 @@ public class FourBoard implements Board{
         }
         return true; //board is full
     }
+
+    void setNewBox(int i, int j, boolean validate){
+        board[i][j] = new Box(validate, null);
+    }
+
 
     public int getMaxHeight() {
         return maxHeight;

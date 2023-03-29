@@ -80,6 +80,7 @@ public class Player {
         currentPosition.getBookshelf().setChoosenColumn(column);
         currentPosition.getBookshelf().insert(card);
         cards.remove(card);
+
     }
 
     public void drawFromBoard(Board box, int i, int j){

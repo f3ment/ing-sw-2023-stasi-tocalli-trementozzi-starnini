@@ -13,10 +13,13 @@ public class BoardGenerator {
         switch (playerNumber) {
             case 2:
                 this.board = new TwoBoard();
+                break;
             case 3:
                 this.board = new ThreeBoard();
+                break;
             case 4:
                 this.board = new FourBoard();
+                break;
         }
     }
 

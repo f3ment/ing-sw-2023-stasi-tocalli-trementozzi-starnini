@@ -11,8 +11,10 @@ class BagTest {
     @Test
     void extract() {
         Bag bag = new Bag();
-
-        bag.extract();
+        assertTrue(bag.getLeftItems() == 132);
+        while(bag.getLeftItems()>0){
+            bag.extract();
+        }
 
     }
 }
