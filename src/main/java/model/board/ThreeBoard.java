@@ -35,6 +35,7 @@ public class ThreeBoard extends FourBoard {
 
     public ThreeBoard(){
         super();
+
         this.maxLength = Integer.parseInt(prop.getProperty("board.width"));
         this.maxHeight = Integer.parseInt(prop.getProperty("board.height"));
         board = new Box[maxLength][maxHeight];
