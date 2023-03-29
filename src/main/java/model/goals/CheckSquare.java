@@ -54,7 +54,7 @@ public class CheckSquare extends CommonGoal{
         return null;
     }*/
     @Override
-    public ScoringToken validate(Bookshelf bookshelf) throws Exception{
+    public ScoringToken validate(Bookshelf bookshelf){
         boolean[][] batrix = new boolean[bookshelf.getHeight()][bookshelf.getLength()];
         int found=0;
 
@@ -63,23 +63,23 @@ public class CheckSquare extends CommonGoal{
         for(int i=0; i< bookshelf.getHeight()-1; i++) {
             for (int j = 0; j < bookshelf.getLength()-1; j++) {
                 if(batrix[i][j]) {continue;}
-                if(bookshelf.getItem(i,j) == null) continue;
-                if(bookshelf.getItem(i,j+1) == null) continue;
-                if(bookshelf.getItem(i+1,j) == null) continue;
-                if(bookshelf.getItem(i+1,j+1) == null) continue;
-                if( bookshelf.getItem(i,j).getType().equals(bookshelf.getItem(i,j+1).getType()) &&
-                        bookshelf.getItem(i,j).getType().equals(bookshelf.getItem(i+1,j).getType()) &&
-                        bookshelf.getItem(i,j).getType().equals(bookshelf.getItem(i+1, j+1).getType())){
-                    if(!(batrix[i][j] || batrix[i][j+1] || batrix[i+1][j] || batrix[i+1][j+1])){
-                        batrix[i][j] = true;
-                        batrix[i][j+1] = true;
-                        batrix[i+1][j] = true;
-                        batrix[i+1][j+1] = true;
-                        /* ENGLISH VERSION (REMOVE ITALIAN VERSION TOO) */
-                        found++;
-                        if(found==2) return stack.pop();
+                try{
+                    if (bookshelf.getItem(i, j).getType().equals(bookshelf.getItem(i, j + 1).getType()) &&
+                            bookshelf.getItem(i, j).getType().equals(bookshelf.getItem(i + 1, j).getType()) &&
+                            bookshelf.getItem(i, j).getType().equals(bookshelf.getItem(i + 1, j + 1).getType())) {
+                        if (!(batrix[i][j] || batrix[i][j + 1] || batrix[i + 1][j] || batrix[i + 1][j + 1])) {
+                            batrix[i][j] = true;
+                            batrix[i][j + 1] = true;
+                            batrix[i + 1][j] = true;
+                            batrix[i + 1][j + 1] = true;
+                            /* ENGLISH VERSION (REMOVE ITALIAN VERSION TOO) */
+                            found++;
+                            if (found == 2) return stack.pop();
 
+                        }
                     }
+                }catch(Exception e){
+                    continue;
                 }
 
             }

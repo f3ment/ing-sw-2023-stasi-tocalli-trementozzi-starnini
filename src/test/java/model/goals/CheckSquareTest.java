@@ -136,6 +136,7 @@ public class CheckSquareTest {
             scoringToken = new ScoringToken(4,1);
             assertEquals(scoringToken.getScore(), cm.validate(bookshelf).getScore());
 
+            System.out.println("Test passato");
         }catch(Exception e) {
             System.out.println("Non riuscito!");
             System.out.println(e.getMessage());
