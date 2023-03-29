@@ -14,7 +14,7 @@ public class BoardGenerator {
             case 2:
                 System.out.println("2");
                 this.board = new TwoBoard();
-                System.out.println(board.getBox(0,3).getValid());
+
                 break;
             case 3:
                 System.out.println("3");

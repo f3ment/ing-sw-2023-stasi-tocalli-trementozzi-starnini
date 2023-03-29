@@ -96,10 +96,13 @@ class BoardGeneratorTest {
         Boolean fom= generator.getBoard().getBox(8,8).getValid();
         assertTrue(fom==false);
 
+
+
         BoardGenerator generators = new BoardGenerator(2);
-        boolean q= generators.getBoard().getBox(0,3).getValid();
-        System.out.println(q);
-        assertTrue(q==false);
+
+
+        boolean q = generators.getBoard().getBox(0,3).getValid();
+        assertTrue(!q);
         boolean o= generators.getBoard().getBox(0,4).getValid();
         assertTrue(o==false);
         Boolean vaw= generators.getBoard().getBox(1,5).getValid();

@@ -26,4 +26,8 @@ public abstract class CommonGoal{
     public void setCompleted(Boolean completed) {
         this.completed = completed;
     }
+
+    public Boolean getCompleted() {
+        return completed;
+    }
 }
