@@ -14,6 +14,9 @@ public class CheckGroupsSameType extends CommonGoal{
 
     public CheckGroupsSameType(int romanNumber, int numberPlayers, int groupLength, int repetitions){
         super(romanNumber, numberPlayers);
+        this.romanNumber = romanNumber;
+        this.stack = new Stack(numberPlayers, this);
+        this.completed = false;
         this.groupLength = groupLength;
         this.repetitions = repetitions;
     }
