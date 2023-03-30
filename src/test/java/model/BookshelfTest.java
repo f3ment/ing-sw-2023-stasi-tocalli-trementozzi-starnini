@@ -20,8 +20,20 @@ class BookshelfTest {
     @Test
     void insert() {
         try {
-            Bookshelf bookshelf = new Bookshelf();
-
+            Bookshelf boo = new Bookshelf();
+            boo.setChoosenColumn(0);
+            boo.insert(new ItemTiles(Type.CATS,1));
+            assertTrue(boo.getColumnsSize().get(0).equals(1));
+            boo.insert(new ItemTiles(Type.CATS,1));
+            assertTrue(boo.getColumnsSize().get(0).equals(2));
+            boo.insert(new ItemTiles(Type.FRAMES,1));
+            assertTrue(boo.getColumnsSize().get(0).equals(3));
+            boo.insert(new ItemTiles(Type.BOOKS,1));
+            assertTrue(boo.getColumnsSize().get(0).equals(4));
+            boo.insert(new ItemTiles(Type.CATS,1));
+            assertTrue(boo.getColumnsSize().get(0).equals(5));
+            boo.insert(new ItemTiles(Type.CATS,1));
+            assertTrue(boo.getColumnsSize().get(0).equals(6));
 
 
         }catch(Exception e){
@@ -35,6 +47,14 @@ class BookshelfTest {
     void setChoosenColumn() {
         try {
             Bookshelf bookshelf = new Bookshelf();
+            bookshelf.setChoosenColumn(0);
+            assertTrue(bookshelf.getChoosenColumn()==0);
+            bookshelf.setChoosenColumn(4);
+            assertTrue(bookshelf.getChoosenColumn()==4);
+            //genera errore
+            //bookshelf.setChoosenColumn(5);
+            //assertTrue(bookshelf.getChoosenColumn()==5);
+
 
 
 
@@ -48,7 +68,189 @@ class BookshelfTest {
     @Test
     void getMaxDrowable() {
         try {
-            Bookshelf bookshelf = new Bookshelf();
+            Bookshelf bookshelf= new Bookshelf();
+            bookshelf.setChoosenColumn(0);
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+            bookshelf.insert(new ItemTiles(Type.FRAMES,1));
+            bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+
+            bookshelf.setChoosenColumn(1);
+
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+            bookshelf.insert(new ItemTiles(Type.FRAMES,1));
+            bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+
+            bookshelf.setChoosenColumn(2);
+
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+            bookshelf.insert(new ItemTiles(Type.FRAMES,1));
+            bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+
+            bookshelf.setChoosenColumn(3);
+
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+            bookshelf.insert(new ItemTiles(Type.FRAMES,1));
+            bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+
+            bookshelf.setChoosenColumn(4);
+
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+            bookshelf.insert(new ItemTiles(Type.FRAMES,1));
+            bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+            bookshelf.insert(new ItemTiles(Type.CATS,1));
+            assertTrue(bookshelf.getMaxDrowable()==0);
+
+            Bookshelf bookshel = new Bookshelf();
+            bookshel.setChoosenColumn(0);
+            bookshel.insert(new ItemTiles(Type.CATS,1));
+            bookshel.insert(new ItemTiles(Type.CATS,1));
+            bookshel.insert(new ItemTiles(Type.FRAMES,1));
+            bookshel.insert(new ItemTiles(Type.BOOKS,1));
+            bookshel.insert(new ItemTiles(Type.CATS,1));
+            bookshel.insert(new ItemTiles(Type.CATS,1));
+
+            bookshel.setChoosenColumn(1);
+
+            bookshel.insert(new ItemTiles(Type.CATS,1));
+            bookshel.insert(new ItemTiles(Type.CATS,1));
+            bookshel.insert(new ItemTiles(Type.FRAMES,1));
+            bookshel.insert(new ItemTiles(Type.BOOKS,1));
+            bookshel.insert(new ItemTiles(Type.CATS,1));
+            bookshel.insert(new ItemTiles(Type.CATS,1));
+
+            bookshel.setChoosenColumn(2);
+
+            bookshel.insert(new ItemTiles(Type.CATS,1));
+            bookshel.insert(new ItemTiles(Type.CATS,1));
+            bookshel.insert(new ItemTiles(Type.FRAMES,1));
+            bookshel.insert(new ItemTiles(Type.BOOKS,1));
+            bookshel.insert(new ItemTiles(Type.CATS,1));
+
+            bookshel.setChoosenColumn(3);
+
+            bookshel.insert(new ItemTiles(Type.CATS,1));
+            bookshel.insert(new ItemTiles(Type.CATS,1));
+            bookshel.insert(new ItemTiles(Type.FRAMES,1));
+            bookshel.insert(new ItemTiles(Type.BOOKS,1));
+            bookshel.insert(new ItemTiles(Type.CATS,1));
+            bookshel.insert(new ItemTiles(Type.CATS,1));
+
+            bookshel.setChoosenColumn(4);
+
+            bookshel.insert(new ItemTiles(Type.CATS,1));
+            bookshel.insert(new ItemTiles(Type.CATS,1));
+            bookshel.insert(new ItemTiles(Type.FRAMES,1));
+            bookshel.insert(new ItemTiles(Type.BOOKS,1));
+            bookshel.insert(new ItemTiles(Type.CATS,1));
+
+
+            assertTrue(bookshel.getMaxDrowable()==1);
+
+            Bookshelf bookshe = new Bookshelf();
+            bookshe.setChoosenColumn(0);
+            bookshe.insert(new ItemTiles(Type.CATS,1));
+            bookshe.insert(new ItemTiles(Type.CATS,1));
+            bookshe.insert(new ItemTiles(Type.FRAMES,1));
+            bookshe.insert(new ItemTiles(Type.BOOKS,1));
+            bookshe.insert(new ItemTiles(Type.CATS,1));
+
+            bookshe.setChoosenColumn(1);
+
+            bookshe.insert(new ItemTiles(Type.CATS,1));
+            bookshe.insert(new ItemTiles(Type.CATS,1));
+            bookshe.insert(new ItemTiles(Type.FRAMES,1));
+            bookshe.insert(new ItemTiles(Type.BOOKS,1));
+            bookshe.insert(new ItemTiles(Type.CATS,1));
+            bookshe.insert(new ItemTiles(Type.CATS,1));
+
+            bookshe.setChoosenColumn(2);
+
+            bookshe.insert(new ItemTiles(Type.CATS,1));
+            bookshe.insert(new ItemTiles(Type.CATS,1));
+            bookshe.insert(new ItemTiles(Type.FRAMES,1));
+            bookshe.insert(new ItemTiles(Type.BOOKS,1));
+            bookshe.insert(new ItemTiles(Type.CATS,1));
+            bookshe.insert(new ItemTiles(Type.CATS,1));
+
+            bookshe.setChoosenColumn(3);
+
+            bookshe.insert(new ItemTiles(Type.CATS,1));
+            bookshe.insert(new ItemTiles(Type.CATS,1));
+            bookshe.insert(new ItemTiles(Type.FRAMES,1));
+            bookshe.insert(new ItemTiles(Type.BOOKS,1));
+            bookshe.insert(new ItemTiles(Type.CATS,1));
+            bookshe.insert(new ItemTiles(Type.CATS,1));
+
+            bookshe.setChoosenColumn(4);
+
+            bookshe.insert(new ItemTiles(Type.CATS,1));
+            bookshe.insert(new ItemTiles(Type.CATS,1));
+            bookshe.insert(new ItemTiles(Type.FRAMES,1));
+            bookshe.insert(new ItemTiles(Type.BOOKS,1));
+
+
+
+            assertTrue(bookshe.getMaxDrowable()==2);
+
+            Bookshelf boo = new Bookshelf();
+            boo.setChoosenColumn(0);
+            boo.insert(new ItemTiles(Type.CATS,1));
+            boo.insert(new ItemTiles(Type.CATS,1));
+            boo.insert(new ItemTiles(Type.FRAMES,1));
+            boo.insert(new ItemTiles(Type.BOOKS,1));
+            boo.insert(new ItemTiles(Type.CATS,1));
+            boo.insert(new ItemTiles(Type.CATS,1));
+
+            boo.setChoosenColumn(1);
+
+            boo.insert(new ItemTiles(Type.CATS,1));
+            boo.insert(new ItemTiles(Type.CATS,1));
+            boo.insert(new ItemTiles(Type.FRAMES,1));
+            boo.insert(new ItemTiles(Type.BOOKS,1));
+            boo.insert(new ItemTiles(Type.CATS,1));
+            boo.insert(new ItemTiles(Type.CATS,1));
+
+            boo.setChoosenColumn(2);
+
+            boo.insert(new ItemTiles(Type.CATS,1));
+            boo.insert(new ItemTiles(Type.CATS,1));
+            boo.insert(new ItemTiles(Type.FRAMES,1));
+            boo.insert(new ItemTiles(Type.BOOKS,1));
+            boo.insert(new ItemTiles(Type.CATS,1));
+            boo.insert(new ItemTiles(Type.CATS,1));
+
+            boo.setChoosenColumn(3);
+
+            boo.insert(new ItemTiles(Type.CATS,1));
+            boo.insert(new ItemTiles(Type.CATS,1));
+            boo.insert(new ItemTiles(Type.FRAMES,1));
+            boo.insert(new ItemTiles(Type.BOOKS,1));
+            boo.insert(new ItemTiles(Type.CATS,1));
+            boo.insert(new ItemTiles(Type.CATS,1));
+
+            boo.setChoosenColumn(4);
+
+            boo.insert(new ItemTiles(Type.CATS,1));
+            boo.insert(new ItemTiles(Type.CATS,1));
+            boo.insert(new ItemTiles(Type.FRAMES,1));
+
+
+            assertTrue(boo.getMaxDrowable()==3);
+
 
 
 
