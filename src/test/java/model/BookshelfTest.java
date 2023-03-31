@@ -36,6 +36,7 @@ class BookshelfTest {
             assertTrue(boo.getColumnsSize().get(0).equals(6));
 
 
+
         }catch(Exception e){
                 System.out.println("Test fallito!");
                 System.out.println(e.getMessage());
@@ -52,10 +53,12 @@ class BookshelfTest {
             bookshelf.setChoosenColumn(4);
             assertTrue(bookshelf.getChoosenColumn()==4);
             //genera errore
-            //bookshelf.setChoosenColumn(5);
-            //assertTrue(bookshelf.getChoosenColumn()==5);
-
-
+            try{
+                bookshelf.setChoosenColumn(5);
+                assertTrue(bookshelf.getChoosenColumn()==5);
+            }catch(Exception e){
+                    System.out.println("test corretto");
+            }
 
 
         }catch(Exception e){
