@@ -13,7 +13,7 @@ import model.Type;
 import java.security.GeneralSecurityException;
 import java.util.Properties;
 
-//todo implement windows
+//todo test
 public class PersonalGoal {
 
     /*

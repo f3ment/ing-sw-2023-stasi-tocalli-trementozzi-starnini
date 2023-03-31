@@ -4,6 +4,7 @@ import model.goals.*;
 
 import java.util.ArrayList;
 
+//todo test
 public class CommonGoalsGenerator {
 
     private ArrayList<CommonGoal> commonGoals;

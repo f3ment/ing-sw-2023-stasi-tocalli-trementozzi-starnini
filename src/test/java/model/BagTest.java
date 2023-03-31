@@ -10,12 +10,9 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BagTest {
-
-
     @Test
     void fillEmptyTest() {
         try {
-
             Bag bag = new Bag();
 
             assertTrue(bag.getLeftItems() == 132);

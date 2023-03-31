@@ -1,7 +1,7 @@
 package model;
 
 import model.goals.PersonalGoal;
-
+//todo test
 public class TablePosition {
     private final Player currentPlayer;
     private final PersonalGoal currentPGoal;

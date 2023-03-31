@@ -122,12 +122,12 @@ public class Game {
         //check if player at current tableposition has already achieved the first commmon goal
         if(tablePosition.getPlayer().getToken(firstCommonGoal.getRomanNumber()-1) == null && !firstCommonGoal.getCompleted()){
             //add token to current player returned from validate
-            tablePosition.getPlayer().setToken(firstCommonGoal.getRomanNumber()-1, firstCommonGoal.validate(tablePosition.getBookshelf()));
+            tablePosition.getPlayer().setToken(firstCommonGoal.validate(tablePosition.getBookshelf()));
         }
         //check if player at current tableposition has already achieved the second commmon goal
-        if(tablePosition.getPlayer().getToken(firstCommonGoal.getRomanNumber()-1) == null && !firstCommonGoal.getCompleted()){
+        if(tablePosition.getPlayer().getToken(secondCommonGoal.getRomanNumber()-1) == null && !secondCommonGoal.getCompleted()){
             //add token to current player returned from validate
-            tablePosition.getPlayer().setToken(firstCommonGoal.getRomanNumber()-1,secondCommonGoal.validate(tablePosition.getBookshelf()));
+            tablePosition.getPlayer().setToken(secondCommonGoal.validate(tablePosition.getBookshelf()));
         }
     }
     public void validatePersonalGoal(TablePosition tablePosition){

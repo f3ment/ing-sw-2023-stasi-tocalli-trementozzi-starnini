@@ -12,4 +12,8 @@ public class ItemTiles {
     public Type getType(){
         return itemType;
     }
+
+    public int getId() {
+        return id;
+    }
 }

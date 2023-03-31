@@ -24,21 +24,19 @@ public class Player {
 
     FileInputStream ip;
 
-    {
-        try {
-            ip = new FileInputStream(configFilePath);
-            prop.load(ip);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-     ArrayList<ScoringToken> tokens; //common goal
+    ArrayList<ScoringToken> tokens; //common goal
 
     public Player(TablePosition currentPosition,String username){
+        {
+            try {
+                ip = new FileInputStream(configFilePath);
+                prop.load(ip);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         this.currentPosition=currentPosition;
         this.username=username;
         PickedCards = new ArrayList(Integer.parseInt(
@@ -64,8 +62,8 @@ public class Player {
         this.score = score;
     }
 
-    public void setToken(int index , ScoringToken token) {
-        this.tokens.add(index, token);
+    public void setToken( ScoringToken token) {
+        this.tokens.add(token.getNumber()-1, token);
         this.setScore(this.getScore() + token.getScore());
     }
     public ScoringToken getToken(int index){
