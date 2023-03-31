@@ -1,5 +1,6 @@
 package model;
 
+//todo test
 public class Box {
     private boolean valid; //casella in cui si può piazzare un ItemTile
     private ItemTiles content;

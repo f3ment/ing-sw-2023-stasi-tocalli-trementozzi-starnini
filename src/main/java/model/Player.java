@@ -24,10 +24,7 @@ public class Player {
 
     FileInputStream ip;
 
-
-
-
-     ArrayList<ScoringToken> tokens; //common goal
+    ArrayList<ScoringToken> tokens; //common goal
 
     public Player(TablePosition currentPosition,String username){
         {
