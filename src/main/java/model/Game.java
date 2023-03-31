@@ -148,6 +148,7 @@ public class Game {
         return res;
     }
 
+    //TODO move validateAdjacentRecursive to bookshelf
     public int validateAdjacentRecursive(TablePosition tablePosition,int i,int j,int count,boolean[][] batrix,Type type,boolean starting,int score,boolean[][] occupied) throws Exception{
         Bookshelf validateshelf= tablePosition.getBookshelf();
         if(!batrix[i][j] && validateshelf.getItem(i,j)!=null && !starting && !occupied[i][j]) {
@@ -226,6 +227,13 @@ public class Game {
             newCurrentIndex=0;
         }
         currentPosition=tablePositionList.get(newCurrentIndex);
+    }
+
+    /*
+    * Check if the cards chosen by a player are valid to be drawn
+    */
+    public boolean CheckDrawnCards(){
+        return board.CheckChoice(currentPosition.getPlayer().getCardsToCheck());
     }
 
     public TablePosition getCurrentPosition() {

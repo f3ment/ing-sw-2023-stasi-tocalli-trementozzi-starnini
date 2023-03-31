@@ -5,6 +5,8 @@ import model.Box;
 import model.ItemTiles;
 import model.Token;
 
+import java.util.ArrayList;
+
 public interface Board {
 
     public Box getBox(int i, int j) throws IndexOutOfBoundsException;
@@ -13,5 +15,5 @@ public interface Board {
     public boolean setBox(Bag bag);
     public int getMaxHeight();
     public int getMaxLength();
-
+    public boolean CheckChoice(ArrayList<int[]> cardsToCheck);
 }

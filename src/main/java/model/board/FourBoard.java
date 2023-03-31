@@ -8,6 +8,7 @@ import model.ItemTiles;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 public class FourBoard implements Board{
@@ -90,6 +91,18 @@ public class FourBoard implements Board{
             }
         }
         return true; //board is full
+    }
+
+
+    /*
+    *check if the selected cards can be drawn from the board following the rules of Myshelfy
+    */
+    @Override
+    public boolean CheckChoice(ArrayList<int[]> cardsToCheck) {
+        for(int[] card : cardsToCheck){
+            //TODO Implement check
+        }
+        return false;
     }
 
     void setNewBox(int i, int j, boolean validate){
