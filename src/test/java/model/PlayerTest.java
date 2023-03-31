@@ -60,8 +60,8 @@ class PlayerTest {
 
             player = position.getPlayer();
 
-            player.setToken(token1.getNumber()-1, token1);
-            player.setToken(token2.getNumber()-1,token2);
+            player.setToken(token1);
+            player.setToken(token2);
 
 
             assertTrue(player.getScore() == token1.getScore() + token2.getScore());
