@@ -65,7 +65,7 @@ class PlayerTest {
         player.setToken(token1);
         player.setToken(token2);
 
-        assertTrue(player.getScore() == token1.getScore() + token2.getScore() && );
+        //assertTrue(player.getScore() == token1.getScore() + token2.getScore() && );
 
         //continuo...
 

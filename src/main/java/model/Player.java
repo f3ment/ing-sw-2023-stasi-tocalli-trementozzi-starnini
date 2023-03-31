@@ -24,21 +24,22 @@ public class Player {
 
     FileInputStream ip;
 
-    {
-        try {
-            ip = new FileInputStream(configFilePath);
-            prop.load(ip);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 
 
      ArrayList<ScoringToken> tokens; //common goal
 
     public Player(TablePosition currentPosition,String username){
+        {
+            try {
+                ip = new FileInputStream(configFilePath);
+                prop.load(ip);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         this.currentPosition=currentPosition;
         this.username=username;
         cards = new ArrayList(Integer.parseInt(
