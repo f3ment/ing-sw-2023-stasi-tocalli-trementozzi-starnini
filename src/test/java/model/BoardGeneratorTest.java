@@ -100,6 +100,7 @@ class BoardGeneratorTest {
 
         BoardGenerator generators = new BoardGenerator(2);
 
+
         boolean q = generators.getBoard().getBox(0,3).getValid();
         assertTrue(!q);
         boolean o= generators.getBoard().getBox(0,4).getValid();

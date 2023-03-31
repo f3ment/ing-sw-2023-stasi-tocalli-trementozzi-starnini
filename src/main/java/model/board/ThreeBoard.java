@@ -11,6 +11,7 @@ import java.util.Properties;
 public class ThreeBoard extends FourBoard {
     public ThreeBoard(){
         super();
+
         this.setNewBox(0, 4, false);
         this.setNewBox(1, 5, false);
         this.setNewBox(3, 1, false);
@@ -20,6 +21,7 @@ public class ThreeBoard extends FourBoard {
         this.setNewBox(7, 3, false);
         this.setNewBox(8, 4, false);
         //altre caselle non valide
+
 
     }
 }

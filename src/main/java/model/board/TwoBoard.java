@@ -12,6 +12,7 @@ public class TwoBoard extends ThreeBoard {
 
     public TwoBoard(){
         super();
+
         this.setNewBox(0, 3, false);
         this.setNewBox(2, 2, false);
         this.setNewBox(2, 6, false);
@@ -21,6 +22,7 @@ public class TwoBoard extends ThreeBoard {
         this.setNewBox(6, 6, false);
         this.setNewBox(8, 5, false);
         //altre caselle non valide
+
 
     }
 }
