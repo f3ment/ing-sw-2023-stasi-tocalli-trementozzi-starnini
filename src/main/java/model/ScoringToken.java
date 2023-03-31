@@ -6,7 +6,7 @@ public class ScoringToken extends Token {
     private TablePosition position;
     public ScoringToken(int score,int retro_number) {
         super(score);
-        this.roman_number = roman_number;
+        this.roman_number = retro_number;
     }
 
     public int getNumber() {

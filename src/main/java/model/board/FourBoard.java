@@ -80,7 +80,7 @@ public class FourBoard implements Board{
         ItemTiles item;
         for(int i=0;i<this.maxHeight;i++){
             for(int j=0;j<this.maxLength;j++){
-                if(getBox(i,j).getItemContained()==null&&getBox(i,j).getValid()){
+                if(getBox(i,j).getItemContained()==null && getBox(i,j).getValid()){
                     try{
                         getBox(i,j).setContent(bag.extract());
                     }catch(Exception e){
