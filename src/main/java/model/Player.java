@@ -65,8 +65,8 @@ public class Player {
         this.score = score;
     }
 
-    public void setToken(int index , ScoringToken token) {
-        this.tokens.add(index, token);
+    public void setToken( ScoringToken token) {
+        this.tokens.add(token.getNumber()-1, token);
         this.setScore(this.getScore() + token.getScore());
     }
     public ScoringToken getToken(int index){
