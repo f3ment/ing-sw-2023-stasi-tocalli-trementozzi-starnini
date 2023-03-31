@@ -23,3 +23,6 @@ Come nella sezione precedente, indicare quali sono secondo voi i lati negativi.
 Individuate i punti di forza dell'architettura dell'altro gruppo rispetto alla
 vostra, e quali sono le modifiche che potete fare alla vostra architettura per
 migliorarla.
+
+Controller sviluppato correttamente e in modo completo, entità per la chat già 
+implementate.
