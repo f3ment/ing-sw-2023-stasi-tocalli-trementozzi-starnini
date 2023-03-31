@@ -12,7 +12,7 @@ public class Player {
     private final String username;
     private boolean status;
     private int score;
-    private ArrayList<ItemTiles> cards;
+    private ArrayList<ItemTiles> PickedCards;
     private final TablePosition currentPosition;
 
 
@@ -39,7 +39,7 @@ public class Player {
         }
         this.currentPosition=currentPosition;
         this.username=username;
-        cards = new ArrayList(Integer.parseInt(
+        PickedCards = new ArrayList(Integer.parseInt(
                 prop.getProperty("cards.maxDrowable")));
         tokens = new ArrayList<ScoringToken>(Integer.parseInt(
                 prop.getProperty("cards.maxCommonGoal")));
@@ -74,27 +74,26 @@ public class Player {
         this.status=status;
     }
 
-    public void insertInBookshelf(int column, ItemTiles card) throws Exception {
+    public void insertInBookshelf(int column, int card_number) throws Exception {
         currentPosition.getBookshelf().setChoosenColumn(column);
-        currentPosition.getBookshelf().insert(card);
-        cards.remove(card);
-
+        currentPosition.getBookshelf().insert(PickedCards.get(card_number-1));
+        PickedCards.remove(PickedCards.get(card_number-1));
     }
 
     public void drawFromBoard(Board box, int i, int j){
-        this.cards.add(box.draw(i,j));
+        this.PickedCards.add(box.draw(i,j));
     }
 
     public TablePosition getCurrentPosition() {
         return currentPosition;
     }
 
-    public ArrayList<ItemTiles> getCards() {
-        return cards;
+    public ArrayList<ItemTiles> getPickedCards() {
+        return PickedCards;
     }
 
-    public ItemTiles getCard(int index) {
-        return cards.get(index);
+    public ItemTiles getPickedCard(int index) {
+        return PickedCards.get(index);
     }
 
 }
