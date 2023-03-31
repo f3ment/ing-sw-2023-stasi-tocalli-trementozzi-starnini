@@ -22,24 +22,19 @@ public class CheckEightEquals extends CommonGoal{
         Counter.put(Type.GAMES , 0);
         Counter.put(Type.TROPHIES , 0);
         int i , j;
-        try{
-            for (i = 0; i < bookshelf.getLength(); i++) {
-                for (j = 0; j < bookshelf.getHeight(); j++) {
-
-                    try {
-                        Type type = bookshelf.getItem(i, j).getType();
-                        Counter.put(type, Counter.get(type) + 1);
-                        for (Type key : Counter.keySet()) {
-                            if (Counter.get(key) >= 8) return getStack().pop();
-                        }
-                    }catch (Exception e){
-                        continue;
+        for (i = 0; i < bookshelf.getHeight(); i++) {
+            for (j = 0; j < bookshelf.getLength(); j++) {
+                try {
+                    Type type = bookshelf.getItem(i, j).getType();
+                    Counter.put(type, Counter.get(type) + 1);
+                    for (Type key : Counter.keySet()) {
+                        if (Counter.get(key) >= 8) return getStack().pop();
                     }
+                }catch (Exception e){
+                    continue;
                 }
             }
-            return null;
-        }catch (Exception e){
-            return null;
         }
+        return null;
     }
 }
