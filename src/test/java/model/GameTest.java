@@ -69,6 +69,7 @@ class GameTest {
         bookshelf.insert(new ItemTiles(Type.CATS,1));
         bookshelf.insert(new ItemTiles(Type.CATS,1));
 
+
         System.out.println(match.validateAdjacent(match.getCurrentPosition()));
         //assertTrue(res==36);
 
