@@ -151,63 +151,74 @@ public class Game {
     //TODO move validateAdjacentRecursive to bookshelf
     public int validateAdjacentRecursive(TablePosition tablePosition,int i,int j,int count,boolean[][] batrix,Type type,boolean starting,int score,boolean[][] occupied) throws Exception{
         Bookshelf validateshelf= tablePosition.getBookshelf();
-        if(!batrix[i][j] && validateshelf.getItem(i,j)!=null && !starting && !occupied[i][j]) {
-            if(validateshelf.getItem(i,j).getType().equals(type)){
-                count++;
-                occupied[i][j]=true;
-                if(i<validateshelf.getHeight()-1) {
-                    count = count+validateAdjacentRecursive(tablePosition, i + 1, j, count, batrix, type, false,score,occupied);
+        try {
+            if (!batrix[i][j] && validateshelf.getItem(i, j) != null && !starting && !occupied[i][j]) {
+                if (validateshelf.getItem(i, j).getType().equals(type)) {
+                    count++;
+                    occupied[i][j] = true;
+                    if (i < validateshelf.getHeight() - 1) {
+                        count = count + validateAdjacentRecursive(tablePosition, i + 1, j, count, batrix, type, false, score, occupied);
+                    }
+                    if (j < validateshelf.getLength() - 1) {
+                        count = count + validateAdjacentRecursive(tablePosition, i, j + 1, count, batrix, type, false, score, occupied);
+                    }
+                    if (count >= Integer.parseInt(
+                            prop.getProperty("score.MinlimitParameter"))) {
+                        batrix[i][j] = true;
+                    }
+                    occupied[i][j] = false;
+                    return count;
+                } else {
+                    return count;
                 }
-                if(j<validateshelf.getLength()-1){
-                    count = count+validateAdjacentRecursive(tablePosition, i , j+1, count, batrix, type, false,score,occupied);
+            } else if (starting && validateshelf.getItem(i, j) != null) {
+                occupied[i][j] = true;
+                if (i < validateshelf.getHeight() - 1) {
+                    count = validateAdjacentRecursive(tablePosition, i + 1, j, 0, batrix, validateshelf.getItem(i, j).getType(), false, score, occupied);
                 }
-                if(count>=Integer.parseInt(
-                        prop.getProperty("score.MinlimitParameter"))){
-                    batrix[i][j]=true;
+                if (j < validateshelf.getLength() - 1) {
+                    count = count + validateAdjacentRecursive(tablePosition, i, j + 1, 0, batrix, validateshelf.getItem(i, j).getType(), false, score, occupied);
                 }
-                occupied[i][j]=false;
-                return count;
-            }else{
-                return count;
-            }
-        }else if(starting && validateshelf.getItem(i,j)!=null) {
-            occupied[i][j]=true;
-            if (i < validateshelf.getHeight() - 1) {
-                count = validateAdjacentRecursive(tablePosition, i + 1, j, 0, batrix, validateshelf.getItem(i, j).getType(), false, score,occupied);
-            }
-            if (j < validateshelf.getLength() - 1) {
-                count = count + validateAdjacentRecursive(tablePosition, i, j + 1, 0, batrix, validateshelf.getItem(i, j).getType(), false, score,occupied);
-            }
 
-            if(count >= Integer.parseInt(
-                    prop.getProperty("score.MinlimitParameter"))){
-                /* Check if count is higher than limit value */
-                if(count > Integer.parseInt(
-                        prop.getProperty("score.MaxlimitParameter")
-                )) count = Integer.parseInt(
-                        prop.getProperty("score.MaxlimitParameter")
-                );
-                score += Integer.parseInt(prop.getProperty("score.adj"+count));
-                batrix[i][j] = true;
-                starting = false;
-            }
+                if (count >= Integer.parseInt(
+                        prop.getProperty("score.MinlimitParameter"))) {
+                    /* Check if count is higher than limit value */
+                    if (count > Integer.parseInt(
+                            prop.getProperty("score.MaxlimitParameter")
+                    )) count = Integer.parseInt(
+                            prop.getProperty("score.MaxlimitParameter")
+                    );
+                    score += Integer.parseInt(prop.getProperty("score.adj" + count));
+                    batrix[i][j] = true;
+                    starting = false;
+                }
 
-            count = 0;
-            occupied[i][j]=false;
+                count = 0;
+                occupied[i][j] = false;
 
-            if (j < validateshelf.getLength() - 1) {
-                score = validateAdjacentRecursive(tablePosition, i, j + 1, count, batrix, null, true, score,occupied);
-            } else if (i < validateshelf.getHeight() - 1) {
-                score = validateAdjacentRecursive(tablePosition, i + 1, 0, count, batrix, null, true, score,occupied);
+                if (j < validateshelf.getLength() - 1) {
+                    score = validateAdjacentRecursive(tablePosition, i, j + 1, count, batrix, null, true, score, occupied);
+                } else if (i < validateshelf.getHeight() - 1) {
+                    score = validateAdjacentRecursive(tablePosition, i + 1, 0, count, batrix, null, true, score, occupied);
+                }
+                return score;
+            } else if (batrix[i][j]) {
+                if (j < validateshelf.getLength() - 1) {
+                    score = validateAdjacentRecursive(tablePosition, i, j + 1, 0, batrix, null, true, score, occupied);
+                } else if (i < validateshelf.getHeight() - 1) {
+                    score = validateAdjacentRecursive(tablePosition, i + 1, 0, 0, batrix, null, true, score, occupied);
+                }
+                return score;
+
             }
-            return score;
-        }else if(batrix[i][j] || validateshelf.getItem(i,j)==null){
-            if (j < validateshelf.getLength() - 1) {
-                score = validateAdjacentRecursive(tablePosition, i, j + 1, 0, batrix, null, true, score,occupied);
-            } else if (i < validateshelf.getHeight() - 1) {
-                score = validateAdjacentRecursive(tablePosition, i + 1, 0, 0, batrix, null, true, score,occupied);
-            }
-            return score;
+        }catch(Exception e){
+                if (j < validateshelf.getLength() - 1) {
+                    score = validateAdjacentRecursive(tablePosition, i, j + 1, 0, batrix, null, true, score, occupied);
+                } else if (i < validateshelf.getHeight() - 1) {
+                    score = validateAdjacentRecursive(tablePosition, i + 1, 0, 0, batrix, null, true, score, occupied);
+                }
+                return score;
+
         }
         return score;
     }
