@@ -98,9 +98,12 @@ public class Player {
         return CardsToCheck;
     }
 
+    /* TI HO COMMENTATO PERCHÈ SENNÒ NON MI RUNNAVA UN ALTRO TEST... -FT
     public boolean CheckCards(Board board,ArrayList<int[]>){
 
     }
+
+     */
 
     public void drawFromBoard(Board box, int i, int j){
         this.PickedCards.add(box.draw(i,j));
