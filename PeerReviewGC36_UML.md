@@ -14,7 +14,7 @@ Valutazione del diagramma UML delle classi del gruppo 36.
 ### I. Controller
 _(le valutazioni alla parte del controller sono basate su valutazioni oggettive del diagramma a causa della nostra mancata implementazione dalla quale potrebbero sorgere future valutazioni che verranno comunicate ASAP al referente del gruppo via email)_
 - GameType usato in GameManagerController non è definito
-- Riteniamo positivo separare il controller per la gestione della chat da da quello\i per la gestione delle partite\turni \
+- Riteniamo positivo separare il controller per la gestione della chat da da quello\i per la gestione delle partite\turni
 - Personal Goal diviso in 6 carte è un'ottima idea che rende bene il concetto di scalabilità.
 
 ### II. Model
