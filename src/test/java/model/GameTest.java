@@ -70,9 +70,55 @@ class GameTest {
         bookshelf.insert(new ItemTiles(Type.CATS,1));
 
 
-        System.out.println(match.validateAdjacent(match.getCurrentPosition()));
-        //assertTrue(res==36);
+        int res=match.validateAdjacent(match.getCurrentPosition());
+        assertTrue(res==18);
+        match.setCurrentPosition();
 
+        bookshelf=match.getCurrentPosition().getBookshelf();
+        bookshelf.setChoosenColumn(0);
+        bookshelf.insert(new ItemTiles(Type.PLANTS,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+        bookshelf.insert(new ItemTiles(Type.PLANTS,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+        bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+
+        bookshelf.setChoosenColumn(1);
+
+        bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+        bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+        bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+        bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+        bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+
+        bookshelf.setChoosenColumn(2);
+        bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+        bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+        bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+        bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+        bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+
+        bookshelf.setChoosenColumn(3);
+        bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+        bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+        bookshelf.insert(new ItemTiles(Type.FRAMES,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+        bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+
+        bookshelf.setChoosenColumn(4);
+        bookshelf.insert(new ItemTiles(Type.FRAMES,1));
+        bookshelf.insert(new ItemTiles(Type.FRAMES,1));
+        bookshelf.insert(new ItemTiles(Type.FRAMES,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+
+        int pi=match.validateAdjacent(match.getCurrentPosition());
+
+        assertTrue(pi==23);
 
 
 
