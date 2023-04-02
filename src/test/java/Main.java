@@ -1,11 +1,26 @@
-/*import model.*;
+import model.*;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    public static void main( String args[] ) {
-        Scanner myInput = new Scanner( System.in );
+    @Test
+    public static void match4() {
+        ArrayList<String> usernames = new ArrayList<>();
+        usernames.add("Myke");
+        usernames.add("Toky");
+        usernames.add("Fra");
+        usernames.add("Spri");
+        try {
+            Game match1 = new Game(usernames);
+        }catch (Exception e){
+            System.out.println("Test non passato!");
+            System.out.println(e.getMessage());
+        }
+
+
+        /*Scanner myInput = new Scanner( System.in );
         int numPlayers;
         int numberCardsThrowable;
         int x;
@@ -51,9 +66,9 @@ public class Main {
             currentPlayer.insertInBookshelf(choosencolumn,currentPlayer.getCard(index));
         }catch(Exception e){
             System.out.println(e.getMessage());
-        }
+        }*/
 
 
 
     }
-}*/
+}

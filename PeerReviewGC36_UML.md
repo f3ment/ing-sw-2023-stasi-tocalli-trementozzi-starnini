@@ -12,12 +12,12 @@ Valutazione del diagramma UML delle classi del gruppo 36.
 ## Lati positivi
 
 ### I. Controller
-_(A causa della nostra mancata implementazione del controllere di alcune funzionalità avanzate, in aggiunta alla seguente valutazione, potrebbero sorgere future valutazioni che verranno comunicate ASAP al referente del gruppo via email)_
+_(A causa della nostra mancata implementazione del controller e di alcune funzionalità avanzate, in aggiunta alla seguente valutazione, potrebbero sorgere future valutazioni che verranno comunicate ASAP al referente del gruppo via email)_
 - Riteniamo positivo separare il controller per la gestione della chat da da quello\i per la gestione delle partite\turni
 - Personal Goal diviso in 6 carte è un'ottima idea che rende bene il concetto di scalabilità.
 
 ### II. Model
-- Riteniamo funzionale la necessita di avere l'interfaccia GameManager per la gestione di più partite
+- Riteniamo funzionale la necessità di avere l'interfaccia GameManager per la gestione di più partite
 - L'inizializzazione dell'ambiente di gioco per ogni partita è ben gestita (Game, \<\<interface\>\> LivingRoom, StandardLivingRoom)
 - Lo Stack di Token è un'ottima idea per gestire la pila dei commongoal
 - La classe player soddisfa tutte le mosse che devono essere compiute da un giocatore
@@ -31,11 +31,11 @@ _(A causa della nostra mancata implementazione del controllere di alcune funzion
 
 ## Confronto tra le architetture
 
-* Anche noi abbiamo implemetato una classe Game simile che contiene i riferimenti a tutte le variabili di gioco, però:
+* Anche noi abbiamo implementato una classe Game simile che contiene i riferimenti a tutte le variabili di gioco, però:
   * `LivingRoom` è compatta e riesce a racchiudere al suo interno tutte le componenti del tavolo da gioco, noi abbiamo
   fatto lo stesso in maniera meno compatta, separando la Board e la Bag.
   * Accorpare la classe di Giocatore alla classe di postazione da Tavolo in un'unica classe `Player` rende il codice più snello senza perdere modularità. 
-* Il Controller è sviluppato correttamente e in modo completo, e le entità per la chat già implementat, elementi che noi dobbiamo ancora implementare.
+* Il Controller è sviluppato correttamente e in modo completo, e le entità per la chat già implementate, elementi che noi dobbiamo ancora implementare.
 * Il metodo `getDescription(): void` è un'ottima idea per comprendere meglio le regole di gioco in partita.<sup>1</sup>
 * In generale l'uml delle classi evidenzia come si sia preferito un approccio più compatto per alleggerire il codice e il modello, rispetto al nostro con una netta divisione fra classi.
 
