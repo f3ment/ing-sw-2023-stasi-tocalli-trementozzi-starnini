@@ -210,8 +210,8 @@ public class Game {
                     );
                     score += Integer.parseInt(prop.getProperty("score.adj"+count));
                     batrix[i][j] = true;
-                    System.out.println(validateshelf.getItem(i, j).getType());
-                    System.out.println(count);
+                    //System.out.println(validateshelf.getItem(i, j).getType());
+                    //System.out.println(count);
                 }else{
                      occupied[i][j] = false;
                 }
