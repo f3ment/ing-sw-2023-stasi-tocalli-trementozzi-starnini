@@ -4,6 +4,7 @@ import model.ItemTiles;
 import model.ScoringToken;
 import model.Type;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -265,6 +266,107 @@ class BookshelfTest {
     }
 
     @Test
+    void validateAdjacent() throws Exception {
+        ArrayList<String> usernames = new ArrayList<>();
+        usernames.add("Marcello");
+        usernames.add("Fabio");
+        Game match = null;
+        match = new Game(usernames);
+
+        Bookshelf bookshelf=match.getCurrentPosition().getBookshelf();
+        bookshelf.setChoosenColumn(0);
+        bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+        bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+        bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+        bookshelf.insert(new ItemTiles(Type.FRAMES,1));
+        bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+        bookshelf.insert(new ItemTiles(Type.PLANTS,1));
+
+        bookshelf.setChoosenColumn(1);
+
+        bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+        bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+        bookshelf.insert(new ItemTiles(Type.GAMES,1));
+        bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+        bookshelf.insert(new ItemTiles(Type.PLANTS,1));
+        bookshelf.insert(new ItemTiles(Type.PLANTS,1));
+
+        bookshelf.setChoosenColumn(2);
+        bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+        bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+        bookshelf.insert(new ItemTiles(Type.FRAMES,1));
+        bookshelf.insert(new ItemTiles(Type.PLANTS,1));
+        bookshelf.insert(new ItemTiles(Type.PLANTS,1));
+
+        bookshelf.setChoosenColumn(3);
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+        bookshelf.insert(new ItemTiles(Type.GAMES,1));
+        bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+
+        bookshelf.setChoosenColumn(4);
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+
+
+        int res=match.validateAdjacent(match.getCurrentPosition());
+        Assertions.assertTrue(res==18);
+        match.setCurrentPosition();
+
+        bookshelf=match.getCurrentPosition().getBookshelf();
+        bookshelf.setChoosenColumn(0);
+        bookshelf.insert(new ItemTiles(Type.PLANTS,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+        bookshelf.insert(new ItemTiles(Type.PLANTS,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+        bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+
+        bookshelf.setChoosenColumn(1);
+
+        bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+        bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+        bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+        bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+        bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+
+        bookshelf.setChoosenColumn(2);
+        bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+        bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+        bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+        bookshelf.insert(new ItemTiles(Type.BOOKS,1));
+        bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+
+        bookshelf.setChoosenColumn(3);
+        bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+        bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+        bookshelf.insert(new ItemTiles(Type.FRAMES,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+        bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+
+        bookshelf.setChoosenColumn(4);
+        bookshelf.insert(new ItemTiles(Type.FRAMES,1));
+        bookshelf.insert(new ItemTiles(Type.FRAMES,1));
+        bookshelf.insert(new ItemTiles(Type.FRAMES,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+        bookshelf.insert(new ItemTiles(Type.CATS,1));
+
+        int pi=match.validateAdjacent(match.getCurrentPosition());
+
+        Assertions.assertTrue(pi==23);
+
+
+
+    }
+
+
+    @Test
     void getItem() {
         try {
             Bookshelf bookshelf = new Bookshelf();
@@ -290,17 +392,17 @@ class BookshelfTest {
                 bookshelf.getItem(7,8);
                 assertTrue(bookshelf.getItem(7,8).equals(Type.CATS));
             }catch (Exception e){
-                System.out.println("Ma ndo vai, dove stai scrivendo?");
+                System.out.println("Test Passato!");
             }
             try{
                 assertTrue(bookshelf.getItem(0,0).getType().equals(Type.CATS));
             }catch (Exception e){
-            System.out.println("Ma ndo vai?");
+            System.out.println("Test fallito!");
             }
             try{
                 assertTrue(bookshelf.getItem(2,1).getType().equals(Type.PLANTS));
             }catch (Exception e){
-                System.out.println("Ma ndo vai?");
+                System.out.println("Test fallito!");
             }
 
 
