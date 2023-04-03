@@ -33,4 +33,7 @@ class BoardTest {
 
         System.out.println("Test passato!");
     }
+
+
+
 }
