@@ -2,7 +2,6 @@ package model.goals;
 
 import model.Bookshelf;
 import model.ScoringToken;
-import model.Stack;
 import model.Type;
 
 import java.util.HashMap;
