@@ -2,7 +2,6 @@ package model.goals;
 
 import model.Bookshelf;
 import model.ScoringToken;
-import model.Stack;
 
 public class CheckCross extends CommonGoal{
 

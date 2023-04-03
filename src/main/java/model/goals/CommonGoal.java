@@ -2,16 +2,35 @@ package model.goals;
 
 import model.Bookshelf;
 import model.ScoringToken;
-import model.Stack;
+
+import java.util.Stack;
 
 public abstract class CommonGoal{
     private int romanNumber;
     private Boolean completed;
-    private Stack stack;
+    private Stack<ScoringToken> stack;
 
     public CommonGoal(int romanNumber, int numberPlayers){
         this.romanNumber = romanNumber;
-        this.stack = new Stack(numberPlayers,this);
+        stack = new Stack<ScoringToken>();
+        switch (numberPlayers){
+            case 2:
+                this.stack.add(new ScoringToken(4, romanNumber));
+                this.stack.add(new ScoringToken(8, romanNumber));
+                break;
+            case 3:
+                this.stack.add(new ScoringToken(4, romanNumber));
+                this.stack.add(new ScoringToken(6, romanNumber));
+                this.stack.add(new ScoringToken(8, romanNumber));
+                break;
+            case 4:
+                this.stack.add(new ScoringToken(2, romanNumber));
+                this.stack.add(new ScoringToken(4, romanNumber));
+                this.stack.add(new ScoringToken(6, romanNumber));
+                this.stack.add(new ScoringToken(8, romanNumber));
+                break;
+        }
+
         this.completed = false;
     }
     public abstract ScoringToken validate(Bookshelf bookshelf) throws Exception;
@@ -26,7 +45,7 @@ public abstract class CommonGoal{
     public void setCompleted(Boolean completed) {
         this.completed = completed;
     }
-    public Stack getStack() {
+    public Stack<ScoringToken> getStack() {
         return stack;
     }
 

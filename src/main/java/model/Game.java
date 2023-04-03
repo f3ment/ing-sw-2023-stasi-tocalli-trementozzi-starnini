@@ -60,8 +60,7 @@ public class Game {
         Random randomInt = new Random();
         int index;
         boolean[] nums= new boolean[12];
-        ArrayList<CommonGoal> commonGoals;
-
+        final CommonGoalsGenerator commonGoalsGenerator;
         Gson gson = new Gson();
 
 
@@ -102,16 +101,10 @@ public class Game {
 
         this.board = new BoardGenerator(playerNumber).getBoard();
 
-        commonGoals = new CommonGoalsGenerator(playerNumber).getCommonGoals();
+        commonGoalsGenerator = new CommonGoalsGenerator(playerNumber);
 
-        index = randomInt.nextInt(commonGoals.size()-1);
-        this.firstCommonGoal = commonGoals.get(index);
-        commonGoals.remove(index);
-        this.firstCommonGoal.setRomanNumber(1);
-
-        index = randomInt.nextInt(commonGoals.size()-1);
-        this.secondCommonGoal = commonGoals.get(index);
-        this.secondCommonGoal.setRomanNumber(2);
+        this.firstCommonGoal = commonGoalsGenerator.getFirst();
+        this.secondCommonGoal = commonGoalsGenerator.getSecond();
 
         this.board.setBox(bag);
 
@@ -158,7 +151,7 @@ public class Game {
     public int validateAdjacentRecursive(TablePosition tablePosition,int i,int j,int count,Boolean[][] batrix,Type type,boolean starting,int score,Boolean[][] occupied) throws Exception{
         Bookshelf validateshelf= tablePosition.getBookshelf();
         try {
-            if (batrix[i][j]==false  && starting==false && occupied[i][j]==false) {
+            if (!batrix[i][j]  && !starting && !occupied[i][j]) {
                 if (validateshelf.getItem(i, j).getType().equals(type)) {
                     count++;
                     occupied[i][j] = true;
