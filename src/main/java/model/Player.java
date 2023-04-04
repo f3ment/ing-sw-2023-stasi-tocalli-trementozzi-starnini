@@ -88,6 +88,9 @@ public class Player {
 * board, The coordinates are saved in CardsToCheck and then the board checks if the choice is
 * valid, returning a boolean
 * */
+
+    //TODO
+    /*
     public void AddCardToCheck(int x,int y){
         CardsToCheck.add(new int[2]);
         CardsToCheck.get(CardsToCheck.size()-1)[0] = x;
@@ -98,7 +101,7 @@ public class Player {
         return CardsToCheck;
     }
 
-    /* TI HO COMMENTATO PERCHÈ SENNÒ NON MI RUNNAVA UN ALTRO TEST... -FT
+    TI HO COMMENTATO PERCHÈ SENNÒ NON MI RUNNAVA UN ALTRO TEST... -FT
     public boolean CheckCards(Board board,ArrayList<int[]>){
 
     }

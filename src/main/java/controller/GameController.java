@@ -3,6 +3,7 @@ import model.*;
 import utils.Observable;
 import utils.Observer;
 
+import java.util.ArrayList;
 import java.util.Random;
 public class GameController implements Observer {
     private final Game game;
@@ -26,7 +27,10 @@ public class GameController implements Observer {
 
 
     @Override
-    public void update(Observable o, Enum arg) {
+    public void update(Observable o, Enum arg , int columnNumber , ArrayList<int[]> coords) {
+        switch(arg){
+            case():
 
+        }
     }
 }
