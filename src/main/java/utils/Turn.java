@@ -1,7 +1,15 @@
 package utils;
 
-public class Turn {
+import utils.Observable;
+
+public class Turn extends Observable<Turn.Event>{
+
+    public enum Event {
+        PLAYER_DRAW, PLAYER_INSERT, PLAYER_FINISH
+    }
+
     private Event playerEvent;
+
 
     public Event getPlayerEvent(){
         return playerEvent;
@@ -9,17 +17,18 @@ public class Turn {
 
     public void setPlayerEvent(Event playerEvent){
         this.playerEvent = playerEvent;
-        setChangedAndNotifyObserver(playerEvent);
+        setChangedAndNotifyObservers(playerEvent);
     }
 
     public void clear() {
         playerEvent = null;
     }
 
-    private void setChangedAndNotifyObserver(Event arg){
+    private void setChangedAndNotifyObservers(Event arg){
         setChanged();
-        notifyObserver(arg);
+        notifyObservers(arg);
     }
+
 
 
 }
