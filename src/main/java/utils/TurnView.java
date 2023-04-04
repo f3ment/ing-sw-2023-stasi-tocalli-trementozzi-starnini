@@ -11,4 +11,8 @@ public class TurnView extends Observable<Turn.Event> implements Observer<Turn, T
         model.addObserver(this);
     }
 
+    public Turn.Event getPlayerEvent(){
+        return model.getPlayerEvent();
+    }
+
 }
