@@ -1,14 +1,13 @@
 package view;
 
-import utils.Turn;
-
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.stream.Collectors;
 import utils.Observable;
 import utils.Observer;
 import utils.Turn;
 import utils.TurnView;
+
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class TextualUI extends Observable<Turn.Event> implements Observer<TurnView, Turn.Event>, Runnable {
 
@@ -21,9 +20,26 @@ public class TextualUI extends Observable<Turn.Event> implements Observer<TurnVi
             Turn.Event c = Turn.Event.PLAYER_DRAW;
 
             setChanged();
-            notifyObservers(c);
+            notifyObservers(c, null, );
         }
     }
 
+    @Override
+    public void update(TurnView model, Turn.Event arg) {
+        switch (arg) {
+            case PLAYER_DRAW -> playerDraw(model);
+            case PLAYER_INSERT -> showOutcome(model);
+            default -> System.err.println("Ignoring event from " + model + ": " + arg);
+        }
+    }
+
+    private void playerDraw(TurnView model) {
+        Turn.Event event = model.getCpuChoice();
+        if (cpuChoice == null) {
+            return;
+        }
+        /* Show PLAYER's draw */
+        System.out.println("PLAYER draw: " + cpuChoice);
+    }
 
 }
