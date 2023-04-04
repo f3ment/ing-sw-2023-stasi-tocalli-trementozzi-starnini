@@ -2,6 +2,7 @@ package view;
 
 import utils.Observable;
 import utils.Observer;
+import utils.Turn;
 import utils.TurnView;
 
 import java.util.ArrayList;
