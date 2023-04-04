@@ -1,8 +1,6 @@
 package utils;
 
-import utils.Observable;
-import utils.Observer;
-/*public class TurnView extends Observable<Turn.Event> implements Observer<Turn, Turn.Event> {
+public class TurnView extends Observable<Turn.Event> implements Observer<Turn, Turn.Event> {
     private final Turn model;
 
     public TurnView(Turn model) {
@@ -20,8 +18,7 @@ import utils.Observer;
     @Override
     public void update(Turn o, Turn.Event arg) {
         setChanged();
-        notifyObservers(arg);
+        notifyObservers(arg,null,);
     }
 
 }
-*/

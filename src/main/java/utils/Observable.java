@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 
-public class Observable<Event extends Enum<Event>> {
+public abstract class Observable<Event extends Enum<Event>> {
     private boolean changed = false;
     private Vector<Observer<? extends Observable<Event>, Event>> obs;
 
@@ -109,4 +109,6 @@ public class Observable<Event extends Enum<Event>> {
     public synchronized int countObservers() {
         return obs.size();
     }
+
+    public abstract void update(Turn o, Turn.Event arg);
 }
