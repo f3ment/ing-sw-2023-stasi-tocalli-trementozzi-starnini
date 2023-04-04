@@ -8,8 +8,11 @@ import java.util.stream.Collectors;
 import utils.Observable;
 import utils.Observer;
 import utils.Turn;
-//import utils.TurnView;
-/*
+import utils.TurnView;
+
+import java.util.ArrayList;
+
+
 public class TextualUI extends Observable<Turn.Event> implements Observer<TurnView, Turn.Event>, Runnable {
 
     @Override
@@ -17,14 +20,32 @@ public class TextualUI extends Observable<Turn.Event> implements Observer<TurnVi
         //noinspection InfiniteLoopStatement
         while (true) {
             System.out.println("--- NEW TURN ---");
-            /* Player chooses
+            /* Player chooses */
             Turn.Event c = Turn.Event.PLAYER_DRAW;
+            ArrayList<Integer> drawen= new ArrayList<>();
 
+            drawen.add();
             setChanged();
-            notifyObservers(c);
+            notifyObservers(c, null, );
         }
     }
 
+    @Override
+    public void update(TurnView model, Turn.Event arg) {
+        switch (arg) {
+            case PLAYER_DRAW -> playerDraw(model);
+            case PLAYER_INSERT -> showOutcome(model);
+            default -> System.err.println("Ignoring event from " + model + ": " + arg);
+        }
+    }
+
+    private void playerDraw(TurnView model) {
+        Turn.Event event = model.getCpuChoice();
+        if (cpuChoice == null) {
+            return;
+        }
+        /* Show PLAYER's draw */
+        System.out.println("PLAYER draw: " + cpuChoice);
+    }
 
 }
-*/
