@@ -1,7 +1,5 @@
 package utils;
 
-import java.awt.*;
-
-public enum Events{
+public enum Event {
     PLAYER_DRAW, PLAYER_INSERT, PLAYER_FINISH
 }
