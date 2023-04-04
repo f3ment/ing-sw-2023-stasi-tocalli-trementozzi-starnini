@@ -2,7 +2,7 @@ package utils;
 
 import utils.Observable;
 import utils.Observer;
-public class TurnView extends Observable<Turn.Event> implements Observer<Turn, Turn.Event> {
+/*public class TurnView extends Observable<Turn.Event> implements Observer<Turn, Turn.Event> {
     private final Turn model;
 
     public TurnView(Turn model) {
@@ -24,3 +24,4 @@ public class TurnView extends Observable<Turn.Event> implements Observer<Turn, T
     }
 
 }
+*/
