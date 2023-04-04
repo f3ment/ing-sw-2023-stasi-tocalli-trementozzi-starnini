@@ -5,6 +5,10 @@ import utils.Turn;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import utils.Observable;
+import utils.Observer;
+import utils.Turn;
+import utils.TurnView;
 
 public class TextualUI extends Observable<Turn.Event> implements Observer<TurnView, Turn.Event>, Runnable {
 
@@ -21,23 +25,5 @@ public class TextualUI extends Observable<Turn.Event> implements Observer<TurnVi
         }
     }
 
-    public Turn.Event askPlayer() {
-        Scanner s = new Scanner(System.in);
-        System.out.println("Make your choice: ");
-        System.out.println(
-                "Signs: " +
-                        Arrays.stream(Choice.values())
-                                .map(Choice::name)
-                                .collect(
-                                        Collectors.joining(",", "[", "]")));
-        while (true) {
-            String input = s.next();
-            try {
-                return Choice.valueOf(input);
-            } catch (IllegalArgumentException e) {
-                System.err.println("I don't know this sign: " + input);
-                System.err.println("Try again...");
-            }
-        }
-    }
+
 }
