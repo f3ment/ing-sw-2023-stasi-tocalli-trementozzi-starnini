@@ -2,12 +2,10 @@ package view;
 
 import utils.Observable;
 import utils.Observer;
-import utils.Turn;
 import utils.TurnView;
 
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+
 
 public class TextualUI extends Observable<Turn.Event> implements Observer<TurnView, Turn.Event>, Runnable {
 
@@ -18,7 +16,9 @@ public class TextualUI extends Observable<Turn.Event> implements Observer<TurnVi
             System.out.println("--- NEW TURN ---");
             /* Player chooses */
             Turn.Event c = Turn.Event.PLAYER_DRAW;
+            ArrayList<Integer> drawen= new ArrayList<>();
 
+            drawen.add();
             setChanged();
             notifyObservers(c, null, );
         }
