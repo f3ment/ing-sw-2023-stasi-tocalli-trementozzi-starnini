@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 import utils.Observable;
 import utils.Observer;
 import utils.Turn;
-import utils.TurnView;
-
+//import utils.TurnView;
+/*
 public class TextualUI extends Observable<Turn.Event> implements Observer<TurnView, Turn.Event>, Runnable {
 
     @Override
@@ -17,7 +17,7 @@ public class TextualUI extends Observable<Turn.Event> implements Observer<TurnVi
         //noinspection InfiniteLoopStatement
         while (true) {
             System.out.println("--- NEW TURN ---");
-            /* Player chooses */
+            /* Player chooses
             Turn.Event c = Turn.Event.PLAYER_DRAW;
 
             setChanged();
@@ -27,3 +27,4 @@ public class TextualUI extends Observable<Turn.Event> implements Observer<TurnVi
 
 
 }
+*/

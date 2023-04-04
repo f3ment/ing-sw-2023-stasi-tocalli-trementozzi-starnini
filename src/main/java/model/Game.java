@@ -166,12 +166,7 @@ public class Game {
         currentPosition=tablePositionList.get(newCurrentIndex);
     }
 
-    /*
-    * Check if the cards chosen by a player are valid to be drawn
-    */
-    public boolean CheckDrawnCards(){
-        return board.CheckChoice(currentPosition.getPlayer().getCardsToCheck());
-    }
+
 
     public TablePosition getCurrentPosition() {
         return currentPosition;

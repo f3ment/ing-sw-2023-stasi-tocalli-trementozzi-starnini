@@ -26,7 +26,7 @@ public class Turn extends Observable<Turn.Event>{
 
     private void setChangedAndNotifyObservers(Event arg){
         setChanged();
-        notifyObservers(arg);
+        //notifyObservers(arg);
     }
 
 

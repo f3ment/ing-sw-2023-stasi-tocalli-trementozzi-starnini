@@ -27,8 +27,9 @@ public class GameController implements Observer {
         for(int i=1;i<coords.size();i++){
             if(coords.get(0)[0] != coords.get(i)[0])
                 notValid = true;
+                break;
         }
-        if(notValid==true){
+        if(notValid){
             for(int i=1;i<coords.size();i++){
                 if(coords.get(0)[1] != coords.get(i)[1])
                     return false;
