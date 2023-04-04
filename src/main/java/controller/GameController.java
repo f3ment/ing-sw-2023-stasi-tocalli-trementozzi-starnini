@@ -1,9 +1,10 @@
 package controller;
 import model.*;
 import utils.Observable;
+import utils.Observer;
 
 import java.util.Random;
-public class GameController extends Observable {
+public class GameController implements Observer {
     private final Game game;
 
     //to implement
@@ -13,20 +14,19 @@ public class GameController extends Observable {
     }
 
     private boolean checkDraw(){
-
+        return false;
     }
-    private boolean insert(){}
+    private boolean insert(){
+        return false;
+    }
 
     private void changeCurrentPosition(){}
 
+
+
+
     @Override
-    public void update(TextualUI o, Choice arg) {
-        if (o != view){
-            System.err.println("Discarding notification from " + o);
-            return;
-        }
+    public void update(Observable o, Enum arg) {
 
     }
-
-
 }
