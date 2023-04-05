@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class GameController implements Observer {
     private final Game game;
 
-    //to implement
+    //TODO implement textualUI
     //private final TextualUI view;;
     public GameController(Game game){
         this.game = game;
@@ -20,7 +20,7 @@ public class GameController implements Observer {
     *method that checks the board's coordinates chosen by the
     *plyer from where to pick the tiles: coords should contain
     * one , two or three pairs of coordinates based on the player choice
-    * [[int x1,int y1],[int x2,int y2]]
+    * [[int x1,int y1],[int x2,int y2],[int x3 ,int y3]]
     */
     private boolean draw(ArrayList<int[]> coords){
         if(checkDraw(coords)){
@@ -34,12 +34,18 @@ public class GameController implements Observer {
     }
 
     private boolean checkDraw(ArrayList<int[]> coords){
+        /*
+        * check if there is a column in the shelf with enough space to insert all the chosen tiles
+        * if not return false
+        */
+        if(coords.size() > game.getCurrentPosition().getBookshelf().getMaxDrowable())
+            return false;
+        /*
+         *check if chosen tiles are on the same row
+         */
         boolean notValid = false;
         ArrayList<Integer> x = new ArrayList<Integer>();
         ArrayList<Integer> y = new ArrayList<Integer>();
-        /*
-        *check if chosen tiles are on the same row
-        */
         ArrayList<ItemTiles> validCards = new ArrayList<ItemTiles>();
         for(int i=0;i<coords.size();i++){
             x.add(coords.get(i)[0]);
@@ -95,19 +101,34 @@ public class GameController implements Observer {
         }
         return true;
     }
-    private boolean insert(int columnNumber){
-        return false;
+
+    private boolean checkInsert(int columnNumber, ArrayList coords){
+        /*
+        * checks if the chosen column has enough space to insert all the tiles
+        */
+        if((int)(game.getCurrentPosition().getBookshelf().getColumnsSize().get(columnNumber)) < (6-coords.size())){
+            return false;
+        }
+        return true;
+    }
+
+    private boolean insert(int columnNumber, ArrayList<int[]> coords , int[] insertionOrder){
+        if(checkInsert(columnNumber,coords)){
+            for(int i=0;i<coords.size();i++){
+                game.getCurrentPosition().getPlayer().insertInBookshelf(columnNumber,insertionOrder[i]);
+            }
+        }
     }
 
     private void changeCurrentPosition(){}
 
 //todo gestione falso
     @Override
-    public void update(Observable o, Enum arg, int columnNumber, ArrayList coords) {
+    public void update(Observable o, Enum arg, int columnNumber, ArrayList coords , int[] insertionOrder) {
         if (arg.equals(Event.PLAYER_DRAW)) {
             draw(coords);
         } else if (arg.equals(Event.PLAYER_INSERT)) {
-            insert(columnNumber);
+            insert(columnNumber , coords , insertionOrder);
         } else if (arg.equals(Event.PLAYER_FINISH)) {
             changeCurrentPosition();
         }

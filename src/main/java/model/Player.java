@@ -13,7 +13,6 @@ public class Player {
     private boolean status;
     private int score;
     private ArrayList<ItemTiles> PickedCards;
-    private ArrayList<int[]> CardsToCheck;
     private final TablePosition currentPosition;
 
 
@@ -46,7 +45,6 @@ public class Player {
         tokens = new ArrayList<ScoringToken>(Integer.parseInt(
                 prop.getProperty("cards.maxCommonGoal")));
         this.score = 0;
-        CardsToCheck = new ArrayList<int[]>();
     }
 
     public String getUsername(){
@@ -83,30 +81,6 @@ public class Player {
         PickedCards.remove(PickedCards.get(card_number-1));
     }
 
-/*
-* method invoked by the controller when a player chooses 1 or more cards to draw from the
-* board, The coordinates are saved in CardsToCheck and then the board checks if the choice is
-* valid, returning a boolean
-* */
-
-    //TODO
-    /*
-    public void AddCardToCheck(int x,int y){
-        CardsToCheck.add(new int[2]);
-        CardsToCheck.get(CardsToCheck.size()-1)[0] = x;
-        CardsToCheck.get(CardsToCheck.size()-1)[1] = y;
-    }
-
-    public ArrayList<int[]> getCardsToCheck() {
-        return CardsToCheck;
-    }
-
-    TI HO COMMENTATO PERCHÈ SENNÒ NON MI RUNNAVA UN ALTRO TEST... -FT
-    public boolean CheckCards(Board board,ArrayList<int[]>){
-
-    }
-
-     */
 
     public void drawFromBoard(Board box, int i, int j){
         this.PickedCards.add(box.draw(i,j));
