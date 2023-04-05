@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class GameView extends Observable<Event> implements Observer<Game,Event> {
-    Game model;
+    private final Game model;
 
     public GameView(Game model) {
         if (model == null) {
