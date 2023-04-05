@@ -27,13 +27,13 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
         } else if (arg.equals(Event.PLAYER_DRAW_POSITIVE)){
             System.out.println("Carte selezionate correttamente!");
             //show picked cards
-            for(ItemTiles i : o.getCurrentPosition().getPlayer().getPickedCards()){
+            for(ItemTiles i : o.getPickedCards()){
                 System.out.print(i.toString().charAt(0)+ " ");
             }
             playerInsert();
         } else if (arg.equals(Event.PLAYER_INSERT_NEGATIVE)) {
             System.out.println("La colonna scelta non è valida! Riprova : ");
-            for(ItemTiles i : o.getCurrentPosition().getPlayer().getPickedCards()){
+            for(ItemTiles i : o.getPickedCards()){
                 System.out.print(i.toString().charAt(0)+ " ");
             }
             playerInsert();

@@ -181,8 +181,16 @@ public class Game extends Observable<Event> {
         return currentPosition;
     }
 
+    public Bookshelf getCurrentBookshelf(){
+        return currentPosition.getBookshelf();
+    }
+
     public Board getBoard() {
         return board;
+    }
+
+    public ArrayList<ItemTiles> getPickedCards(){
+        return currentPosition.getPlayer().getPickedCards();
     }
 
     public void setChangedAndNotifyObservers(Event arg) {

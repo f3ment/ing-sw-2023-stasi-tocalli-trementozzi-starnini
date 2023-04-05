@@ -39,6 +39,14 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
         return model.getListBookshelf();
     }
 
+    public Bookshelf getCurrentBookshelf(){
+        return model.getCurrentBookshelf();
+    }
+
+    public ArrayList<ItemTiles> getPickedCards(){
+        return model.getPickedCards();
+    }
+
     @Override
     public void update(Game o, Enum arg, int columnNumber, ArrayList coords) {
         setChanged();
