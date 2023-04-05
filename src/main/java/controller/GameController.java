@@ -16,12 +16,12 @@ public class GameController implements Observer {
         this.game = game;
     }
 
+
+
+
     /*
-    *method that checks the board's coordinates chosen by the
-    *plyer from where to pick the tiles: coords should contain
-    * one , two or three pairs of coordinates based on the player choice
-    * [[int x1,int y1],[int x2,int y2],[int x3 ,int y3]]
-    */
+    * method to draw tiles from the model board
+    * */
     private boolean draw(ArrayList<int[]> coords){
         if(checkDraw(coords)){
             for (int[] i : coords){
@@ -33,6 +33,12 @@ public class GameController implements Observer {
         }
     }
 
+    /*
+     *method that checks the board's coordinates chosen by the
+     *plyer from where to pick the tiles: coords should contain
+     * one , two or three pairs of coordinates based on the player choice
+     * [[int x1,int y1],[int x2,int y2],[int x3 ,int y3]]
+     */
     private boolean checkDraw(ArrayList<int[]> coords){
         /*
         * check if there is a column in the shelf with enough space to insert all the chosen tiles
@@ -102,15 +108,8 @@ public class GameController implements Observer {
         return true;
     }
 
-    private boolean checkInsert(int columnNumber, ArrayList coords){
-        /*
-        * checks if the chosen column has enough space to insert all the tiles
-        */
-        if((int)(game.getCurrentPosition().getBookshelf().getColumnsSize().get(columnNumber)) < (6-coords.size())){
-            return false;
-        }
-        return true;
-    }
+
+
 
     private boolean insert(int columnNumber, ArrayList<int[]> coords , int[] insertionOrder){
         if(checkInsert(columnNumber,coords)){
@@ -121,12 +120,28 @@ public class GameController implements Observer {
                     throw new RuntimeException(e);
                 }
             }
+            return true;
+        }else{
+            return false;
         }
     }
 
-    private void changeCurrentPosition(){}
+    /*
+     * method that checks if the chosen column has enough space to insert all the tiles
+     */
+    private boolean checkInsert(int columnNumber, ArrayList coords){
+        if((int)(game.getCurrentPosition().getBookshelf().getColumnsSize().get(columnNumber)) < (6-coords.size())){
+            return false;
+        }
+        return true;
+    }
 
-//todo gestione falso
+    private void changeCurrentPosition(){
+        game.setCurrentPosition();
+        //TODO Capire come gestire turni e ascoltare la view corretta
+    }
+
+//todo gestione input non validi
     @Override
     public void update(Observable o, Enum arg, int columnNumber, ArrayList coords , int[] insertionOrder) {
         if (arg.equals(Event.PLAYER_DRAW)) {
