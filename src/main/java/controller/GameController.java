@@ -115,7 +115,11 @@ public class GameController implements Observer {
     private boolean insert(int columnNumber, ArrayList<int[]> coords , int[] insertionOrder){
         if(checkInsert(columnNumber,coords)){
             for(int i=0;i<coords.size();i++){
-                game.getCurrentPosition().getPlayer().insertInBookshelf(columnNumber,insertionOrder[i]);
+                try {
+                    game.getCurrentPosition().getPlayer().insertInBookshelf(columnNumber,insertionOrder[i]);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
