@@ -16,9 +16,13 @@ public class TurnView extends Observable<Turn.Event> implements Observer<Turn, T
     }
 
     @Override
-    public void update(Turn o, Turn.Event arg) {
+    public void update(Turn.Event arg) {
         setChanged();
-        notifyObservers(arg);
+        notifyObservers();
     }
 
+    @Override
+    public void update(Turn o, Turn.Event arg) {
+
+    }
 }

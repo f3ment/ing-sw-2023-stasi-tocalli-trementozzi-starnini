@@ -40,13 +40,13 @@ public abstract class Observable<Event extends Enum<Event>> {
         obs.removeElement(o);
     }
 
-    /*
-    public void notifyObservers() {
-        notifyObservers(null);
-    }
-*/
 
-    public void notifyObservers(Event arg , int columnNumber , ArrayList coords) {
+    public void notifyObservers() {
+        notifyObservers(null,null,null);
+    }
+
+
+    public void notifyObservers(Event arg , Integer columnNumber , ArrayList coords) {
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.

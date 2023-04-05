@@ -30,5 +30,4 @@ public class Turn extends Observable<Turn.Event>{
     }
 
 
-
 }
