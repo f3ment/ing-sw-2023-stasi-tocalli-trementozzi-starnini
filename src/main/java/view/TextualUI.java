@@ -1,6 +1,7 @@
 package view;
 
 import model.Game;
+import model.GameView;
 import model.ItemTiles;
 import model.board.Board;
 import utils.*;
@@ -8,7 +9,7 @@ import utils.*;
 import java.util.ArrayList;
 
 
-public class TextualUI extends Observable<Event> implements Observer<Game,Event>, Runnable {
+public class TextualUI extends Observable<Event> implements Observer<GameView,Event>, Runnable {
 
     @Override
     public void run() {
@@ -19,7 +20,7 @@ public class TextualUI extends Observable<Event> implements Observer<Game,Event>
     }
 
     @Override
-    public void update(Game o, Enum arg, int columnNumber, ArrayList coords) {
+    public void update(GameView o, Enum arg, int columnNumber, ArrayList coords) {
         if(arg.equals(Event.PLAYER_DRAW_NEGATIVE)){
             System.out.println("Le carte selezionate sono sbagliate! Riprova : ");
             playerDraw();
