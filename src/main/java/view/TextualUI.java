@@ -39,7 +39,7 @@ public class TextualUI extends Observable<Turn.Event> implements Observer<TurnVi
     public void update(TurnView model, Turn.Event arg) {
         switch (arg) {
             case PLAYER_DRAW -> playerDraw(model);
-           case PLAYER_INSERT -> playerDraw(model);
+            case PLAYER_INSERT -> playerDraw(model);
             default -> System.err.println("Ignoring event from " + model + ": " + arg);
         }
     }
