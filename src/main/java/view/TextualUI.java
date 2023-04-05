@@ -1,18 +1,13 @@
 package view;
 
+import model.Game;
+import model.board.Board;
 import utils.*;
 
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.stream.Collectors;
-
-import utils.Turn;
-import utils.TurnView;
-import utils.Turn;
 import java.util.ArrayList;
 
 
-public class TextualUI extends Observable<Turn.Event> implements Observer<TurnView, Turn.Event>, Runnable {
+public class TextualUI extends Observable<Event> implements Observer<Game,Event>, Runnable {
 
     @Override
     public void run() {
@@ -20,7 +15,7 @@ public class TextualUI extends Observable<Turn.Event> implements Observer<TurnVi
         while (true) {
             System.out.println("--- NEW TURN ---");
             /* Player chooses */
-            Turn.Event c = Turn.Event.PLAYER_DRAW;
+            Event c = Event.PLAYER_DRAW;
             ArrayList<Integer[]> drawen= new ArrayList<>();
             Integer[] a= new Integer[2];
             a[0]=3;
@@ -36,21 +31,28 @@ public class TextualUI extends Observable<Turn.Event> implements Observer<TurnVi
     }
 
     @Override
-    public void update(TurnView model, Turn.Event arg) {
-        switch (arg) {
-            case PLAYER_DRAW -> playerDraw(model);
-            case PLAYER_INSERT -> playerDraw(model);
-            default -> System.err.println("Ignoring event from " + model + ": " + arg);
+    public void update(Game model, Event arg,int columnNumber , ArrayList coords ,int[] insertionOrder) {
+
         }
     }
 
-    private void playerDraw(TurnView model) {
-        Turn.Event event = model.getPlayerEvent();
+    private void playerDraw(Game model,Event arg) {
+        Event event = arg;
         if (event == null) {
             return;
         }
         /* Show PLAYER's draw */
-        System.out.println("PLAYER " +event.toString());
+        Board boardgame=model.getBoard();
+        for(int i=0;i<boardgame.getMaxHeight();i++){
+            for(int j=0;j< boardgame.getMaxLength();j++){
+                try{
+                    System.out.print("  "+boardgame.getBox(i,j).getItemContained().getType().toString().charAt(0)+"  ");
+                }catch (Exception e){
+                    System.out.print(" -- ");
+                }
+            }
+            System.out.print("\n");
+        }
     }
 
 }
