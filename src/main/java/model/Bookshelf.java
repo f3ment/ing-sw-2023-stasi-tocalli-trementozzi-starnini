@@ -107,7 +107,7 @@ public class Bookshelf {
 
 
 
-    public int validateAdjacentRecursive(TablePosition tablePosition,int i,int j,int count,Boolean[][] batrix,Type type,boolean starting,int score,Boolean[][] occupied) throws Exception{
+    public int validateAdjacentRecursive(TablePosition tablePosition,int i,int j,int count,Boolean[][] batrix,Type type,boolean starting,int score,Boolean[][] occupied){
         //Bookshelf validateshelf= tablePosition.getBookshelf();
         try {
             if (batrix[i][j]==false  && starting==false && occupied[i][j]==false) {

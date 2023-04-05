@@ -5,6 +5,8 @@ import com.google.gson.reflect.TypeToken;
 import model.board.Board;
 import model.goals.CommonGoal;
 import model.goals.PersonalGoal;
+import utils.Event;
+import utils.Observable;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,7 +14,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-public class Game {
+public class Game extends Observable<Event> {
     private boolean finish;
     private final int playerNumber;
     private TablePosition currentPosition;
@@ -57,6 +59,7 @@ public class Game {
     }
 
     public Game(ArrayList<String> usernames) throws IOException {
+        super();
         //TODO move the randomization to the controller
         Random randomInt = new Random();
         int index;
@@ -111,7 +114,7 @@ public class Game {
 
         this.finish = false;
     }
-    public void validateCommonGoal(TablePosition tablePosition) throws Exception {
+    public void validateCommonGoal(TablePosition tablePosition) {
         ScoringToken res;
         //check if player at current tableposition has already achieved the first commmon goal
         if(tablePosition.getPlayer().getToken(firstCommonGoal.getRomanNumber()-1) == null && !firstCommonGoal.getCompleted()){
@@ -131,7 +134,7 @@ public class Game {
 
     //validateAdjacent(position,0,0,0,batrix di false,null,true,0,occupied di false)
 //void
-    public int validateAdjacent(TablePosition tablePosition) throws Exception{
+    public int validateAdjacent(TablePosition tablePosition){
         Boolean[][] batrix = new Boolean[tablePosition.getBookshelf().getHeight()]
                 [tablePosition.getBookshelf().getLength()];
         Boolean[][] occupied = new Boolean[tablePosition.getBookshelf().getHeight()]
@@ -175,4 +178,10 @@ public class Game {
     public Board getBoard() {
         return board;
     }
+
+    public void setChangedAndNotifyObservers(Event arg) {
+        setChanged();
+        notifyObservers(arg,null,null);
+    }
+
 }

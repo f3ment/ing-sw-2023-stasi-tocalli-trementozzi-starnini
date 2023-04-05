@@ -311,8 +311,8 @@ class BookshelfTest {
         bookshelf.insert(new ItemTiles(Type.CATS,1));
 
 
-        int res=match.validateAdjacent(match.getCurrentPosition());
-        Assertions.assertTrue(res==18);
+        Token a= new Token(18);
+        Assertions.assertTrue(match.validateAdjacent(match.getCurrentPosition())==a.getScore());
         match.setCurrentPosition();
 
         bookshelf=match.getCurrentPosition().getBookshelf();
@@ -357,9 +357,9 @@ class BookshelfTest {
         bookshelf.insert(new ItemTiles(Type.CATS,1));
         bookshelf.insert(new ItemTiles(Type.CATS,1));
 
-        int pi=match.validateAdjacent(match.getCurrentPosition());
+        Token b= new Token(23);
 
-        Assertions.assertTrue(pi==23);
+        Assertions.assertTrue(match.validateAdjacent(match.getCurrentPosition())==b.getScore());
 
 
 

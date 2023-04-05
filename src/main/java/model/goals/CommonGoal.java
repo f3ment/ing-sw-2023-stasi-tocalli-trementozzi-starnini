@@ -33,7 +33,7 @@ public abstract class CommonGoal{
 
         this.completed = false;
     }
-    public abstract ScoringToken validate(Bookshelf bookshelf) throws Exception;
+    public abstract ScoringToken validate(Bookshelf bookshelf);
     public int getRomanNumber() {
         return romanNumber;
     }

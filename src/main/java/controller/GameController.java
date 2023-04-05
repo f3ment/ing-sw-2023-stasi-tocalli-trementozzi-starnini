@@ -3,11 +3,14 @@ import model.*;
 import utils.Event;
 import utils.Observable;
 import utils.Observer;
+import view.TextualUI;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class GameController implements Observer {
+public class GameController implements Observer<TextualUI,Event> {
     private final Game game;
 
     //TODO implement textualUI
@@ -111,14 +114,16 @@ public class GameController implements Observer {
 
 
 
-    private boolean insert(int columnNumber, ArrayList<int[]> coords , int[] insertionOrder){
-        if(checkInsert(columnNumber,coords)){
-            for(int i=0;i<coords.size();i++){
+    private boolean insert(int columnNumber, ArrayList<Integer> insertionOrder ){
+        if(checkInsert(columnNumber)){
+            for(int i=0;i<game.getCurrentPosition().getPlayer().getPickedCards().size();i++){
                 try {
-                    game.getCurrentPosition().getPlayer().insertInBookshelf(columnNumber,insertionOrder[i]);
+                    game.getCurrentPosition().getPlayer().insertInBookshelf(columnNumber,insertionOrder.get(i));
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    //column not right
+                    return false;
                 }
+
             }
             return true;
         }else{
@@ -129,25 +134,44 @@ public class GameController implements Observer {
     /*
      * method that checks if the chosen column has enough space to insert all the tiles
      */
-    private boolean checkInsert(int columnNumber, ArrayList coords){
-        if((int)(game.getCurrentPosition().getBookshelf().getColumnsSize().get(columnNumber)) < (6-coords.size())){
+    private boolean checkInsert(int columnNumber){
+        if((int)(game.getCurrentPosition().getBookshelf().getColumnsSize().get(columnNumber)) < (6-game.getCurrentPosition().getPlayer().getPickedCards().size())){
             return false;
         }
         return true;
     }
 
     private void changeCurrentPosition(){
-        game.setCurrentPosition();
         //TODO Capire come gestire turni e ascoltare la view corretta
+        if(game.getCurrentPosition().getBookshelf().isFull()){
+            game.setEndGame(true);
+            game.getCurrentPosition().getPlayer().setScore(game.getCurrentPosition().getPlayer().getScore()+1);
+        }
+        game.validateAdjacent(game.getCurrentPosition());
+        game.validateCommonGoal(game.getCurrentPosition());
+        game.validatePersonalGoal(game.getCurrentPosition());
+        game.setCurrentPosition();
     }
 
-//todo gestione input non validi
+    //todo gestione input non validi
     @Override
-    public void update(Observable o, Enum arg, int columnNumber, ArrayList coords , int[] insertionOrder) {
-        if (arg.equals(Event.PLAYER_DRAW)) {
-            draw(coords);
-        } else if (arg.equals(Event.PLAYER_INSERT)) {
-            insert(columnNumber , coords , insertionOrder);
+    public void update(TextualUI o, Enum arg, int columnNumber, ArrayList coords ) {
+        if(o==null){
+            return;
+        }
+        if (arg.equals(Event.PLAYER_DRAW_POSITIVE)) {
+            if(draw(coords)){
+                game.setChangedAndNotifyObservers(Event.PLAYER_DRAW_POSITIVE);
+            }else{
+                game.setChangedAndNotifyObservers(Event.PLAYER_DRAW_NEGATIVE);
+            }
+
+        } else if (arg.equals(Event.PLAYER_INSERT_POSITIVE)) {
+            if(insert(columnNumber, coords)){
+                game.setChangedAndNotifyObservers(Event.PLAYER_INSERT_POSITIVE);
+            }else{
+                game.setChangedAndNotifyObservers(Event.PLAYER_INSERT_NEGATIVE);
+            }
         } else if (arg.equals(Event.PLAYER_FINISH)) {
             changeCurrentPosition();
         }

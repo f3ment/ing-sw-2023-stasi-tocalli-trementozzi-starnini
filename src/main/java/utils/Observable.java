@@ -42,11 +42,11 @@ public abstract class Observable<Event extends Enum<Event>> {
 
 
     public void notifyObservers() {
-        notifyObservers(null,null,null,null);
+        notifyObservers(null,null,null);
     }
 
 
-    public void notifyObservers(Event arg , Integer columnNumber , ArrayList coords, int[] insertionOrder) {
+    public void notifyObservers(Event arg , Integer columnNumber , ArrayList coords) {
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -73,7 +73,7 @@ public abstract class Observable<Event extends Enum<Event>> {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--) {
-            ((Observer<Observable<Event>, Event>) arrLocal[i]).update(this,  arg,  columnNumber,  coords , insertionOrder);
+            ((Observer<Observable<Event>, Event>) arrLocal[i]).update(this,  arg,  columnNumber,  coords);
         }
     }
 
@@ -110,5 +110,4 @@ public abstract class Observable<Event extends Enum<Event>> {
         return obs.size();
     }
 
-    public abstract void update(Turn o, Turn.Event arg);
 }
