@@ -57,12 +57,15 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
 
     void showBoard(GameView o){
         System.out.print(" ");
+        int a;
         for(int j =0 ; j < o.getHeightBoard(); j++){
-            System.out.print(" " +j);
+            a=j+1;
+            System.out.print(" " +a);
         }
         System.out.print("\n");
         for(int i =0; i< o.getHeightBoard(); i++){
-            System.out.print(i);
+            a=i+1;
+            System.out.print(a);
             for(int j = 0; j<o.getLenghtBoard(); j++){
                 Box box = o.getBoard()[i][j];
                 if(box.getValid()){
@@ -75,6 +78,26 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
                 }else{
                     System.out.print(" x");
                 }
+            }
+            System.out.print("\n");
+        }
+    }
+
+    void showBookshelf(GameView o){
+        System.out.print(" ");
+        for(int j =0 ; j < o.getLenghtBookshelf(); j++){
+            System.out.print(" " +(j+1));
+        }
+        System.out.print("\n");
+        for(int i =0; i< o.getHeightBookshelf(); i++){
+            for(int j = 0; j<o.getLenghtBookshelf(); j++){
+                ItemTiles el = o.getCurrentBookshelf()[i][j];
+                if (el != null) {
+                    System.out.print(" " + el.getType().toString().charAt(0));
+                } else {
+                    System.out.print(" -");
+                }
+
             }
             System.out.print("\n");
         }
@@ -112,6 +135,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
             System.out.println("Insert the coordinates of the " + i + " card : ");
             System.out.print("x : ");
             x = scanner.nextInt();
+            x--;
             while(x>= o.getHeightBoard() || x<0){
                 System.out.println("Not valid coordinate! Retry.");
                 System.out.print("x : ");
@@ -119,6 +143,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
             }
             System.out.print("y : ");
             y = scanner.nextInt();
+            y--;
             while(y>= o.getLenghtBoard() || y<0){
                 System.out.println("Not valid coordinate! Retry.");
                 System.out.print("y : ");

@@ -89,6 +89,8 @@ class BoardGeneratorTest {
         assertTrue(caio==false);
         Boolean cai= generator.getBoard().getBox(8,2).getValid();
         assertTrue(cai==false);
+        Boolean zippo= generator.getBoard().getBox(8,3).getValid();
+        assertTrue(zippo==false);
         Boolean vaop= generator.getBoard().getBox(8,4).getValid();
         assertTrue(vaop==true);
         Boolean ork= generator.getBoard().getBox(8,6).getValid();

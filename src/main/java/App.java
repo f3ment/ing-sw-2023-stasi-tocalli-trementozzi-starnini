@@ -28,7 +28,6 @@ public class App {
 
         modelView.addObserver(view);
         view.addObserver(controller);
-
         view.run();
     }
 }

@@ -48,7 +48,7 @@ public class FourBoard implements Board{
                         (i == 1 && ( j <= 2 || j>=6 )) ||
                         (j == 1 && ( i <= 2 || i>=6 )) ||
                         (i == 7 && ( j <= 2 || j>=6 )) ||
-                        (j == 7 && ( i <= 2 || i>=6 ))
+                        (j == 7 && ( i <= 2 || i>=6 ))||(i==8&&j==3)||(i==3&&j==0)
                 ) {
                     board[i][j] = new Box(false, null);
                 }else{
