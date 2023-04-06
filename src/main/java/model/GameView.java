@@ -28,9 +28,7 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
         model.addObserver(this);
     }
 
-    public TablePosition getCurrentPosition() {
-        return model.getCurrentPosition();
-    }
+
 
     public ItemTiles[][] getBoard() {
         Board board=model.getBoard();
@@ -68,7 +66,11 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
 
     public ArrayList<ItemTiles> getPickedCards(){
         ArrayList<ItemTiles> hand= model.getPickedCards();
-        ArrayList<ItemTiles> viewHand= ArrayList<ItemTiles>();
+        ArrayList<ItemTiles> viewHand= new ArrayList<ItemTiles>();
+        for(int i=0;i<hand.size();i++){
+            viewHand.add(hand.get(i));
+        }
+        return viewHand;
     }
 
     @Override
