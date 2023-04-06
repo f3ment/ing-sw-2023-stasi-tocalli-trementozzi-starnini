@@ -193,6 +193,14 @@ public class Game extends Observable<Event> {
         return currentPosition.getPlayer().getPickedCards();
     }
 
+    public CommonGoal getFirstCommonGoal() {
+        return firstCommonGoal;
+    }
+
+    public CommonGoal getSecondCommonGoal() {
+        return secondCommonGoal;
+    }
+
     public void setChangedAndNotifyObservers(Event arg) {
         setChanged();
         notifyObservers(arg,null,null);

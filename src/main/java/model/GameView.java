@@ -92,5 +92,7 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
         setChanged();
         notifyObservers((Event) arg,null,null);
     }
+
+    public
 }
 
