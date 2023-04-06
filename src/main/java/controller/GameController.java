@@ -25,10 +25,10 @@ public class GameController implements Observer<TextualUI,Event> {
     /*
     * method to draw tiles from the model board
     * */
-    private boolean draw(ArrayList<int[]> coords){
+    private boolean draw(ArrayList<ArrayList<Integer>> coords){
         if(checkDraw(coords)){
-            for (int[] i : coords){
-                game.getCurrentPosition().getPlayer().drawFromBoard(game.getBoard(), i[0], i[1]);
+            for (ArrayList<Integer> i : coords){
+                game.getCurrentPosition().getPlayer().drawFromBoard(game.getBoard(), i.get(0), i.get(1));
             }
             return true;
         }else{
@@ -42,7 +42,7 @@ public class GameController implements Observer<TextualUI,Event> {
      * one , two or three pairs of coordinates based on the player choice
      * [[int x1,int y1],[int x2,int y2],[int x3 ,int y3]]
      */
-    private boolean checkDraw(ArrayList<int[]> coords){
+    private boolean checkDraw(ArrayList<ArrayList<Integer>> coords){
         /*
         * check if there is a column in the shelf with enough space to insert all the chosen tiles
         * if not return false
@@ -57,9 +57,9 @@ public class GameController implements Observer<TextualUI,Event> {
         ArrayList<Integer> y = new ArrayList<Integer>();
         ArrayList<ItemTiles> validCards = new ArrayList<ItemTiles>();
         for(int i=0;i<coords.size();i++){
-            x.add(coords.get(i)[0]);
-            y.add(coords.get(i)[1]);
-            if(coords.get(0)[0] != coords.get(i)[0])
+            x.add(coords.get(i).get(0));
+            y.add(coords.get(i).get(1));
+            if(coords.get(0).get(0) != coords.get(i).get(0))
                 notValid = true;
                 break;
         }
@@ -68,7 +68,7 @@ public class GameController implements Observer<TextualUI,Event> {
              *check if chosen tiles are on the same column
              */
             for(int i=1;i<coords.size();i++){
-                if(coords.get(0)[1] != coords.get(i)[1])
+                if(coords.get(0).get(1) != coords.get(i).get(1))
                     return false;
             }
         }
@@ -91,15 +91,15 @@ public class GameController implements Observer<TextualUI,Event> {
         /*
          *check if chosen tiles have at least one free side
          */
-        for(int[] elem : coords){
-            if(!game.getBoard().getBox(elem[0],elem[1]).getValid()) {
+        for(ArrayList<Integer> elem : coords){
+            if(!game.getBoard().getBox(elem.get(0),elem.get(1)).getValid()) {
                 return false;
             }else{
                 try{
-                    if(game.getBoard().getBox(elem[0]+1,elem[1]).getItemContained()!=null &&
-                            game.getBoard().getBox(elem[0]-1,elem[1]).getItemContained()!=null &&
-                            game.getBoard().getBox(elem[0],elem[1]+1).getItemContained()!=null &&
-                            game.getBoard().getBox(elem[0],elem[1]-1).getItemContained()!=null){
+                    if(game.getBoard().getBox(elem.get(0)+1,elem.get(1)).getItemContained()!=null &&
+                            game.getBoard().getBox(elem.get(0)-1,elem.get(1)).getItemContained()!=null &&
+                            game.getBoard().getBox(elem.get(0),elem.get(1)+1).getItemContained()!=null &&
+                            game.getBoard().getBox(elem.get(0),elem.get(1)-1).getItemContained()!=null){
                         return false;
                     }
                 }catch (IndexOutOfBoundsException e){
@@ -155,7 +155,7 @@ public class GameController implements Observer<TextualUI,Event> {
 
     //todo gestione input non validi
     @Override
-    public void update(TextualUI o, Enum arg, int columnNumber, ArrayList coords ) {
+    public void update(TextualUI o, Enum arg, Integer columnNumber, ArrayList coords ) {
         if(o==null){
             return;
         }
@@ -174,6 +174,8 @@ public class GameController implements Observer<TextualUI,Event> {
             }
         } else if (arg.equals(Event.PLAYER_FINISH)) {
             changeCurrentPosition();
+        }else if(arg.equals(Event.NEW_MATCH)){
+            game.notifyObservers(Event.NEW_MATCH, null,null);
         }
     }
 

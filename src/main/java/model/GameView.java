@@ -27,16 +27,13 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
         this.model = model;
         model.addObserver(this);
     }
-
-
-
-    public ItemTiles[][] getBoard() {
+    public Box[][] getBoard() {
         Board board=model.getBoard();
-        ItemTiles[][] viewBoard= new ItemTiles[board.getMaxHeight()][board.getMaxLength()];
+        Box[][] viewBoard= new Box[board.getMaxHeight()][board.getMaxLength()];
         for(int i=0;i< board.getMaxHeight();i++){
             for(int j=0;j< board.getMaxLength();j++){
                 try{
-                    viewBoard[i][j]= new ItemTiles(board.getBox(i,j).getItemContained().getType(), board.getBox(i,j).getItemContained().getId());
+                    viewBoard[i][j]= new Box(board.getBox(i, j).getValid(), board.getBox(i,j).getItemContained());
                 }catch (Exception e){
                     viewBoard[i][j]=null;
                 }
@@ -122,7 +119,7 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
     }
 
     @Override
-    public void update(Game o, Enum arg, int columnNumber, ArrayList coords) {
+    public void update(Game o, Enum arg, Integer columnNumber, ArrayList coords) {
         setChanged();
         notifyObservers((Event) arg,null,null);
     }
