@@ -18,6 +18,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
         //noinspection InfiniteLoopStatement
         setChanged();
         notifyObservers(Event.NEW_MATCH, null, null);
+
     }
 
     @Override
@@ -44,7 +45,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
                 run();
         }else if (arg.equals(Event.NEW_MATCH)){
             System.out.println("Starting new match!");
-            showBoard(o);
+            start(o);
         }
     }
 
@@ -57,8 +58,9 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
     void showBoard(GameView o){
         System.out.print(" ");
         for(int j =0 ; j < o.getHeightBoard(); j++){
-            System.out.println(" " +j);
+            System.out.print(" " +j);
         }
+        System.out.print("\n");
         for(int i =0; i< o.getHeightBoard(); i++){
             System.out.print(i);
             for(int j = 0; j<o.getLenghtBoard(); j++){
