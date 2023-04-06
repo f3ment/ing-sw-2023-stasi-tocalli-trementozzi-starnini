@@ -105,6 +105,22 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
         return viewStack;
     }
 
+    public int getHeightBookshelf(){
+        return model.getCurrentBookshelf().getHeight();
+    }
+
+    public int getLenghtBookshelf(){
+        return model.getCurrentBookshelf().getLength();
+    }
+
+    public int getHeightBoard(){
+        return model.getBoard().getMaxHeight();
+    }
+
+    public int getLenghtBoard(){
+        return model.getBoard().getMaxLength();
+    }
+
     @Override
     public void update(Game o, Enum arg, int columnNumber, ArrayList coords) {
         setChanged();
