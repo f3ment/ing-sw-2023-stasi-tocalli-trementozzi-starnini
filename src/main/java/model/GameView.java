@@ -10,6 +10,7 @@ import utils.Observable;
 import utils.Observer;
 import view.TextualUI;
 
+import java.awt.print.Book;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -31,20 +32,43 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
         return model.getCurrentPosition();
     }
 
-    public Board getBoard() {
-        return model.getBoard();
+    public ItemTiles[][] getBoard() {
+        Board board=model.getBoard();
+        ItemTiles[][] viewBoard= new ItemTiles[board.getMaxHeight()][board.getMaxLength()];
+        for(int i=0;i< board.getMaxHeight();i++){
+            for(int j=0;j< board.getMaxLength();j++){
+                try{
+                    viewBoard[i][j]= new ItemTiles(board.getBox(i,j).getItemContained().getType(), board.getBox(i,j).getItemContained().getId());
+                }catch (Exception e){
+                    viewBoard[i][j]=null;
+                }
+            }
+        }
+        return viewBoard;
     }
 
     public List<Bookshelf> getListBookshelf(){
         return model.getListBookshelf();
     }
 
-    public Bookshelf getCurrentBookshelf(){
-        return model.getCurrentBookshelf();
+    public ItemTiles[][] getCurrentBookshelf(){
+        Bookshelf bookshelf=model.getCurrentBookshelf();
+        ItemTiles[][] viewCurrentBookshelf= new ItemTiles[bookshelf.getHeight()][bookshelf.getLength()];
+        for(int i=0;i< bookshelf.getHeight();i++){
+            for(int j=0;j< bookshelf.getLength();j++){
+                try{
+                    viewCurrentBookshelf[i][j]= new ItemTiles(bookshelf.getItem(i,j).getType(), bookshelf.getItem(i,j).getId());
+                }catch (Exception e){
+                    viewCurrentBookshelf[i][j]=null;
+                }
+            }
+        }
+        return viewCurrentBookshelf;
     }
 
     public ArrayList<ItemTiles> getPickedCards(){
-        return model.getPickedCards();
+        ArrayList<ItemTiles> hand= model.getPickedCards();
+        ArrayList<ItemTiles> viewHand= ArrayList<ItemTiles>();
     }
 
     @Override
