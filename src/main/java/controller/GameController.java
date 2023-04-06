@@ -175,7 +175,8 @@ public class GameController implements Observer<TextualUI,Event> {
         } else if (arg.equals(Event.PLAYER_FINISH)) {
             changeCurrentPosition();
         }else if(arg.equals(Event.NEW_MATCH)){
-            game.notifyObservers(Event.NEW_MATCH, null,null);
+
+            game.setChangedAndNotifyObservers(Event.NEW_MATCH);
         }
     }
 

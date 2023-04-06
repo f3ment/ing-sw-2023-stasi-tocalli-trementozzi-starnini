@@ -16,9 +16,8 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
     @Override
     public void run() {
         //noinspection InfiniteLoopStatement
-        while(true){
-            notifyObservers(Event.NEW_MATCH, null, null);
-        }
+        setChanged();
+        notifyObservers(Event.NEW_MATCH, null, null);
     }
 
     @Override
