@@ -45,8 +45,22 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
         return viewBoard;
     }
 
-    public List<Bookshelf> getListBookshelf(){
-        return model.getListBookshelf();
+    public List<ItemTiles[][]> getListBookshelf(){
+        List<Bookshelf> bookshelfList= model.getListBookshelf();
+        List<ItemTiles[][]> viewBookshelfList= new ArrayList<ItemTiles[][]>();
+        for(int i=0;i<bookshelfList.size();i++){
+            viewBookshelfList.add(new ItemTiles[bookshelfList.get(i).getHeight()][bookshelfList.get(i).getLength()]);
+            for(int k=0;k< bookshelfList.get(i).getHeight();k++){
+                for(int j=0;j<bookshelfList.get(i).getLength();j++){
+                    try{
+                        viewBookshelfList.get(i)[k][j]= new ItemTiles(bookshelfList.get(i).getItem(k,j).getType(), bookshelfList.get(i).getItem(k,j).getId());
+                    }catch (Exception e){
+                        viewBookshelfList.get(i)[k][j]=null;
+                    }
+                }
+            }
+        }
+        return viewBookshelfList;
     }
 
     public ItemTiles[][] getCurrentBookshelf(){
