@@ -9,6 +9,7 @@ import utils.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 
 public class TextualUI extends Observable<Event> implements Observer<GameView,Event>, Runnable {
@@ -27,22 +28,20 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
             System.out.println("Le carte selezionate sono sbagliate! Riprova : ");
             playerDraw(o);
         } else if (arg.equals(Event.PLAYER_DRAW_POSITIVE)){
-            System.out.println("Carte selezionate correttamente!");
+            System.out.println("Cards picked correctly!");
             //show picked cards
-            for(ItemTiles i : o.getPickedCards()){
-                System.out.print(i.toString().charAt(0)+ " ");
-            }
-            playerInsert();
+            showHand(o);
+            playerInsert(o);
         } else if (arg.equals(Event.PLAYER_INSERT_NEGATIVE)) {
-            System.out.println("La colonna scelta non è valida! Riprova : ");
-            for(ItemTiles i : o.getPickedCards()){
-                System.out.print(i.toString().charAt(0)+ " ");
-            }
-            playerInsert();
+            System.out.println("The selected column is not valid! Retry. ");
+            showHand(o);
+            playerInsert(o);
         } else if (arg.equals(Event.PLAYER_INSERT_POSITIVE)) {
+            System.out.println("Cards inserted correctly!");
+            showBoard(o);
             notifyObservers(Event.PLAYER_FINISH, null, null);
         }else if(arg.equals(Event.PLAYER_FINISH)){
-                run();
+            start(o);
         }else if (arg.equals(Event.NEW_MATCH)){
             System.out.println("Starting new match!");
             start(o);
@@ -50,7 +49,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
     }
 
     private void start(GameView o) {
-        System.out.println("Starting new match!");
+        System.out.println( o.getCurrentPlayer().getUsername() + ", it's your turn!");
         showBoard(o);
         playerDraw(o);
     }
@@ -84,7 +83,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
     }
 
     void showBookshelf(GameView o){
-        System.out.print(" ");
+        System.out.println("This is your bookshelf : ");
         for(int j =0 ; j < o.getLenghtBookshelf(); j++){
             System.out.print(" " +(j+1));
         }
@@ -97,21 +96,50 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
                 } else {
                     System.out.print(" -");
                 }
-
             }
             System.out.print("\n");
         }
     }
 
-    private void playerInsert(){
+    private void playerInsert(GameView o){
         //scan input
         ArrayList<Integer> order = new ArrayList<>();
-        order.add(2);
-        order.add(1);
-        order.add(0);
+        Scanner scanner = new Scanner(System.in);
+        int column;
+        boolean flag;
         //controllo input ordine
+        do{
+            flag = true;
+            System.out.println("Insert in which order do you want to insert cards : ");
+
+            for (int i = 0; i < o.getPickedCards().size(); i++) {
+                System.out.print("Insert the index of the " + (i + 1) + " card to insert : ");
+                int index = scanner.nextInt();
+                order.add(index-1);
+            }
+
+            //check on order input
+            if (order.stream().sorted().distinct().count() != o.getPickedCards().size()) {
+                System.out.println("ERROR! Found many occurrencies of the same index!");
+                flag = false;
+            } else {
+                flag = !order.stream().allMatch(e -> e < 0 || e >= o.getPickedCards().size());
+                if (!flag) {
+                    System.out.println("ERROR! Indexes inserted are not correct!");
+                }
+            }
+            if(!flag){
+                System.out.println("Retry!");
+            }
+        }while(!flag);
+
+        System.out.println("The choosen order is : ");
+        order.forEach(e->System.out.println( e+1 + " " + o.getPickedCards().get(e).getType().toString().charAt(0) + " "));
+        showBookshelf(o);
+        System.out.println("Now insert in which column would you like to insert your cards. ");
+        System.out.println("REMEMBER : it must be between 1 and " +o.getLenghtBookshelf() + ".");
+        column = scanner.nextInt()-1;
         //choose column
-        int column = 0;
         notifyObservers(Event.PLAYER_INSERT_POSITIVE, column, order);
 
     }
@@ -188,9 +216,19 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
                 drawen.add(coords);
             }
         }
-        scanner.close();
         setChanged();
         notifyObservers(Event.PLAYER_DRAW_POSITIVE, null,drawen);
     }
 
+
+    void showHand(GameView o){
+        for(int i = 0; i<o.getPickedCards().size(); i++){
+            System.out.print(i + 1 +" ");
+        }
+        System.out.print("\n");
+        for(ItemTiles i : o.getPickedCards()){
+            System.out.print(i.getType().toString().charAt(0) + " ");
+        }
+        System.out.print("\n");
+    }
 }

@@ -124,6 +124,9 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
         notifyObservers((Event) arg,null,null);
     }
 
-
+    public Player getCurrentPlayer(){
+        Player res = new Player(model.getCurrentPosition(), model.getCurrentPosition().getPlayer().getUsername());
+        return res;
+    }
 }
 

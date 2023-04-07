@@ -135,10 +135,16 @@ public class GameController implements Observer<TextualUI,Event> {
      * method that checks if the chosen column has enough space to insert all the tiles
      */
     private boolean checkInsert(int columnNumber){
-        if((int)(game.getCurrentPosition().getBookshelf().getColumnsSize().get(columnNumber)) < (6-game.getCurrentPosition().getPlayer().getPickedCards().size())){
+        try {
+            game.getCurrentPosition().getBookshelf().setChoosenColumn(columnNumber);
+            if((int)(game.getCurrentPosition().getBookshelf().getColumnsSize().get(columnNumber)) < (6-game.getCurrentPosition().getPlayer().getPickedCards().size())){
+                return false;
+            }
+            return true;
+        } catch (Exception e) {
+            //column not correct
             return false;
         }
-        return true;
     }
 
     private void changeCurrentPosition(){
@@ -174,6 +180,7 @@ public class GameController implements Observer<TextualUI,Event> {
             }
         } else if (arg.equals(Event.PLAYER_FINISH)) {
             changeCurrentPosition();
+            game.setChangedAndNotifyObservers(Event.PLAYER_FINISH);
         }else if(arg.equals(Event.NEW_MATCH)){
 
             game.setChangedAndNotifyObservers(Event.NEW_MATCH);
