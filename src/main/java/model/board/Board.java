@@ -15,5 +15,4 @@ public interface Board {
     public boolean setBox(Bag bag);
     public int getMaxHeight();
     public int getMaxLength();
-    public boolean CheckChoice(ArrayList<int[]> cardsToCheck);
 }

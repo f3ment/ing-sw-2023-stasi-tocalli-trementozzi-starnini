@@ -74,7 +74,6 @@ public class Game extends Observable<Event> {
 
         //initializes the personal goal deck with 12 cards
         //every card is an hashmap of 6 couplets of key (Type) and value (pair of coordinates)
-        //PersonalGoalDeck = new ArrayList<Map<Type , Pair<Integer , Integer>>>();
 
         // 1. JSON file to Java object
         Map<String, Map<String, Map<String, String>>> windows = gson.fromJson(new FileReader("./src/main/resources/personalGoals.json"),
@@ -160,6 +159,9 @@ public class Game extends Observable<Event> {
     // todo domanda gestione turni, eventuale multithreading come listener
     public void setEndGame(boolean finish){
         this.finish = finish;
+    }
+    public boolean getEndGame(){
+        return this.finish;
     }
     public void setCurrentPosition(){
         int newCurrentIndex=tablePositionList.indexOf(currentPosition)+1;

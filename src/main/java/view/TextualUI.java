@@ -140,6 +140,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
         System.out.println("REMEMBER : it must be between 1 and " +o.getLenghtBookshelf() + ".");
         column = scanner.nextInt()-1;
         //choose column
+        setChanged();
         notifyObservers(Event.PLAYER_INSERT_POSITIVE, column, order);
 
     }

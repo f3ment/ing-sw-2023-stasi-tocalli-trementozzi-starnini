@@ -1,5 +1,6 @@
 package model;
 
+import model.board.FourBoard;
 import org.junit.jupiter.api.Test;
 
 import model.Bookshelf;
@@ -24,6 +25,140 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
 //gestisci getbox,ripristina setbox in game
+String configFilePath = "./src/main/resources/config.properties";
+    Properties prop = new Properties();
+
+    FileInputStream ip;
+
+    {
+        try {
+            ip = new FileInputStream(configFilePath);
+            prop.load(ip);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Player player;
+    private Game game;
+    private ScoringToken token1 , token2;
+    private TablePosition position;
+    private PersonalGoal personalGoal;
+    private Bookshelf bookshelf;
+    private FourBoard board;
+    private ArrayList<String> usernames = new ArrayList<String>();
+
+
+    /*
+    * tests the game attributes to be correctly set after game constructor
+    * */
+    @Test
+    void GameConstructorTest(){
+        try {
+            usernames.add("mario");
+            usernames.add("luca");
+            usernames.add("dario");
+            usernames.add("matteo");
+            game = new Game(usernames);
+            assertTrue(game.getFirstCommonGoal()!= null);
+            assertTrue(game.getSecondCommonGoal()!= null);
+            assertTrue(game.getSecondCommonGoal()!= game.getFirstCommonGoal());
+            assertTrue(game.getBoard()!= null);
+            assertTrue(game.getCurrentPosition().getPlayer().getUsername() == "mario" ||
+                                game.getCurrentPosition().getPlayer().getUsername() == "luca"||
+                                game.getCurrentPosition().getPlayer().getUsername() == "dario"||
+                                game.getCurrentPosition().getPlayer().getUsername() == "matteo");
+            System.out.println("Test passato!");
+
+        } catch (Exception e) {
+            System.out.println("Test fallito!");
+            throw new RuntimeException(e);
+        }
+    }
+
+    /*
+    * tests the setEndGame method
+    * */
+    @Test
+    void setEndGameTest(){
+        try{
+            usernames.add("mario");
+            usernames.add("luca");
+            usernames.add("dario");
+            usernames.add("matteo");
+            game = new Game(usernames);
+
+            game.setEndGame(true);
+            assertTrue(game.getEndGame());
+            game.setEndGame(false);
+            assertFalse(game.getEndGame());
+
+            System.out.println("Test passato!");
+
+        }catch (Exception e){
+            System.out.println("Test fallito!");
+            throw new RuntimeException(e);
+        }
+    }
+
+    /*
+     * tests the setCurrentPosition method
+     * */
+    @Test
+    void setCurrentPositionTest(){
+        try{
+            usernames.add("mario");
+            usernames.add("luca");
+            usernames.add("dario");
+            usernames.add("matteo");
+            game = new Game(usernames);
+            TablePosition pos = game.getCurrentPosition();
+
+            assertTrue(pos.getBookshelf().equals(game.getCurrentBookshelf()));
+            game.setCurrentPosition();
+            assertTrue(game.getCurrentPosition().getBookshelf().equals(game.getCurrentBookshelf()));
+            assertTrue(!pos.equals(game.getCurrentPosition()));
+            assertTrue(game.getCurrentPosition()!= null);
+            assertTrue(game.getCurrentPosition().getPlayer().getUsername() == "mario" ||
+                    game.getCurrentPosition().getPlayer().getUsername() == "luca"||
+                    game.getCurrentPosition().getPlayer().getUsername() == "dario"||
+                    game.getCurrentPosition().getPlayer().getUsername() == "matteo");
+
+            System.out.println("Test passato!");
+
+        }catch (Exception e){
+            System.out.println("Test fallito!");
+            throw new RuntimeException(e);
+        }
+    }
+
+    /*
+     * tests the getListBookshelfTest method
+     * */
+    @Test
+    void getListBookshelfTest(){
+        try{
+            usernames.add("mario");
+            usernames.add("luca");
+            usernames.add("dario");
+            usernames.add("matteo");
+            game = new Game(usernames);
+
+            assertTrue(game.getListBookshelf().size() == 4);
+            for(int i=0;i<4;i++){
+                assertTrue(game.getListBookshelf().get(i) != null);
+            }
+
+            System.out.println("Test passato!");
+
+        }catch (Exception e){
+            System.out.println("Test fallito!");
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
 }

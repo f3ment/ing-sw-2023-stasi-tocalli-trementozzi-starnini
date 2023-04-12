@@ -137,7 +137,7 @@ public class GameController implements Observer<TextualUI,Event> {
     private boolean checkInsert(int columnNumber){
         try {
             game.getCurrentPosition().getBookshelf().setChoosenColumn(columnNumber);
-            if((int)(game.getCurrentPosition().getBookshelf().getColumnsSize().get(columnNumber)) < (6-game.getCurrentPosition().getPlayer().getPickedCards().size())){
+            if((int)(game.getCurrentPosition().getBookshelf().getColumnsSize().get(columnNumber)) > (6-game.getCurrentPosition().getPlayer().getPickedCards().size())){
                 return false;
             }
             return true;
