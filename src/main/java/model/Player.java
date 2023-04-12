@@ -77,8 +77,8 @@ public class Player {
 
     public void insertInBookshelf(int column, int card_number) throws Exception {
         currentPosition.getBookshelf().setChoosenColumn(column);
-        currentPosition.getBookshelf().insert(PickedCards.get(card_number-1));
-        PickedCards.remove(PickedCards.get(card_number-1));
+        currentPosition.getBookshelf().insert(PickedCards.get(card_number));
+        PickedCards.remove(PickedCards.get(card_number));
     }
 
 

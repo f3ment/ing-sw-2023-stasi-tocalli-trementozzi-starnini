@@ -116,10 +116,15 @@ public class GameController implements Observer<TextualUI,Event> {
 
     private boolean insert(int columnNumber, ArrayList<Integer> insertionOrder ){
         if(checkInsert(columnNumber)){
+            //test
+            for(int i=0;i<game.getCurrentPosition().getPlayer().getPickedCards().size();i++){
+                System.out.println(insertionOrder.get(i));
+            }
             for(int i=0;i<game.getCurrentPosition().getPlayer().getPickedCards().size();i++){
                 try {
                     game.getCurrentPosition().getPlayer().insertInBookshelf(columnNumber,insertionOrder.get(i));
                 } catch (Exception e) {
+                    System.out.println(e.getMessage());
                     //column not right
                     return false;
                 }

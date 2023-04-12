@@ -118,6 +118,8 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
                 order.add(index-1);
             }
 
+
+
             //check on order input
             if (order.stream().sorted().distinct().count() != o.getPickedCards().size()) {
                 System.out.println("ERROR! Found many occurrencies of the same index!");
