@@ -44,6 +44,9 @@ public class Player {
                 prop.getProperty("cards.maxDrowable")));
         tokens = new ArrayList<ScoringToken>(Integer.parseInt(
                 prop.getProperty("cards.maxCommonGoal")));
+        for(int i=0;i<Integer.parseInt(prop.getProperty("cards.maxCommonGoal"));i++){
+            tokens.add(null);
+        }
         this.score = 0;
     }
 
@@ -64,8 +67,12 @@ public class Player {
     }
 
     public void setToken( ScoringToken token) {
-        this.tokens.add(token.getNumber()-1, token);
-        this.setScore(this.getScore() + token.getScore());
+        try {
+            this.tokens.set(token.getNumber() - 1, token);
+            this.setScore(this.getScore() + token.getScore());
+        }catch(Exception e){
+            return;
+        }
     }
     public ScoringToken getToken(int index){
         return this.tokens.get(index);

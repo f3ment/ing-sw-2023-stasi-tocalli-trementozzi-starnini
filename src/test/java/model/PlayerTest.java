@@ -60,11 +60,12 @@ class PlayerTest {
 
             player = position.getPlayer();
 
-            player.setToken(token1);
             player.setToken(token2);
+            player.setToken(token1);
 
 
-            assertTrue(player.getScore() == token1.getScore() + token2.getScore());
+
+            assertTrue(player.getScore() == token2.getScore() + token1.getScore());
             System.out.println("Test passato!");
 
 
@@ -126,7 +127,7 @@ class PlayerTest {
             }
             //insert the cards into the shelf in the first column
             for(int i=0;i<3;i++){
-                player.insertInBookshelf(0,1);
+                player.insertInBookshelf(0,0);
             }
 
             //check if max of drawable cards for the next turn is 2 since there are
@@ -145,7 +146,7 @@ class PlayerTest {
 
             for(int i=0;i<3;i++){
                 try {
-                    player.insertInBookshelf(1,i+1);
+                    player.insertInBookshelf(1,i);
                 } catch (Exception ignored){
                 }
             }
