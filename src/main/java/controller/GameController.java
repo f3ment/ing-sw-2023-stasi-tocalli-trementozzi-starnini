@@ -59,9 +59,10 @@ public class GameController implements Observer<TextualUI,Event> {
         for(int i=0;i<coords.size();i++){
             x.add(coords.get(i).get(0));
             y.add(coords.get(i).get(1));
-            if(coords.get(0).get(0) != coords.get(i).get(0))
+            if(coords.get(0).get(0) != coords.get(i).get(0)) {
                 notValid = true;
                 break;
+            }
         }
         if(notValid){
             /*

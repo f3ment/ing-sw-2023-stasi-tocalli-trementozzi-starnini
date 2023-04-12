@@ -115,6 +115,10 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
             for (int i = 0; i < o.getPickedCards().size(); i++) {
                 System.out.print("Insert the index of the " + (i + 1) + " card to insert : ");
                 int index = scanner.nextInt();
+                while(index<1 || index > o.getPickedCards().size()){
+                    System.out.println("Invalid Index , insert again!");
+                    index = scanner.nextInt();
+                }
                 order.add(index-1);
             }
 
@@ -182,7 +186,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
             }
 
             if(!o.getBoard()[x][y].getValid()){
-                System.out.println("The choosen box is not playable! Retry.");
+                System.out.println("The chosen box is not playable! Retry.");
                 i--;
                 flag = false;
             }
