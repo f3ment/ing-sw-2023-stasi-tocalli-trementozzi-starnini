@@ -168,7 +168,8 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
         for(int i = 0; i< nCards; i++){
             flag = true;
             coords = new ArrayList<Integer>();
-            System.out.println("Insert the coordinates of the " + i + " card : ");
+            int z=i+1;
+            System.out.println("Insert the coordinates of the " + z + " card : ");
             System.out.print("x : ");
             x = scanner.nextInt();
             x--;
@@ -217,6 +218,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
                 if(el.get(0) == coords.get(0) && el.get(1) == coords.get(1)){
                     System.out.println("ERROR! The choosen card has already been selected! Retry.");
                     flag = false ;
+                    i--;
                     break;
                 }
             }
