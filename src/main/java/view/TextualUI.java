@@ -39,6 +39,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
         } else if (arg.equals(Event.PLAYER_INSERT_POSITIVE)) {
             System.out.println("Cards inserted correctly!");
             showBoard(o);
+            setChanged();
             notifyObservers(Event.PLAYER_FINISH, null, null);
         }else if(arg.equals(Event.PLAYER_FINISH)){
             start(o);
