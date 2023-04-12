@@ -72,4 +72,8 @@ public class PersonalGoal {
         return getScore();
 
     }
+
+    public Map<String, Map<String, String>> getWindows() {
+        return windows;
+    }
 }

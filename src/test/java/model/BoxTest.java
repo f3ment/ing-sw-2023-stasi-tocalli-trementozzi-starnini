@@ -12,6 +12,7 @@ class BoxTest {
         ItemTiles tile= new ItemTiles(Type.CATS,3);
         Box box= new Box(true,tile);
         assertTrue(box.getItemContained().equals(tile));
+        Box boxi=new Box(false,null);
     }
 
     @Test
@@ -19,6 +20,8 @@ class BoxTest {
         ItemTiles tile= new ItemTiles(Type.CATS,3);
         Box box= new Box(true,tile);
         assertTrue(box.getValid()==true);
+        Box boxi=new Box(false,null);
+        assertTrue(boxi.getValid()==false);
 
     }
 
