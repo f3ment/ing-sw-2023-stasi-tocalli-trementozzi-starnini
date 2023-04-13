@@ -18,7 +18,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
     public void run() {
         //noinspection InfiniteLoopStatement
         setChanged();
-        notifyObservers(Event.NEW_MATCH, null, null);
+        notifyObservers(Event.NEW_TURN, null, null);
 
     }
 
@@ -42,9 +42,8 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
             setChanged();
             notifyObservers(Event.PLAYER_FINISH, null, null);
         }else if(arg.equals(Event.PLAYER_FINISH)){
-            start(o);
-        }else if (arg.equals(Event.NEW_MATCH)){
-            System.out.println("Starting new match!");
+            run();
+        }else if (arg.equals(Event.NEW_TURN)){
             start(o);
         }
     }
