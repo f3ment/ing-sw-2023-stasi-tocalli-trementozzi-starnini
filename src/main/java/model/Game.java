@@ -94,7 +94,7 @@ public class Game extends Observable<Event> {
             }while(nums[index-1]);
             nums[index]=true;
             index =1+randomInt.nextInt(12);
-            this.tablePositionList.add(i, new TablePosition(usernames.get(i), new PersonalGoal(windows.remove(Integer.toString(index))), new Bookshelf()));
+            this.tablePositionList.add(i, new TablePosition(usernames.get(i), new PersonalGoal(windows.remove(Integer.toString(1 + randomInt.nextInt(windows.keySet().size())))), new Bookshelf()));
         }
 
         index = randomInt.nextInt(playerNumber);
