@@ -88,13 +88,17 @@ public class Game extends Observable<Event> {
         });*/
 
         this.tablePositionList = new ArrayList<TablePosition>();
+        ArrayList<Map<String, Map<String, String>>> windowsArr = new ArrayList<Map<String, Map<String, String>>>();
+        for(int i = 0; i< windows.size(); i++){
+            windowsArr.add(windows.get(Integer.toString(i+1)));
+        }
         for(int i = 0; i < playerNumber; i++){
             do{
                 index =1+randomInt.nextInt(11);
             }while(nums[index-1]);
             nums[index]=true;
             index =1+randomInt.nextInt(12);
-            this.tablePositionList.add(i, new TablePosition(usernames.get(i), new PersonalGoal(windows.remove(Integer.toString(1 + randomInt.nextInt(windows.keySet().size())))), new Bookshelf()));
+            this.tablePositionList.add(i, new TablePosition(usernames.get(i), new PersonalGoal(windowsArr.remove(0 + randomInt.nextInt(windowsArr.size()-1))), new Bookshelf()));
         }
 
         index = randomInt.nextInt(playerNumber);
