@@ -188,5 +188,61 @@ String configFilePath = "./src/main/resources/config.properties";
         }
     }
 
+    /*
+     * tests if the validation of the personal goals at the
+     * beginning of the match returns false for each player
+     * and the score of every player is 0.
+     * */
+    @Test
+    void validatePersonalGoalTest(){
+        try{
+            usernames.add("mario");
+            usernames.add("luca");
+            usernames.add("dario");
+            usernames.add("matteo");
+            game = new Game(usernames);
+            for(int i=0;i<usernames.size();i++){
+                game.validatePersonalGoal(game.getCurrentPosition());
+                assertTrue(game.getCurrentPosition().getPlayer().getScore()==0);
+                game.setCurrentPosition();
+            }
+
+            System.out.println("Test passato!");
+
+        }catch (Exception e){
+            System.out.println("Test fallito!");
+            throw new RuntimeException(e);
+        }
+    }
+
+    /*
+     * tests if the validation for adjacent tiles at the
+     * beginning of the match returns false for each player
+     * and the score of every player is 0.
+     * */
+    @Test
+    void validateAdjacentTest(){
+        try{
+            usernames.add("mario");
+            usernames.add("luca");
+            usernames.add("dario");
+            usernames.add("matteo");
+            game = new Game(usernames);
+            for(int i=0;i<usernames.size();i++){
+                game.validateAdjacent(game.getCurrentPosition());
+                assertTrue(game.getCurrentPosition().getPlayer().getScore()==0);
+                game.setCurrentPosition();
+            }
+
+            System.out.println("Test passato!");
+
+        }catch (Exception e){
+            System.out.println("Test fallito!");
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
 
 }
