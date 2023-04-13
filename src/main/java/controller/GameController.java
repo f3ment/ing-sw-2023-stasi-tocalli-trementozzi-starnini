@@ -113,7 +113,7 @@ public class GameController implements Observer<TextualUI,Event> {
     }
 
 
-
+    //TODO errore nell'inserimento: non aggiunge ultima carta
 
     private boolean insert(int columnNumber, ArrayList<Integer> insertionOrder ){
         if(checkInsert(columnNumber)){
@@ -123,13 +123,13 @@ public class GameController implements Observer<TextualUI,Event> {
             }
             for(int i=0;i<game.getCurrentPosition().getPlayer().getPickedCards().size();i++){
                 try {
-                    if(insertionOrder.get(i)>=i){
-                        for(int j=i+1;j<game.getCurrentPosition().getPlayer().getPickedCards().size();j++){
-                            if(insertionOrder.get(j)>insertionOrder.get(i)){
-                                insertionOrder.set(j,insertionOrder.get(j)-1);
-                            }
+
+                    for(int j=i+1;j<game.getCurrentPosition().getPlayer().getPickedCards().size();j++){
+                        if(insertionOrder.get(j)>insertionOrder.get(i)){
+                            insertionOrder.set(j,insertionOrder.get(j)-1);
                         }
                     }
+
 
                     game.getCurrentPosition().getPlayer().insertInBookshelf(columnNumber,insertionOrder.get(i));
                 } catch (Exception e) {
