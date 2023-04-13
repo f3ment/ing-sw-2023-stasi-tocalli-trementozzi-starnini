@@ -186,6 +186,7 @@ public class GameController implements Observer<TextualUI,Event> {
                 game.setChangedAndNotifyObservers(Event.PLAYER_INSERT_NEGATIVE);
             }
         } else if (arg.equals(Event.PLAYER_FINISH)) {
+            //TODO controllare se la board va refillata
             changeCurrentPosition();
             game.setChangedAndNotifyObservers(Event.PLAYER_FINISH);
         }else if(arg.equals(Event.NEW_MATCH)){
