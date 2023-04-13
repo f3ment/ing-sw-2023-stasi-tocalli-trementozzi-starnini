@@ -131,6 +131,7 @@ public class GameController implements Observer<TextualUI,Event> {
                 }
 
             }
+            game.getCurrentPosition().getPlayer().clearHand();
             return true;
         }else{
             return false;
