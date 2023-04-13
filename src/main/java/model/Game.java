@@ -86,7 +86,6 @@ public class Game extends Observable<Event> {
             e.getValue().entrySet().stream().map(
                     k -> k.getValue()).forEach(i -> System.out.println(i.get("X")));
         });*/
-
         this.tablePositionList = new ArrayList<TablePosition>();
         ArrayList<Map<String, Map<String, String>>> windowsArr = new ArrayList<Map<String, Map<String, String>>>();
         for(int i = 0; i< windows.size(); i++){

@@ -176,6 +176,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
                 System.out.println("Not valid coordinate! Retry.");
                 System.out.print("x : ");
                 x = scanner.nextInt();
+                x--;
             }
             System.out.print("y : ");
             y = scanner.nextInt();
@@ -184,6 +185,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
                 System.out.println("Not valid coordinate! Retry.");
                 System.out.print("y : ");
                 y = scanner.nextInt();
+                y--;
             }
 
             if(!o.getBoard()[x][y].getValid()){
