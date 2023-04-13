@@ -123,6 +123,14 @@ public class GameController implements Observer<TextualUI,Event> {
             }
             for(int i=0;i<game.getCurrentPosition().getPlayer().getPickedCards().size();i++){
                 try {
+                    if(insertionOrder.get(i)>=i){
+                        for(int j=i+1;j<game.getCurrentPosition().getPlayer().getPickedCards().size();j++){
+                            if(insertionOrder.get(j)>insertionOrder.get(i)){
+                                insertionOrder.set(j,insertionOrder.get(j)-1);
+                            }
+                        }
+                    }
+
                     game.getCurrentPosition().getPlayer().insertInBookshelf(columnNumber,insertionOrder.get(i));
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -189,9 +197,9 @@ public class GameController implements Observer<TextualUI,Event> {
             //TODO controllare se la board va refillata
             changeCurrentPosition();
             game.setChangedAndNotifyObservers(Event.PLAYER_FINISH);
-        }else if(arg.equals(Event.NEW_MATCH)){
+        }else if(arg.equals(Event.NEW_TURN)){
 
-            game.setChangedAndNotifyObservers(Event.NEW_MATCH);
+            game.setChangedAndNotifyObservers(Event.NEW_TURN);
         }
     }
 
