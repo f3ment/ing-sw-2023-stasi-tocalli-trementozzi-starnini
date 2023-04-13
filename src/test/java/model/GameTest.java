@@ -159,6 +159,34 @@ String configFilePath = "./src/main/resources/config.properties";
         }
     }
 
+/*
+* tests if the validation of the two common goals at the
+* beginning of the match returns false for each player
+* and the score of every player is 0.
+* */
+    @Test
+    void validateCommonGoalTest(){
+        try{
+            usernames.add("mario");
+            usernames.add("luca");
+            usernames.add("dario");
+            usernames.add("matteo");
+            game = new Game(usernames);
+            for(int i=0;i<usernames.size();i++){
+                game.validateCommonGoal(game.getCurrentPosition());
+                assertTrue(game.getCurrentPosition().getPlayer().getToken(0)==null);
+                assertTrue(game.getCurrentPosition().getPlayer().getToken(1)==null);
+                assertTrue(game.getCurrentPosition().getPlayer().getScore()==0);
+                game.setCurrentPosition();
+            }
+
+            System.out.println("Test passato!");
+
+        }catch (Exception e){
+            System.out.println("Test fallito!");
+            throw new RuntimeException(e);
+        }
+    }
 
 
 }

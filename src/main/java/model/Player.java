@@ -91,6 +91,7 @@ public class Player {
 
 
     public void drawFromBoard(Board box, int i, int j){
+        this.PickedCards.clear();
         this.PickedCards.add(box.draw(i,j));
     }
 
