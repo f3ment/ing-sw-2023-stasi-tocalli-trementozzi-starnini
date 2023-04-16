@@ -2,12 +2,14 @@ package distributed;
 
 import utils.Event;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public interface Server {
+public interface Server extends Remote {
     //modo per far connettere un client ad un server
-    void register(Client client);
+    void register(Client client) throws RemoteException;
 
     //posso chiamare update passando argomenti
-    void update(Client client, Event event, Integer columnNumber, ArrayList coords);
+    void update(Client client, Event event, Integer columnNumber, ArrayList coords) throws RemoteException;
 }
