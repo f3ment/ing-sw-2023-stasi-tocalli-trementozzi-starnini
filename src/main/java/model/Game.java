@@ -25,6 +25,8 @@ public class Game extends Observable<Event> {
     private final List<TablePosition> tablePositionList;
     private Board board;
 
+    private String winner;
+
 
     //private   <Map<Type , Pair<Integer , Integer>>> PersonalGoalDeck;
     //private   <Map<Type , Pair<Integer , Integer>>> PersonalGoalDeck;
@@ -60,7 +62,6 @@ public class Game extends Observable<Event> {
 
     public Game(ArrayList<String> usernames) throws IOException {
         super();
-        //TODO move the randomization to the controller
         Random randomInt = new Random();
         int index;
         boolean[] nums= new boolean[12];
@@ -211,4 +212,22 @@ public class Game extends Observable<Event> {
         notifyObservers(arg,null,null);
     }
 
+    public Player getFirstPlayer() {
+        return firstPlayer;
+    }
+
+    public void setWinner() {
+        int score=0;
+        String winner;
+        for(TablePosition o: tablePositionList){
+            if(o.getPlayer().getScore()>score){
+                winner=o.getPlayer().getUsername();
+                score=o.getPlayer().getScore();
+            }
+        }
+    }
+
+    public String getWinner() {
+        return winner;
+    }
 }

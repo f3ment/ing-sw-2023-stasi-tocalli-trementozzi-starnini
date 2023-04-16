@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 public class GameController implements Observer<TextualUI,Event> {
     private final Game game;
 
-    //TODO implement textualUI
     //private final TextualUI view;;
     public GameController(Game game){
         this.game = game;
@@ -175,7 +174,6 @@ public class GameController implements Observer<TextualUI,Event> {
         game.setCurrentPosition();
     }
 
-    //todo gestione input non validi
     @Override
     public void update(TextualUI o, Enum arg, Integer columnNumber, ArrayList coords ) {
         if(o==null){
@@ -196,6 +194,14 @@ public class GameController implements Observer<TextualUI,Event> {
             }
         } else if (arg.equals(Event.PLAYER_FINISH)) {
             //Check if re-fill board
+
+            if(game.getCurrentPosition().getBookshelf().isFull()){
+                game.setEndGame(true);
+            }
+            if(game.getEndGame()==true&& game.getCurrentPosition().getPlayer().getUsername()==game.getFirstPlayer().getUsername()){
+                game.setWinner();
+                game.setChangedAndNotifyObservers(Event.FINISCH_MATCH);
+            }
             if(checkBoardEmpty()){
                 game.fillBoard();
             }
@@ -204,6 +210,9 @@ public class GameController implements Observer<TextualUI,Event> {
         }else if(arg.equals(Event.NEW_TURN)){
 
             game.setChangedAndNotifyObservers(Event.NEW_TURN);
+        }else if(arg.equals(Event.FINISCH_MATCH)){
+            game.setWinner();
+            game.setChangedAndNotifyObservers(Event.FINISCH_MATCH);
         }
     }
 

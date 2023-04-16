@@ -5,7 +5,6 @@ import model.goals.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-//todo test
 public class CommonGoalsGenerator {
     private final CommonGoal first, second;
     public CommonGoalsGenerator(int playerNumber){

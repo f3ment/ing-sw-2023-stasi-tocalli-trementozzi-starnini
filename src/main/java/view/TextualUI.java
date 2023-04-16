@@ -8,6 +8,7 @@ import model.board.Board;
 import utils.*;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -46,10 +47,17 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
             run();
         }else if (arg.equals(Event.NEW_TURN)){
             start(o);
+        }else if(arg.equals(Event.FINISCH_MATCH)){
+            System.out.println("END GAME");
+            System.out.println("THE WINNER IS "+ o.getWinner());
         }
     }
 
     private void start(GameView o) {
+        if(o.getFirstPlayer()==o.getCurrentPlayer().getUsername()&&o.getEndGame()==true){
+            setChanged();
+            notifyObservers(Event.FINISCH_MATCH, null,null);
+        }
         System.out.println( o.getCurrentPlayer().getUsername() + ", it's your turn!");
         showBoard(o);
         playerDraw(o);
@@ -105,7 +113,6 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
     private void playerInsert(GameView o){
         //scan input
         ArrayList<Integer> order = new ArrayList<>();
-        Scanner scanner = new Scanner(System.in);
         int column;
         boolean flag;
         //controllo input ordine
@@ -115,10 +122,10 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
 
             for (int i = 0; i < o.getPickedCards().size(); i++) {
                 System.out.print("Insert the index of the " + (i + 1) + " card to insert : ");
-                int index = scanner.nextInt();
+                int index = reading();
                 while(index<1 || index > o.getPickedCards().size()){
                     System.out.println("Invalid Index , insert again!");
-                    index = scanner.nextInt();
+                    index = reading();
                 }
                 order.add(index-1);
             }
@@ -145,7 +152,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
         showBookshelf(o);
         System.out.println("Now insert in which column would you like to insert your cards. ");
         System.out.println("REMEMBER : it must be between 1 and " +o.getLenghtBookshelf() + ".");
-        column = scanner.nextInt()-1;
+        column = reading()-1;
         //choose column
         setChanged();
         notifyObservers(Event.PLAYER_INSERT_POSITIVE, column, order);
@@ -157,13 +164,12 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
         int nCards, x, y;
         boolean flag;
         ArrayList<Integer> coords;
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Insert how many cards do you want to draw from board : ");
-        nCards = scanner.nextInt();
+        nCards = reading();
         while(nCards <= 0 || nCards >3){
             System.out.println("The number of cards must be between 1 and 3! Retry.");
             System.out.println("Insert how many cards do you want to draw from board : ");
-            nCards = scanner.nextInt();
+            nCards = reading();
         }
         for(int i = 0; i< nCards; i++){
             flag = true;
@@ -171,21 +177,21 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
             int z=i+1;
             System.out.println("Insert the coordinates of the " + z + " card : ");
             System.out.print("x : ");
-            x = scanner.nextInt();
+            x = reading();
             x--;
             while(x>= o.getHeightBoard() || x<0){
                 System.out.println("Not valid coordinate! Retry.");
                 System.out.print("x : ");
-                x = scanner.nextInt();
+                x = reading();
                 x--;
             }
             System.out.print("y : ");
-            y = scanner.nextInt();
+            y = reading();
             y--;
             while(y>= o.getLenghtBoard() || y<0){
                 System.out.println("Not valid coordinate! Retry.");
                 System.out.print("y : ");
-                y = scanner.nextInt();
+                y = reading();
                 y--;
             }
 
@@ -242,5 +248,20 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
             System.out.print(i.getType().toString().charAt(0) + " ");
         }
         System.out.print("\n");
+    }
+
+    public int reading(){
+        int userInput;
+        while(true) {
+            try {
+                Scanner input = new Scanner(System.in);
+                userInput = input.nextInt();
+                break;
+            }
+            catch(InputMismatchException | NumberFormatException ex ) {
+                System.out.println("Invalid Number, Please try again");
+            }
+        }
+        return userInput;
     }
 }
