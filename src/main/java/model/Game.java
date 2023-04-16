@@ -219,7 +219,7 @@ public class Game extends Observable<Event> {
     public void setWinner() {
         int score=0;
         String winner = "init"; //initialize to avoid this.winner error *can't assign a nullable variable
-        
+
         for(TablePosition o: tablePositionList){
             if(o.getPlayer().getScore()>score){
                 winner=o.getPlayer().getUsername();
