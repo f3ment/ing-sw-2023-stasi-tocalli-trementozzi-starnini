@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 
-public class TextualUI extends Observable<Event> implements Observer<GameView,Event>, Runnable {
+public class TextualUI extends Observable<Event> implements Runnable {
 
     @Override
     public void run() {
@@ -22,7 +22,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
 
     }
 
-    @Override
+    //update chiamato direttamente dall'oggetto che si occupa di gestire il client
     public void update(GameView o, Enum arg, Integer columnNumber, ArrayList coords) {
         if(arg.equals(Event.PLAYER_DRAW_NEGATIVE)){
             System.out.println("Le carte selezionate sono sbagliate! Riprova : ");
