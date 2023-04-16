@@ -1,5 +1,6 @@
 package controller;
 import model.*;
+import model.board.Board;
 import utils.Event;
 import utils.Observable;
 import utils.Observer;
@@ -113,7 +114,6 @@ public class GameController implements Observer<TextualUI,Event> {
     }
 
 
-    //TODO errore nell'inserimento: non aggiunge ultima carta
 
     private boolean insert(int columnNumber, ArrayList<Integer> insertionOrder ){
         if(checkInsert(columnNumber)){
@@ -121,17 +121,18 @@ public class GameController implements Observer<TextualUI,Event> {
             for(int i=0;i<game.getCurrentPosition().getPlayer().getPickedCards().size();i++){
                 System.out.println(insertionOrder.get(i));
             }
-            for(int i=0;i<game.getCurrentPosition().getPlayer().getPickedCards().size();i++){
+            int size= game.getCurrentPosition().getPlayer().getPickedCards().size();
+            for(int i=0;i<size;i++){
                 try {
 
-                    for(int j=i+1;j<game.getCurrentPosition().getPlayer().getPickedCards().size();j++){
+                    for(int j=i+1;j<size;j++){
                         if(insertionOrder.get(j)>insertionOrder.get(i)){
                             insertionOrder.set(j,insertionOrder.get(j)-1);
                         }
                     }
 
-
                     game.getCurrentPosition().getPlayer().insertInBookshelf(columnNumber,insertionOrder.get(i));
+
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                     //column not right
@@ -194,7 +195,10 @@ public class GameController implements Observer<TextualUI,Event> {
                 game.setChangedAndNotifyObservers(Event.PLAYER_INSERT_NEGATIVE);
             }
         } else if (arg.equals(Event.PLAYER_FINISH)) {
-            //TODO controllare se la board va refillata
+            //Check if re-fill board
+            if(checkBoardEmpty()){
+                game.fillBoard();
+            }
             changeCurrentPosition();
             game.setChangedAndNotifyObservers(Event.PLAYER_FINISH);
         }else if(arg.equals(Event.NEW_TURN)){
@@ -202,5 +206,30 @@ public class GameController implements Observer<TextualUI,Event> {
             game.setChangedAndNotifyObservers(Event.NEW_TURN);
         }
     }
+
+    private boolean checkBoardEmpty() {
+        boolean result=true;
+        for(int i=0;i<game.getBoard().getMaxHeight()&&result;i++){
+            for(int j=0;j<game.getBoard().getMaxLength()&&result;j++){
+                if(game.getBoard().getBox(i,j).getValid()&&game.getBoard().getBox(i,j).getItemContained()!=null){
+                    if(i>0&&game.getBoard().getBox(i-1,j).getValid()&&game.getBoard().getBox(i-1,j).getItemContained()!=null){
+                        result=false;
+                    }
+                    if(i<game.getBoard().getMaxHeight()-1 &&game.getBoard().getBox(i+1,j).getValid()&&game.getBoard().getBox(i+1,j).getItemContained()!=null){
+                        result=false;
+                    }
+                    if(j>0&&game.getBoard().getBox(i,j+1).getValid()&&game.getBoard().getBox(i,j+1).getItemContained()!=null){
+                        result=false;
+                    }
+                    if(j<game.getBoard().getMaxLength()-1&&game.getBoard().getBox(i-1,j).getValid()&&game.getBoard().getBox(i-1,j).getItemContained()!=null){
+                        result=false;
+                    }
+
+                }
+            }
+        }
+        return result;
+    }
+
 
 }

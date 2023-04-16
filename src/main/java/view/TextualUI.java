@@ -38,6 +38,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
             playerInsert(o);
         } else if (arg.equals(Event.PLAYER_INSERT_POSITIVE)) {
             System.out.println("Cards inserted correctly!");
+            showBookshelf(o);
             showBoard(o);
             setChanged();
             notifyObservers(Event.PLAYER_FINISH, null, null);
@@ -188,7 +189,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
                 y--;
             }
 
-            if(!o.getBoard()[x][y].getValid()){
+            if(!o.getBoard()[x][y].getValid()||o.getBoard()[x][y].getItemContained()==null){
                 System.out.println("The chosen box is not playable! Retry.");
                 i--;
                 flag = false;
