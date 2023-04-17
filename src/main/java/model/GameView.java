@@ -140,5 +140,9 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
     public String getWinner(){
         return new String(model.getWinner());
     }
+
+    public int getMaxDrawable(){
+        return model.getCurrentBookshelf().getMaxDrowable();
+    }
 }
 

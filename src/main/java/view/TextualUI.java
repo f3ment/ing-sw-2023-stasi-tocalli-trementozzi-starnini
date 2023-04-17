@@ -162,10 +162,18 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
         ArrayList<Integer> coords;
         System.out.println("Insert how many cards do you want to draw from board : ");
         nCards = readingInt();
+        if(nCards > o.getMaxDrawable()){
+            System.out.println("The number of cards must be minor");
+            nCards=4;
+        }
         while(nCards <= 0 || nCards >3){
             System.out.println("The number of cards must be between 1 and 3! Retry.");
             System.out.println("Insert how many cards do you want to draw from board : ");
             nCards = readingInt();
+            if(nCards > o.getMaxDrawable()){
+                System.out.println("The number of cards must be minor");
+                nCards=4;
+            }
         }
         for(int i = 0; i< nCards; i++){
             flag = true;

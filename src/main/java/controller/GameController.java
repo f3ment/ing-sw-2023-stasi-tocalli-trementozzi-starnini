@@ -47,8 +47,6 @@ public class GameController implements Observer<TextualUI,Event> {
         * check if there is a column in the shelf with enough space to insert all the chosen tiles
         * if not return false
         */
-        if(coords.size() > game.getCurrentPosition().getBookshelf().getMaxDrowable())
-            return false;
         /*
          *check if chosen tiles are on the same row
          */
@@ -201,12 +199,15 @@ public class GameController implements Observer<TextualUI,Event> {
             if(game.getEndGame()==true&& game.getCurrentPosition().getPlayer().getUsername()==game.getFirstPlayer().getUsername()){
                 game.setWinner();
                 game.setChangedAndNotifyObservers(Event.FINISCH_MATCH);
+
             }
             if(checkBoardEmpty()){
                 game.fillBoard();
             }
-            changeCurrentPosition();
-            game.setChangedAndNotifyObservers(Event.PLAYER_FINISH);
+            if(game.getEndGame()==false || (game.getCurrentPosition().getPlayer().getUsername()!=game.getFirstPlayer().getUsername()&& game.getEndGame()==true)) {
+                changeCurrentPosition();
+                game.setChangedAndNotifyObservers(Event.PLAYER_FINISH);
+            }
         }else if(arg.equals(Event.NEW_TURN)){
 
             game.setChangedAndNotifyObservers(Event.NEW_TURN);
