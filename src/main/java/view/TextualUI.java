@@ -1,16 +1,13 @@
 package view;
 
 import model.Box;
-import model.Game;
 import model.GameView;
 import model.ItemTiles;
-import model.board.Board;
 import utils.*;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 
 public class TextualUI extends Observable<Event> implements Observer<GameView,Event>, Runnable {
@@ -121,10 +118,10 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
 
             for (int i = 0; i < o.getPickedCards().size(); i++) {
                 System.out.print("Insert the index of the " + (i + 1) + " card to insert : ");
-                int index = reading();
+                int index = readingInt();
                 while(index<1 || index > o.getPickedCards().size()){
                     System.out.println("Invalid Index , insert again!");
-                    index = reading();
+                    index = readingInt();
                 }
                 order.add(index-1);
             }
@@ -151,7 +148,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
         showBookshelf(o);
         System.out.println("Now insert in which column would you like to insert your cards. ");
         System.out.println("REMEMBER : it must be between 1 and " +o.getLenghtBookshelf() + ".");
-        column = reading()-1;
+        column = readingInt()-1;
         //choose column
         setChanged();
         notifyObservers(Event.PLAYER_INSERT_POSITIVE, column, order);
@@ -164,11 +161,11 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
         boolean flag;
         ArrayList<Integer> coords;
         System.out.println("Insert how many cards do you want to draw from board : ");
-        nCards = reading();
+        nCards = readingInt();
         while(nCards <= 0 || nCards >3){
             System.out.println("The number of cards must be between 1 and 3! Retry.");
             System.out.println("Insert how many cards do you want to draw from board : ");
-            nCards = reading();
+            nCards = readingInt();
         }
         for(int i = 0; i< nCards; i++){
             flag = true;
@@ -176,21 +173,21 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
             int z=i+1;
             System.out.println("Insert the coordinates of the " + z + " card : ");
             System.out.print("x : ");
-            x = reading();
+            x = readingInt();
             x--;
             while(x>= o.getHeightBoard() || x<0){
                 System.out.println("Not valid coordinate! Retry.");
                 System.out.print("x : ");
-                x = reading();
+                x = readingInt();
                 x--;
             }
             System.out.print("y : ");
-            y = reading();
+            y = readingInt();
             y--;
             while(y>= o.getLenghtBoard() || y<0){
                 System.out.println("Not valid coordinate! Retry.");
                 System.out.print("y : ");
-                y = reading();
+                y = readingInt();
                 y--;
             }
 
@@ -249,7 +246,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
         System.out.print("\n");
     }
 
-    public int reading(){
+    public int readingInt(){
         int userInput;
         while(true) {
             try {
