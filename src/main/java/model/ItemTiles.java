@@ -1,8 +1,8 @@
 package model;
 
 public class ItemTiles {
-    private Type itemType;
-    private int id;
+    final private Type itemType;
+    final private int id;
     //todo possono esistere carte diverse
     public ItemTiles(Type item_type, int id){
         this.id = id;

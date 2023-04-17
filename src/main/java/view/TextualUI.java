@@ -1,6 +1,7 @@
 package view;
 
 import model.Box;
+import model.BoxView;
 import model.GameView;
 import model.ItemTiles;
 import utils.*;
@@ -71,7 +72,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
             a=i+1;
             System.out.print(a);
             for(int j = 0; j<o.getLenghtBoard(); j++){
-                Box box = o.getBoard()[i][j];
+                BoxView box = o.getBoard()[i][j];
                 if(box.getValid()){
                     ItemTiles el = box.getItemContained();
                     if (el != null) {

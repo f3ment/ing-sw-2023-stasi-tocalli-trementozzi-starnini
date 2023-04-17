@@ -27,13 +27,13 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
         this.model = model;
         model.addObserver(this);
     }
-    public Box[][] getBoard() {
+    public BoxView[][] getBoard() {
         Board board=model.getBoard();
-        Box[][] viewBoard= new Box[board.getMaxHeight()][board.getMaxLength()];
+        BoxView[][] viewBoard= new BoxView[board.getMaxHeight()][board.getMaxLength()];
         for(int i=0;i< board.getMaxHeight();i++){
             for(int j=0;j< board.getMaxLength();j++){
                 try{
-                    viewBoard[i][j]= new Box(board.getBox(i, j).getValid(), board.getBox(i,j).getItemContained());
+                    viewBoard[i][j]= new BoxView(board.getBox(i, j).getValid(), board.getBox(i,j).getItemContained());
                 }catch (Exception e){
                     viewBoard[i][j]=null;
                 }
@@ -118,14 +118,8 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
         return model.getBoard().getMaxLength();
     }
 
-    @Override
-    public void update(Game o, Enum arg, Integer columnNumber, ArrayList coords) {
-        setChanged();
-        notifyObservers((Event) arg,null,null);
-    }
-
-    public Player getCurrentPlayer(){
-        Player res = new Player(model.getCurrentPosition(), model.getCurrentPosition().getPlayer().getUsername());
+    public PlayerView getCurrentPlayer(){
+        PlayerView res = new PlayerView(model.getCurrentPosition().getPlayer().getUsername(),model.getCurrentPosition().getPlayer().getStatus(),model.getCurrentPosition().getPlayer().getScore(),model.getCurrentPosition().getPlayer().getPickedCards(),model.getCurrentPosition().getPlayer().getCurrentPosition(),model.getCurrentPosition().getPlayer().getToken());
         return res;
     }
 
@@ -144,5 +138,12 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
     public int getMaxDrawable(){
         return model.getCurrentBookshelf().getMaxDrowable();
     }
+
+    @Override
+    public void update(Game o, Enum arg, Integer columnNumber, ArrayList coords) {
+        setChanged();
+        notifyObservers((Event) arg,null,null);
+    }
+    
 }
 

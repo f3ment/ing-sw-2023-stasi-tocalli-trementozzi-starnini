@@ -15,6 +15,7 @@ public class Player {
     private ArrayList<ItemTiles> PickedCards;
     private final TablePosition currentPosition;
 
+    ArrayList<ScoringToken> tokens; //common goal
 
 
     /*
@@ -25,7 +26,6 @@ public class Player {
 
     FileInputStream ip;
 
-    ArrayList<ScoringToken> tokens; //common goal
 
     public Player(TablePosition currentPosition,String username){
         {
@@ -77,6 +77,10 @@ public class Player {
     public ScoringToken getToken(int index){
 
         return this.tokens.get(index);
+    }
+
+    public ArrayList<ScoringToken> getToken(){
+        return this.tokens;
     }
 
     public void setStatus(boolean status){

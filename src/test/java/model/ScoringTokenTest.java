@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static junit.framework.Assert.assertNull;
@@ -22,9 +23,9 @@ class ScoringTokenTest {
             personalGoal = new PersonalGoal(new HashMap<>());
             bookshelf = new Bookshelf();
             tablePosition = new TablePosition("Mario",personalGoal,bookshelf);
-            scoringtoken.setPosition(tablePosition);
 
-            assertTrue(tablePosition.getPlayer().getUsername() == scoringtoken.getPosition().getPlayer().getUsername());
+
+            assertTrue(scoringtoken.getScore() == 6 && scoringtoken.getNumber()==2);
 
 
 
