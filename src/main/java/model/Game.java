@@ -343,7 +343,10 @@ public class Game extends Observable<Event> {
                 return false;
             }else{
                 try{
-                    if(getBoard().getBox(elem.get(0)+1,elem.get(1)).getItemContained()!=null &&
+                    if(elem.get(0)==0||elem.get(0)==getBoard().getMaxHeight()-1||elem.get(1)==0||elem.get(1)==getBoard().getMaxLength()-1) {
+
+                    }
+                    else if((getBoard().getBox(elem.get(0)+1,elem.get(1)).getItemContained()!=null )&&
                             getBoard().getBox(elem.get(0)-1,elem.get(1)).getItemContained()!=null &&
                             getBoard().getBox(elem.get(0),elem.get(1)+1).getItemContained()!=null &&
                             getBoard().getBox(elem.get(0),elem.get(1)-1).getItemContained()!=null){

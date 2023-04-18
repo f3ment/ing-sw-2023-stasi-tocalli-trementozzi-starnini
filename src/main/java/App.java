@@ -25,7 +25,7 @@ public class App {
         names.add("Piero");
         names.add("Giovanni");
         names.add("Luca");
-        names.add("Giacomo");
+        //names.add("Giacomo");
         try {
             model = new Game(names);
         } catch (IOException e) {
