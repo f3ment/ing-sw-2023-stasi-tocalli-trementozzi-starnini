@@ -106,7 +106,7 @@ public class Game extends Observable<Event> {
         firstPlayer = tablePositionList.get(index).getPlayer();
         currentPosition = tablePositionList.get(index);
 
-        this.board = new BoardGenerator(playerNumber).getBoard();
+        this.board = new Board(playerNumber);
 
         commonGoalsGenerator = new CommonGoalsGenerator(playerNumber);
 

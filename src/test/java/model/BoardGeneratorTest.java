@@ -1,8 +1,5 @@
 package model;
 
-import model.board.Board;
-import model.board.FourBoard;
-import model.board.TwoBoard;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

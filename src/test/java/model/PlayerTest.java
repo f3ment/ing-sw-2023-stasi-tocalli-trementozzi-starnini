@@ -2,7 +2,6 @@ package model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import model.board.FourBoard;
 import model.goals.PersonalGoal;
 import org.junit.jupiter.api.Test;
 
