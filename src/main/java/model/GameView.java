@@ -113,5 +113,17 @@ public class GameView implements Serializable {
         Player res = new Player(model.getCurrentPosition(), model.getCurrentPosition().getPlayer().getUsername());
         return res;
     }
+
+    public boolean getEndGame(){
+        return model.getEndGame();
+    }
+
+    public String getFirstPlayer(){
+        return new String(model.getFirstPlayer().getUsername());
+    }
+
+    public String getWinner(){
+        return new String(model.getWinner());
+    }
 }
 

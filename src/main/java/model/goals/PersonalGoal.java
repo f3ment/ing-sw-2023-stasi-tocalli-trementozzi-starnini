@@ -13,7 +13,6 @@ import model.Type;
 import java.security.GeneralSecurityException;
 import java.util.Properties;
 
-//todo test
 public class PersonalGoal {
 
     /*
@@ -36,10 +35,7 @@ public class PersonalGoal {
     private Map<String, Map<String, String>> windows;
     private int done;
     public PersonalGoal(Map<String, Map<String, String>> windows){
-        /*todo
-            if a goal is obtained, done will be incremented by one, until 6
-            in this way at the end of the game we know how many goals has been achieved.
-        */
+
         this.windows = windows;
         this.done = 0;
     }

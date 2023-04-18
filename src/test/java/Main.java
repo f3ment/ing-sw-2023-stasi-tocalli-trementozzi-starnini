@@ -49,7 +49,6 @@ public class Main {
         System.out.println("How many card do you wanna throw? ");
         numberCardsThrowable= myInput.nextInt();
 
-        // TODO controlli vari
         for(int i=0;i<numberCardsThrowable; i++) {
             x=myInput.nextInt();
             y=myInput.nextInt();
@@ -57,7 +56,6 @@ public class Main {
         }
 
         choosencolumn=myInput.nextInt();
-        //TODO controlli sulla bookshelf
 
         //mano = currentPlayer.getCards();
 
