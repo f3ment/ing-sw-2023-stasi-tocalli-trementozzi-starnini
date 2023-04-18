@@ -1,19 +1,18 @@
 package model;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import model.board.Board;
 import model.goals.PersonalGoal;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Properties;
 
-import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 class PlayerTest {
 
     /*
@@ -28,8 +27,6 @@ class PlayerTest {
         try {
             ip = new FileInputStream(configFilePath);
             prop.load(ip);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -40,7 +37,7 @@ class PlayerTest {
     private TablePosition position;
     private PersonalGoal personalGoal;
     private Bookshelf bookshelf;
-    private FourBoard board;
+    private Board board;
 
     /*
     *
@@ -63,8 +60,7 @@ class PlayerTest {
             player.setToken(token1);
 
 
-
-            assertTrue(player.getScore() == token2.getScore() + token1.getScore());
+            assertEquals(player.getScore(), token2.getScore() + token1.getScore());
             System.out.println("Test passato!");
 
 
@@ -88,7 +84,7 @@ class PlayerTest {
             bookshelf = new Bookshelf();
             position = new TablePosition("Luca",personalGoal,bookshelf);
             player = position.getPlayer();
-            board = new FourBoard();
+            board = new Board(4);
             board.setBox(new Bag());
 
             //partially fill the shelf
@@ -132,10 +128,10 @@ class PlayerTest {
             //check if max of drawable cards for the next turn is 2 since there are
             //2 free spaces in the last column, every other column has less
             //than 2 free spaces
-            assertTrue(bookshelf.getMaxDrowable()==2);
+            assertEquals(2, bookshelf.getMaxDrowable());
 
             //check if the first column is completely filled with this insertion
-            assertTrue(bookshelf.getColumnsSize().get(0).equals(6));
+            assertEquals(6, bookshelf.getColumnsSize().get(0));
 
 
             for(int i=0;i<3;i++){

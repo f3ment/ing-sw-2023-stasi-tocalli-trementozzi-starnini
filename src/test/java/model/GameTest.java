@@ -1,5 +1,6 @@
 package model;
 
+import model.board.Board;
 import org.junit.jupiter.api.Test;
 
 import model.goals.PersonalGoal;
@@ -22,8 +23,6 @@ String configFilePath = "./src/main/resources/config.properties";
         try {
             ip = new FileInputStream(configFilePath);
             prop.load(ip);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -35,7 +34,7 @@ String configFilePath = "./src/main/resources/config.properties";
     private TablePosition position;
     private PersonalGoal personalGoal;
     private Bookshelf bookshelf;
-    private FourBoard board;
+    private Board board;
     private ArrayList<String> usernames = new ArrayList<String>();
 
 
@@ -50,10 +49,10 @@ String configFilePath = "./src/main/resources/config.properties";
             usernames.add("dario");
             usernames.add("matteo");
             game = new Game(usernames);
-            assertTrue(game.getFirstCommonGoal()!= null);
-            assertTrue(game.getSecondCommonGoal()!= null);
-            assertTrue(game.getSecondCommonGoal()!= game.getFirstCommonGoal());
-            assertTrue(game.getBoard()!= null);
+            assertNotNull(game.getFirstCommonGoal());
+            assertNotNull(game.getSecondCommonGoal());
+            assertNotSame(game.getSecondCommonGoal(), game.getFirstCommonGoal());
+            assertNotNull(game.getBoard());
             assertTrue(game.getCurrentPosition().getPlayer().getUsername() == "mario" ||
                                 game.getCurrentPosition().getPlayer().getUsername() == "luca"||
                                 game.getCurrentPosition().getPlayer().getUsername() == "dario"||
@@ -104,11 +103,11 @@ String configFilePath = "./src/main/resources/config.properties";
             game = new Game(usernames);
             TablePosition pos = game.getCurrentPosition();
 
-            assertTrue(pos.getBookshelf().equals(game.getCurrentBookshelf()));
+            assertEquals(pos.getBookshelf(), game.getCurrentBookshelf());
             game.setCurrentPosition();
-            assertTrue(game.getCurrentPosition().getBookshelf().equals(game.getCurrentBookshelf()));
-            assertTrue(!pos.equals(game.getCurrentPosition()));
-            assertTrue(game.getCurrentPosition()!= null);
+            assertEquals(game.getCurrentPosition().getBookshelf(), game.getCurrentBookshelf());
+            assertNotEquals(pos, game.getCurrentPosition());
+            assertNotNull(game.getCurrentPosition());
             assertTrue(game.getCurrentPosition().getPlayer().getUsername() == "mario" ||
                     game.getCurrentPosition().getPlayer().getUsername() == "luca"||
                     game.getCurrentPosition().getPlayer().getUsername() == "dario"||
@@ -134,9 +133,9 @@ String configFilePath = "./src/main/resources/config.properties";
             usernames.add("matteo");
             game = new Game(usernames);
 
-            assertTrue(game.getListBookshelf().size() == 4);
+            assertEquals(4, game.getListBookshelf().size());
             for(int i=0;i<4;i++){
-                assertTrue(game.getListBookshelf().get(i) != null);
+                assertNotNull(game.getListBookshelf().get(i));
             }
 
             System.out.println("Test passato!");
@@ -162,9 +161,9 @@ String configFilePath = "./src/main/resources/config.properties";
             game = new Game(usernames);
             for(int i=0;i<usernames.size();i++){
                 game.validateCommonGoal(game.getCurrentPosition());
-                assertTrue(game.getCurrentPosition().getPlayer().getToken(0)==null);
-                assertTrue(game.getCurrentPosition().getPlayer().getToken(1)==null);
-                assertTrue(game.getCurrentPosition().getPlayer().getScore()==0);
+                assertNull(game.getCurrentPosition().getPlayer().getToken(0));
+                assertNull(game.getCurrentPosition().getPlayer().getToken(1));
+                assertEquals(0, game.getCurrentPosition().getPlayer().getScore());
                 game.setCurrentPosition();
             }
 
@@ -191,7 +190,7 @@ String configFilePath = "./src/main/resources/config.properties";
             game = new Game(usernames);
             for(int i=0;i<usernames.size();i++){
                 game.validatePersonalGoal(game.getCurrentPosition());
-                assertTrue(game.getCurrentPosition().getPlayer().getScore()==0);
+                assertEquals(0, game.getCurrentPosition().getPlayer().getScore());
                 game.setCurrentPosition();
             }
 
@@ -202,6 +201,7 @@ String configFilePath = "./src/main/resources/config.properties";
             throw new RuntimeException(e);
         }
     }
+
 
     /*
      * tests if the validation for adjacent tiles at the
@@ -218,7 +218,7 @@ String configFilePath = "./src/main/resources/config.properties";
             game = new Game(usernames);
             for(int i=0;i<usernames.size();i++){
                 game.validateAdjacent(game.getCurrentPosition());
-                assertTrue(game.getCurrentPosition().getPlayer().getScore()==0);
+                assertEquals(0, game.getCurrentPosition().getPlayer().getScore());
                 game.setCurrentPosition();
             }
 
