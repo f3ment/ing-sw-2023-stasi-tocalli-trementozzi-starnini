@@ -49,7 +49,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         }
         this.model.addObserver((o,arg, columnNumber,coords) -> {
             try {
-                client.update(new GameView(model), (Event) arg, columnNumber, coords);
+                client.update(new GameView(model), (Event) arg);
             } catch (RemoteException e) {
                 System.err.println("Error while updating the client : " + e.getMessage() + ". Skipping the update...");
 

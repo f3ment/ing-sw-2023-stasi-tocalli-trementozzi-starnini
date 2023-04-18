@@ -23,7 +23,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
     }
 
     //update chiamato direttamente dall'oggetto che si occupa di gestire il client
-    public void update(GameView o, Enum arg, Integer columnNumber, ArrayList coords) {
+    public void update(GameView o, Enum arg) {
         if(arg.equals(Event.PLAYER_DRAW_NEGATIVE)){
             System.out.println("Le carte selezionate sono sbagliate! Riprova : ");
             playerDraw(o);

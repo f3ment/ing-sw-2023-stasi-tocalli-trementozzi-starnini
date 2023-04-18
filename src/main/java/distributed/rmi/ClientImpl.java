@@ -10,7 +10,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 
 //unicast remote object serve a comunnicare a rmi che tutte le istanze
 //della classe sono esportate , sono raggiungibili tramite invocazioni remote.
@@ -45,8 +44,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
     }
 
     @Override
-    public void update(GameView o, Event arg, Integer columnNumber, ArrayList coords) {
-        view.update(o, arg, columnNumber, coords);
+    public void update(GameView o, Event arg) {
+        view.update(o, arg);
     }
 
     @Override

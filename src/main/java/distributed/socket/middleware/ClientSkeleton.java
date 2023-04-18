@@ -32,12 +32,14 @@ public class ClientSkeleton implements Client {
     }
 
     @Override
-    public void update(GameView o, Event arg, Integer columnNumber, ArrayList coords) throws RemoteException {
+    public void update(GameView o, Event arg) throws RemoteException {
         try{
             oos.writeObject(o);
+        }catch(IOException e){
+            throw new RemoteException("Cannot send event : " +e.getMessage());
+        }
+        try{
             oos.writeObject(arg);
-            oos.writeObject(columnNumber);
-            oos.writeObject(coords);
         }catch(IOException e){
             throw new RemoteException("Cannot send event : " +e.getMessage());
         }
@@ -50,9 +52,26 @@ public class ClientSkeleton implements Client {
         } catch (IOException ex) {
             throw new RuntimeException("Cannot receive event : " + ex.getMessage());
         } catch (ClassNotFoundException ex) {
+            throw new RuntimeException("Cannot deserialize event : " + ex.getMessage());
+        }
+        Integer cn;
+        try {
+            cn =(Integer) ios.readObject();
+        } catch (IOException ex) {
             throw new RuntimeException("Cannot receive event : " + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException("Cannot deserialize event : " + ex.getMessage());
         }
 
-        //server.update(this, c)
+        ArrayList coords;
+        try {
+            coords =(ArrayList) ios.readObject();
+        } catch (IOException ex) {
+            throw new RuntimeException("Cannot receive event : " + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException("Cannot deserialize event : " + ex.getMessage());
+        }
+
+        server.update(this, e, cn, coords);
     }
 }

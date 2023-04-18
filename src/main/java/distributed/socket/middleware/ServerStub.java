@@ -30,7 +30,7 @@ public class ServerStub implements Server {
     public void register(Client client) throws RemoteException {
         try {
             this.socket = new Socket(ip, port);
-            //ordine importante, fare diversamernte crea deadlock
+            //ordine importante, fare diversamente crea deadlock
             try{
                 this.oos = new ObjectOutputStream(socket.getOutputStream());
             }catch(IOException e){
@@ -46,10 +46,14 @@ public class ServerStub implements Server {
         }
     }
 
+
+    //client che manda gli oggetti
     @Override
     public void update(Client client, Event event, Integer columnNumber, ArrayList coords) throws RemoteException {
         try{
-            oos.writeObject();
+            oos.writeObject(event);
+            oos.writeObject(columnNumber);
+            oos.writeObject(coords);
         }catch (IOException e){
             throw new RemoteException("Cannot send event : " + e.getMessage());
         }
@@ -60,18 +64,28 @@ public class ServerStub implements Server {
         try{
             o = (GameView) ios.readObject();
         }catch (IOException e ){
-            throw new RemoteException("Cannot receive event : " + e.getMessage())
+            throw new RemoteException("Cannot receive event : " + e.getMessage());
         }catch (ClassNotFoundException e){
-            throw new RemoteException("Cannot cast event : " + e.getMessage())
+            throw new RemoteException("Cannot cast event : " + e.getMessage());
         }
 
         Event arg;
         try{
             arg = (Event) ios.readObject();
         }catch (IOException e ){
-            throw new RemoteException("Cannot receive event : " + e.getMessage())
+            throw new RemoteException("Cannot receive event : " + e.getMessage());
         }catch (ClassNotFoundException e){
-            throw new RemoteException("Cannot cast event : " + e.getMessage())
+            throw new RemoteException("Cannot cast event : " + e.getMessage());
+        }
+
+        client.update(o,arg);
+    }
+
+    public void close() throws RemoteException {
+        try {
+            socket.close();
+        }catch(IOException e){
+            throw new RemoteException("Cannote close socket " + e.getMessage());
         }
     }
 }
