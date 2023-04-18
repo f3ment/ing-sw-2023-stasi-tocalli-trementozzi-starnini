@@ -37,7 +37,6 @@ class PlayerTest {
     private TablePosition position;
     private PersonalGoal personalGoal;
     private Bookshelf bookshelf;
-    private Board board;
 
     /*
     *
@@ -84,7 +83,7 @@ class PlayerTest {
             bookshelf = new Bookshelf();
             position = new TablePosition("Luca",personalGoal,bookshelf);
             player = position.getPlayer();
-            board = new Board(4);
+            Board board = new Board(4);
             board.setBox(new Bag());
 
             //partially fill the shelf
