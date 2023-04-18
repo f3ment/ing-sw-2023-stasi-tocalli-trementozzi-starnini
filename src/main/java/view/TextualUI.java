@@ -28,6 +28,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
             playerDraw(o);
         } else if (arg.equals(Event.PLAYER_DRAW_POSITIVE)){
             System.out.println("Cards picked correctly!");
+            showBookshelf(o);
             //show picked cards
             showHand(o);
             playerInsert(o);

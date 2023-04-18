@@ -1,6 +1,5 @@
 package model;
 import model.board.Board;
-import model.board.FourBoard;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

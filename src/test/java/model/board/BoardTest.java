@@ -21,14 +21,14 @@ class BoardTest {
 
     @Test
     void setBox() {
-        Board board = new TwoBoard();
+        Board board = new Board(2);
         Bag bag = new Bag();
         assertTrue(board.setBox(bag));
 
-        board = new FourBoard();
+        board = new Board(4);
         assertTrue(board.setBox(bag));
 
-        board = new FourBoard();
+        board = new Board(4);
         assertTrue(board.setBox(bag));
 
         System.out.println("Test passato!");

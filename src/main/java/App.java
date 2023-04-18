@@ -24,6 +24,8 @@ public class App {
         ArrayList<String> names= new ArrayList<String>();
         names.add("Piero");
         names.add("Giovanni");
+        names.add("Luca");
+        names.add("Giacomo");
         try {
             model = new Game(names);
         } catch (IOException e) {
