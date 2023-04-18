@@ -10,7 +10,7 @@ public class AppClientSocket {
 
         ClientImpl client = new ClientImpl(serverStub);
 
-        //serve per eseguir ela receive dal server per eventi
+        //serve per eseguire la receive dal server per eventi
         new Thread(){
             @Override
             public void run() {

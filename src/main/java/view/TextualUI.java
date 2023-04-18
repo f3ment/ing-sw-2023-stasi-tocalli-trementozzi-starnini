@@ -11,7 +11,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
-public class TextualUI extends Observable<Event> implements Observer<GameView,Event>, Runnable {
+public class TextualUI extends Observable<Event> implements Runnable {
 
     @Override
     public void run() {
@@ -21,8 +21,8 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
 
     }
 
-    @Override
-    public void update(GameView o, Enum arg, Integer columnNumber, ArrayList coords) {
+    //update chiamato direttamente dall'oggetto che si occupa di gestire il client
+    public void update(GameView o, Enum arg) {
         if(arg.equals(Event.PLAYER_DRAW_NEGATIVE)){
             System.out.println("Le carte selezionate sono sbagliate! Riprova : ");
             playerDraw(o);
