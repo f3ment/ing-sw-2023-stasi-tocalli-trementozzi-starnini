@@ -1,4 +1,5 @@
 package controller;
+import distributed.Client;
 import model.*;
 import model.board.Board;
 import utils.Event;
@@ -11,16 +12,15 @@ import javax.swing.border.EmptyBorder;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class GameController implements Observer<TextualUI,Event> {
+public class GameController {
     private final Game game;
 
     //private final TextualUI view;;
+    //private final Client view;
     public GameController(Game game){
         this.game = game;
+        //this.view = view;
     }
-
-
-
 
     /*
     * method to draw tiles from the model board
@@ -172,8 +172,8 @@ public class GameController implements Observer<TextualUI,Event> {
         game.setCurrentPosition();
     }
 
-    @Override
-    public void update(TextualUI o, Enum arg, Integer columnNumber, ArrayList coords ) {
+    //todo gestione input non validi
+    public void update(Client o, Enum arg, Integer columnNumber, ArrayList coords ) {
         if(o==null){
             return;
         }

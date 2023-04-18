@@ -1,10 +1,6 @@
 import distributed.Server;
 import distributed.rmi.ClientImpl;
 import distributed.rmi.ServerImpl;
-import view.TextualUI;
-import utils.*;
-import model.*;
-import controller.*;
 
 import java.rmi.RemoteException;
 
@@ -19,9 +15,9 @@ public class App {
         System.out.println("|  |  |  |     |  |        .----)   |   |  |  |  | |  |____ |  `----.|  |     |  | |  |____");
         System.out.println("|__|  |__|     |__|        |_______/    |__|  |__| |_______||_______||__|     |__| |_______|");
         System.out.println("");
-
         Server server = new ServerImpl();
         ClientImpl client = new ClientImpl(server);
         client.run();
+
     }
 }
