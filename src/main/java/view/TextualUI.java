@@ -145,7 +145,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
         }while(!flag);
 
         System.out.println("The choosen order is : ");
-        order.forEach(e->System.out.println( e+1 + " " + o.getPickedCards().get(e).getType().toString().charAt(0) + " "));
+        order.forEach(e->System.out.println( e+1 + " " + o.getHand(e).toString().charAt(0) + " "));
         showBookshelf(o);
         System.out.println("Now insert in which column would you like to insert your cards. ");
         System.out.println("REMEMBER : it must be between 1 and " +o.getLenghtBookshelf() + ".");
@@ -249,8 +249,9 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
             System.out.print(i + 1 +" ");
         }
         System.out.print("\n");
-        for(ItemTiles i : o.getPickedCards()){
-            System.out.print(i.getType().toString().charAt(0) + " ");
+
+        for(int i=0;i<o.getPickedCards().size();i++){
+            System.out.print(o.getHand(i).getType().toString().charAt(0) + " ");
         }
         System.out.print("\n");
     }

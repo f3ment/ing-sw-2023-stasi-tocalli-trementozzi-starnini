@@ -42,7 +42,7 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
         return viewBoard;
     }
 
-    public List<ItemTiles[][]> getListBookshelf(){
+    public ArrayListView getListBookshelf(){
         List<Bookshelf> bookshelfList= model.getListBookshelf();
         List<ItemTiles[][]> viewBookshelfList= new ArrayList<ItemTiles[][]>();
         for(int i=0;i<bookshelfList.size();i++){
@@ -57,7 +57,12 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
                 }
             }
         }
-        return viewBookshelfList;
+        ArrayListView viewBookshelfList2= new ArrayListView((ArrayList) viewBookshelfList);
+        return viewBookshelfList2;
+    }
+
+    public ItemTiles[][] getParticularBookshelf(int x){
+        return (ItemTiles[][])getListBookshelf().get(x);
     }
 
     public ItemTiles[][] getCurrentBookshelf(){
@@ -75,31 +80,42 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
         return viewCurrentBookshelf;
     }
 
-    public ArrayList<ItemTiles> getPickedCards(){
+    public ArrayListView getPickedCards(){
         ArrayList<ItemTiles> hand= model.getPickedCards();
         ArrayList<ItemTiles> viewHand= new ArrayList<ItemTiles>();
         for(int i=0;i<hand.size();i++){
             viewHand.add(hand.get(i));
         }
-        return viewHand;
+        ArrayListView viewHandreturn = new ArrayListView(viewHand);
+        return viewHandreturn;
     }
 
-    public List<ScoringToken> getFirstCommonGoal(){
+    public ArrayListView getFirstCommonGoal(){
         Stack<ScoringToken> stack=model.getFirstCommonGoal().getStack();
-        List<ScoringToken> viewStack= new ArrayList<ScoringToken>();
+        ArrayList<ScoringToken> viewStack= new ArrayList<ScoringToken>();
         for(int i=0;i<stack.size();i++){
             viewStack.add(new ScoringToken(stack.get(i).getScore(),stack.get(i).getNumber()));
         }
-        return viewStack;
+        ArrayListView viewStack2= new ArrayListView(viewStack);
+        return viewStack2;
     }
 
-    public List<ScoringToken> getSecondCommonGoal(){
+    public ScoringToken getScoringToken1(int x){
+        return (ScoringToken) getFirstCommonGoal().get(x);
+    }
+
+    public ScoringToken getScoringToken2(int x){
+        return (ScoringToken) getSecondCommonGoal().get(x);
+    }
+
+    public ArrayListView getSecondCommonGoal(){
         Stack<ScoringToken> stack=model.getSecondCommonGoal().getStack();
-        List<ScoringToken> viewStack= new ArrayList<ScoringToken>();
+        ArrayList<ScoringToken> viewStack= new ArrayList<ScoringToken>();
         for(int i=0;i<stack.size();i++){
             viewStack.add(new ScoringToken(stack.get(i).getScore(),stack.get(i).getNumber()));
         }
-        return viewStack;
+        ArrayListView viewStack2= new ArrayListView(viewStack);
+        return viewStack2;
     }
 
     public int getHeightBookshelf(){
@@ -121,6 +137,10 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
     public PlayerView getCurrentPlayer(){
         PlayerView res = new PlayerView(model.getCurrentPosition().getPlayer().getUsername(),model.getCurrentPosition().getPlayer().getStatus(),model.getCurrentPosition().getPlayer().getScore(),model.getCurrentPosition().getPlayer().getPickedCards(),model.getCurrentPosition().getPlayer().getCurrentPosition(),model.getCurrentPosition().getPlayer().getToken());
         return res;
+    }
+
+    public ItemTiles getHand(int x){
+        return (ItemTiles)getPickedCards().get(x);
     }
 
     public boolean getEndGame(){
