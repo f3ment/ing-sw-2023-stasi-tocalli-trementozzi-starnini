@@ -43,9 +43,9 @@ public class GameController implements Observer<TextualUI,Event> {
     private boolean insert(int columnNumber, ArrayList<Integer> insertionOrder ){
         if(game.checkInsert(columnNumber)){
             //test
-            for(int i=0;i<game.getCurrentPosition().getPlayer().getPickedCards().size();i++){
+            /*for(int i=0;i<game.getCurrentPosition().getPlayer().getPickedCards().size();i++){
                 System.out.println(insertionOrder.get(i));
-            }
+            }*/
             int size= game.getCurrentPosition().getPlayer().getPickedCards().size();
             for(int i=0;i<size;i++){
                 try {

@@ -39,6 +39,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
         } else if (arg.equals(Event.PLAYER_INSERT_POSITIVE)) {
             System.out.println("Cards inserted correctly!");
             showBookshelf(o);
+            System.out.println("Your current score is : "+o.getScore());
             setChanged();
             notifyObservers(Event.PLAYER_FINISH, null, null);
         }else if(arg.equals(Event.PLAYER_FINISH)){
@@ -57,7 +58,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
             notifyObservers(Event.FINISCH_MATCH, null,null);
         }
         System.out.println( o.getCurrentPlayer().getUsername() + ", it's your turn!");
-        showBoard(o);
+        //showBoard(o);
         playerDraw(o);
     }
 
@@ -162,6 +163,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
         int nCards, x, y;
         boolean flag;
         ArrayList<Integer> coords;
+        showBoard(o);
         System.out.println("Insert how many cards do you want to draw from board : ");
         nCards = readingInt();
         if(nCards > o.getMaxDrawable()){

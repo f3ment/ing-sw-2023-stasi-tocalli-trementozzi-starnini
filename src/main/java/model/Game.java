@@ -322,8 +322,10 @@ public class Game extends Observable<Event> {
         /*
          *check if chosen tiles are adjacent
          */
-        x.stream().sorted().collect(Collectors.toList());
-        y.stream().sorted().collect(Collectors.toList());
+        //ArrayList<Integer> a=x.stream().sorted().collect(Collectors.toList(Integer));
+        //List b=y.stream().sorted().collect(Collectors.toList());
+        Collections.sort(x);
+        Collections.sort(y);
         notValid=false;
         for(int i=0;i<x.size()-1;i++){
             if(x.get(i+1)-x.get(i)!=1)

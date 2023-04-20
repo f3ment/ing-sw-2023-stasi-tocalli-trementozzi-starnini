@@ -159,11 +159,16 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
         return model.getCurrentBookshelf().getMaxDrowable();
     }
 
+    public int getScore(){
+        return this.model.getCurrentPosition().getPlayer().getScore();
+    }
+
     @Override
     public void update(Game o, Enum arg, Integer columnNumber, ArrayList coords) {
         setChanged();
         notifyObservers((Event) arg,null,null);
     }
+
     
 }
 
