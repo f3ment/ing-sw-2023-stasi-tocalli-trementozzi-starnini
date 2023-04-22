@@ -1,6 +1,3 @@
-import distributed.Server;
-import distributed.rmi.ClientImpl;
-import distributed.rmi.ServerImpl;
 import view.TextualUI;
 import utils.*;
 import model.*;

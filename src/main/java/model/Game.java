@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Game extends Observable<Event> {
     private boolean finish;
@@ -106,7 +107,7 @@ public class Game extends Observable<Event> {
         firstPlayer = tablePositionList.get(index).getPlayer();
         currentPosition = tablePositionList.get(index);
 
-        this.board = new BoardGenerator(playerNumber).getBoard();
+        this.board = new Board(playerNumber);
 
         commonGoalsGenerator = new CommonGoalsGenerator(playerNumber);
 
@@ -231,5 +232,134 @@ public class Game extends Observable<Event> {
 
     public String getWinner() {
         return winner;
+    }
+
+    public void changeCurrentPosition(){
+        //TODO Capire come gestire turni e ascoltare la view corretta
+        if(getCurrentPosition().getBookshelf().isFull()){
+            setEndGame(true);
+            getCurrentPosition().getPlayer().setScore(getCurrentPosition().getPlayer().getScore()+1);
+        }
+        validateAdjacent(getCurrentPosition());
+        validateCommonGoal(getCurrentPosition());
+        validatePersonalGoal(getCurrentPosition());
+        setCurrentPosition();
+    }
+
+
+    public boolean checkInsert(int columnNumber){
+        try {
+            getCurrentPosition().getBookshelf().setChoosenColumn(columnNumber);
+            if((int)(getCurrentPosition().getBookshelf().getColumnsSize().get(columnNumber)) > (6-getCurrentPosition().getPlayer().getPickedCards().size())){
+                return false;
+            }
+            return true;
+        } catch (Exception e) {
+            //column not correct
+            return false;
+        }
+    }
+
+    public boolean checkBoardEmpty() {
+        boolean result=true;
+        for(int i=0;i<getBoard().getMaxHeight()&&result;i++){
+            for(int j=0;j<getBoard().getMaxLength()&&result;j++){
+                if(getBoard().getBox(i,j).getValid()&&getBoard().getBox(i,j).getItemContained()!=null){
+                    if(i>0&&getBoard().getBox(i-1,j).getValid()&&getBoard().getBox(i-1,j).getItemContained()!=null){
+                        result=false;
+                    }
+                    if(i<getBoard().getMaxHeight()-1 &&getBoard().getBox(i+1,j).getValid()&&getBoard().getBox(i+1,j).getItemContained()!=null){
+                        result=false;
+                    }
+                    if(j>0&&getBoard().getBox(i,j+1).getValid()&&getBoard().getBox(i,j+1).getItemContained()!=null){
+                        result=false;
+                    }
+                    if(j<getBoard().getMaxLength()-1&&getBoard().getBox(i-1,j).getValid()&&getBoard().getBox(i-1,j).getItemContained()!=null){
+                        result=false;
+                    }
+
+                }
+            }
+        }
+        return result;
+    }
+
+    /*
+     *method that checks the board's coordinates chosen by the
+     *plyer from where to pick the tiles: coords should contain
+     * one , two or three pairs of coordinates based on the player choice
+     * [[int x1,int y1],[int x2,int y2],[int x3 ,int y3]]
+     */
+    public boolean checkDraw(ArrayList<ArrayList<Integer>> coords){
+        /*
+         * check if there is a column in the shelf with enough space to insert all the chosen tiles
+         * if not return false
+         */
+        /*
+         *check if chosen tiles are on the same row
+         */
+        boolean notValid = false;
+        ArrayList<Integer> x = new ArrayList<Integer>();
+        ArrayList<Integer> y = new ArrayList<Integer>();
+        ArrayList<ItemTiles> validCards = new ArrayList<ItemTiles>();
+        for(int i=0;i<coords.size();i++){
+            x.add(coords.get(i).get(0));
+            y.add(coords.get(i).get(1));
+            if(coords.get(0).get(0) != coords.get(i).get(0)) {
+                notValid = true;
+                break;
+            }
+        }
+        if(notValid){
+            /*
+             *check if chosen tiles are on the same column
+             */
+            for(int i=1;i<coords.size();i++){
+                if(coords.get(0).get(1) != coords.get(i).get(1))
+                    return false;
+            }
+        }
+        /*
+         *check if chosen tiles are adjacent
+         */
+        //ArrayList<Integer> a=x.stream().sorted().collect(Collectors.toList(Integer));
+        //List b=y.stream().sorted().collect(Collectors.toList());
+        Collections.sort(x);
+        Collections.sort(y);
+        notValid=false;
+        for(int i=0;i<x.size()-1;i++){
+            if(x.get(i+1)-x.get(i)!=1)
+                notValid=true;
+        }
+        if(notValid){
+            for(int i=0;i<y.size()-1;i++){
+                if(y.get(i+1)-y.get(i)!=1)
+                    return false;
+            }
+        }
+        /*
+         *check if chosen tiles have at least one free side
+         */
+        for(ArrayList<Integer> elem : coords){
+            if(!getBoard().getBox(elem.get(0),elem.get(1)).getValid()) {
+                return false;
+            }else{
+                try{
+                    if(elem.get(0)==0||elem.get(0)==getBoard().getMaxHeight()-1||elem.get(1)==0||elem.get(1)==getBoard().getMaxLength()-1) {
+
+                    }
+                    else if((getBoard().getBox(elem.get(0)+1,elem.get(1)).getItemContained()!=null )&&
+                            getBoard().getBox(elem.get(0)-1,elem.get(1)).getItemContained()!=null &&
+                            getBoard().getBox(elem.get(0),elem.get(1)+1).getItemContained()!=null &&
+                            getBoard().getBox(elem.get(0),elem.get(1)-1).getItemContained()!=null){
+                        return false;
+                    }
+                }catch (IndexOutOfBoundsException e){
+                    return false;
+                }
+
+            }
+        }
+        return true;
     }
 }

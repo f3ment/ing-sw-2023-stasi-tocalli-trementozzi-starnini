@@ -28,6 +28,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
             playerDraw(o);
         } else if (arg.equals(Event.PLAYER_DRAW_POSITIVE)){
             System.out.println("Cards picked correctly!");
+            showBookshelf(o);
             //show picked cards
             showHand(o);
             playerInsert(o);
@@ -38,6 +39,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
         } else if (arg.equals(Event.PLAYER_INSERT_POSITIVE)) {
             System.out.println("Cards inserted correctly!");
             showBookshelf(o);
+            System.out.println("Your current score is : "+o.getScore());
             setChanged();
             notifyObservers(Event.PLAYER_FINISH, null, null);
         }else if(arg.equals(Event.PLAYER_FINISH)){
@@ -56,7 +58,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
             notifyObservers(Event.FINISCH_MATCH, null,null);
         }
         System.out.println( o.getCurrentPlayer().getUsername() + ", it's your turn!");
-        showBoard(o);
+        //showBoard(o);
         playerDraw(o);
     }
 
@@ -145,7 +147,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
         }while(!flag);
 
         System.out.println("The choosen order is : ");
-        order.forEach(e->System.out.println( e+1 + " " + o.getPickedCards().get(e).getType().toString().charAt(0) + " "));
+        order.forEach(e->System.out.println( e+1 + " " + o.getHand(e).toString().charAt(0) + " "));
         showBookshelf(o);
         System.out.println("Now insert in which column would you like to insert your cards. ");
         System.out.println("REMEMBER : it must be between 1 and " +o.getLenghtBookshelf() + ".");
@@ -161,6 +163,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
         int nCards, x, y;
         boolean flag;
         ArrayList<Integer> coords;
+        showBoard(o);
         System.out.println("Insert how many cards do you want to draw from board : ");
         nCards = readingInt();
         if(nCards > o.getMaxDrawable()){
@@ -249,8 +252,9 @@ public class TextualUI extends Observable<Event> implements Runnable {
             System.out.print(i + 1 +" ");
         }
         System.out.print("\n");
-        for(ItemTiles i : o.getPickedCards()){
-            System.out.print(i.getType().toString().charAt(0) + " ");
+
+        for(int i=0;i<o.getPickedCards().size();i++){
+            System.out.print(o.getHand(i).getType().toString().charAt(0) + " ");
         }
         System.out.print("\n");
     }
