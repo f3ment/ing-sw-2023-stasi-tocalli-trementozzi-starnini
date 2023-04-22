@@ -88,10 +88,6 @@ public class Board {
         return true; //board is full
     }
 
-    void setNewBox(int i, int j, boolean validate){
-        board[i][j] = new Box(validate, null);
-    }
-
     public int getMaxHeight() {
         return maxHeight;
     }
