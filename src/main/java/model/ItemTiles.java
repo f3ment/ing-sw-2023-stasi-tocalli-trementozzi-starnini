@@ -1,6 +1,8 @@
 package model;
 
-public class ItemTiles {
+import java.io.Serializable;
+
+public class ItemTiles implements Serializable {
     final private Type itemType;
     final private int id;
     //todo possono esistere carte diverse

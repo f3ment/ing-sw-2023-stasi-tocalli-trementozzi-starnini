@@ -8,13 +8,10 @@ import model.goals.PersonalGoal;
 import utils.Event;
 import utils.Observable;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
-public class Game extends Observable<Event> {
+public class Game extends Observable<Event> implements Serializable {
     private boolean finish;
     private final int playerNumber;
     private TablePosition currentPosition;
@@ -40,28 +37,25 @@ public class Game extends Observable<Event> {
 
 
 
-
-    /*
-     * Config file opening
-     * */
-    String configFilePath = "./src/main/resources/config.properties";
-    Properties prop = new Properties();
-
-    FileInputStream ip;
-
-    {
-        try {
-            ip = new FileInputStream(configFilePath);
-            prop.load(ip);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public Game(ArrayList<String> usernames) throws IOException {
         super();
+        /*
+         * Config file opening
+         * */
+        String configFilePath = "./src/main/resources/config.properties";
+        Properties prop = new Properties();
+        FileInputStream ip;
+        {
+            try {
+                ip = new FileInputStream(configFilePath);
+                prop.load(ip);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         Random randomInt = new Random();
         int index;
         boolean[] nums= new boolean[12];

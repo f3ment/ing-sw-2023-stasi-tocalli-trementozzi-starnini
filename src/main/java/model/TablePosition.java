@@ -1,8 +1,11 @@
 package model;
 
 import model.goals.PersonalGoal;
+
+import java.io.Serializable;
+
 //todo test
-public class TablePosition {
+public class TablePosition implements Serializable {
     private final Player currentPlayer;
     private final PersonalGoal currentPGoal;
     private final Bookshelf bookshelf;

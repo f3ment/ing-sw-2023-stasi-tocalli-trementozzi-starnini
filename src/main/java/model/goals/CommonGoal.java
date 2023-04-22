@@ -3,9 +3,10 @@ package model.goals;
 import model.Bookshelf;
 import model.ScoringToken;
 
+import java.io.Serializable;
 import java.util.Stack;
 
-public abstract class CommonGoal{
+public abstract class CommonGoal implements Serializable {
     private int romanNumber;
     private Boolean completed;
     private Stack<ScoringToken> stack;

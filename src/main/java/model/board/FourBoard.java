@@ -8,10 +8,11 @@ import model.ItemTiles;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class FourBoard implements Board{
+public class FourBoard implements Board, Serializable {
     private Box[][] board;
     private Token token;
     private int maxLength, maxHeight;
@@ -22,20 +23,21 @@ public class FourBoard implements Board{
     String configFilePath = "./src/main/resources/config.properties";
     Properties prop = new Properties();
 
-    FileInputStream ip;
 
-    {
-        try {
-            ip = new FileInputStream(configFilePath);
-            prop.load(ip);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public FourBoard(){
+        FileInputStream ip;
+
+        {
+            try {
+                ip = new FileInputStream(configFilePath);
+                prop.load(ip);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         this.maxLength = Integer.parseInt(prop.getProperty("board.width"));
         this.maxHeight = Integer.parseInt(prop.getProperty("board.height"));
         board = new Box[maxLength][maxHeight];
