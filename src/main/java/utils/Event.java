@@ -1,5 +1,7 @@
 package utils;
 
-public enum Event {
+import java.io.Serializable;
+
+public enum Event implements Serializable {
     PLAYER_DRAW_POSITIVE, PLAYER_INSERT_POSITIVE,PLAYER_DRAW_NEGATIVE, PLAYER_INSERT_NEGATIVE, PLAYER_FINISH, NEW_MATCH, NEW_TURN,FINISCH_MATCH
 }
