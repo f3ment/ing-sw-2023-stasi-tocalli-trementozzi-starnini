@@ -6,6 +6,8 @@ import java.io.Serializable;
 
 //todo test
 public class TablePosition implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private final Player currentPlayer;
     private final PersonalGoal currentPGoal;
     private final Bookshelf bookshelf;

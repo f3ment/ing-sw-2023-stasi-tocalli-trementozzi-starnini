@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 public class FourBoard implements Board, Serializable {
+    private static final long serialVersionUID = 1L;
     private Box[][] board;
     private Token token;
     private int maxLength, maxHeight;
