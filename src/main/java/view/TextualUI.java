@@ -118,7 +118,7 @@ public class TextualUI extends Observable<Event> implements Observer<GameView,Ev
         do{
             flag = true;
             System.out.println("Insert in which order do you want to insert cards : ");
-
+            order.clear();
             for (int i = 0; i < o.getPickedCards().size(); i++) {
                 System.out.print("Insert the index of the " + (i + 1) + " card to insert : ");
                 int index = readingInt();
