@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 public class Bookshelf implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Boolean full;
     private final int length , height;
     private ArrayList<Integer> actualColumnLength; //ogni colonna è rappresentato da un numero per gli elementi contenuti

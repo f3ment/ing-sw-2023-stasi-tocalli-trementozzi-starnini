@@ -6,7 +6,7 @@ import java.util.Properties;
 import java.util.Random;
 
 public class Bag implements Serializable {
-
+        private static final long serialVersionUID = 1L;
         private int id;
         private int maxCardsPerType;
 

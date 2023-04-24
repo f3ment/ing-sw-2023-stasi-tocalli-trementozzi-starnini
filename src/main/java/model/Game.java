@@ -12,6 +12,7 @@ import java.io.*;
 import java.util.*;
 
 public class Game extends Observable<Event> implements Serializable {
+    private static final long serialVersionUID = 1L;
     private boolean finish;
     private final int playerNumber;
     private TablePosition currentPosition;

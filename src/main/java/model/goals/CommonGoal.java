@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.Stack;
 
 public abstract class CommonGoal implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int romanNumber;
     private Boolean completed;
     private Stack<ScoringToken> stack;
