@@ -1,4 +1,6 @@
-package model;
+package model.LobbyManager;
+
+import model.Game;
 
 import java.util.ArrayList;
 
