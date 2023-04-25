@@ -3,7 +3,6 @@ package model.LobbyManager;
 import distributed.Client;
 import model.Game;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Lobby {
@@ -13,9 +12,10 @@ public class Lobby {
     private HashMap<String, Client> usersId;
     private Game game;
     private boolean isFull;
-    public Lobby(String username, int nPlayers){
+    public Lobby(int nPlayers, String userName, Client client){
         this.nPlayers = nPlayers;
         usersId = new HashMap<String,Client>(nPlayers);
+        usersId.put(userName,client);
         this.isFull = false;
     }
 
@@ -28,13 +28,17 @@ public class Lobby {
     }
 
     //returns true if usersId are full;
-    public void insertPlayer(Client user,String userId){
+
+    public boolean insertPlayer(Client user,String userId){
         if(!isFull){
+            if(usersId.containsKey(userId))
+                return false;
             usersId.put(new String(userId),user);
             if(usersId.size() == nPlayers){
                 isFull = true;
             }
         }
+        return true;
     }
 
     public boolean isFull() {

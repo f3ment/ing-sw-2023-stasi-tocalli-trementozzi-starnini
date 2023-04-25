@@ -67,7 +67,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         if(UserName == null){
             this.controller.update(client,event,columnNumber, coords , UserName);
         }else{
-            this.gamesManagerController.update(client,event,columnNumber,null,UserName);
+            this.gamesManagerController.AddPlayerToLobby(client,columnNumber , UserName);
         }
 
     }
