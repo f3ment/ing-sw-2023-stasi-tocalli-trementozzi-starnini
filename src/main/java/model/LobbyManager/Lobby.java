@@ -1,18 +1,21 @@
-package model;
+package model.LobbyManager;
+
+import distributed.Client;
+import model.Game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Lobby {
 
     private String id;
     private int nPlayers;
-    private ArrayList<String> usersId;
+    private HashMap<String, Client> usersId;
     private Game game;
     private boolean isFull;
     public Lobby(String username, int nPlayers){
         this.nPlayers = nPlayers;
-        usersId = new ArrayList<String>(nPlayers);
-        usersId.add(new String(username));
+        usersId = new HashMap<String,Client>(nPlayers);
         this.isFull = false;
     }
 
@@ -25,9 +28,9 @@ public class Lobby {
     }
 
     //returns true if usersId are full;
-    public void insertPlayer(String userId){
+    public void insertPlayer(Client user,String userId){
         if(!isFull){
-            usersId.add(new String(userId));
+            usersId.put(new String(userId),user);
             if(usersId.size() == nPlayers){
                 isFull = true;
             }

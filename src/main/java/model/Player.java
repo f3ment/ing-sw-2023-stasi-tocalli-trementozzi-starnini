@@ -12,6 +12,8 @@ import java.util.Properties;
 public class Player implements Serializable {
     private final String username;
     private boolean status;
+    private static final long serialVersionUID = 1L;
+
     private int score;
     private ArrayList<ItemTiles> PickedCards;
     private final TablePosition currentPosition;

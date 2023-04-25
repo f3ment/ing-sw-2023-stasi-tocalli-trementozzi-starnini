@@ -35,11 +35,13 @@ public class ClientSkeleton implements Client {
     public void update(GameView o, Event arg) throws RemoteException {
         try{
             oos.writeObject(o);
+            oos.reset();
         }catch(IOException e){
             throw new RemoteException("Cannot send event : " +e.getMessage());
         }
         try{
             oos.writeObject(arg);
+            oos.reset();
         }catch(IOException e){
             throw new RemoteException("Cannot send event : " +e.getMessage());
         }

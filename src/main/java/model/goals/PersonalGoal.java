@@ -15,6 +15,7 @@ import java.security.GeneralSecurityException;
 import java.util.Properties;
 
 public class PersonalGoal implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     /*
      * Apertura file di configurazione

@@ -1,4 +1,7 @@
 package controller;
+import model.LobbyManager.Lobby;
+import java.util.*;
+
 
 import distributed.Client;
 import utils.Event;
@@ -12,4 +15,6 @@ public class GamesManagerController {
         *
         * */
     }
+    List<Lobby> lobbies;
+
 }
