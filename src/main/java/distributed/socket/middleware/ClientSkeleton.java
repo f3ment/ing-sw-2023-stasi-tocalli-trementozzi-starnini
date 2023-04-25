@@ -71,7 +71,15 @@ public class ClientSkeleton implements Client {
         } catch (ClassNotFoundException ex) {
             throw new RuntimeException("Cannot deserialize event : " + ex.getMessage());
         }
+        String UserName;
+        try {
+            UserName =(String) ios.readObject();
+        } catch (IOException ex) {
+            throw new RuntimeException("Cannot receive event : " + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException("Cannot deserialize event : " + ex.getMessage());
+        }
+        server.update(this, e, cn, coords , UserName);
 
-        server.update(this, e, cn, coords);
     }
 }

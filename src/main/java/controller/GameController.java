@@ -1,14 +1,8 @@
 package controller;
 import distributed.Client;
 import model.*;
-import model.board.Board;
 import utils.Event;
-import utils.Observable;
-import utils.Observer;
-import view.TextualUI;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -173,7 +167,7 @@ public class GameController {
     }
 
     //todo gestione input non validi
-    public void update(Client o, Enum arg, Integer columnNumber, ArrayList coords ) {
+    public void update(Client o, Enum arg, Integer columnNumber, ArrayList coords, String userName) {
         if(o==null){
             return;
         }

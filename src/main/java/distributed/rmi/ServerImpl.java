@@ -1,6 +1,7 @@
 package distributed.rmi;
 
 import controller.GameController;
+import controller.GamesManagerController;
 import distributed.Client;
 import distributed.Server;
 import model.Game;
@@ -18,6 +19,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
     private GameController controller;
     private Game model;
+
+    private GamesManagerController gamesManagerController;
 
     public ServerImpl() throws RemoteException {
         super();
@@ -38,6 +41,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     // register si collega alla lobby
     // todo metodo da rifare
     @Override
+
     public void register(Client client) throws RemoteException{
         ArrayList<String> names = new ArrayList<>();
         names.add("Michi");
@@ -47,7 +51,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        this.model.addObserver((o,arg, columnNumber,coords) -> {
+        this.model.addObserver((o,arg, columnNumber,coords,UserName) -> {
             try {
                 client.update(new GameView(model), (Event) arg);
             } catch (RemoteException e) {
@@ -59,9 +63,18 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     }
 
     @Override
-    public void update(Client client, Event event, Integer columnNumber, ArrayList coords) throws RemoteException{
-        this.controller.update(client,event,columnNumber, coords);
+    public void update(Client client, Event event, Integer columnNumber, ArrayList coords, String UserName) throws RemoteException{
+        if(UserName == null){
+            this.controller.update(client,event,columnNumber, coords , UserName);
+        }else{
+            this.gamesManagerController.update(client,event,columnNumber,null,UserName);
+        }
+
     }
+
+
+
+
 
 
 }

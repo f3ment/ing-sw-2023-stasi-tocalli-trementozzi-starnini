@@ -49,11 +49,12 @@ public class ServerStub implements Server {
 
     //client che manda gli oggetti
     @Override
-    public void update(Client client, Event event, Integer columnNumber, ArrayList coords) throws RemoteException {
+    public void update(Client client, Event event, Integer columnNumber, ArrayList coords , String UserName) throws RemoteException {
         try{
             oos.writeObject(event);
             oos.writeObject(columnNumber);
             oos.writeObject(coords);
+            oos.writeObject(UserName);
         }catch (IOException e){
             throw new RemoteException("Cannot send event : " + e.getMessage());
         }
