@@ -271,10 +271,10 @@ public class Game extends Observable<Event> {
                     if(i<getBoard().getMaxHeight()-1 &&getBoard().getBox(i+1,j).getValid()&&getBoard().getBox(i+1,j).getItemContained()!=null){
                         result=false;
                     }
-                    if(j>0&&getBoard().getBox(i,j+1).getValid()&&getBoard().getBox(i,j+1).getItemContained()!=null){
+                    if(j>0&&getBoard().getBox(i,j-1).getValid()&&getBoard().getBox(i,j-1).getItemContained()!=null){
                         result=false;
                     }
-                    if(j<getBoard().getMaxLength()-1&&getBoard().getBox(i-1,j).getValid()&&getBoard().getBox(i-1,j).getItemContained()!=null){
+                    if(j<getBoard().getMaxLength()-1&&getBoard().getBox(i,j+1).getValid()&&getBoard().getBox(i,j+1).getItemContained()!=null){
                         result=false;
                     }
 
