@@ -17,7 +17,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
     public void run() {
         //noinspection InfiniteLoopStatement
         setChanged();
-        notifyObservers(Event.LOGIN, null, null , null);
+        notifyObservers(Event.GAME_INIT, null, null , null);
 
     }
 

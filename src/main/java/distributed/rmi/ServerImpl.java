@@ -59,29 +59,37 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     @Override
     public void update(Client client, Event event, Integer columnNumber, ArrayList coords, String UserName) throws RemoteException{
         currentLobby = this.gamesManagerController.getLobbyByClient(client);
-        if(UserName==null && currentLobby!=null ){
+        /*
+        *different clients notify players game's choices
+        */
+        if(!event.equals(Event.GAME_INIT) && !event.equals(Event.LOGIN)){
             currentLobby.getController().update(client,event,columnNumber, coords , UserName);
-        }else if(UserName !=null){
+        /*
+        * player sends nickname and number of players to join a lobby
+        * */
+        }else if(event.equals(Event.LOGIN)){
             Lobby lobby = this.gamesManagerController.addPlayerToLobby(client,columnNumber , UserName);
             if(lobby != null) {
                 lobby.getClients().stream().forEach(e -> {
                     try {
-                        e.update(null, event.LOGIN_TRUE);
+                        e.update(null, Event.LOGIN_TRUE);
                     } catch (RemoteException ex) {
                         System.err.println("Error while updating the client : " + ex.getMessage() + ". Skipping the update...");
                     }
                 });
             }else{
-                client.update(null,event.WAIT_START_OF_MATCH);
+                client.update(null,Event.WAIT_START_OF_MATCH);
             }
-
+        /*
+        * hit by the client for server connection and starting of the login procedures
+        * */
         }else{
             client.update(null, Event.LOGIN);
         }
 
     }
 
-    //TODO GESTIONE USERNAMES , IMPLEMENTAR GAME_INIT()
+    //TODO GESTIONE USERNAMES
 
 
 
