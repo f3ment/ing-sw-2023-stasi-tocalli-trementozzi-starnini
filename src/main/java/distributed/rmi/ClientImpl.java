@@ -33,10 +33,10 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
     }
 
     private void initialize(Server server)throws RemoteException{
-        //server.register(this);
-        view.addObserver((o, arg, columnNumber, coords)-> {
+        server.register(this);
+        view.addObserver((o, arg, columnNumber, coords , username)-> {
             try {
-                server.update(this, (Event) arg, columnNumber, coords , null);
+                server.update(this, (Event) arg, columnNumber, coords , username);
             } catch (RemoteException e) {
                 System.err.println("Error while updating server : " + e.getMessage() + ". Skipping the update...");
             }

@@ -205,7 +205,7 @@ public class Game extends Observable<Event> implements Serializable {
 
     public void setChangedAndNotifyObservers(Event arg) {
         setChanged();
-        notifyObservers(arg,null,null);
+        notifyObservers(arg,null,null , null);
     }
 
     public Player getFirstPlayer() {

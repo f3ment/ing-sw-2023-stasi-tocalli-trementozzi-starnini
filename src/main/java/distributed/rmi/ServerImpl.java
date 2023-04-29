@@ -1,11 +1,11 @@
 package distributed.rmi;
-
 import controller.GameController;
 import controller.GamesManagerController;
 import distributed.Client;
 import distributed.Server;
 import model.Game;
 import model.GameView;
+import model.LobbyManager.Lobby;
 import utils.Event;
 
 import java.io.IOException;
@@ -20,18 +20,29 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     private GameController controller;
     private Game model;
 
+    private Lobby currentLobby;
+
     private GamesManagerController gamesManagerController;
 
     public ServerImpl() throws RemoteException {
         super();
+        gamesManagerController = new GamesManagerController();
+        currentLobby = null;
     }
 
     public ServerImpl(int port) throws RemoteException {
         super(port);
+        gamesManagerController = new GamesManagerController();
+        currentLobby = null;
+
+
     }
 
     public ServerImpl(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
         super(port, csf, ssf);
+        gamesManagerController = new GamesManagerController();
+        currentLobby = null;
+
     }
 
 
@@ -41,36 +52,36 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     // register si collega alla lobby
     // todo metodo da rifare
     @Override
-
     public void register(Client client) throws RemoteException{
-        ArrayList<String> names = new ArrayList<>();
-        names.add("Michi");
-        names.add("giovanni");
-        try {
-            this.model = new Game(names);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        this.model.addObserver((o,arg, columnNumber,coords,UserName) -> {
-            try {
-                client.update(new GameView(model), (Event) arg);
-            } catch (RemoteException e) {
-                System.err.println("Error while updating the client : " + e.getMessage() + ". Skipping the update...");
-
-            }
-        });
-        this.controller = new GameController(model);
+        System.out.println("Client correctly registered");
     }
 
     @Override
     public void update(Client client, Event event, Integer columnNumber, ArrayList coords, String UserName) throws RemoteException{
-        if(UserName == null){
-            this.controller.update(client,event,columnNumber, coords , UserName);
+        currentLobby = this.gamesManagerController.getLobbyByClient(client);
+        if(UserName==null && currentLobby!=null ){
+            currentLobby.getController().update(client,event,columnNumber, coords , UserName);
+        }else if(UserName !=null){
+            Lobby lobby = this.gamesManagerController.addPlayerToLobby(client,columnNumber , UserName);
+            if(lobby != null) {
+                lobby.getClients().stream().forEach(e -> {
+                    try {
+                        e.update(null, event.LOGIN_TRUE);
+                    } catch (RemoteException ex) {
+                        System.err.println("Error while updating the client : " + ex.getMessage() + ". Skipping the update...");
+                    }
+                });
+            }else{
+                client.update(null,event.WAIT_START_OF_MATCH);
+            }
+
         }else{
-            this.gamesManagerController.AddPlayerToLobby(client,columnNumber , UserName);
+            client.update(null, Event.LOGIN);
         }
 
     }
+
+    //TODO GESTIONE USERNAMES , IMPLEMENTAR GAME_INIT()
 
 
 
