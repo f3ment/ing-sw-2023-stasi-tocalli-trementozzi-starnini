@@ -32,7 +32,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
         initialize(server);
     }
 
-    private void initialize(Server server)throws RemoteException{
+    private void initialize(Server server) throws RemoteException{
         server.register(this);
         view.addObserver((o, arg, columnNumber, coords , username)-> {
             try {

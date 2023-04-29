@@ -2,6 +2,9 @@ package utils;
 
 import java.io.Serializable;
 
-public enum Event implements Serializable {
+public enum Event {
+
     LOGIN ,WAIT_START_OF_MATCH ,LOGIN_TRUE ,LOGIN_FALSE, PLAYER_DRAW_POSITIVE, PLAYER_INSERT_POSITIVE,PLAYER_DRAW_NEGATIVE, PLAYER_INSERT_NEGATIVE, PLAYER_FINISH, NEW_MATCH, NEW_TURN, GAME_INIT, FINISCH_MATCH
+
+
 }

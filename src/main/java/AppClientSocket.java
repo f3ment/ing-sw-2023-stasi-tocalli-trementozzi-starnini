@@ -15,11 +15,15 @@ public class AppClientSocket {
             @Override
             public void run() {
                 while(true){
-                    try{
+                    try {
                         serverStub.receive(client);
-                    }catch (RemoteException e){
+                    } catch (RemoteException e) {
                         System.err.println("Error while receiving message from server : " + e.getMessage());
-                        // todo close socket
+                        try {
+                            serverStub.close();
+                        } catch (RemoteException ex) {
+                            System.err.println("Cannot close connection with server. Halting...");
+                        }
                         System.exit(1);
                     }
                 }

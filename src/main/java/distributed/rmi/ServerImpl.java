@@ -1,4 +1,5 @@
 package distributed.rmi;
+
 import controller.GameController;
 import controller.GamesManagerController;
 import distributed.Client;
@@ -71,14 +72,10 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
             Lobby lobby = this.gamesManagerController.addPlayerToLobby(client,columnNumber , UserName);
             if(lobby != null) {
                 lobby.getClients().stream().forEach(e -> {
-                    try {
-                        e.update(null, Event.LOGIN_TRUE);
-                    } catch (RemoteException ex) {
-                        System.err.println("Error while updating the client : " + ex.getMessage() + ". Skipping the update...");
-                    }
+                    lobby.getController().update(e, Event.LOGIN_TRUE, null, null, null);
                 });
             }else{
-                client.update(null,Event.WAIT_START_OF_MATCH);
+                client.update(null, Event.WAIT_START_OF_MATCH);
             }
         /*
         * hit by the client for server connection and starting of the login procedures

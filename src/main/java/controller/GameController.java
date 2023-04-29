@@ -208,6 +208,8 @@ public class GameController {
         }else if(arg.equals(Event.FINISCH_MATCH)){
             game.setWinner();
             game.setChangedAndNotifyObservers(Event.FINISCH_MATCH);
+        } else if (arg.equals(Event.LOGIN_TRUE)) {
+            game.setChangedAndNotifyObservers(Event.LOGIN_TRUE);
         }
     }
 
