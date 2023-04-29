@@ -9,13 +9,13 @@ import utils.Event;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 public class Lobby {
 
-    private Game game;
+    private Game model;
     private GameController gameController;
     private String id;
     private int nPlayers;
@@ -46,7 +46,7 @@ public class Lobby {
         if(!isFull){
             if(usersId.containsKey(userId))
                 return false;
-            usersId.put(new String(userId),user);
+            usersId.put(userId,user);
             if(usersId.size() == nPlayers){
                 isFull = true;
             }
@@ -58,25 +58,25 @@ public class Lobby {
         return isFull;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
+    public void setModel(Game model) {
+        this.model = model;
     }
 
-    public Collection<Client> getClients() {
-        return usersId.values();
+    public ArrayList<Client> getClients() {
+        return new ArrayList<>(usersId.values());
     }
 
     public void game_init() {
         try {
-            this.game = new Game(new ArrayList<String>(usersId.keySet()));
-            this.gameController = new GameController(game);
+            this.model = new Game(new ArrayList<String>(usersId.keySet()));
+            this.gameController = new GameController(model);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         for(Client c:usersId.values()){
-            this.game.addObserver((o,arg, columnNumber,coords,UserName) -> {
+            this.model.addObserver((o, arg, columnNumber, coords, UserName) -> {
                 try {
-                    c.update(new GameView(game), (Event) arg);
+                    c.update(new GameView(model), (Event) arg);
                 } catch (RemoteException e) {
                     System.err.println("Error while updating the client : " + e.getMessage() + ". Skipping the update...");
 

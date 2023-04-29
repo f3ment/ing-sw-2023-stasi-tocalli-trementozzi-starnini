@@ -13,6 +13,8 @@ import java.util.Scanner;
 
 public class TextualUI extends Observable<Event> implements Runnable {
 
+    private String username;
+
     @Override
     public void run() {
         //noinspection InfiniteLoopStatement
@@ -23,44 +25,50 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
     //update chiamato direttamente dall'oggetto che si occupa di gestire il client
     public void update(GameView o, Enum arg) {
-        if(arg.equals(Event.PLAYER_DRAW_NEGATIVE)){
-            System.out.println("The cards you have selected are invalid, please select other cards : ");
-            playerDraw(o);
-        } else if (arg.equals(Event.PLAYER_DRAW_POSITIVE)){
-            System.out.println("Cards picked correctly!");
-            //show picked cards
-            showHand(o);
-            playerInsert(o);
-        } else if (arg.equals(Event.PLAYER_INSERT_NEGATIVE)) {
-            System.out.println("The selected column is not valid! Retry. ");
-            showHand(o);
-            playerInsert(o);
-        } else if (arg.equals(Event.PLAYER_INSERT_POSITIVE)) {
-            System.out.println("Cards inserted correctly!");
+        if(o==null || o.getCurrentPlayer().getUsername().equals(username)){
+            if (arg.equals(Event.PLAYER_DRAW_NEGATIVE)) {
+                System.out.println("The cards you have selected are invalid, please select other cards : ");
+                playerDraw(o);
+            } else if (arg.equals(Event.PLAYER_DRAW_POSITIVE)) {
+                System.out.println("Cards picked correctly!");
+                //show picked cards
+                showHand(o);
+                playerInsert(o);
+            } else if (arg.equals(Event.PLAYER_INSERT_NEGATIVE)) {
+                System.out.println("The selected column is not valid! Retry. ");
+                showHand(o);
+                playerInsert(o);
+            } else if (arg.equals(Event.PLAYER_INSERT_POSITIVE)) {
+                System.out.println("Cards inserted correctly!");
+                showBookshelf(o);
+                setChanged();
+                notifyObservers(Event.PLAYER_FINISH, null, null, null);
+            } else if (arg.equals(Event.PLAYER_FINISH)) {
+                run();
+            } else if (arg.equals(Event.NEW_TURN)) {
+                start(o);
+            } else if (arg.equals(Event.FINISCH_MATCH)) {
+                System.out.println("---END OF THE GAME---");
+                System.out.println("THE WINNER IS ==>" + o.getWinner());
+            } else if (arg.equals(Event.LOGIN)) {
+                System.out.println("Choose your Nickname: ");
+                Scanner input = new Scanner(System.in);
+                this.username = input.nextLine();
+                System.out.println("Hi " + username.toUpperCase() + "!, Choose the number of players: ");
+                int nPlayers = readingInt();
+                setChanged();
+                notifyObservers(Event.LOGIN, nPlayers, null, username);
+            } else if (arg.equals(Event.WAIT_START_OF_MATCH)) {
+                System.out.println("Waiting for other player to join the lobby...");
+            } else if (arg.equals(Event.LOGIN_TRUE)) {
+                System.out.println("Game is starting...");
+                setChanged();
+                notifyObservers(Event.NEW_TURN, null, null, null);
+            }
+        }else{
+            System.out.println(o.getCurrentPlayer().getUsername() + " is playing, wait for your turn!");
+            showBoard(o);
             showBookshelf(o);
-            setChanged();
-            notifyObservers(Event.PLAYER_FINISH, null, null,null);
-        }else if(arg.equals(Event.PLAYER_FINISH)){
-            run();
-        }else if (arg.equals(Event.NEW_TURN)){
-            start(o);
-        }else if(arg.equals(Event.FINISCH_MATCH)){
-            System.out.println("---END OF THE GAME---");
-            System.out.println("THE WINNER IS ==>"+ o.getWinner());
-        }else if(arg.equals(Event.LOGIN)){
-            System.out.println("Choose your Nickname: ");
-            Scanner input = new Scanner(System.in);
-            String username = input.nextLine();
-            System.out.println("Hi " + username.toUpperCase() + "!, Choose the number of players: ");
-            int nPlayers = readingInt();
-            setChanged();
-            notifyObservers(Event.LOGIN, nPlayers, null,username);
-        }else if(arg.equals(Event.WAIT_START_OF_MATCH)){
-            System.out.println("Waiting for other player to join the lobby...");
-        }else if(arg.equals(Event.LOGIN_TRUE)){
-            System.out.println("Game is starting...");
-            setChanged();
-            notifyObservers(Event.NEW_TURN, null,null,null);
         }
     }
 
@@ -75,6 +83,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
     }
 
     void showBoard(GameView o){
+        System.out.println("This is the current board : ");
         System.out.print(" ");
         int a;
         for(int j =0 ; j < o.getHeightBoard(); j++){
