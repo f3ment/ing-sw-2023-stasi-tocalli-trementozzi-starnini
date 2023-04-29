@@ -14,12 +14,14 @@ public class AppClientSocket {
         new Thread(){
             @Override
             public void run() {
-                try{
-                    serverStub.receive(client);
-                }catch (RemoteException e){
-                    System.err.println("Error while receiving message from server : " + e.getMessage());
-                    // todo close socket
-                    System.exit(1);
+                while(true){
+                    try{
+                        serverStub.receive(client);
+                    }catch (RemoteException e){
+                        System.err.println("Error while receiving message from server : " + e.getMessage());
+                        // todo close socket
+                        System.exit(1);
+                    }
                 }
             }
         }.start();

@@ -25,7 +25,11 @@ public class Lobby {
         this.nPlayers = nPlayers;
         usersId = new HashMap<String,Client>(nPlayers);
         usersId.put(userName,client);
-        this.isFull = false;
+        if(usersId.size() == nPlayers){
+            isFull = true;
+        }else{
+            isFull = false;
+        }
     }
 
     public String getId() {

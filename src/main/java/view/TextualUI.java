@@ -24,7 +24,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
     //update chiamato direttamente dall'oggetto che si occupa di gestire il client
     public void update(GameView o, Enum arg) {
         if(arg.equals(Event.PLAYER_DRAW_NEGATIVE)){
-            System.out.println("Le carte selezionate sono sbagliate! Riprova : ");
+            System.out.println("The cards you have selected are invalid, please select other cards : ");
             playerDraw(o);
         } else if (arg.equals(Event.PLAYER_DRAW_POSITIVE)){
             System.out.println("Cards picked correctly!");
@@ -45,20 +45,20 @@ public class TextualUI extends Observable<Event> implements Runnable {
         }else if (arg.equals(Event.NEW_TURN)){
             start(o);
         }else if(arg.equals(Event.FINISCH_MATCH)){
-            System.out.println("END GAME");
-            System.out.println("THE WINNER IS "+ o.getWinner());
+            System.out.println("---END OF THE GAME---");
+            System.out.println("THE WINNER IS ==>"+ o.getWinner());
         }else if(arg.equals(Event.LOGIN)){
-            System.out.println("Choose with which username you are going to play: ");
+            System.out.println("Choose your Nickname: ");
             Scanner input = new Scanner(System.in);
             String username = input.nextLine();
-            System.out.println("Select how many players do you want to play with: ");
+            System.out.println("Hi " + username.toUpperCase() + "!, Choose the number of players: ");
             int nPlayers = readingInt();
             setChanged();
             notifyObservers(Event.LOGIN, nPlayers, null,username);
         }else if(arg.equals(Event.WAIT_START_OF_MATCH)){
             System.out.println("Waiting for other player to join the lobby...");
         }else if(arg.equals(Event.LOGIN_TRUE)){
-            System.out.println("Game is starting soon...");
+            System.out.println("Game is starting...");
             setChanged();
             notifyObservers(Event.NEW_TURN, null,null,null);
         }

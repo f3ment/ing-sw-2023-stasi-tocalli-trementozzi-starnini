@@ -21,7 +21,7 @@ public class GamesManagerController {
 
     public synchronized Lobby addPlayerToLobby(Client client, Integer playerNumber, String userName) {
         for(Lobby a : lobbies_list){
-            if(a.isFull()==false&&a.getnPlayers()==playerNumber&&a.insertPlayer(client,userName)){
+            if(!a.isFull() && a.getnPlayers()==playerNumber && a.insertPlayer(client,userName)){
                 lobbies.put(client, a);
                 if(checkStart(a)){
                     return a;
@@ -32,8 +32,10 @@ public class GamesManagerController {
         Lobby newLobby = new Lobby(playerNumber,userName,client);
         lobbies_list.add(newLobby);
         lobbies.put(client, newLobby);
-
-        return null;
+        if(checkStart(newLobby)){
+            return newLobby;
+        }else
+            return null;
         /*
         *
         * implementare logica controller games manager
