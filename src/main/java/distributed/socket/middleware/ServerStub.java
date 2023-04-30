@@ -26,7 +26,6 @@ public class ServerStub implements Server {
         this.port = port;
     }
 
-    @Override
     public void register(Client client) throws RemoteException {
         try {
             this.socket = new Socket(ip, port);
@@ -52,12 +51,34 @@ public class ServerStub implements Server {
     public void update(Client client, Event event, Integer columnNumber, ArrayList coords , String UserName) throws RemoteException {
         try{
             oos.writeObject(event);
-            oos.writeObject(columnNumber);
-            oos.writeObject(coords);
-            oos.writeObject(UserName);
+            oos.reset();
         }catch (IOException e){
             throw new RemoteException("Cannot send event : " + e.getMessage());
         }
+
+        try{
+            oos.writeObject(columnNumber);
+            oos.reset();
+        }catch (IOException e){
+            throw new RemoteException("Cannot send columnNumber : " + e.getMessage());
+        }
+
+        try{
+            oos.writeObject(coords);
+            oos.reset();
+        }catch (IOException e){
+            throw new RemoteException("Cannot send coords : " + e.getMessage());
+        }
+
+        try{
+            oos.writeObject(UserName);
+            oos.reset();
+            oos.flush();
+        }catch (IOException e){
+            throw new RemoteException("Cannot send UserName : " + e.getMessage());
+        }
+
+
     }
 
     public void receive(Client client) throws RemoteException{
@@ -65,9 +86,9 @@ public class ServerStub implements Server {
         try{
             o = (GameView) ios.readObject();
         }catch (IOException e ){
-            throw new RemoteException("Cannot receive event : " + e.getMessage());
+            throw new RemoteException("Cannot receive gameView : " + e.getMessage());
         }catch (ClassNotFoundException e){
-            throw new RemoteException("Cannot cast event : " + e.getMessage());
+            throw new RemoteException("Cannot cast gameView : " + e.getMessage());
         }
 
         Event arg;

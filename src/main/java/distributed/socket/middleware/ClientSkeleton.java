@@ -37,11 +37,13 @@ public class ClientSkeleton implements Client {
             oos.writeObject(o);
             oos.reset();
         }catch(IOException e){
-            throw new RemoteException("Cannot send event : " +e.getMessage());
+            throw new RemoteException("Cannot send gameview : " +e.getMessage());
         }
         try{
             oos.writeObject(arg);
             oos.reset();
+            oos.flush();
+
         }catch(IOException e){
             throw new RemoteException("Cannot send event : " +e.getMessage());
         }
