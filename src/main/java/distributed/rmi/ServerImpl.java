@@ -69,6 +69,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         * player sends nickname and number of players to join a lobby
         * */
         }else if(event.equals(Event.LOGIN)){
+            /*if(!gamesManagerController.checkUsername(UserName)){
+                client.update(null, Event.LOGIN);
+            }*/
             Lobby lobby = this.gamesManagerController.addPlayerToLobby(client,columnNumber , UserName);
             if(lobby != null) {
                     lobby.getController().update(client, Event.LOGIN_TRUE, null, null, null);

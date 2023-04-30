@@ -66,6 +66,10 @@ public class Lobby {
         return new ArrayList<>(usersId.values());
     }
 
+    /* ArrayList<String> getClientsUsername() {
+        return new ArrayList<>(usersId.keySet());
+    }*/
+
     public void game_init() {
         try {
             this.model = new Game(new ArrayList<String>(usersId.keySet()));

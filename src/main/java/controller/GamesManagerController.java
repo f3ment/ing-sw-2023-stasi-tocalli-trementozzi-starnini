@@ -54,4 +54,13 @@ public class GamesManagerController {
     public Lobby getLobbyByClient(Client client) {
         return lobbies.get(client);
     }
+
+    /*public synchronized boolean checkUsername(String username){
+        for(Lobby a : lobbies_list){
+            if(a.getClientsUsername().contains(username)){
+                return false;
+            }
+        }
+        return true;
+    }*/
 }
