@@ -1,6 +1,5 @@
 package view;
 
-import model.Box;
 import model.BoxView;
 import model.GameView;
 import model.ItemTiles;
@@ -14,6 +13,7 @@ import java.util.Scanner;
 public class TextualUI extends Observable<Event> implements Runnable {
 
     private String username;
+    private boolean myTurn = true;
 
     @Override
     public void run() {
@@ -26,6 +26,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
     //update chiamato direttamente dall'oggetto che si occupa di gestire il client
     public void update(GameView o, Enum arg) {
         if(o==null || o.getCurrentPlayer().getUsername().equals(username)){
+            myTurn = true;
             if (arg.equals(Event.PLAYER_DRAW_NEGATIVE)) {
                 System.out.println("The cards you have selected are invalid, please select other cards : ");
                 playerDraw(o);
@@ -44,10 +45,10 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 setChanged();
                 notifyObservers(Event.PLAYER_FINISH, null, null, null);
             } else if (arg.equals(Event.PLAYER_FINISH)) {
-                run();
+                start(o);
             } else if (arg.equals(Event.NEW_TURN)) {
                 start(o);
-            } else if (arg.equals(Event.FINISCH_MATCH)) {
+            } else if (arg.equals(Event.FINISH_MATCH)) {
                 System.out.println("---END OF THE GAME---");
                 System.out.println("THE WINNER IS ==>" + o.getWinner());
             } else if (arg.equals(Event.LOGIN)) {
@@ -66,16 +67,19 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 notifyObservers(Event.NEW_TURN, null, null, null);
             }
         }else{
-            System.out.println(o.getCurrentPlayer().getUsername() + " is playing, wait for your turn!");
-            showBoard(o);
-            showBookshelf(o);
+            if(myTurn){
+                myTurn = false;
+                System.out.println(o.getCurrentPlayer().getUsername() + " is playing, wait for your turn!");
+                showBoard(o);
+                //showBookshelf(o); -> non si può usare perché mostriamo la currentBookshelf che non corrisponde a quella del giocatore in attesa
+            }
         }
     }
 
     private void start(GameView o) {
         if(o.getFirstPlayer()==o.getCurrentPlayer().getUsername()&&o.getEndGame()==true){
             setChanged();
-            notifyObservers(Event.FINISCH_MATCH, null,null,null);
+            notifyObservers(Event.FINISH_MATCH, null,null,null);
         }
         System.out.println( o.getCurrentPlayer().getUsername() + ", it's your turn!");
         showBoard(o);
