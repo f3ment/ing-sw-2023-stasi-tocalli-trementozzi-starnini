@@ -1,23 +1,15 @@
 package model;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import model.board.Board;
-import model.goals.CommonGoal;
-import model.goals.PersonalGoal;
 import utils.Event;
 import utils.Observable;
 import utils.Observer;
-import view.TextualUI;
 
-import java.awt.print.Book;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
-
-public class GameView extends Observable<Event> implements Observer<Game,Event> {
+//todo serialize
+public class GameView implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final Game model;
 
     public GameView(Game model) {
@@ -25,7 +17,6 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
             throw new IllegalArgumentException();
         }
         this.model = model;
-        model.addObserver(this);
     }
     public BoxView[][] getBoard() {
         Board board=model.getBoard();
@@ -148,7 +139,7 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
     }
 
     public String getFirstPlayer(){
-        return new String(model.getFirstPlayer().getUsername());
+        return new String(model.getFirstPlayer());
     }
 
     public String getWinner(){
@@ -163,12 +154,5 @@ public class GameView extends Observable<Event> implements Observer<Game,Event> 
         return this.model.getCurrentPosition().getPlayer().getScore();
     }
 
-    @Override
-    public void update(Game o, Enum arg, Integer columnNumber, ArrayList coords) {
-        setChanged();
-        notifyObservers((Event) arg,null,null);
-    }
-
-    
 }
 

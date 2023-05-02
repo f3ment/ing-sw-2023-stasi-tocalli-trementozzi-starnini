@@ -3,41 +3,42 @@ package model;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class Bookshelf {
+public class Bookshelf implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Boolean full;
     private final int length , height;
     private ArrayList<Integer> actualColumnLength; //ogni colonna è rappresentato da un numero per gli elementi contenuti
     private ItemTiles[][] items;
     private int choosenColumn;
-
-    /*
-     * Apertura file di configurazione
-     * */
-    String configFilePath = "./src/main/resources/config.properties";
+    private int maxDrowable;
     Properties prop = new Properties();
-    FileInputStream ip;
-    {
-        try {
-            ip = new FileInputStream(configFilePath);
-            prop.load(ip);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    private int maxDrowable = Integer.parseInt(prop.getProperty("cards.maxDrowable"));
 
     public Bookshelf() throws FileNotFoundException, IOException {
+
+        /*
+         * Apertura file di configurazione
+         * */
+        String configFilePath = "./src/main/resources/config.properties";
+        FileInputStream ip;
+        {
+            try {
+                ip = new FileInputStream(configFilePath);
+                prop.load(ip);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         //this.height = 6;
         //this.length = 5;
-        String configFilePath = "./src/main/resources/config.properties";
-        Properties prop = new Properties();
-        FileInputStream ip = new FileInputStream(configFilePath);
-        prop.load(ip);
+        this.maxDrowable = Integer.parseInt(prop.getProperty("cards.maxDrowable"));
         this.height = Integer.parseInt(prop.getProperty("bookshelf.height"));
         this.length = Integer.parseInt(prop.getProperty("bookshelf.width"));
         this.items = new ItemTiles[this.height][this.length];
@@ -188,7 +189,7 @@ public class Bookshelf {
                     score = validateAdjacentRecursive(tablePosition, i + 1, 0, count, batrix, null, true, score, occupied);
                 }
                 return score;
-            } else if (batrix[i][j]==true && starting==true) {
+            } else if (batrix[i][j] && starting) {
                 if (j < this.getLength() - 1) {
                     score = validateAdjacentRecursive(tablePosition, i, j + 1, 0, batrix, null, true, score, occupied);
                 } else if (i < this.getHeight() - 1) {
@@ -196,13 +197,13 @@ public class Bookshelf {
                 }
                 return score;
 
-            } else if(batrix[i][j]==true && starting==false) {
+            } else if(batrix[i][j] && !starting) {
                 return count;
-            }else if (occupied[i][j]==true&&starting==false) {
+            }else if (occupied[i][j] && !starting) {
                 return count;
             }
         }catch(Exception e){
-            if(starting==false){
+            if(!starting){
                 return count;
             }else {
                 if (j < this.getLength() - 1) {

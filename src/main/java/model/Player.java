@@ -4,12 +4,15 @@ import model.board.Board;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class Player {
+public class Player implements Serializable {
     private final String username;
     private boolean status;
+    private static final long serialVersionUID = 1L;
+
     private int score;
     private ArrayList<ItemTiles> PickedCards;
     private final TablePosition currentPosition;
@@ -23,10 +26,11 @@ public class Player {
     String configFilePath = "./src/main/resources/config.properties";
     Properties prop = new Properties();
 
-    FileInputStream ip;
 
 
     public Player(TablePosition currentPosition,String username){
+        FileInputStream ip;
+
         {
             try {
                 ip = new FileInputStream(configFilePath);

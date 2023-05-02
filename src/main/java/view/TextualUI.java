@@ -1,6 +1,5 @@
 package view;
 
-import model.Box;
 import model.BoxView;
 import model.GameView;
 import model.ItemTiles;
@@ -13,56 +12,145 @@ import java.util.Scanner;
 
 public class TextualUI extends Observable<Event> implements Runnable {
 
+    private String username;
+    private boolean myTurn = true;
+//TODO vietare input client quando è in attesa;
     @Override
     public void run() {
+
+
+        System.out.print(Color.BLACK_BACKGROUND);
+        System.out.print(Color.RED_BOLD);
+        System.out.println(".___  ___. ____    ____         _______. __    __   _______  __       _______  __   _______ "+"\033[0m");
+        System.out.print(Color.RESET);
+        System.out.print(Color.BLACK_BACKGROUND);
+        System.out.print(Color.YELLOW_BOLD);
+        System.out.println("|   \\/   | \\   \\  /   /        /       ||  |  |  | |   ____||  |     |   ____||  | |   ____|"+"\033[0m");
+        System.out.print(Color.RESET);
+        System.out.print(Color.BLACK_BACKGROUND);
+        System.out.print(Color.GREEN_BOLD);
+        System.out.println("|  \\  /  |  \\   \\/   /        |   (----`|  |__|  | |  |__   |  |     |  |__   |  | |  |__   "+"\033[0m");
+        System.out.print(Color.RESET);
+        System.out.print(Color.BLACK_BACKGROUND);
+        System.out.print(Color.BLUE_BOLD);
+        System.out.println("|  |\\/|  |   \\_    _/          \\   \\    |   __   | |   __|  |  |     |   __|  |  | |   __|  "+"\033[0m");
+        System.out.print(Color.RESET);
+        System.out.print(Color.BLACK_BACKGROUND);
+        System.out.print(Color.MAGENTA_BOLD);
+        System.out.println("|  |  |  |     |  |        .----)   |   |  |  |  | |  |____ |  `----.|  |     |  | |  |____ "+"\033[0m");
+        System.out.print(Color.RESET);
+        System.out.print(Color.BLACK_BACKGROUND);
+        System.out.print(Color.CYAN_BOLD);
+        System.out.println("|__|  |__|     |__|        |_______/    |__|  |__| |_______||_______||__|     |__| |_______|"+"\033[0m");
+        System.out.print(Color.RESET);
+
+        System.out.println("\033[40m" + "                                                                                            " + "\33[0m");
+
+
         //noinspection InfiniteLoopStatement
         setChanged();
-        notifyObservers(Event.NEW_TURN, null, null);
+        notifyObservers(Event.GAME_INIT, null, null , null);
 
     }
 
     //update chiamato direttamente dall'oggetto che si occupa di gestire il client
     public void update(GameView o, Enum arg) {
-        if(arg.equals(Event.PLAYER_DRAW_NEGATIVE)){
-            System.out.println("Le carte selezionate sono sbagliate! Riprova : ");
-            playerDraw(o);
-        } else if (arg.equals(Event.PLAYER_DRAW_POSITIVE)){
-            System.out.println("Cards picked correctly!");
-            showBookshelf(o);
-            //show picked cards
-            showHand(o);
-            playerInsert(o);
-        } else if (arg.equals(Event.PLAYER_INSERT_NEGATIVE)) {
-            System.out.println("The selected column is not valid! Retry. ");
-            showHand(o);
-            playerInsert(o);
-        } else if (arg.equals(Event.PLAYER_INSERT_POSITIVE)) {
-            System.out.println("Cards inserted correctly!");
-            showBookshelf(o);
-            System.out.println("Your current score is : "+o.getScore());
-            setChanged();
-            notifyObservers(Event.PLAYER_FINISH, null, null);
-        }else if(arg.equals(Event.PLAYER_FINISH)){
-            run();
-        }else if (arg.equals(Event.NEW_TURN)){
-            start(o);
-        }else if(arg.equals(Event.FINISCH_MATCH)){
-            System.out.println("END GAME");
-            System.out.println("THE WINNER IS "+ o.getWinner());
+        if(o==null || o.getCurrentPlayer().getUsername().equals(username)){
+            myTurn = true;
+            if (arg.equals(Event.PLAYER_DRAW_NEGATIVE)) {
+                System.out.println("The cards you have selected are invalid, please select other cards : ");
+                playerDraw(o);
+            } else if (arg.equals(Event.PLAYER_DRAW_POSITIVE)) {
+                System.out.println("Cards picked correctly!");
+                //show picked cards
+                showHand(o);
+                playerInsert(o);
+            } else if (arg.equals(Event.PLAYER_INSERT_NEGATIVE)) {
+                System.out.println("The selected column is not valid! Retry. ");
+                showHand(o);
+                playerInsert(o);
+            } else if (arg.equals(Event.PLAYER_INSERT_POSITIVE)) {
+                System.out.println("Cards inserted correctly!");
+                showBookshelf(o);
+                setChanged();
+                notifyObservers(Event.PLAYER_FINISH, null, null, null);
+            } else if (arg.equals(Event.PLAYER_FINISH)) {
+                start(o);
+            } else if (arg.equals(Event.NEW_TURN)) {
+                start(o);
+            } else if (arg.equals(Event.FINISH_MATCH)) {
+                System.out.println("---END OF THE GAME---");
+                System.out.println("THE WINNER IS ==>" + o.getWinner());
+            } else if (arg.equals(Event.LOGIN)) {
+                System.out.println("Choose your Nickname: ");
+                Scanner input = new Scanner(System.in);
+                this.username = input.nextLine();
+                System.out.println("Hi " + username.toUpperCase() + "!, Choose the number of players: ");
+
+                int nPlayers = 0;
+                do{
+                    nPlayers = readingInt();
+                    if(nPlayers<2 || nPlayers>4){
+                        System.out.print(Color.RED);
+                        System.out.println(nPlayers + " is not valid, please try again!!");
+                        System.out.println("Choose between thoose values: 2, 3, 4.");
+                        System.out.print(Color.RESET);
+                        System.out.print("> ");
+                    }
+                }while(nPlayers<2 || nPlayers>4);
+
+                setChanged();
+                notifyObservers(Event.LOGIN, nPlayers, null, username);
+            } else if (arg.equals(Event.WAIT_START_OF_MATCH)) {
+                System.out.print(Color.YELLOW_BOLD);
+                System.out.println("Waiting for other player to join the lobby...");
+                System.out.print(Color.RESET);
+
+            } else if (arg.equals(Event.LOGIN_TRUE)) {
+                System.out.print(Color.GREEN_BOLD);
+                System.out.println("Game is starting...");
+                System.out.print(Color.RESET);
+                try {
+                    Thread.sleep(1500);
+                }catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                setChanged();
+                notifyObservers(Event.NEW_TURN, null, null, null);
+            }
+        }else{
+            if(myTurn){
+                myTurn = false;
+                System.out.print(Color.YELLOW_BOLD_BRIGHT);
+                System.out.println(o.getCurrentPlayer().getUsername() + " is playing, wait for your turn!");
+                System.out.print(Color.RESET);
+                showBoard(o);
+                //showBookshelf(o); -> non si può usare perché mostriamo la currentBookshelf che non corrisponde a quella del giocatore in attesa
+            }
         }
     }
 
     private void start(GameView o) {
+
+        Scanner input = new Scanner(System.in);
+        System.out.println("Click enter to play");
+        input.nextLine();
         if(o.getFirstPlayer()==o.getCurrentPlayer().getUsername()&&o.getEndGame()==true){
             setChanged();
-            notifyObservers(Event.FINISCH_MATCH, null,null);
+            notifyObservers(Event.FINISH_MATCH, null,null,null);
         }
-        System.out.println( o.getCurrentPlayer().getUsername() + ", it's your turn!");
-        //showBoard(o);
+        System.out.print(Color.GREEN_BOLD_BRIGHT);
+        System.out.println(o.getCurrentPlayer().getUsername() + ", it's your turn!");
+        System.out.print(Color.RESET);
+        showBoard(o);
         playerDraw(o);
     }
 
     void showBoard(GameView o){
+        System.out.print(Color.BLUE_UNDERLINED);
+        //4System.out.print(Color.GREEN);
+        System.out.println("This is the current board : ");
+        System.out.print(Color.RESET);
         System.out.print(" ");
         int a;
         for(int j =0 ; j < o.getHeightBoard(); j++){
@@ -118,7 +206,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
         do{
             flag = true;
             System.out.println("Insert in which order do you want to insert cards : ");
-
+            order.clear();
             for (int i = 0; i < o.getPickedCards().size(); i++) {
                 System.out.print("Insert the index of the " + (i + 1) + " card to insert : ");
                 int index = readingInt();
@@ -154,7 +242,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
         column = readingInt()-1;
         //choose column
         setChanged();
-        notifyObservers(Event.PLAYER_INSERT_POSITIVE, column, order);
+        notifyObservers(Event.PLAYER_INSERT_POSITIVE, column, order ,null);
 
     }
 
@@ -163,7 +251,6 @@ public class TextualUI extends Observable<Event> implements Runnable {
         int nCards, x, y;
         boolean flag;
         ArrayList<Integer> coords;
-        showBoard(o);
         System.out.println("Insert how many cards do you want to draw from board : ");
         nCards = readingInt();
         if(nCards > o.getMaxDrawable()){
@@ -243,7 +330,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
             }
         }
         setChanged();
-        notifyObservers(Event.PLAYER_DRAW_POSITIVE, null,drawen);
+        notifyObservers(Event.PLAYER_DRAW_POSITIVE, null,drawen,null);
     }
 
 

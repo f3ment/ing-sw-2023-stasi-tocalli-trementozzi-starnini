@@ -10,7 +10,7 @@ public class AppServerRMI {
         Server server = new ServerImpl();
 
         //registro della propria macchina
-        Registry registry = LocateRegistry.getRegistry();
+        Registry registry = LocateRegistry.createRegistry(1099);
         registry.rebind("server", server);
     }
 }
