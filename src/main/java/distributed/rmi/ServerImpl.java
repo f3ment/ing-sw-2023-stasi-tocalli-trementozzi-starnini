@@ -8,6 +8,7 @@ import model.Game;
 import model.GameView;
 import model.LobbyManager.Lobby;
 import utils.Event;
+import view.Color;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -54,7 +55,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     // todo metodo da rifare
     @Override
     public void register(Client client) throws RemoteException{
+        System.out.print(Color.GREEN);
         System.out.println("Client correctly registered");
+        System.out.print(Color.RESET);
     }
 
     @Override

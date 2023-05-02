@@ -1,6 +1,7 @@
 import distributed.Server;
 import distributed.rmi.ServerImpl;
 import distributed.socket.middleware.ClientSkeleton;
+import view.Color;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -28,6 +29,7 @@ public class AppServerSocket  extends UnicastRemoteObject {
 
 
     public static void main(String[] args) throws RemoteException {
+
         server = new ServerImpl();
         Thread socketThread = new Thread() {
             @Override
@@ -35,7 +37,9 @@ public class AppServerSocket  extends UnicastRemoteObject {
                 try {
                     startSocket();
                 } catch (RemoteException e) {
+                    System.out.print(Color.RED);
                     System.err.println("Cannot start socket. This protocol will be disabled.");
+                    System.out.print(Color.RESET);
                 }
             }
         };

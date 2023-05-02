@@ -17,6 +17,36 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
     @Override
     public void run() {
+
+
+        System.out.print(Color.BLACK_BACKGROUND);
+        System.out.print(Color.RED_BOLD);
+        System.out.println(".___  ___. ____    ____         _______. __    __   _______  __       _______  __   _______ "+"\033[0m");
+        System.out.print(Color.RESET);
+        System.out.print(Color.BLACK_BACKGROUND);
+        System.out.print(Color.YELLOW_BOLD);
+        System.out.println("|   \\/   | \\   \\  /   /        /       ||  |  |  | |   ____||  |     |   ____||  | |   ____|"+"\033[0m");
+        System.out.print(Color.RESET);
+        System.out.print(Color.BLACK_BACKGROUND);
+        System.out.print(Color.GREEN_BOLD);
+        System.out.println("|  \\  /  |  \\   \\/   /        |   (----`|  |__|  | |  |__   |  |     |  |__   |  | |  |__   "+"\033[0m");
+        System.out.print(Color.RESET);
+        System.out.print(Color.BLACK_BACKGROUND);
+        System.out.print(Color.BLUE_BOLD);
+        System.out.println("|  |\\/|  |   \\_    _/          \\   \\    |   __   | |   __|  |  |     |   __|  |  | |   __|  "+"\033[0m");
+        System.out.print(Color.RESET);
+        System.out.print(Color.BLACK_BACKGROUND);
+        System.out.print(Color.MAGENTA_BOLD);
+        System.out.println("|  |  |  |     |  |        .----)   |   |  |  |  | |  |____ |  `----.|  |     |  | |  |____ "+"\033[0m");
+        System.out.print(Color.RESET);
+        System.out.print(Color.BLACK_BACKGROUND);
+        System.out.print(Color.CYAN_BOLD);
+        System.out.println("|__|  |__|     |__|        |_______/    |__|  |__| |_______||_______||__|     |__| |_______|"+"\033[0m");
+        System.out.print(Color.RESET);
+
+        System.out.println("\033[40m" + "                                                                                            " + "\33[0m");
+
+
         //noinspection InfiniteLoopStatement
         setChanged();
         notifyObservers(Event.GAME_INIT, null, null , null);
@@ -56,20 +86,43 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 Scanner input = new Scanner(System.in);
                 this.username = input.nextLine();
                 System.out.println("Hi " + username.toUpperCase() + "!, Choose the number of players: ");
-                int nPlayers = readingInt();
+
+                int nPlayers = 0;
+                do{
+                    nPlayers = readingInt();
+                    if(nPlayers<2 || nPlayers>4){
+                        System.out.print(Color.RED);
+                        System.out.println(nPlayers + " is not valid, please try again!!");
+                        System.out.println("Choose between thoose values: 2, 3, 4.");
+                        System.out.print(Color.RESET);
+                        System.out.print("> ");
+                    }
+                }while(nPlayers<2 || nPlayers>4);
+
                 setChanged();
                 notifyObservers(Event.LOGIN, nPlayers, null, username);
             } else if (arg.equals(Event.WAIT_START_OF_MATCH)) {
+                System.out.print(Color.YELLOW_BOLD);
                 System.out.println("Waiting for other player to join the lobby...");
+                System.out.print(Color.RESET);
             } else if (arg.equals(Event.LOGIN_TRUE)) {
+                System.out.print(Color.GREEN_BOLD);
                 System.out.println("Game is starting...");
+                System.out.print(Color.RESET);
+                try {
+                    Thread.sleep(1500);
+                }catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 setChanged();
                 notifyObservers(Event.NEW_TURN, null, null, null);
             }
         }else{
             if(myTurn){
                 myTurn = false;
+                System.out.print(Color.YELLOW_BOLD_BRIGHT);
                 System.out.println(o.getCurrentPlayer().getUsername() + " is playing, wait for your turn!");
+                System.out.print(Color.RESET);
                 showBoard(o);
                 //showBookshelf(o); -> non si può usare perché mostriamo la currentBookshelf che non corrisponde a quella del giocatore in attesa
             }
@@ -81,13 +134,18 @@ public class TextualUI extends Observable<Event> implements Runnable {
             setChanged();
             notifyObservers(Event.FINISH_MATCH, null,null,null);
         }
-        System.out.println( o.getCurrentPlayer().getUsername() + ", it's your turn!");
+        System.out.print(Color.GREEN_BOLD_BRIGHT);
+        System.out.println(o.getCurrentPlayer().getUsername() + ", it's your turn!");
+        System.out.print(Color.RESET);
         showBoard(o);
         playerDraw(o);
     }
 
     void showBoard(GameView o){
+        System.out.print(Color.BLUE_UNDERLINED);
+        //4System.out.print(Color.GREEN);
         System.out.println("This is the current board : ");
+        System.out.print(Color.RESET);
         System.out.print(" ");
         int a;
         for(int j =0 ; j < o.getHeightBoard(); j++){
