@@ -14,7 +14,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
     private String username;
     private boolean myTurn = true;
-
+//TODO vietare input client quando è in attesa;
     @Override
     public void run() {
 
@@ -105,6 +105,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 System.out.print(Color.YELLOW_BOLD);
                 System.out.println("Waiting for other player to join the lobby...");
                 System.out.print(Color.RESET);
+
             } else if (arg.equals(Event.LOGIN_TRUE)) {
                 System.out.print(Color.GREEN_BOLD);
                 System.out.println("Game is starting...");
@@ -130,6 +131,10 @@ public class TextualUI extends Observable<Event> implements Runnable {
     }
 
     private void start(GameView o) {
+
+        Scanner input = new Scanner(System.in);
+        System.out.println("Click enter to play");
+        input.nextLine();
         if(o.getFirstPlayer()==o.getCurrentPlayer().getUsername()&&o.getEndGame()==true){
             setChanged();
             notifyObservers(Event.FINISH_MATCH, null,null,null);

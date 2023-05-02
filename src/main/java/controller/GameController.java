@@ -99,7 +99,7 @@ public class GameController {
             if(game.getCurrentPosition().getBookshelf().isFull()){
                 game.setEndGame(true);
             }
-            if(game.getEndGame() && game.getCurrentPosition().getPlayer().getUsername()==game.getFirstPlayer().getUsername()){
+            if(game.getEndGame() && game.getCurrentPosition().getPlayer().getUsername()==game.getFirstPlayer()){
                 game.setWinner();
                 game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
 
@@ -107,7 +107,7 @@ public class GameController {
             if(game.checkBoardEmpty()){
                 game.fillBoard();
             }
-            if(!game.getEndGame() || (game.getCurrentPosition().getPlayer().getUsername()!=game.getFirstPlayer().getUsername()&& game.getEndGame())) {
+            if(!game.getEndGame() || (game.getCurrentPosition().getPlayer().getUsername()!=game.getFirstPlayer()&& game.getEndGame())) {
                 changeCurrentPosition();
                 game.setChangedAndNotifyObservers(Event.PLAYER_FINISH);
             }

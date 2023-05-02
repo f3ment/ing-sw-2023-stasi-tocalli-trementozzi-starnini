@@ -17,7 +17,7 @@ public class Game extends Observable<Event> implements Serializable {
     private boolean finish;
     private final int playerNumber;
     private TablePosition currentPosition;
-    private final Player firstPlayer;
+    private final String firstPlayer;
     private final Bag bag;
     private final CommonGoal firstCommonGoal;
     private final CommonGoal secondCommonGoal;
@@ -100,7 +100,7 @@ public class Game extends Observable<Event> implements Serializable {
 
         index = randomInt.nextInt(playerNumber);
         tablePositionList.get(index).setFirstPosition(true);
-        firstPlayer = tablePositionList.get(index).getPlayer();
+        firstPlayer = tablePositionList.get(index).getPlayer().getUsername();
         currentPosition = tablePositionList.get(index);
 
         this.board = new Board(playerNumber);
@@ -209,7 +209,7 @@ public class Game extends Observable<Event> implements Serializable {
         notifyObservers(arg,null,null,null);
     }
 
-    public Player getFirstPlayer() {
+    public String getFirstPlayer() {
         return firstPlayer;
     }
 

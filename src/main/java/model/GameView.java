@@ -139,7 +139,7 @@ public class GameView implements Serializable {
     }
 
     public String getFirstPlayer(){
-        return new String(model.getFirstPlayer().getUsername());
+        return new String(model.getFirstPlayer());
     }
 
     public String getWinner(){
