@@ -8,14 +8,12 @@ import model.goals.PersonalGoal;
 import utils.Event;
 import utils.Observable;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Game extends Observable<Event> {
+public class Game extends Observable<Event> implements Serializable {
+    private static final long serialVersionUID = 1L;
     private boolean finish;
     private final int playerNumber;
     private TablePosition currentPosition;
@@ -24,7 +22,7 @@ public class Game extends Observable<Event> {
     private final CommonGoal firstCommonGoal;
     private final CommonGoal secondCommonGoal;
     private final List<TablePosition> tablePositionList;
-    private Board board;
+    private final Board board;
 
     private String winner;
 
@@ -41,28 +39,25 @@ public class Game extends Observable<Event> {
 
 
 
-
-    /*
-     * Apertura file di configurazione
-     * */
-    String configFilePath = "./src/main/resources/config.properties";
-    Properties prop = new Properties();
-
-    FileInputStream ip;
-
-    {
-        try {
-            ip = new FileInputStream(configFilePath);
-            prop.load(ip);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public Game(ArrayList<String> usernames) throws IOException {
         super();
+        /*
+         * Config file opening
+         * */
+        String configFilePath = "./src/main/resources/config.properties";
+        Properties prop = new Properties();
+        FileInputStream ip;
+        {
+            try {
+                ip = new FileInputStream(configFilePath);
+                prop.load(ip);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         Random randomInt = new Random();
         int index;
         boolean[] nums= new boolean[12];
@@ -75,7 +70,7 @@ public class Game extends Observable<Event> {
         this.bag = new Bag();
 
         //initializes the personal goal deck with 12 cards
-        //every card is an hashmap of 6 couplets of key (Type) and value (pair of coordinates)
+        //every card is a hashmap of 6 couplets of key (Type) and value (pair of coordinates)
 
         // 1. JSON file to Java object
         Map<String, Map<String, Map<String, String>>> windows = gson.fromJson(new FileReader("./src/main/resources/personalGoals.json"),
@@ -84,10 +79,12 @@ public class Game extends Observable<Event> {
         //object.forEach((key, value) -> value.values().forEach(i -> System.out.println(i.get("X"))));
 
         // Ours
-        /*object.entrySet().stream().forEach(e-> {
+        /*
+        object.entrySet().stream().forEach(e-> {
             e.getValue().entrySet().stream().map(
                     k -> k.getValue()).forEach(i -> System.out.println(i.get("X")));
-        });*/
+        });
+        */
         this.tablePositionList = new ArrayList<TablePosition>();
         ArrayList<Map<String, Map<String, String>>> windowsArr = new ArrayList<Map<String, Map<String, String>>>();
         for(int i = 0; i< windows.size(); i++){
@@ -98,7 +95,6 @@ public class Game extends Observable<Event> {
                 index =1+randomInt.nextInt(11);
             }while(nums[index-1]);
             nums[index]=true;
-            index =1+randomInt.nextInt(12);
             this.tablePositionList.add(i, new TablePosition(usernames.get(i), new PersonalGoal(windowsArr.remove(randomInt.nextInt(windowsArr.size()))), new Bookshelf()));
         }
 
@@ -210,7 +206,7 @@ public class Game extends Observable<Event> {
 
     public void setChangedAndNotifyObservers(Event arg) {
         setChanged();
-        notifyObservers(arg,null,null);
+        notifyObservers(arg,null,null,null);
     }
 
     public Player getFirstPlayer() {

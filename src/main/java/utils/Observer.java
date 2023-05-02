@@ -27,6 +27,6 @@ public interface Observer<SubjectType extends Observable<Event>, Event extends E
      *                 method.
      */
 
-    void update(SubjectType o, Enum arg , Integer columnNumber , ArrayList coords);
+    void update(SubjectType o, Enum arg , Integer columnNumber , ArrayList coords , String UserName);
 }
 

@@ -41,12 +41,5 @@ public class App {
             return;
         }
 
-        GameView modelView = new GameView(model);
-        TextualUI view = new TextualUI();
-        GameController controller = new GameController(model);
-
-        modelView.addObserver(view);
-        view.addObserver(controller);
-        view.run();
     }
 }

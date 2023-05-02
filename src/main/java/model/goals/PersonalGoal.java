@@ -3,6 +3,7 @@ package model.goals;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -13,7 +14,8 @@ import model.Type;
 import java.security.GeneralSecurityException;
 import java.util.Properties;
 
-public class PersonalGoal {
+public class PersonalGoal implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     /*
      * Apertura file di configurazione
@@ -21,21 +23,21 @@ public class PersonalGoal {
     String configFilePath = "./src/main/resources/config.properties";
     Properties prop = new Properties();
 
-    FileInputStream ip;
 
-    {
-        try {
-            ip = new FileInputStream(configFilePath);
-            prop.load(ip);
-        }catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     private Map<String, Map<String, String>> windows;
     private int done;
     public PersonalGoal(Map<String, Map<String, String>> windows){
+        FileInputStream ip;
 
+        {
+            try {
+                ip = new FileInputStream(configFilePath);
+                prop.load(ip);
+            }catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         this.windows = windows;
         this.done = 0;
     }

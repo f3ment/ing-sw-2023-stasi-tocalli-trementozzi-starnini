@@ -1,26 +1,20 @@
 package controller;
+import distributed.Client;
 import model.*;
-import model.board.Board;
 import utils.Event;
-import utils.Observable;
-import utils.Observer;
-import view.TextualUI;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class GameController implements Observer<TextualUI,Event> {
+public class GameController {
     private final Game game;
 
     //private final TextualUI view;;
+    //private final Client view;
     public GameController(Game game){
         this.game = game;
+        //this.view = view;
     }
-
-
-
 
     /*
     * method to draw tiles from the model board
@@ -81,8 +75,8 @@ public class GameController implements Observer<TextualUI,Event> {
         game.changeCurrentPosition();
     }
 
-    @Override
-    public void update(TextualUI o, Enum arg, Integer columnNumber, ArrayList coords ) {
+    //todo gestione input non validi
+    public void update(Client o, Enum arg, Integer columnNumber, ArrayList coords, String userName) {
         if(o==null){
             return;
         }
@@ -105,24 +99,26 @@ public class GameController implements Observer<TextualUI,Event> {
             if(game.getCurrentPosition().getBookshelf().isFull()){
                 game.setEndGame(true);
             }
-            if(game.getEndGame()==true&& game.getCurrentPosition().getPlayer().getUsername()==game.getFirstPlayer().getUsername()){
+            if(game.getEndGame() && game.getCurrentPosition().getPlayer().getUsername()==game.getFirstPlayer().getUsername()){
                 game.setWinner();
-                game.setChangedAndNotifyObservers(Event.FINISCH_MATCH);
+                game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
 
             }
             if(game.checkBoardEmpty()){
                 game.fillBoard();
             }
-            if(game.getEndGame()==false || (game.getCurrentPosition().getPlayer().getUsername()!=game.getFirstPlayer().getUsername()&& game.getEndGame()==true)) {
+            if(!game.getEndGame() || (game.getCurrentPosition().getPlayer().getUsername()!=game.getFirstPlayer().getUsername()&& game.getEndGame())) {
                 changeCurrentPosition();
                 game.setChangedAndNotifyObservers(Event.PLAYER_FINISH);
             }
         }else if(arg.equals(Event.NEW_TURN)){
 
             game.setChangedAndNotifyObservers(Event.NEW_TURN);
-        }else if(arg.equals(Event.FINISCH_MATCH)){
+        }else if(arg.equals(Event.FINISH_MATCH)){
             game.setWinner();
-            game.setChangedAndNotifyObservers(Event.FINISCH_MATCH);
+            game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
+        } else if (arg.equals(Event.LOGIN_TRUE)) {
+            game.setChangedAndNotifyObservers(Event.LOGIN_TRUE);
         }
     }
 
