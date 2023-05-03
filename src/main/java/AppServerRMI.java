@@ -1,5 +1,5 @@
 import distributed.Server;
-import distributed.rmi.ServerImpl;
+import distributed.ServerImpl;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;

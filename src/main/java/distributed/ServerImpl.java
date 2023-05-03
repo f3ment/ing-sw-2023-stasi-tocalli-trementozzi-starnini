@@ -1,4 +1,4 @@
-package distributed.rmi;
+package distributed;
 
 import controller.GameController;
 import controller.GamesManagerController;
