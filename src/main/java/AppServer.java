@@ -7,30 +7,37 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class AppServerSocket  extends UnicastRemoteObject {
-
+public class AppServer {
 
     private static final ExecutorService executorService = Executors.newCachedThreadPool();
     private static Server server;
 
 
-    protected AppServerSocket() throws RemoteException {
-    }
-
-    public static Server getInstance() throws RemoteException {
-        if (server == null) {
-        }
-        return server;
+    protected AppServer() throws RemoteException {
     }
 
 
     public static void main(String[] args) throws RemoteException {
-
         server = new ServerImpl();
+
+        Thread rmiThread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    startRMI();
+                } catch (RemoteException e) {
+                    System.err.println("Cannot start RMI. This protocol will be disabled.");
+                }
+            }
+        };
+
+        rmiThread.start();
+
         Thread socketThread = new Thread() {
             @Override
             public void run() {
@@ -51,37 +58,6 @@ public class AppServerSocket  extends UnicastRemoteObject {
         } catch (InterruptedException e) {
             System.err.println("No connection protocol available. Exiting...");
         }
-
-
-
-
-        /*Server server = new ServerImpl();
-        ExecutorService executorService = Executors.newCachedThreadPool();
-        try(ServerSocket serverSocket = new ServerSocket(1234)){
-            while (true) {
-                Socket socket = serverSocket.accept();
-                executorService.submit(() -> {
-                    try {
-                        ClientSkeleton clientSkeleton = new ClientSkeleton(socket);
-                        server.register(clientSkeleton);
-                        while (true) {
-                            clientSkeleton.receive(server);
-                        }
-
-                    } catch (IOException e) {
-                        System.err.println("Socket failed: " + e.getMessage() + ". Closing connection and waiting for a new one...");
-                    } finally {
-                        try {
-                            socket.close();
-                        } catch (IOException e) {
-                            System.err.println("Cannot close socket");
-                        }
-                    }
-                });
-            }
-        }catch (IOException e){
-            throw new RemoteException("Error while creating socket : " + e.getMessage());
-        }*/
     }
 
     public static void startSocket() throws RemoteException {
@@ -111,5 +87,10 @@ public class AppServerSocket  extends UnicastRemoteObject {
         } catch (IOException e) {
             throw new RemoteException("Cannot start socket server", e);
         }
+    }
+
+    private static void startRMI() throws RemoteException {
+        Registry registry = LocateRegistry.createRegistry(1099);
+        registry.rebind("server", server);
     }
 }
