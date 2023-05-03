@@ -1,4 +1,4 @@
-package distributed.rmi;
+package distributed;
 
 import distributed.Client;
 import distributed.Server;

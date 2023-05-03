@@ -1,5 +1,4 @@
-import distributed.Server;
-import distributed.rmi.ClientImpl;
+import distributed.ClientImpl;
 import distributed.socket.middleware.ServerStub;
 
 import java.rmi.RemoteException;

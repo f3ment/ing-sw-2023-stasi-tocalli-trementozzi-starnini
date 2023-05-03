@@ -1,5 +1,5 @@
 import distributed.Server;
-import distributed.rmi.ServerImpl;
+import distributed.ServerImpl;
 import distributed.socket.middleware.ClientSkeleton;
 import view.Color;
 

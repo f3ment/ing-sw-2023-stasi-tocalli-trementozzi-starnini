@@ -1,6 +1,5 @@
-import distributed.Client;
 import distributed.Server;
-import distributed.rmi.ClientImpl;
+import distributed.ClientImpl;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
