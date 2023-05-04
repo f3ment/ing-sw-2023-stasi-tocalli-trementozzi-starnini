@@ -1,5 +1,6 @@
 package view;
 
+import model.ArrayListView;
 import model.BoxView;
 import model.GameView;
 import model.ItemTiles;
@@ -10,6 +11,15 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
+/*
+1 Item = 1 cella
+CAT = GREEN_BACKGROUND_BRIGHT
+BOOKS = WHITE_BACKGROUND_BRIGHT
+GAMES = YELLOW_BACKGROUND_BRIGHT
+FRAMES = BLU_BACKGROUND_BRIGHT
+TROPHY = CYAN _BACKGROUND_BRIGHT
+PLANTS = MAGENTA_BACKGROUND_BRIGHT
+ */
 public class TextualUI extends Observable<Event> implements Runnable {
 
     private String username;
@@ -132,9 +142,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
     private void start(GameView o) {
 
-        Scanner input = new Scanner(System.in);
-        System.out.println("Click enter to play");
-        input.nextLine();
+
         if(o.getFirstPlayer()==o.getCurrentPlayer().getUsername()&&o.getEndGame()==true){
             setChanged();
             notifyObservers(Event.FINISH_MATCH, null,null,null);
@@ -146,36 +154,69 @@ public class TextualUI extends Observable<Event> implements Runnable {
         playerDraw(o);
     }
 
+    void showAllBookshelf(GameView o){
+        ArrayListView bookShelfList = o.getListBookshelf();
+        for(int i=0; i<o.getHeightBookshelf(); i++){
+
+                for(int j=0; j<o.getLenghtBookshelf(); j++){
+                    ItemTiles elem = o.getCurrentBookshelf()[i][j];
+                }
+        }
+    }
+
     void showBoard(GameView o){
         System.out.print(Color.BLUE_UNDERLINED);
         //4System.out.print(Color.GREEN);
-        System.out.println("This is the current board : ");
+        System.out.println("This is the current board :");
         System.out.print(Color.RESET);
-        System.out.print(" ");
         int a;
+        System.out.print("   ");
         for(int j =0 ; j < o.getHeightBoard(); j++){
             a=j+1;
+            System.out.print(Color.WHITE_BRIGHT);
             System.out.print(" " +a);
         }
-        System.out.print("\n");
+        System.out.print(Color.RESET + "\n");
+        System.out.print("  /");
+        for(int i=0; i<=2*o.getLenghtBoard(); i++) System.out.print("-");
+        System.out.print("\\\n");
+
         for(int i =0; i< o.getHeightBoard(); i++){
             a=i+1;
-            System.out.print(a);
-            for(int j = 0; j<o.getLenghtBoard(); j++){
+            System.out.print(a + " |");
+            for(int j = 0; j<o.getLenghtBoard(); j++) {
                 BoxView box = o.getBoard()[i][j];
-                if(box.getValid()){
+                if (box.getValid()) {
                     ItemTiles el = box.getItemContained();
                     if (el != null) {
-                        System.out.print(" " + el.getType().toString().charAt(0));
+                        //System.out.print(" " + el.getType().toString().charAt(0));
+                        switch (el.getType().toString().charAt(0)) {
+                            case 'C' -> System.out.print(" " + Color.GREEN_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
+                            case 'B' -> System.out.print(" " + Color.YELLOW_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
+                            case 'G' -> System.out.print(" " + Color.WHITE_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
+                            case 'F' -> System.out.print(" " + Color.BLUE_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
+                            case 'T' -> System.out.print(" " + Color.CYAN_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
+                            case 'P' -> System.out.print(" " + Color.MAGENTA_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
+                        }
+
                     } else {
+                        System.out.print(Color.YELLOW_BOLD);
                         System.out.print(" -");
+                        System.out.print(Color.RESET);
                     }
-                }else{
+                } else {
+                    System.out.print(Color.RED_BOLD);
                     System.out.print(" x");
+                    System.out.print(Color.RESET);
                 }
             }
-            System.out.print("\n");
+
+            System.out.print(" |\n");
         }
+        System.out.print("  \\");
+        for(int i=0; i<=2*o.getLenghtBoard(); i++) System.out.print("-");
+        System.out.print("/\n");
+
     }
 
     void showBookshelf(GameView o){
@@ -235,8 +276,18 @@ public class TextualUI extends Observable<Event> implements Runnable {
         }while(!flag);
 
         System.out.println("The choosen order is : ");
+        /*TODO: aggiustare la riga successiva perché non stampa correttamente
+        prende il riferimento all'ItemTile
+        esempio di riferimento preso:
+                                        model.ItemTiles@1612d6fb
+
+                                        quindi stampa 'm' sempre
+
+         */
         order.forEach(e->System.out.println( e+1 + " " + o.getHand(e).toString().charAt(0) + " "));
+
         showBookshelf(o);
+
         System.out.println("Now insert in which column would you like to insert your cards. ");
         System.out.println("REMEMBER : it must be between 1 and " +o.getLenghtBookshelf() + ".");
         column = readingInt()-1;
