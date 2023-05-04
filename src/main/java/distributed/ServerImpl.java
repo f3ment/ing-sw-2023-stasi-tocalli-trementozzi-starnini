@@ -10,12 +10,13 @@ import model.LobbyManager.Lobby;
 import utils.Event;
 import view.Color;
 
-import java.io.IOException;
+import java.io.*;
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class ServerImpl extends UnicastRemoteObject implements Server {
 
@@ -25,6 +26,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     private Lobby currentLobby;
 
     private GamesManagerController gamesManagerController;
+
+    String configFilePath = "./src/main/resources/usernames.properties";
+    Properties prop = new Properties();
 
     public ServerImpl() throws RemoteException {
         super();
@@ -36,6 +40,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         super(port);
         gamesManagerController = new GamesManagerController();
         currentLobby = null;
+
 
 
     }
@@ -67,14 +72,46 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         *different clients notify players game's choices
         */
         if(!event.equals(Event.GAME_INIT) && !event.equals(Event.LOGIN)){
+            //prop.remove(UserName);
+            if(event.equals(Event.FINISH_MATCH)){
+                for(String a: currentLobby.getClientsUsername()){
+                    prop.remove(a);
+                }
+            }
             currentLobby.getController().update(client,event,columnNumber, coords , UserName);
         /*
         * player sends nickname and number of players to join a lobby
         * */
         }else if(event.equals(Event.LOGIN)){
-            /*if(!gamesManagerController.checkUsername(UserName)){
+            FileInputStream ip;
+
+            {
+                try {
+                    ip = new FileInputStream(configFilePath);
+                    prop.load(ip);
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if(prop.containsKey(UserName)){
                 client.update(null, Event.LOGIN);
-            }*/
+            }
+            try {
+                InputStream in = new FileInputStream(configFilePath);
+                prop.load(in);
+            } catch (IOException ex) {
+                System.out.println(ex);
+            }
+            prop.setProperty(UserName, "1");
+            String value = prop.getProperty(UserName).trim();
+
+            try {
+                prop.store(new FileOutputStream(configFilePath), null);
+            } catch (IOException ex) {
+                System.out.println(ex);
+            }
             Lobby lobby = this.gamesManagerController.addPlayerToLobby(client,columnNumber , UserName);
             if(lobby != null) {
                     lobby.getController().update(client, Event.LOGIN_TRUE, null, null, null);

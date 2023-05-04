@@ -44,8 +44,6 @@ public class Lobby {
 
     public boolean insertPlayer(Client user,String userId){
         if(!isFull){
-            if(usersId.containsKey(userId))
-                return false;
             usersId.put(userId,user);
             if(usersId.size() == nPlayers){
                 isFull = true;
@@ -66,9 +64,9 @@ public class Lobby {
         return new ArrayList<>(usersId.values());
     }
 
-    /* ArrayList<String> getClientsUsername() {
+    public ArrayList<String> getClientsUsername() {
         return new ArrayList<>(usersId.keySet());
-    }*/
+    }
 
     public void game_init() {
         try {
