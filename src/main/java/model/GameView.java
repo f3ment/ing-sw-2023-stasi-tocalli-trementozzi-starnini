@@ -154,5 +154,8 @@ public class GameView implements Serializable {
         return this.model.getCurrentPosition().getPlayer().getScore();
     }
 
+    public int getNumPlayer(){
+        return this.model.getListBookshelf().size();
+    }
 }
 
