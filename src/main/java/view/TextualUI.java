@@ -430,7 +430,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
         Scanner input = new Scanner(System.in);
         try {
             while (System.in.available() > 0) {
-                System.in.read(new byte[System.in.available()]);
+                System.in.read(new byte[System.in.available()]);  //clear System.in
             }
         }catch (IOException e){
             System.out.println("error reading");
