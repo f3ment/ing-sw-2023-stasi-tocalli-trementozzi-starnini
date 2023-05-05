@@ -24,34 +24,35 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
     private String username;
     private boolean myTurn = true;
-//TODO vietare input client quando è in attesa;
+
+    //TODO vietare input client quando è in attesa;
     @Override
     public void run() {
 
 
         System.out.print(Color.BLACK_BACKGROUND);
         System.out.print(Color.RED_BOLD);
-        System.out.println(".___  ___. ____    ____         _______. __    __   _______  __       _______  __   _______ "+"\033[0m");
+        System.out.println(".___  ___. ____    ____         _______. __    __   _______  __       _______  __   _______ " + "\033[0m");
         System.out.print(Color.RESET);
         System.out.print(Color.BLACK_BACKGROUND);
         System.out.print(Color.YELLOW_BOLD);
-        System.out.println("|   \\/   | \\   \\  /   /        /       ||  |  |  | |   ____||  |     |   ____||  | |   ____|"+"\033[0m");
+        System.out.println("|   \\/   | \\   \\  /   /        /       ||  |  |  | |   ____||  |     |   ____||  | |   ____|" + "\033[0m");
         System.out.print(Color.RESET);
         System.out.print(Color.BLACK_BACKGROUND);
         System.out.print(Color.GREEN_BOLD);
-        System.out.println("|  \\  /  |  \\   \\/   /        |   (----`|  |__|  | |  |__   |  |     |  |__   |  | |  |__   "+"\033[0m");
+        System.out.println("|  \\  /  |  \\   \\/   /        |   (----`|  |__|  | |  |__   |  |     |  |__   |  | |  |__   " + "\033[0m");
         System.out.print(Color.RESET);
         System.out.print(Color.BLACK_BACKGROUND);
         System.out.print(Color.BLUE_BOLD);
-        System.out.println("|  |\\/|  |   \\_    _/          \\   \\    |   __   | |   __|  |  |     |   __|  |  | |   __|  "+"\033[0m");
+        System.out.println("|  |\\/|  |   \\_    _/          \\   \\    |   __   | |   __|  |  |     |   __|  |  | |   __|  " + "\033[0m");
         System.out.print(Color.RESET);
         System.out.print(Color.BLACK_BACKGROUND);
         System.out.print(Color.MAGENTA_BOLD);
-        System.out.println("|  |  |  |     |  |        .----)   |   |  |  |  | |  |____ |  `----.|  |     |  | |  |____ "+"\033[0m");
+        System.out.println("|  |  |  |     |  |        .----)   |   |  |  |  | |  |____ |  `----.|  |     |  | |  |____ " + "\033[0m");
         System.out.print(Color.RESET);
         System.out.print(Color.BLACK_BACKGROUND);
         System.out.print(Color.CYAN_BOLD);
-        System.out.println("|__|  |__|     |__|        |_______/    |__|  |__| |_______||_______||__|     |__| |_______|"+"\033[0m");
+        System.out.println("|__|  |__|     |__|        |_______/    |__|  |__| |_______||_______||__|     |__| |_______|" + "\033[0m");
         System.out.print(Color.RESET);
 
         System.out.println("\033[40m" + "                                                                                            " + "\33[0m");
@@ -59,13 +60,13 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
         //noinspection InfiniteLoopStatement
         setChanged();
-        notifyObservers(Event.GAME_INIT, null, null , null);
+        notifyObservers(Event.GAME_INIT, null, null, null);
 
     }
 
     //update chiamato direttamente dall'oggetto che si occupa di gestire il client
     public void update(GameView o, Enum arg) {
-        if(o==null || o.getCurrentPlayer().getUsername().equals(username)){
+        if (o == null || o.getCurrentPlayer().getUsername().equals(username)) {
             myTurn = true;
             if (arg.equals(Event.PLAYER_DRAW_NEGATIVE)) {
                 System.out.println("The cards you have selected are invalid, please select other cards : ");
@@ -98,16 +99,16 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 System.out.println("Hi " + username.toUpperCase() + "!, Choose the number of players: ");
 
                 int nPlayers = 0;
-                do{
+                do {
                     nPlayers = readingInt();
-                    if(nPlayers<2 || nPlayers>4){
+                    if (nPlayers < 2 || nPlayers > 4) {
                         System.out.print(Color.RED);
                         System.out.println(nPlayers + " is not valid, please try again!!");
                         System.out.println("Choose between thoose values: 2, 3, 4.");
                         System.out.print(Color.RESET);
                         System.out.print("> ");
                     }
-                }while(nPlayers<2 || nPlayers>4);
+                } while (nPlayers < 2 || nPlayers > 4);
 
                 setChanged();
                 notifyObservers(Event.LOGIN, nPlayers, null, username);
@@ -122,18 +123,19 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 System.out.print(Color.RESET);
                 try {
                     Thread.sleep(1500);
-                }catch (InterruptedException e) {
+                } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
                 setChanged();
                 notifyObservers(Event.NEW_TURN, null, null, null);
             }
-        }else{
-            if(myTurn){
+        } else {
+            if (myTurn) {
                 myTurn = false;
                 System.out.print(Color.YELLOW_BOLD_BRIGHT);
                 System.out.println(o.getCurrentPlayer().getUsername() + " is playing, wait for your turn!");
                 System.out.print(Color.RESET);
+                showAllBookshelf(o);
                 showBoard(o);
                 //showBookshelf(o); -> non si può usare perché mostriamo la currentBookshelf che non corrisponde a quella del giocatore in attesa
             }
@@ -143,60 +145,57 @@ public class TextualUI extends Observable<Event> implements Runnable {
     private void start(GameView o) {
 
 
-        if(o.getFirstPlayer()==o.getCurrentPlayer().getUsername()&&o.getEndGame()==true){
+        if (o.getFirstPlayer() == o.getCurrentPlayer().getUsername() && o.getEndGame()) {
             setChanged();
-            notifyObservers(Event.FINISH_MATCH, null,null,null);
+            notifyObservers(Event.FINISH_MATCH, null, null, null);
         }
         System.out.print(Color.GREEN_BOLD_BRIGHT);
         System.out.println(o.getCurrentPlayer().getUsername() + ", it's your turn!");
         System.out.print(Color.RESET);
+        showAllBookshelf(o);
         showBoard(o);
         playerDraw(o);
     }
 
-    void showAllBookshelf(GameView o){
-        ArrayListView bookShelfList = o.getListBookshelf();
-        for(int i=0; i<o.getHeightBookshelf(); i++){
-
-                for(int j=0; j<o.getLenghtBookshelf(); j++){
-                    ItemTiles elem = o.getCurrentBookshelf()[i][j];
-                }
-        }
-    }
-
-    void showBoard(GameView o){
+    void showBoard(GameView o) {
         System.out.print(Color.BLUE_UNDERLINED);
         //4System.out.print(Color.GREEN);
         System.out.println("This is the current board :");
         System.out.print(Color.RESET);
         int a;
         System.out.print("   ");
-        for(int j =0 ; j < o.getHeightBoard(); j++){
-            a=j+1;
+        for (int j = 0; j < o.getHeightBoard(); j++) {
+            a = j + 1;
             System.out.print(Color.WHITE_BRIGHT);
-            System.out.print(" " +a);
+            System.out.print(" " + a);
         }
         System.out.print(Color.RESET + "\n");
         System.out.print("  /");
-        for(int i=0; i<=2*o.getLenghtBoard(); i++) System.out.print("-");
+        for (int i = 0; i <= 2 * o.getLenghtBoard(); i++) System.out.print("-");
         System.out.print("\\\n");
 
-        for(int i =0; i< o.getHeightBoard(); i++){
-            a=i+1;
+        for (int i = 0; i < o.getHeightBoard(); i++) {
+            a = i + 1;
             System.out.print(a + " |");
-            for(int j = 0; j<o.getLenghtBoard(); j++) {
+            for (int j = 0; j < o.getLenghtBoard(); j++) {
                 BoxView box = o.getBoard()[i][j];
                 if (box.getValid()) {
                     ItemTiles el = box.getItemContained();
                     if (el != null) {
                         //System.out.print(" " + el.getType().toString().charAt(0));
                         switch (el.getType().toString().charAt(0)) {
-                            case 'C' -> System.out.print(" " + Color.GREEN_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                            case 'B' -> System.out.print(" " + Color.YELLOW_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                            case 'G' -> System.out.print(" " + Color.WHITE_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                            case 'F' -> System.out.print(" " + Color.BLUE_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                            case 'T' -> System.out.print(" " + Color.CYAN_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                            case 'P' -> System.out.print(" " + Color.MAGENTA_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
+                            case 'C' ->
+                                    System.out.print(" " + Color.GREEN_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
+                            case 'B' ->
+                                    System.out.print(" " + Color.YELLOW_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
+                            case 'G' ->
+                                    System.out.print(" " + Color.WHITE_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
+                            case 'F' ->
+                                    System.out.print(" " + Color.BLUE_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
+                            case 'T' ->
+                                    System.out.print(" " + Color.CYAN_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
+                            case 'P' ->
+                                    System.out.print(" " + Color.MAGENTA_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
                         }
 
                     } else {
@@ -214,19 +213,48 @@ public class TextualUI extends Observable<Event> implements Runnable {
             System.out.print(" |\n");
         }
         System.out.print("  \\");
-        for(int i=0; i<=2*o.getLenghtBoard(); i++) System.out.print("-");
+        for (int i = 0; i <= 2 * o.getLenghtBoard(); i++) System.out.print("-");
         System.out.print("/\n");
 
     }
 
-    void showBookshelf(GameView o){
-        System.out.println("This is your bookshelf : ");
-        for(int j =0 ; j < o.getLenghtBookshelf(); j++){
-            System.out.print(" " +(j+1));
+    void showAllBookshelf(GameView o) {
+        ArrayListView bookShelfList = o.getListBookshelf();
+
+        for(int n=0; n<o.getNumPlayer(); n++) {
+            for (int j = 0; j < o.getLenghtBookshelf(); j++) {
+                System.out.print(" " + (j + 1));
+            }
+            System.out.print("\t");
         }
         System.out.print("\n");
-        for(int i =0; i< o.getHeightBookshelf(); i++){
-            for(int j = 0; j<o.getLenghtBookshelf(); j++){
+        for (int i = 0; i < o.getHeightBookshelf(); i++) {
+            for (int n = 0; n < o.getNumPlayer(); n++) {
+                for (int j = 0; j < o.getLenghtBookshelf(); j++) {
+                    ItemTiles[][] curr = (ItemTiles[][]) bookShelfList.get(n);
+                    ItemTiles elem = null;
+                    try {
+                        elem = curr[i][j];
+                        System.out.print(" " + elem.getType().toString().charAt(0));
+                    } catch (Exception e) {
+                        System.out.print(" -");
+                    }
+                }
+                System.out.print("\t");
+            }
+            System.out.print("\n");
+        }
+
+    }
+
+    void showBookshelf(GameView o) {
+        System.out.println("This is your bookshelf : ");
+        for (int j = 0; j < o.getLenghtBookshelf(); j++) {
+            System.out.print(" " + (j + 1));
+        }
+        System.out.print("\n");
+        for (int i = 0; i < o.getHeightBookshelf(); i++) {
+            for (int j = 0; j < o.getLenghtBookshelf(); j++) {
                 ItemTiles el = o.getCurrentBookshelf()[i][j];
                 if (el != null) {
                     System.out.print(" " + el.getType().toString().charAt(0));
@@ -238,26 +266,25 @@ public class TextualUI extends Observable<Event> implements Runnable {
         }
     }
 
-    private void playerInsert(GameView o){
+    private void playerInsert(GameView o) {
         //scan input
         ArrayList<Integer> order = new ArrayList<>();
         int column;
         boolean flag;
         //controllo input ordine
-        do{
+        do {
             flag = true;
             System.out.println("Insert in which order do you want to insert cards : ");
             order.clear();
             for (int i = 0; i < o.getPickedCards().size(); i++) {
                 System.out.print("Insert the index of the " + (i + 1) + " card to insert : ");
                 int index = readingInt();
-                while(index<1 || index > o.getPickedCards().size()){
+                while (index < 1 || index > o.getPickedCards().size()) {
                     System.out.println("Invalid Index , insert again!");
                     index = readingInt();
                 }
-                order.add(index-1);
+                order.add(index - 1);
             }
-
 
 
             //check on order input
@@ -270,10 +297,10 @@ public class TextualUI extends Observable<Event> implements Runnable {
                     System.out.println("ERROR! Indexes inserted are not correct!");
                 }
             }
-            if(!flag){
+            if (!flag) {
                 System.out.println("Retry!");
             }
-        }while(!flag);
+        } while (!flag);
 
         System.out.println("The choosen order is : ");
         /*TODO: aggiustare la riga successiva perché non stampa correttamente
@@ -284,16 +311,16 @@ public class TextualUI extends Observable<Event> implements Runnable {
                                         quindi stampa 'm' sempre
 
          */
-        order.forEach(e->System.out.println( e+1 + " " + o.getHand(e).toString().charAt(0) + " "));
+        order.forEach(e -> System.out.println(e + 1 + " " + o.getHand(e).toString().charAt(0) + " "));
 
         showBookshelf(o);
 
         System.out.println("Now insert in which column would you like to insert your cards. ");
-        System.out.println("REMEMBER : it must be between 1 and " +o.getLenghtBookshelf() + ".");
-        column = readingInt()-1;
+        System.out.println("REMEMBER : it must be between 1 and " + o.getLenghtBookshelf() + ".");
+        column = readingInt() - 1;
         //choose column
         setChanged();
-        notifyObservers(Event.PLAYER_INSERT_POSITIVE, column, order ,null);
+        notifyObservers(Event.PLAYER_INSERT_POSITIVE, column, order, null);
 
     }
 
@@ -304,28 +331,28 @@ public class TextualUI extends Observable<Event> implements Runnable {
         ArrayList<Integer> coords;
         System.out.println("Insert how many cards do you want to draw from board : ");
         nCards = readingInt();
-        if(nCards > o.getMaxDrawable()){
+        if (nCards > o.getMaxDrawable()) {
             System.out.println("The number of cards must be minor");
-            nCards=4;
+            nCards = 4;
         }
-        while(nCards <= 0 || nCards >3){
+        while (nCards <= 0 || nCards > 3) {
             System.out.println("The number of cards must be between 1 and 3! Retry.");
             System.out.println("Insert how many cards do you want to draw from board : ");
             nCards = readingInt();
-            if(nCards > o.getMaxDrawable()){
+            if (nCards > o.getMaxDrawable()) {
                 System.out.println("The number of cards must be minor");
-                nCards=4;
+                nCards = 4;
             }
         }
-        for(int i = 0; i< nCards; i++){
+        for (int i = 0; i < nCards; i++) {
             flag = true;
             coords = new ArrayList<Integer>();
-            int z=i+1;
+            int z = i + 1;
             System.out.println("Insert the coordinates of the " + z + " card : ");
             System.out.print("x : ");
             x = readingInt();
             x--;
-            while(x>= o.getHeightBoard() || x<0){
+            while (x >= o.getHeightBoard() || x < 0) {
                 System.out.println("Not valid coordinate! Retry.");
                 System.out.print("x : ");
                 x = readingInt();
@@ -334,14 +361,14 @@ public class TextualUI extends Observable<Event> implements Runnable {
             System.out.print("y : ");
             y = readingInt();
             y--;
-            while(y>= o.getLenghtBoard() || y<0){
+            while (y >= o.getLenghtBoard() || y < 0) {
                 System.out.println("Not valid coordinate! Retry.");
                 System.out.print("y : ");
                 y = readingInt();
                 y--;
             }
 
-            if(!o.getBoard()[x][y].getValid()||o.getBoard()[x][y].getItemContained()==null){
+            if (!o.getBoard()[x][y].getValid() || o.getBoard()[x][y].getItemContained() == null) {
                 System.out.println("The chosen box is not playable! Retry.");
                 i--;
                 flag = false;
@@ -368,44 +395,43 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
             coords.add(x);
             coords.add(y);
-            for(ArrayList<Integer> el : drawen ){
-                if(el.get(0) == coords.get(0) && el.get(1) == coords.get(1)){
+            for (ArrayList<Integer> el : drawen) {
+                if (el.get(0) == coords.get(0) && el.get(1) == coords.get(1)) {
                     System.out.println("ERROR! The choosen card has already been selected! Retry.");
-                    flag = false ;
+                    flag = false;
                     i--;
                     break;
                 }
             }
-            if(flag){
+            if (flag) {
                 drawen.add(coords);
             }
         }
         setChanged();
-        notifyObservers(Event.PLAYER_DRAW_POSITIVE, null,drawen,null);
+        notifyObservers(Event.PLAYER_DRAW_POSITIVE, null, drawen, null);
     }
 
 
-    void showHand(GameView o){
-        for(int i = 0; i<o.getPickedCards().size(); i++){
-            System.out.print(i + 1 +" ");
+    void showHand(GameView o) {
+        for (int i = 0; i < o.getPickedCards().size(); i++) {
+            System.out.print(i + 1 + " ");
         }
         System.out.print("\n");
 
-        for(int i=0;i<o.getPickedCards().size();i++){
+        for (int i = 0; i < o.getPickedCards().size(); i++) {
             System.out.print(o.getHand(i).getType().toString().charAt(0) + " ");
         }
         System.out.print("\n");
     }
 
-    public int readingInt(){
+    public int readingInt() {
         int userInput;
-        while(true) {
+        while (true) {
             try {
                 Scanner input = new Scanner(System.in);
                 userInput = input.nextInt();
                 break;
-            }
-            catch(InputMismatchException | NumberFormatException ex ) {
+            } catch (InputMismatchException | NumberFormatException ex) {
                 System.out.println("Invalid Number, Please try again");
             }
         }
