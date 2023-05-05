@@ -30,6 +30,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     String configFilePath = "./src/main/resources/usernames.properties";
     Properties prop = new Properties();
 
+    private static Object syncKey = new Object();
+
     public ServerImpl() throws RemoteException {
         super();
         gamesManagerController = new GamesManagerController();
@@ -83,40 +85,49 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         * player sends nickname and number of players to join a lobby
         * */
         }else if(event.equals(Event.LOGIN)){
-            FileInputStream ip;
+            boolean correctusername = true;
+            synchronized (syncKey) {
+                FileInputStream ip;
+                {
+                    try {
+                        ip = new FileInputStream(configFilePath);
+                        prop.load(ip);
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                if (prop.containsKey(UserName)) {
+                    //client.update(null, Event.LOGIN);
+                    correctusername = false;
+                } else {
+                    try {
+                        InputStream in = new FileInputStream(configFilePath);
+                        prop.load(in);
+                    } catch (IOException ex) {
+                        System.out.println(ex);
+                    }
+                    prop.setProperty(UserName, "1");
+                    String value = prop.getProperty(UserName).trim();
 
-            {
-                try {
-                    ip = new FileInputStream(configFilePath);
-                    prop.load(ip);
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    try {
+                        prop.store(new FileOutputStream(configFilePath), null);
+                    } catch (IOException ex) {
+                        System.out.println(ex);
+                    }
                 }
             }
-            if(prop.containsKey(UserName)){
+            if (correctusername == false) {
                 client.update(null, Event.LOGIN);
-            }
-            try {
-                InputStream in = new FileInputStream(configFilePath);
-                prop.load(in);
-            } catch (IOException ex) {
-                System.out.println(ex);
-            }
-            prop.setProperty(UserName, "1");
-            String value = prop.getProperty(UserName).trim();
+            }else {
 
-            try {
-                prop.store(new FileOutputStream(configFilePath), null);
-            } catch (IOException ex) {
-                System.out.println(ex);
-            }
-            Lobby lobby = this.gamesManagerController.addPlayerToLobby(client,columnNumber , UserName);
-            if(lobby != null) {
+                Lobby lobby = this.gamesManagerController.addPlayerToLobby(client, columnNumber, UserName);
+                if (lobby != null) {
                     lobby.getController().update(client, Event.LOGIN_TRUE, null, null, null);
-            }else{
-                client.update(null, Event.WAIT_START_OF_MATCH);
+                } else {
+                    client.update(null, Event.WAIT_START_OF_MATCH);
+                }
             }
         /*
         * hit by the client for server connection and starting of the login procedures

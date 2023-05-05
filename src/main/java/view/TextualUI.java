@@ -128,7 +128,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 }
                 setChanged();
                 notifyObservers(Event.NEW_TURN, null, null, null);
-            }
+            }//else if(arg.equals())
         } else {
             if (myTurn) {
                 myTurn = false;
