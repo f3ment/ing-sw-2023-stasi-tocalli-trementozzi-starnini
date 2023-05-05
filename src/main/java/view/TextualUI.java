@@ -6,6 +6,7 @@ import model.GameView;
 import model.ItemTiles;
 import utils.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -128,7 +129,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 }
                 setChanged();
                 notifyObservers(Event.NEW_TURN, null, null, null);
-            }//else if(arg.equals())
+            }
         } else {
             if (myTurn) {
                 myTurn = false;
@@ -426,9 +427,16 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
     public int readingInt() {
         int userInput;
+        Scanner input = new Scanner(System.in);
+        try {
+            while (System.in.available() > 0) {
+                System.in.read(new byte[System.in.available()]);
+            }
+        }catch (IOException e){
+            System.out.println("error reading");
+        }
         while (true) {
             try {
-                Scanner input = new Scanner(System.in);
                 userInput = input.nextInt();
                 break;
             } catch (InputMismatchException | NumberFormatException ex) {
