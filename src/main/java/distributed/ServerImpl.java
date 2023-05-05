@@ -2,11 +2,8 @@ package distributed;
 
 import controller.GameController;
 import controller.GamesManagerController;
-import distributed.Client;
-import distributed.Server;
 import model.Game;
-import model.GameView;
-import model.LobbyManager.Lobby;
+import controller.LobbyManager.Lobby;
 import utils.Event;
 import view.Color;
 
