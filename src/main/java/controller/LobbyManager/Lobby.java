@@ -1,4 +1,4 @@
-package model.LobbyManager;
+package controller.LobbyManager;
 
 import controller.GameController;
 import distributed.Client;
