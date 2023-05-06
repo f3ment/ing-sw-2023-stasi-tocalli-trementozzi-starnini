@@ -73,7 +73,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 System.out.println("The cards you have selected are invalid, please select other cards : ");
                 playerDraw(o);
             } else if (arg.equals(Event.PLAYER_DRAW_POSITIVE)) {
-                System.out.println("Cards picked correctly!");
+                System.out.println(Color.GREEN + "Cards picked correctly!" + Color.RESET);
                 //show picked cards
                 showHand(o);
                 playerInsert(o);
@@ -276,13 +276,13 @@ public class TextualUI extends Observable<Event> implements Runnable {
         //controllo input ordine
         do {
             flag = true;
-            System.out.println("Insert in which order do you want to insert cards : ");
+            System.out.println(Color.WHITE_BRIGHT + "Insert in which order do you want to insert cards : " + Color.RESET);
             order.clear();
             for (int i = 0; i < o.getPickedCards().size(); i++) {
                 System.out.print("Insert the index of the " + (i + 1) + " card to insert : ");
                 int index = readingInt();
                 while (index < 1 || index > o.getPickedCards().size()) {
-                    System.out.println("Invalid Index , insert again!");
+                    System.out.println(Color.RED_BOLD + "Invalid Index , insert again!" + Color.RESET);
                     index = readingInt();
                 }
                 order.add(index - 1);
@@ -304,7 +304,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
             }
         } while (!flag);
 
-        System.out.println("The choosen order is : ");
+        System.out.println(Color.WHITE_BRIGHT + "The choosen order is : " + Color.RESET);
         /*TODO: aggiustare la riga successiva perché non stampa correttamente
         prende il riferimento all'ItemTile
         esempio di riferimento preso:
@@ -313,7 +313,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                                         quindi stampa 'm' sempre
 
          */
-        order.forEach(e -> System.out.println(e + 1 + " " + o.getHand(e).toString().charAt(0) + " "));
+        order.forEach(e -> System.out.println(e + 1 + " " + o.getHand(e).getType().toString().charAt(0) + " "));
 
         showBookshelf(o);
 
@@ -334,15 +334,15 @@ public class TextualUI extends Observable<Event> implements Runnable {
         System.out.println("Insert how many cards do you want to draw from board : ");
         nCards = readingInt();
         if (nCards > o.getMaxDrawable()) {
-            System.out.println("The number of cards must be minor");
+            System.out.println(Color.RED_BOLD + "Error!! The number of cards must be minor" + Color.RESET);
             nCards = 4;
         }
         while (nCards <= 0 || nCards > 3) {
-            System.out.println("The number of cards must be between 1 and 3! Retry.");
+            System.out.println(Color.RED + "The number of cards must be between " + Color.RED_BOLD + "1" + Color.RED + " and " + Color.RED_BOLD + "3" + Color.RED + "! Retry." + Color.RESET);
             System.out.println("Insert how many cards do you want to draw from board : ");
             nCards = readingInt();
             if (nCards > o.getMaxDrawable()) {
-                System.out.println("The number of cards must be minor");
+                System.out.println(Color.RED_BOLD + "Error!! The number of cards must be minor" + Color.RESET);
                 nCards = 4;
             }
         }
@@ -351,7 +351,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
             coords = new ArrayList<Integer>();
             int z = i + 1;
             System.out.println("Insert the coordinates of the " + z + " card : ");
-            System.out.print("x : ");
+            System.out.print(Color.WHITE_BOLD_BRIGHT + "x : " + Color.RESET);
             x = readingInt();
             x--;
             while (x >= o.getHeightBoard() || x < 0) {
@@ -360,7 +360,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 x = readingInt();
                 x--;
             }
-            System.out.print("y : ");
+            System.out.print(Color.WHITE_BOLD_BRIGHT + "y : " + Color.RESET);
             y = readingInt();
             y--;
             while (y >= o.getLenghtBoard() || y < 0) {
