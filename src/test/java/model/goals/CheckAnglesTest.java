@@ -16,7 +16,7 @@ class CheckAnglesTest {
     private CommonGoal cm;
     @Test
     void validate() {
-        this.cm = new CheckAngles(1,4);
+        this.cm = new CheckAngles(1,3);
 
         try{
             this.bookshelf = new Bookshelf();
@@ -49,5 +49,12 @@ class CheckAnglesTest {
 
 
         }
+    }
+
+    @Test
+    void setComplete(){
+        CommonGoal commonGoal = new CheckAngles(2,3);
+        commonGoal.setCompleted(true);
+        assertTrue(commonGoal.getCompleted());
     }
 }

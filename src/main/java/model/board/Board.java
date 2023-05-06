@@ -75,16 +75,17 @@ public class Board implements Serializable {
     public void setToken(Token token) {
         this.token = token;
     }
+
+    public Token getToken() {
+        return token;
+    }
+
     public boolean setBox(Bag bag){
         ItemTiles item;
         for(int i=0;i<this.maxHeight;i++){
             for(int j=0;j<this.maxLength;j++){
                 if(getBox(i,j).getItemContained()==null && getBox(i,j).getValid()){
-                    try{
-                        getBox(i,j).setContent(bag.extract());
-                    }catch(Exception e){
-                        return false;
-                    }
+                    getBox(i,j).setContent(bag.extract());
                 }
             }
         }

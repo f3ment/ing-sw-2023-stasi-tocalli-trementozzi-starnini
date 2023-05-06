@@ -255,7 +255,7 @@ public class Game extends Observable<Event> implements Serializable {
             return false;
         }
     }
-
+    //TODO continuo test  da qui...
     public boolean checkBoardEmpty() {
         boolean result=true;
         for(int i=0;i<getBoard().getMaxHeight()&&result;i++){
@@ -282,7 +282,7 @@ public class Game extends Observable<Event> implements Serializable {
 
     /*
      *method that checks the board's coordinates chosen by the
-     *plyer from where to pick the tiles: coords should contain
+     *player from where to pick the tiles: coords should contain
      * one , two or three pairs of coordinates based on the player choice
      * [[int x1,int y1],[int x2,int y2],[int x3 ,int y3]]
      */

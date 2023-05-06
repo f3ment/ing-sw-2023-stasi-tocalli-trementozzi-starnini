@@ -231,6 +231,123 @@ String configFilePath = "./src/main/resources/config.properties";
     }
 
 
+    @Test
+    void fillBoardTest(){
+        try{
+            usernames.clear();
+            usernames.add("mario");
+            usernames.add("luca");
+            usernames.add("dario");
+            usernames.add("matteo");
+            game = new Game(usernames);
+            game.fillBoard();
+            System.out.println("Test passato!");
+
+        }catch (Exception e){
+            System.out.println("Test fallito!");
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void getPickedCardsTest(){
+        try{
+            usernames.clear();
+            usernames.add("mario");
+            usernames.add("luca");
+            usernames.add("dario");
+            usernames.add("matteo");
+            game = new Game(usernames);
+            game.getPickedCards();
+            System.out.println("Test passato!");
+
+        }catch (Exception e){
+            System.out.println("Test fallito!");
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @Test
+    void setWinnerTest(){
+        try{
+            usernames.clear();
+            usernames.add("mario");
+            usernames.add("luca");
+            usernames.add("dario");
+            usernames.add("matteo");
+            game = new Game(usernames);
+            game.getCurrentPosition().getPlayer().setScore(10);
+            game.changeCurrentPosition();
+            game.getCurrentPosition().getPlayer().setScore(5);
+            game.setWinner();
+            assertEquals(game.getFirstPlayer(), game.getWinner());
+            System.out.println("Test passato!");
+
+        }catch (Exception e){
+            System.out.println("Test fallito!");
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @Test
+    void checkInsertTest(){
+        try{
+            usernames.clear();
+            usernames.add("mario");
+            usernames.add("luca");
+            usernames.add("dario");
+            usernames.add("matteo");
+            game = new Game(usernames);
+            game.getCurrentPosition().getPlayer().drawFromBoard(game.getBoard(),1,4);
+            game.getCurrentPosition().getPlayer().drawFromBoard(game.getBoard(),1,5);
+            assertTrue(game.checkInsert(1));
+            game.getCurrentBookshelf().setChoosenColumn(1);
+            game.getCurrentBookshelf().insert(new ItemTiles(Type.CATS,1));
+            assertTrue(game.checkInsert(1));
+            game.getCurrentBookshelf().insert(new ItemTiles(Type.CATS,1));
+            assertTrue(game.checkInsert(1));
+            game.getCurrentBookshelf().insert(new ItemTiles(Type.CATS,1));
+            assertTrue(game.checkInsert(1));
+            game.getCurrentBookshelf().insert(new ItemTiles(Type.CATS,1));
+            assertTrue(game.checkInsert(1));
+            game.getCurrentBookshelf().insert(new ItemTiles(Type.CATS,1));
+            assertFalse(game.checkInsert(1));
+            System.out.println("Test passato!");
+
+        }catch (Exception e){
+            System.out.println("Test fallito!");
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @Test
+    void checkBoardEmptyTest(){
+        try{
+            usernames.clear();
+            usernames.add("mario");
+            usernames.add("luca");
+            usernames.add("dario");
+            usernames.add("matteo");
+            game = new Game(usernames);
+            //TODO...
+            System.out.println("Test passato!");
+
+        }catch (Exception e){
+            System.out.println("Test fallito!");
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
+
+
+
+
 
 
 }
