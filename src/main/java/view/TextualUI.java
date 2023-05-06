@@ -78,11 +78,11 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 showHand(o);
                 playerInsert(o);
             } else if (arg.equals(Event.PLAYER_INSERT_NEGATIVE)) {
-                System.out.println("The selected column is not valid! Retry. ");
+                System.out.println(Color.RED + "The selected column is not valid! Retry. " + Color.RESET);
                 showHand(o);
                 playerInsert(o);
             } else if (arg.equals(Event.PLAYER_INSERT_POSITIVE)) {
-                System.out.println("Cards inserted correctly!");
+                System.out.println(Color.GREEN + "Cards inserted correctly!" + Color.RESET);
                 showBookshelf(o);
                 setChanged();
                 notifyObservers(Event.PLAYER_FINISH, null, null, null);
@@ -91,13 +91,14 @@ public class TextualUI extends Observable<Event> implements Runnable {
             } else if (arg.equals(Event.NEW_TURN)) {
                 start(o);
             } else if (arg.equals(Event.FINISH_MATCH)) {
-                System.out.println("---END OF THE GAME---");
-                System.out.println("THE WINNER IS ==>" + o.getWinner());
+                System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
+                System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + o.getWinner() + "" + Color.RESET);
             } else if (arg.equals(Event.LOGIN)) {
                 System.out.println("Choose your Nickname: ");
+                System.out.print("> ");
                 Scanner input = new Scanner(System.in);
                 this.username = input.nextLine();
-                System.out.println("Hi " + username.toUpperCase() + "!, Choose the number of players: ");
+                System.out.println("Hi" + Color.GREEN_BRIGHT + " " + username.toUpperCase() + "! " + Color.RESET +"Choose the number of players: ");
 
                 int nPlayers = 0;
                 do {
@@ -105,7 +106,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                     if (nPlayers < 2 || nPlayers > 4) {
                         System.out.print(Color.RED);
                         System.out.println(nPlayers + " is not valid, please try again!!");
-                        System.out.println("Choose between thoose values: 2, 3, 4.");
+                        System.out.println("Choose between thoose values: " + Color.RED_BOLD + "2, 3, 4.");
                         System.out.print(Color.RESET);
                         System.out.print("> ");
                     }
@@ -170,14 +171,14 @@ public class TextualUI extends Observable<Event> implements Runnable {
             System.out.print(Color.WHITE_BRIGHT);
             System.out.print(" " + a);
         }
-        System.out.print(Color.RESET + "\n");
+        System.out.print(Color.BLACK_BRIGHT + "\n");
         System.out.print("  /");
         for (int i = 0; i <= 2 * o.getLenghtBoard(); i++) System.out.print("-");
-        System.out.print("\\\n");
+        System.out.print("\\\n" + Color.RESET);
 
         for (int i = 0; i < o.getHeightBoard(); i++) {
             a = i + 1;
-            System.out.print(a + " |");
+            System.out.print(Color.WHITE_BRIGHT + "" + a + Color.BLACK_BRIGHT + " |" + Color.RESET);
             for (int j = 0; j < o.getLenghtBoard(); j++) {
                 BoxView box = o.getBoard()[i][j];
                 if (box.getValid()) {
@@ -211,11 +212,11 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 }
             }
 
-            System.out.print(" |\n");
+            System.out.print(Color.BLACK_BRIGHT + " |\n" + Color.RESET);
         }
-        System.out.print("  \\");
+        System.out.print(Color.BLACK_BRIGHT + "  \\");
         for (int i = 0; i <= 2 * o.getLenghtBoard(); i++) System.out.print("-");
-        System.out.print("/\n");
+        System.out.print("/\n" + Color.RESET);
 
     }
 
@@ -354,8 +355,8 @@ public class TextualUI extends Observable<Event> implements Runnable {
             x = readingInt();
             x--;
             while (x >= o.getHeightBoard() || x < 0) {
-                System.out.println("Not valid coordinate! Retry.");
-                System.out.print("x : ");
+                System.out.println(Color.RED_BOLD + "Not valid coordinate! Retry." + Color.RESET);
+                System.out.print(Color.WHITE_BOLD_BRIGHT + "x : " + Color.RESET);
                 x = readingInt();
                 x--;
             }
@@ -363,14 +364,14 @@ public class TextualUI extends Observable<Event> implements Runnable {
             y = readingInt();
             y--;
             while (y >= o.getLenghtBoard() || y < 0) {
-                System.out.println("Not valid coordinate! Retry.");
-                System.out.print("y : ");
+                System.out.println(Color.RED_BOLD + "Not valid coordinate! Retry." + Color.RESET);
+                System.out.print(Color.WHITE_BOLD_BRIGHT + "y : " + Color.RESET);
                 y = readingInt();
                 y--;
             }
 
             if (!o.getBoard()[x][y].getValid() || o.getBoard()[x][y].getItemContained() == null) {
-                System.out.println("The chosen box is not playable! Retry.");
+                System.out.println(Color.RED_BOLD + "The chosen box is not playable! Retry." + Color.RESET);
                 i--;
                 flag = false;
             }
@@ -398,7 +399,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
             coords.add(y);
             for (ArrayList<Integer> el : drawen) {
                 if (el.get(0) == coords.get(0) && el.get(1) == coords.get(1)) {
-                    System.out.println("ERROR! The choosen card has already been selected! Retry.");
+                    System.out.println(Color.RED_BOLD + "ERROR! " + Color.RED + "The choosen card has already been selected! Retry." + Color.RESET);
                     flag = false;
                     i--;
                     break;
