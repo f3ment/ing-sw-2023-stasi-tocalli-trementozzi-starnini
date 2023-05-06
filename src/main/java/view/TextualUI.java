@@ -224,26 +224,44 @@ public class TextualUI extends Observable<Event> implements Runnable {
         ArrayListView bookShelfList = o.getListBookshelf();
 
         for(int n=0; n<o.getNumPlayer(); n++) {
+            System.out.print(Color.WHITE_BRIGHT + "| " + Color.RESET);
             for (int j = 0; j < o.getLenghtBookshelf(); j++) {
-                System.out.print(" " + (j + 1));
+                System.out.print(Color.WHITE_BRIGHT + " " + (j + 1) + Color.RESET);
             }
-            System.out.print("\t");
+            System.out.print("  ");
         }
+        System.out.print(Color.WHITE_BRIGHT + "|" + Color.RESET);
         System.out.print("\n");
         for (int i = 0; i < o.getHeightBookshelf(); i++) {
             for (int n = 0; n < o.getNumPlayer(); n++) {
+                System.out.print(Color.WHITE_BRIGHT + "| " + Color.RESET);
                 for (int j = 0; j < o.getLenghtBookshelf(); j++) {
                     ItemTiles[][] curr = (ItemTiles[][]) bookShelfList.get(n);
                     ItemTiles elem = null;
                     try {
                         elem = curr[i][j];
-                        System.out.print(" " + elem.getType().toString().charAt(0));
+                        //System.out.print(" " + elem.getType().toString().charAt(0));
+                        switch (elem.getType().toString().charAt(0)) {
+                            case 'C' ->
+                                    System.out.print(" " + Color.GREEN_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
+                            case 'B' ->
+                                    System.out.print(" " + Color.YELLOW_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
+                            case 'G' ->
+                                    System.out.print(" " + Color.WHITE_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
+                            case 'F' ->
+                                    System.out.print(" " + Color.BLUE_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
+                            case 'T' ->
+                                    System.out.print(" " + Color.CYAN_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
+                            case 'P' ->
+                                    System.out.print(" " + Color.MAGENTA_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
+                        }
                     } catch (Exception e) {
-                        System.out.print(" -");
+                        System.out.print(Color.BLACK_BRIGHT + " -" + Color.RESET);
                     }
                 }
-                System.out.print("\t");
+                System.out.print("  ");
             }
+            System.out.print(Color.WHITE_BRIGHT + "|" + Color.RESET);
             System.out.print("\n");
         }
 
@@ -252,16 +270,31 @@ public class TextualUI extends Observable<Event> implements Runnable {
     void showBookshelf(GameView o) {
         System.out.println("This is your bookshelf : ");
         for (int j = 0; j < o.getLenghtBookshelf(); j++) {
-            System.out.print(" " + (j + 1));
+            System.out.print(Color.WHITE_BRIGHT + " " + (j + 1) + Color.RESET);
         }
         System.out.print("\n");
         for (int i = 0; i < o.getHeightBookshelf(); i++) {
             for (int j = 0; j < o.getLenghtBookshelf(); j++) {
-                ItemTiles el = o.getCurrentBookshelf()[i][j];
+                ItemTiles el;
+                el = o.getCurrentBookshelf()[i][j];
                 if (el != null) {
-                    System.out.print(" " + el.getType().toString().charAt(0));
+                    //System.out.print(" " + el.getType().toString().charAt(0));
+                    switch (el.getType().toString().charAt(0)) {
+                        case 'C' ->
+                                System.out.print(" " + Color.GREEN_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
+                        case 'B' ->
+                                System.out.print(" " + Color.YELLOW_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
+                        case 'G' ->
+                                System.out.print(" " + Color.WHITE_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
+                        case 'F' ->
+                                System.out.print(" " + Color.BLUE_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
+                        case 'T' ->
+                                System.out.print(" " + Color.CYAN_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
+                        case 'P' ->
+                                System.out.print(" " + Color.MAGENTA_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
+                    }
                 } else {
-                    System.out.print(" -");
+                    System.out.print(Color.BLACK_BRIGHT + " -" + Color.RESET);
                 }
             }
             System.out.print("\n");
@@ -279,10 +312,10 @@ public class TextualUI extends Observable<Event> implements Runnable {
             System.out.println(Color.WHITE_BRIGHT + "Insert in which order do you want to insert cards : " + Color.RESET);
             order.clear();
             for (int i = 0; i < o.getPickedCards().size(); i++) {
-                System.out.print("Insert the index of the " + (i + 1) + " card to insert : ");
+                System.out.print("Insert the index of the " + Color.CYAN_BOLD + (i + 1) + Color.RESET +  " card to insert : ");
                 int index = readingInt();
                 while (index < 1 || index > o.getPickedCards().size()) {
-                    System.out.println(Color.RED_BOLD + "Invalid Index , insert again!" + Color.RESET);
+                    System.out.println(Color.RED_BOLD + "Invalid Index , insert again!\n> " + Color.RESET);
                     index = readingInt();
                 }
                 order.add(index - 1);
@@ -291,16 +324,16 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
             //check on order input
             if (order.stream().sorted().distinct().count() != o.getPickedCards().size()) {
-                System.out.println("ERROR! Found many occurrencies of the same index!");
+                System.out.println(Color.RED_BOLD + "ERROR!" + Color.RED + " Found many occurrencies of the same index!" + Color.RESET);
                 flag = false;
             } else {
                 flag = !order.stream().allMatch(e -> e < 0 || e >= o.getPickedCards().size());
                 if (!flag) {
-                    System.out.println("ERROR! Indexes inserted are not correct!");
+                    System.out.println(Color.RED_BOLD + "ERROR!" + Color.RED + " Indexes inserted are not correct!" + Color.RESET);
                 }
             }
             if (!flag) {
-                System.out.println("Retry!");
+                System.out.println(Color.RED_UNDERLINED + "Retry!" + Color.RESET);
             }
         } while (!flag);
 
