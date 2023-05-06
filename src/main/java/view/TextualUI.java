@@ -67,6 +67,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
     //update chiamato direttamente dall'oggetto che si occupa di gestire il client
     public void update(GameView o, Enum arg) {
+        int i = 0;
         if (o == null || o.getCurrentPlayer().getUsername().equals(username)) {
             myTurn = true;
             if (arg.equals(Event.PLAYER_DRAW_NEGATIVE)) {
@@ -94,6 +95,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
                 System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + o.getWinner() + "" + Color.RESET);
             } else if (arg.equals(Event.LOGIN)) {
+                //System.out.println(Color.RED_BRIGHT + "Username NOT valid! Try again..." + Color.RESET)
                 System.out.println("Choose your Nickname: ");
                 System.out.print("> ");
                 Scanner input = new Scanner(System.in);
@@ -106,7 +108,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                     if (nPlayers < 2 || nPlayers > 4) {
                         System.out.print(Color.RED);
                         System.out.println(nPlayers + " is not valid, please try again!!");
-                        System.out.println("Choose between thoose values: " + Color.RED_BOLD + "2, 3, 4.");
+                        System.out.println("Choose between those values: " + Color.RED_BOLD + "2, 3, 4.");
                         System.out.print(Color.RESET);
                         System.out.print("> ");
                     }
@@ -115,9 +117,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 setChanged();
                 notifyObservers(Event.LOGIN, nPlayers, null, username);
             } else if (arg.equals(Event.WAIT_START_OF_MATCH)) {
-                System.out.print(Color.YELLOW_BOLD);
-                System.out.println("Waiting for other player to join the lobby...");
-                System.out.print(Color.RESET);
+                System.out.println(Color.YELLOW_BOLD + "Waiting for other player to join the lobby..." + Color.RESET);
 
             } else if (arg.equals(Event.LOGIN_TRUE)) {
                 System.out.print(Color.GREEN_BOLD);
@@ -185,20 +185,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                     ItemTiles el = box.getItemContained();
                     if (el != null) {
                         //System.out.print(" " + el.getType().toString().charAt(0));
-                        switch (el.getType().toString().charAt(0)) {
-                            case 'C' ->
-                                    System.out.print(" " + Color.GREEN_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                            case 'B' ->
-                                    System.out.print(" " + Color.YELLOW_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                            case 'G' ->
-                                    System.out.print(" " + Color.WHITE_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                            case 'F' ->
-                                    System.out.print(" " + Color.BLUE_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                            case 'T' ->
-                                    System.out.print(" " + Color.CYAN_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                            case 'P' ->
-                                    System.out.print(" " + Color.MAGENTA_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                        }
+                        showItemTile(el);
 
                     } else {
                         System.out.print(Color.YELLOW_BOLD);
@@ -223,6 +210,13 @@ public class TextualUI extends Observable<Event> implements Runnable {
     void showAllBookshelf(GameView o) {
         ArrayListView bookShelfList = o.getListBookshelf();
 
+        for(int n=0; n<o.getNumPlayer(); n++){
+          // TODO: STAMPARE GLI USERNAME
+          // Verificarer se lo username è più lungo della board
+          // operare in modo differente a seconda del controllo precedente
+
+          //lo spezzone di codice che c'è sotto è per quando gli username sono più 'corti' della bookshelf
+        }
         for(int n=0; n<o.getNumPlayer(); n++) {
             System.out.print(Color.WHITE_BRIGHT + "| " + Color.RESET);
             for (int j = 0; j < o.getLenghtBookshelf(); j++) {
@@ -241,20 +235,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                     try {
                         elem = curr[i][j];
                         //System.out.print(" " + elem.getType().toString().charAt(0));
-                        switch (elem.getType().toString().charAt(0)) {
-                            case 'C' ->
-                                    System.out.print(" " + Color.GREEN_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
-                            case 'B' ->
-                                    System.out.print(" " + Color.YELLOW_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
-                            case 'G' ->
-                                    System.out.print(" " + Color.WHITE_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
-                            case 'F' ->
-                                    System.out.print(" " + Color.BLUE_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
-                            case 'T' ->
-                                    System.out.print(" " + Color.CYAN_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
-                            case 'P' ->
-                                    System.out.print(" " + Color.MAGENTA_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
-                        }
+                        showItemTile(elem);
                     } catch (Exception e) {
                         System.out.print(Color.BLACK_BRIGHT + " -" + Color.RESET);
                     }
@@ -279,25 +260,29 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 el = o.getCurrentBookshelf()[i][j];
                 if (el != null) {
                     //System.out.print(" " + el.getType().toString().charAt(0));
-                    switch (el.getType().toString().charAt(0)) {
-                        case 'C' ->
-                                System.out.print(" " + Color.GREEN_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                        case 'B' ->
-                                System.out.print(" " + Color.YELLOW_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                        case 'G' ->
-                                System.out.print(" " + Color.WHITE_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                        case 'F' ->
-                                System.out.print(" " + Color.BLUE_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                        case 'T' ->
-                                System.out.print(" " + Color.CYAN_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                        case 'P' ->
-                                System.out.print(" " + Color.MAGENTA_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                    }
+                    showItemTile(el);
                 } else {
                     System.out.print(Color.BLACK_BRIGHT + " -" + Color.RESET);
                 }
             }
             System.out.print("\n");
+        }
+    }
+
+    private void showItemTile(ItemTiles elem) {
+        switch (elem.getType().toString().charAt(0)) {
+            case 'C' ->
+                    System.out.print(" " + Color.GREEN_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
+            case 'B' ->
+                    System.out.print(" " + Color.YELLOW_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
+            case 'G' ->
+                    System.out.print(" " + Color.WHITE_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
+            case 'F' ->
+                    System.out.print(" " + Color.BLUE_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
+            case 'T' ->
+                    System.out.print(" " + Color.CYAN_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
+            case 'P' ->
+                    System.out.print(" " + Color.MAGENTA_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
         }
     }
 
