@@ -4,6 +4,7 @@ import distributed.Client;
 import distributed.Server;
 import model.GameView;
 import utils.Event;
+import view.Color;
 import view.TextualUI;
 
 import java.rmi.RemoteException;
@@ -19,7 +20,12 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
 
     public ClientImpl(Server server) throws RemoteException {
         super();
-        initialize(server);
+        try {
+            initialize(server);
+        } catch (RemoteException e){
+            System.err.println(Color.RED_BOLD + "Server unreachable!");
+            System.err.println(Color.RED + "Client is unable to establish a connection to the server, either because the server is offline or there is an issue with the network connection.\n\n");
+        }
     }
 
     public ClientImpl(Server server, int port) throws RemoteException {

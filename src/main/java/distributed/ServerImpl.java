@@ -59,9 +59,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     // todo metodo da rifare
     @Override
     public void register(Client client) throws RemoteException{
-        System.out.print(Color.GREEN);
-        System.out.println("Client correctly registered");
-        System.out.print(Color.RESET);
+        System.out.println(Color.GREEN_BRIGHT + "Client correctly registered" + Color.RESET);
     }
 
     @Override
@@ -89,8 +87,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     try {
                         ip = new FileInputStream(configFilePath);
                         prop.load(ip);
-                    } catch (FileNotFoundException e) {
-                        throw new RuntimeException(e);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -115,7 +111,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     }
                 }
             }
-            if (correctusername == false) {
+            if (!correctusername) {
                 client.update(null, Event.LOGIN);
             }else {
 
@@ -130,6 +126,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         * hit by the client for server connection and starting of the login procedures
         * */
         }else{
+            //System.out.println(Color.RED_BRIGHT + "Username NOT valid" + Color.RESET);
             client.update(null, Event.LOGIN);
         }
 

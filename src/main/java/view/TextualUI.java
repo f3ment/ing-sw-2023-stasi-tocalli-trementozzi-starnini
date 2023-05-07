@@ -67,22 +67,23 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
     //update chiamato direttamente dall'oggetto che si occupa di gestire il client
     public void update(GameView o, Enum arg) {
+        int i = 0;
         if (o == null || o.getCurrentPlayer().getUsername().equals(username)) {
             myTurn = true;
             if (arg.equals(Event.PLAYER_DRAW_NEGATIVE)) {
                 System.out.println("The cards you have selected are invalid, please select other cards : ");
                 playerDraw(o);
             } else if (arg.equals(Event.PLAYER_DRAW_POSITIVE)) {
-                System.out.println("Cards picked correctly!");
+                System.out.println(Color.GREEN + "Cards picked correctly!" + Color.RESET);
                 //show picked cards
                 showHand(o);
                 playerInsert(o);
             } else if (arg.equals(Event.PLAYER_INSERT_NEGATIVE)) {
-                System.out.println("The selected column is not valid! Retry. ");
+                System.out.println(Color.RED + "The selected column is not valid! Retry. " + Color.RESET);
                 showHand(o);
                 playerInsert(o);
             } else if (arg.equals(Event.PLAYER_INSERT_POSITIVE)) {
-                System.out.println("Cards inserted correctly!");
+                System.out.println(Color.GREEN + "Cards inserted correctly!" + Color.RESET);
                 showBookshelf(o);
                 setChanged();
                 notifyObservers(Event.PLAYER_FINISH, null, null, null);
@@ -91,13 +92,15 @@ public class TextualUI extends Observable<Event> implements Runnable {
             } else if (arg.equals(Event.NEW_TURN)) {
                 start(o);
             } else if (arg.equals(Event.FINISH_MATCH)) {
-                System.out.println("---END OF THE GAME---");
-                System.out.println("THE WINNER IS ==>" + o.getWinner());
+                System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
+                System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + o.getWinner() + "" + Color.RESET);
             } else if (arg.equals(Event.LOGIN)) {
+                //System.out.println(Color.RED_BRIGHT + "Username NOT valid! Try again..." + Color.RESET)
                 System.out.println("Choose your Nickname: ");
+                System.out.print("> ");
                 Scanner input = new Scanner(System.in);
                 this.username = input.nextLine();
-                System.out.println("Hi " + username.toUpperCase() + "!, Choose the number of players: ");
+                System.out.println("Hi" + Color.GREEN_BRIGHT + " " + username.toUpperCase() + "! " + Color.RESET +"Choose the number of players: ");
 
                 int nPlayers = 0;
                 do {
@@ -105,7 +108,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                     if (nPlayers < 2 || nPlayers > 4) {
                         System.out.print(Color.RED);
                         System.out.println(nPlayers + " is not valid, please try again!!");
-                        System.out.println("Choose between thoose values: 2, 3, 4.");
+                        System.out.println("Choose between those values: " + Color.RED_BOLD + "2, 3, 4.");
                         System.out.print(Color.RESET);
                         System.out.print("> ");
                     }
@@ -114,9 +117,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 setChanged();
                 notifyObservers(Event.LOGIN, nPlayers, null, username);
             } else if (arg.equals(Event.WAIT_START_OF_MATCH)) {
-                System.out.print(Color.YELLOW_BOLD);
-                System.out.println("Waiting for other player to join the lobby...");
-                System.out.print(Color.RESET);
+                System.out.println(Color.YELLOW_BOLD + "Waiting for other player to join the lobby..." + Color.RESET);
 
             } else if (arg.equals(Event.LOGIN_TRUE)) {
                 System.out.print(Color.GREEN_BOLD);
@@ -170,34 +171,21 @@ public class TextualUI extends Observable<Event> implements Runnable {
             System.out.print(Color.WHITE_BRIGHT);
             System.out.print(" " + a);
         }
-        System.out.print(Color.RESET + "\n");
+        System.out.print(Color.BLACK_BRIGHT + "\n");
         System.out.print("  /");
         for (int i = 0; i <= 2 * o.getLenghtBoard(); i++) System.out.print("-");
-        System.out.print("\\\n");
+        System.out.print("\\\n" + Color.RESET);
 
         for (int i = 0; i < o.getHeightBoard(); i++) {
             a = i + 1;
-            System.out.print(a + " |");
+            System.out.print(Color.WHITE_BRIGHT + "" + a + Color.BLACK_BRIGHT + " |" + Color.RESET);
             for (int j = 0; j < o.getLenghtBoard(); j++) {
                 BoxView box = o.getBoard()[i][j];
                 if (box.getValid()) {
                     ItemTiles el = box.getItemContained();
                     if (el != null) {
                         //System.out.print(" " + el.getType().toString().charAt(0));
-                        switch (el.getType().toString().charAt(0)) {
-                            case 'C' ->
-                                    System.out.print(" " + Color.GREEN_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                            case 'B' ->
-                                    System.out.print(" " + Color.YELLOW_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                            case 'G' ->
-                                    System.out.print(" " + Color.WHITE_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                            case 'F' ->
-                                    System.out.print(" " + Color.BLUE_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                            case 'T' ->
-                                    System.out.print(" " + Color.CYAN_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                            case 'P' ->
-                                    System.out.print(" " + Color.MAGENTA_BACKGROUND_BRIGHT + el.getType().toString().charAt(0) + Color.RESET);
-                        }
+                        showItemTile(el);
 
                     } else {
                         System.out.print(Color.YELLOW_BOLD);
@@ -211,38 +199,50 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 }
             }
 
-            System.out.print(" |\n");
+            System.out.print(Color.BLACK_BRIGHT + " |\n" + Color.RESET);
         }
-        System.out.print("  \\");
+        System.out.print(Color.BLACK_BRIGHT + "  \\");
         for (int i = 0; i <= 2 * o.getLenghtBoard(); i++) System.out.print("-");
-        System.out.print("/\n");
+        System.out.print("/\n" + Color.RESET);
 
     }
 
     void showAllBookshelf(GameView o) {
         ArrayListView bookShelfList = o.getListBookshelf();
 
-        for(int n=0; n<o.getNumPlayer(); n++) {
-            for (int j = 0; j < o.getLenghtBookshelf(); j++) {
-                System.out.print(" " + (j + 1));
-            }
-            System.out.print("\t");
+        for(int n=0; n<o.getNumPlayer(); n++){
+          // TODO: STAMPARE GLI USERNAME
+          // Verificarer se lo username è più lungo della board
+          // operare in modo differente a seconda del controllo precedente
+
+          //lo spezzone di codice che c'è sotto è per quando gli username sono più 'corti' della bookshelf
         }
+        for(int n=0; n<o.getNumPlayer(); n++) {
+            System.out.print(Color.WHITE_BRIGHT + "| " + Color.RESET);
+            for (int j = 0; j < o.getLenghtBookshelf(); j++) {
+                System.out.print(Color.WHITE_BRIGHT + " " + (j + 1) + Color.RESET);
+            }
+            System.out.print("  ");
+        }
+        System.out.print(Color.WHITE_BRIGHT + "|" + Color.RESET);
         System.out.print("\n");
         for (int i = 0; i < o.getHeightBookshelf(); i++) {
             for (int n = 0; n < o.getNumPlayer(); n++) {
+                System.out.print(Color.WHITE_BRIGHT + "| " + Color.RESET);
                 for (int j = 0; j < o.getLenghtBookshelf(); j++) {
                     ItemTiles[][] curr = (ItemTiles[][]) bookShelfList.get(n);
                     ItemTiles elem = null;
                     try {
                         elem = curr[i][j];
-                        System.out.print(" " + elem.getType().toString().charAt(0));
+                        //System.out.print(" " + elem.getType().toString().charAt(0));
+                        showItemTile(elem);
                     } catch (Exception e) {
-                        System.out.print(" -");
+                        System.out.print(Color.BLACK_BRIGHT + " -" + Color.RESET);
                     }
                 }
-                System.out.print("\t");
+                System.out.print("  ");
             }
+            System.out.print(Color.WHITE_BRIGHT + "|" + Color.RESET);
             System.out.print("\n");
         }
 
@@ -251,19 +251,38 @@ public class TextualUI extends Observable<Event> implements Runnable {
     void showBookshelf(GameView o) {
         System.out.println("This is your bookshelf : ");
         for (int j = 0; j < o.getLenghtBookshelf(); j++) {
-            System.out.print(" " + (j + 1));
+            System.out.print(Color.WHITE_BRIGHT + " " + (j + 1) + Color.RESET);
         }
         System.out.print("\n");
         for (int i = 0; i < o.getHeightBookshelf(); i++) {
             for (int j = 0; j < o.getLenghtBookshelf(); j++) {
-                ItemTiles el = o.getCurrentBookshelf()[i][j];
+                ItemTiles el;
+                el = o.getCurrentBookshelf()[i][j];
                 if (el != null) {
-                    System.out.print(" " + el.getType().toString().charAt(0));
+                    //System.out.print(" " + el.getType().toString().charAt(0));
+                    showItemTile(el);
                 } else {
-                    System.out.print(" -");
+                    System.out.print(Color.BLACK_BRIGHT + " -" + Color.RESET);
                 }
             }
             System.out.print("\n");
+        }
+    }
+
+    private void showItemTile(ItemTiles elem) {
+        switch (elem.getType().toString().charAt(0)) {
+            case 'C' ->
+                    System.out.print(" " + Color.GREEN_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
+            case 'B' ->
+                    System.out.print(" " + Color.YELLOW_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
+            case 'G' ->
+                    System.out.print(" " + Color.WHITE_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
+            case 'F' ->
+                    System.out.print(" " + Color.BLUE_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
+            case 'T' ->
+                    System.out.print(" " + Color.CYAN_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
+            case 'P' ->
+                    System.out.print(" " + Color.MAGENTA_BACKGROUND_BRIGHT + elem.getType().toString().charAt(0) + Color.RESET);
         }
     }
 
@@ -275,13 +294,13 @@ public class TextualUI extends Observable<Event> implements Runnable {
         //controllo input ordine
         do {
             flag = true;
-            System.out.println("Insert in which order do you want to insert cards : ");
+            System.out.println(Color.WHITE_BRIGHT + "Insert in which order do you want to insert cards : " + Color.RESET);
             order.clear();
             for (int i = 0; i < o.getPickedCards().size(); i++) {
-                System.out.print("Insert the index of the " + (i + 1) + " card to insert : ");
+                System.out.print("Insert the index of the " + Color.CYAN_BOLD + (i + 1) + Color.RESET +  " card to insert : ");
                 int index = readingInt();
                 while (index < 1 || index > o.getPickedCards().size()) {
-                    System.out.println("Invalid Index , insert again!");
+                    System.out.println(Color.RED_BOLD + "Invalid Index , insert again!\n> " + Color.RESET);
                     index = readingInt();
                 }
                 order.add(index - 1);
@@ -290,20 +309,20 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
             //check on order input
             if (order.stream().sorted().distinct().count() != o.getPickedCards().size()) {
-                System.out.println("ERROR! Found many occurrencies of the same index!");
+                System.out.println(Color.RED_BOLD + "ERROR!" + Color.RED + " Found many occurrencies of the same index!" + Color.RESET);
                 flag = false;
             } else {
                 flag = !order.stream().allMatch(e -> e < 0 || e >= o.getPickedCards().size());
                 if (!flag) {
-                    System.out.println("ERROR! Indexes inserted are not correct!");
+                    System.out.println(Color.RED_BOLD + "ERROR!" + Color.RED + " Indexes inserted are not correct!" + Color.RESET);
                 }
             }
             if (!flag) {
-                System.out.println("Retry!");
+                System.out.println(Color.RED_UNDERLINED + "Retry!" + Color.RESET);
             }
         } while (!flag);
 
-        System.out.println("The choosen order is : ");
+        System.out.println(Color.WHITE_BRIGHT + "The choosen order is : " + Color.RESET);
         /*TODO: aggiustare la riga successiva perché non stampa correttamente
         prende il riferimento all'ItemTile
         esempio di riferimento preso:
@@ -312,7 +331,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                                         quindi stampa 'm' sempre
 
          */
-        order.forEach(e -> System.out.println(e + 1 + " " + o.getHand(e).toString().charAt(0) + " "));
+        order.forEach(e -> System.out.println(e + 1 + " " + o.getHand(e).getType().toString().charAt(0) + " "));
 
         showBookshelf(o);
 
@@ -333,15 +352,15 @@ public class TextualUI extends Observable<Event> implements Runnable {
         System.out.println("Insert how many cards do you want to draw from board : ");
         nCards = readingInt();
         if (nCards > o.getMaxDrawable()) {
-            System.out.println("The number of cards must be minor");
+            System.out.println(Color.RED_BOLD + "Error!! The number of cards must be minor" + Color.RESET);
             nCards = 4;
         }
         while (nCards <= 0 || nCards > 3) {
-            System.out.println("The number of cards must be between 1 and 3! Retry.");
+            System.out.println(Color.RED + "The number of cards must be between " + Color.RED_BOLD + "1" + Color.RED + " and " + Color.RED_BOLD + "3" + Color.RED + "! Retry." + Color.RESET);
             System.out.println("Insert how many cards do you want to draw from board : ");
             nCards = readingInt();
             if (nCards > o.getMaxDrawable()) {
-                System.out.println("The number of cards must be minor");
+                System.out.println(Color.RED_BOLD + "Error!! The number of cards must be minor" + Color.RESET);
                 nCards = 4;
             }
         }
@@ -350,27 +369,27 @@ public class TextualUI extends Observable<Event> implements Runnable {
             coords = new ArrayList<Integer>();
             int z = i + 1;
             System.out.println("Insert the coordinates of the " + z + " card : ");
-            System.out.print("x : ");
+            System.out.print(Color.WHITE_BOLD_BRIGHT + "x : " + Color.RESET);
             x = readingInt();
             x--;
             while (x >= o.getHeightBoard() || x < 0) {
-                System.out.println("Not valid coordinate! Retry.");
-                System.out.print("x : ");
+                System.out.println(Color.RED_BOLD + "Not valid coordinate! Retry." + Color.RESET);
+                System.out.print(Color.WHITE_BOLD_BRIGHT + "x : " + Color.RESET);
                 x = readingInt();
                 x--;
             }
-            System.out.print("y : ");
+            System.out.print(Color.WHITE_BOLD_BRIGHT + "y : " + Color.RESET);
             y = readingInt();
             y--;
             while (y >= o.getLenghtBoard() || y < 0) {
-                System.out.println("Not valid coordinate! Retry.");
-                System.out.print("y : ");
+                System.out.println(Color.RED_BOLD + "Not valid coordinate! Retry." + Color.RESET);
+                System.out.print(Color.WHITE_BOLD_BRIGHT + "y : " + Color.RESET);
                 y = readingInt();
                 y--;
             }
 
             if (!o.getBoard()[x][y].getValid() || o.getBoard()[x][y].getItemContained() == null) {
-                System.out.println("The chosen box is not playable! Retry.");
+                System.out.println(Color.RED_BOLD + "The chosen box is not playable! Retry." + Color.RESET);
                 i--;
                 flag = false;
             }
@@ -398,7 +417,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
             coords.add(y);
             for (ArrayList<Integer> el : drawen) {
                 if (el.get(0) == coords.get(0) && el.get(1) == coords.get(1)) {
-                    System.out.println("ERROR! The choosen card has already been selected! Retry.");
+                    System.out.println(Color.RED_BOLD + "ERROR! " + Color.RED + "The choosen card has already been selected! Retry." + Color.RESET);
                     flag = false;
                     i--;
                     break;
