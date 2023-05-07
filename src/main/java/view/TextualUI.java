@@ -6,11 +6,9 @@ import model.GameView;
 import model.ItemTiles;
 import utils.*;
 
-import javax.swing.text.html.ListView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.Map;
 import java.util.Scanner;
 
 
@@ -69,7 +67,6 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
     //update chiamato direttamente dall'oggetto che si occupa di gestire il client
     public void update(GameView o, Enum arg) {
-        int i = 0;
         if (o == null || o.getCurrentPlayer().getUsername().equals(username)) {
             myTurn = true;
             if (arg.equals(Event.PLAYER_DRAW_NEGATIVE)) {
