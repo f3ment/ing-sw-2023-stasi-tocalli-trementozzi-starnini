@@ -6,9 +6,11 @@ import model.GameView;
 import model.ItemTiles;
 import utils.*;
 
+import javax.swing.text.html.ListView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Map;
 import java.util.Scanner;
 
 
@@ -71,7 +73,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
         if (o == null || o.getCurrentPlayer().getUsername().equals(username)) {
             myTurn = true;
             if (arg.equals(Event.PLAYER_DRAW_NEGATIVE)) {
-                System.out.println("The cards you have selected are invalid, please select other cards : ");
+                System.out.println(Color.RED + "The cards you have selected are invalid, please select other cards : " + Color.RESET);
                 playerDraw(o);
             } else if (arg.equals(Event.PLAYER_DRAW_POSITIVE)) {
                 System.out.println(Color.GREEN + "Cards picked correctly!" + Color.RESET);
@@ -138,6 +140,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 System.out.println(o.getCurrentPlayer().getUsername() + " is playing, wait for your turn!");
                 System.out.print(Color.RESET);
                 showAllBookshelf(o);
+
                 showBoard(o);
                 //showBookshelf(o); -> non si può usare perché mostriamo la currentBookshelf che non corrisponde a quella del giocatore in attesa
             }
@@ -206,6 +209,10 @@ public class TextualUI extends Observable<Event> implements Runnable {
         System.out.print("/\n" + Color.RESET);
 
     }
+
+
+
+
 
     void showAllBookshelf(GameView o) {
         ArrayListView bookShelfList = o.getListBookshelf();

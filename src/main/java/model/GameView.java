@@ -52,6 +52,7 @@ public class GameView implements Serializable {
         return viewBookshelfList2;
     }
 
+
     public ItemTiles[][] getParticularBookshelf(int x){
         return (ItemTiles[][])getListBookshelf().get(x);
     }
@@ -130,6 +131,8 @@ public class GameView implements Serializable {
         return res;
     }
 
+
+
     public ItemTiles getHand(int x){
         return (ItemTiles)getPickedCards().get(x);
     }
@@ -157,5 +160,7 @@ public class GameView implements Serializable {
     public int getNumPlayer(){
         return this.model.getListBookshelf().size();
     }
+
+
 }
 
