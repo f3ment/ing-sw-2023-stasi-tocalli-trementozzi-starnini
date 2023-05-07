@@ -59,7 +59,6 @@ public class TextualUI extends Observable<Event> implements Runnable {
         System.out.println("\033[40m" + "                                                                                            " + "\33[0m");
 
 
-        //noinspection InfiniteLoopStatement
         setChanged();
         notifyObservers(Event.GAME_INIT, null, null, null);
 
