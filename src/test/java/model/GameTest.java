@@ -329,10 +329,22 @@ String configFilePath = "./src/main/resources/config.properties";
             usernames.clear();
             usernames.add("mario");
             usernames.add("luca");
-            usernames.add("dario");
-            usernames.add("matteo");
             game = new Game(usernames);
-            //TODO...
+            game.getBoard().draw(1,3);
+            game.getBoard().draw(2,4);
+            game.getBoard().draw(3,3);
+            game.getBoard().draw(3,5);
+            game.getBoard().draw(4,2);
+            game.getBoard().draw(4,4);
+            game.getBoard().draw(4,6);
+            game.getBoard().draw(5,1);
+            game.getBoard().draw(5,3);
+            game.getBoard().draw(5,5);
+            game.getBoard().draw(6,4);
+            game.getBoard().draw(7,5);
+            assertFalse(game.checkBoardEmpty());
+            game.getBoard().draw(3,7);
+            assertTrue(game.checkBoardEmpty());
             System.out.println("Test passato!");
 
         }catch (Exception e){
@@ -340,6 +352,164 @@ String configFilePath = "./src/main/resources/config.properties";
             throw new RuntimeException(e);
         }
     }
+
+
+    @Test
+    void checkDrawTest(){
+        try{
+            usernames.clear();
+            usernames.add("mario");
+            usernames.add("luca");
+            usernames.add("dario");
+            usernames.add("cassano");
+            game = new Game(usernames);
+            ArrayList coords = new ArrayList<ArrayList<Integer>>();
+            ArrayList c1 = new ArrayList<Integer>(2);
+            ArrayList c2 = new ArrayList<Integer>(2);
+            ArrayList c3 = new ArrayList<Integer>(2);
+            c1.add(0);
+            c1.add(3);
+            c2.add(0);
+            c2.add(4);
+            coords.add(c1);
+            coords.add(c2);
+            assertTrue(game.checkDraw(coords));
+            game.getBoard().draw(0,3);
+            game.getBoard().draw(0,4);
+            coords.clear();
+            c1.clear();
+            c2.clear();
+            c1.add(1);
+            c1.add(3);
+            c2.add(1);
+            c2.add(4);
+            c3.add(1);
+            c3.add(5);
+            coords.add(c1);
+            coords.add(c2);
+            coords.add(c3);
+            assertTrue(game.checkDraw(coords));
+            game.getBoard().draw(1,3);
+            game.getBoard().draw(1,4);
+            game.getBoard().draw(1,5);
+            coords.clear();
+            c1.clear();
+            c2.clear();
+            c3.clear();
+            c1.add(2);
+            c1.add(2);
+            c2.add(3);
+            c2.add(1);
+            c3.add(3);
+            c3.add(2);
+            coords.add(c1);
+            coords.add(c2);
+            coords.add(c3);
+            assertFalse(game.checkDraw(coords));
+            coords.clear();
+            c1.clear();
+            c2.clear();
+            c3.clear();
+            c1.add(7);
+            c1.add(3);
+            c2.add(7);
+            c2.add(4);
+            c3.add(7);
+            c3.add(5);
+            coords.add(c1);
+            coords.add(c2);
+            coords.add(c3);
+            assertFalse(game.checkDraw(coords));
+            coords.clear();
+            c1.clear();
+            c2.clear();
+            c3.clear();
+            c1.add(2);
+            c1.add(2);
+            c2.add(2);
+            c2.add(4);
+            c3.add(2);
+            c3.add(5);
+            coords.add(c1);
+            coords.add(c2);
+            coords.add(c3);
+            assertFalse(game.checkDraw(coords));
+            coords.clear();
+            c1.clear();
+            c2.clear();
+            c3.clear();
+            c1.add(3);
+            c1.add(7);
+            c2.add(4);
+            c2.add(7);
+            c3.add(5);
+            c3.add(7);
+            coords.add(c1);
+            coords.add(c2);
+            coords.add(c3);
+            assertFalse(game.checkDraw(coords));
+            coords.clear();
+            c1.clear();
+            c2.clear();
+            c3.clear();
+            c1.add(3);
+            c1.add(8);
+            c2.add(4);
+            c2.add(8);
+            coords.add(c1);
+            coords.add(c2);
+            assertTrue(game.checkDraw(coords));
+            game.getBoard().draw(3,8);
+            game.getBoard().draw(4,8);
+            coords.clear();
+            c1.clear();
+            c2.clear();
+            c3.clear();
+            c1.add(3);
+            c1.add(7);
+            c2.add(4);
+            c2.add(7);
+            c3.add(5);
+            c3.add(7);
+            coords.add(c1);
+            coords.add(c2);
+            coords.add(c3);
+            assertTrue(game.checkDraw(coords));
+            game.getBoard().draw(3,7);
+            game.getBoard().draw(4,7);
+            game.getBoard().draw(5,7);
+            coords.clear();
+            c1.clear();
+            c2.clear();
+            c3.clear();
+            c1.add(3);
+            c1.add(6);
+            c2.add(4);
+            c2.add(6);
+            c3.add(6);
+            c3.add(6);
+            coords.add(c1);
+            coords.add(c2);
+            coords.add(c3);
+            assertFalse(game.checkDraw(coords));
+            coords.clear();
+            c1.clear();
+            c2.clear();
+            c3.clear();
+            c1.add(4);
+            c1.add(4);
+            coords.add(c1);
+            assertFalse(game.checkDraw(coords));
+            System.out.println("Test passato!");
+
+        }catch (Exception e){
+            System.out.println("Test fallito!");
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
 
 
 
