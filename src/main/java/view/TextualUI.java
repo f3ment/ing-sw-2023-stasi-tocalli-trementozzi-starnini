@@ -91,7 +91,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 start(o);
             } else if (arg.equals(Event.FINISH_MATCH)) {
                 System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
-                System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + o.getWinner() + "" + Color.RESET);
+                System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + o.getWinner()  + Color.RESET);
             } else if (arg.equals(Event.LOGIN)) {
                 //System.out.println(Color.RED_BRIGHT + "Username NOT valid! Try again..." + Color.RESET)
                 System.out.println("Choose your Nickname: ");
