@@ -234,7 +234,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 System.out.print(Color.WHITE_BRIGHT + "| " + Color.RESET);
                 for (int j = 0; j < o.getLenghtBookshelf(); j++) {
                     ItemTiles[][] curr = (ItemTiles[][]) bookShelfList.get(n);
-                    ItemTiles elem = null;
+                    ItemTiles elem;
                     try {
                         elem = curr[i][j];
                         //System.out.print(" " + elem.getType().toString().charAt(0));
