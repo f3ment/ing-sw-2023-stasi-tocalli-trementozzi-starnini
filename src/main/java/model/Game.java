@@ -226,6 +226,7 @@ public class Game extends Observable<Event> implements Serializable {
         this.winner= winner;
     }
 
+
     public String getWinner() {
         return winner;
     }
