@@ -1,6 +1,7 @@
 package model.LobbyManager;
 
 import controller.GameController;
+import controller.LobbyManager.Lobby;
 import distributed.Client;
 import distributed.ClientImpl;
 import distributed.ServerImpl;

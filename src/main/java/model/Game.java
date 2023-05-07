@@ -243,6 +243,10 @@ public class Game extends Observable<Event> implements Serializable {
     }
 
 
+    /*
+     * check if there is a column in the shelf with enough space to insert all the chosen tiles
+     * if not return false
+     */
     public boolean checkInsert(int columnNumber){
         try {
             getCurrentPosition().getBookshelf().setChoosenColumn(columnNumber);
@@ -255,7 +259,6 @@ public class Game extends Observable<Event> implements Serializable {
             return false;
         }
     }
-    //TODO continuo test  da qui...
     public boolean checkBoardEmpty() {
         boolean result=true;
         for(int i=0;i<getBoard().getMaxHeight()&&result;i++){
@@ -288,22 +291,17 @@ public class Game extends Observable<Event> implements Serializable {
      */
     public boolean checkDraw(ArrayList<ArrayList<Integer>> coords){
         /*
-         * check if there is a column in the shelf with enough space to insert all the chosen tiles
-         * if not return false
-         */
-        /*
          *check if chosen tiles are on the same row
          */
         boolean notValid = false;
-        ArrayList<Integer> x = new ArrayList<Integer>();
-        ArrayList<Integer> y = new ArrayList<Integer>();
+        ArrayList<Integer> x = new ArrayList<Integer>(3);
+        ArrayList<Integer> y = new ArrayList<Integer>(3);
         ArrayList<ItemTiles> validCards = new ArrayList<ItemTiles>();
         for(int i=0;i<coords.size();i++){
             x.add(coords.get(i).get(0));
             y.add(coords.get(i).get(1));
             if(coords.get(0).get(0) != coords.get(i).get(0)) {
                 notValid = true;
-                break;
             }
         }
         if(notValid){
