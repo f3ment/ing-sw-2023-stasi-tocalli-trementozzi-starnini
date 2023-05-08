@@ -204,6 +204,7 @@ public class Game extends Observable<Event> implements Serializable {
         return secondCommonGoal;
     }
 
+    //TODO notify...
     public void setChangedAndNotifyObservers(Event arg) {
         setChanged();
         notifyObservers(arg,null,null,null);
@@ -231,7 +232,6 @@ public class Game extends Observable<Event> implements Serializable {
     }
 
     public void changeCurrentPosition(){
-        //TODO Capire come gestire turni e ascoltare la view corretta
         if(getCurrentPosition().getBookshelf().isFull()){
             setEndGame(true);
             getCurrentPosition().getPlayer().setScore(getCurrentPosition().getPlayer().getScore()+1);

@@ -4,6 +4,7 @@ import model.board.Board;
 import org.junit.jupiter.api.Test;
 
 import model.goals.PersonalGoal;
+import utils.Event;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -500,6 +501,14 @@ String configFilePath = "./src/main/resources/config.properties";
             c1.add(4);
             coords.add(c1);
             assertFalse(game.checkDraw(coords));
+            coords.clear();
+            c1.clear();
+            c2.clear();
+            c3.clear();
+            c1.add(0);
+            c1.add(0);
+            coords.add(c1);
+            assertFalse(game.checkDraw(coords));
             System.out.println("Test passato!");
 
         }catch (Exception e){
@@ -509,15 +518,21 @@ String configFilePath = "./src/main/resources/config.properties";
     }
 
 
+    @Test
+    void notifyObserversTest(){
+        try{
+            usernames.clear();
+            usernames.add("mario");
+            usernames.add("luca");
+            game = new Game(usernames);
+            game.setChangedAndNotifyObservers(Event.PLAYER_DRAW_POSITIVE);
+            System.out.println("Test passato!");
 
-
-
-
-
-
-
-
-
+        }catch (Exception e){
+            System.out.println("Test fallito!");
+            throw new RuntimeException(e);
+        }
+    }
 
 
 }

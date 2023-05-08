@@ -1,12 +1,12 @@
-package model.LobbyManager;
+package controller;
 
-import controller.GameController;
-import controller.LobbyManager.Lobby;
+import controller.Lobby;
 import distributed.Client;
 import distributed.ClientImpl;
 import distributed.ServerImpl;
 import model.Game;
 import org.junit.jupiter.api.Test;
+import utils.Event;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -78,7 +78,13 @@ class LobbyTest {
         assertTrue(nomi.size() == lobby.getClientsUsername().size());
     }
 
-
-
+    @Test
+    void notifyObserversTest() throws IOException {
+        Client client = new ClientImpl(new ServerImpl());
+        Lobby lobby = new Lobby(2, "toky", client);
+        lobby.insertPlayer(new ClientImpl(new ServerImpl()),"mike");
+        lobby.game_init();
+        lobby.getController().update(client, Event.NEW_TURN,null,null,null);
+    }
 
 }

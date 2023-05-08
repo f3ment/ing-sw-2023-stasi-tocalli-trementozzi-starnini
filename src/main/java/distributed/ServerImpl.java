@@ -3,7 +3,7 @@ package distributed;
 import controller.GameController;
 import controller.GamesManagerController;
 import model.Game;
-import controller.LobbyManager.Lobby;
+import controller.Lobby;
 import utils.Event;
 import view.Color;
 
