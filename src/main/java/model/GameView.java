@@ -85,8 +85,8 @@ public class GameView implements Serializable {
     public ArrayListView getFirstCommonGoal(){
         Stack<ScoringToken> stack=model.getFirstCommonGoal().getStack();
         ArrayList<ScoringToken> viewStack= new ArrayList<ScoringToken>();
-        for(int i=0;i<stack.size();i++){
-            viewStack.add(new ScoringToken(stack.get(i).getScore(),stack.get(i).getNumber()));
+        for (ScoringToken scoringToken : stack) {
+            viewStack.add(new ScoringToken(scoringToken.getScore(), scoringToken.getNumber()));
         }
         ArrayListView viewStack2= new ArrayListView(viewStack);
         return viewStack2;
