@@ -59,7 +59,6 @@ public class TextualUI extends Observable<Event> implements Runnable {
         System.out.println("\033[40m" + "                                                                                            " + "\33[0m");
 
 
-        //noinspection InfiniteLoopStatement
         setChanged();
         notifyObservers(Event.GAME_INIT, null, null, null);
 
@@ -67,11 +66,10 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
     //update chiamato direttamente dall'oggetto che si occupa di gestire il client
     public void update(GameView o, Enum arg) {
-        int i = 0;
         if (o == null || o.getCurrentPlayer().getUsername().equals(username)) {
             myTurn = true;
             if (arg.equals(Event.PLAYER_DRAW_NEGATIVE)) {
-                System.out.println("The cards you have selected are invalid, please select other cards : ");
+                System.out.println(Color.RED + "The cards you have selected are invalid, please select other cards : " + Color.RESET);
                 playerDraw(o);
             } else if (arg.equals(Event.PLAYER_DRAW_POSITIVE)) {
                 System.out.println(Color.GREEN + "Cards picked correctly!" + Color.RESET);
@@ -93,7 +91,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 start(o);
             } else if (arg.equals(Event.FINISH_MATCH)) {
                 System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
-                System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + o.getWinner() + "" + Color.RESET);
+                System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + o.getWinner()  + Color.RESET);
             } else if (arg.equals(Event.LOGIN)) {
                 //System.out.println(Color.RED_BRIGHT + "Username NOT valid! Try again..." + Color.RESET)
                 System.out.println("Choose your Nickname: ");
@@ -138,6 +136,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 System.out.println(o.getCurrentPlayer().getUsername() + " is playing, wait for your turn!");
                 System.out.print(Color.RESET);
                 showAllBookshelf(o);
+
                 showBoard(o);
                 //showBookshelf(o); -> non si può usare perché mostriamo la currentBookshelf che non corrisponde a quella del giocatore in attesa
             }
@@ -207,6 +206,10 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
     }
 
+
+
+
+
     void showAllBookshelf(GameView o) {
         ArrayListView bookShelfList = o.getListBookshelf();
 
@@ -231,7 +234,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 System.out.print(Color.WHITE_BRIGHT + "| " + Color.RESET);
                 for (int j = 0; j < o.getLenghtBookshelf(); j++) {
                     ItemTiles[][] curr = (ItemTiles[][]) bookShelfList.get(n);
-                    ItemTiles elem = null;
+                    ItemTiles elem;
                     try {
                         elem = curr[i][j];
                         //System.out.print(" " + elem.getType().toString().charAt(0));
