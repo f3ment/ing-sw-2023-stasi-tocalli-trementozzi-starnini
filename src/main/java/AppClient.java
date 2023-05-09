@@ -93,17 +93,30 @@ public class AppClient {
 
         System.out.println("Now enter the" + Color.BLUE_BRIGHT + " Port Number " +Color.RESET + "and the " +Color.BLUE_BRIGHT+ "IP address "+Color.RESET +"of the server you want to join");
         System.out.println("PORT NUMBER (Press Enter to use default): ");
-        Scanner PortNumber = new Scanner(System.in);
-        int StringPort = PortNumber.nextInt();
-        if(!(Objects.equals(StringPort, ""))){
-            Port = StringPort;
+        while(true){
+            Scanner PortNumber = new Scanner(System.in);
+            String StringPort = PortNumber.nextLine();
+            if(!(Objects.equals(StringPort, ""))){
+                if(isNumeric(StringPort)){
+                    Port = Integer.parseInt(StringPort);
+                    break;
+                }else{
+                    System.out.println(Color.RED + "Not numeric input! please try again..." + Color.RESET);
+                }
+            }else {
+                break;
+            }
         }
+
         System.out.println("IP ADDRESS (Press Enter to use default): ");
         Scanner IpAddress = new Scanner(System.in);
         String ip = IpAddress.nextLine();
         if(!ip.equals("")){
             Ip = ip;
         }
-        //TODO controllo validità input
+    }
+
+    private static boolean isNumeric(String str){
+        return str != null && str.matches("[0-9.]+");
     }
 }
