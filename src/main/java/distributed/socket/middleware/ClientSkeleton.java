@@ -2,7 +2,7 @@ package distributed.socket.middleware;
 
 import distributed.Client;
 import distributed.Server;
-import model.GameView;
+import model.views.GameView;
 import utils.Event;
 
 import java.io.IOException;

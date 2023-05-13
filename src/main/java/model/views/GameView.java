@@ -1,9 +1,10 @@
-package model;
+package model.views;
 
+import model.Bookshelf;
+import model.Game;
+import model.ItemTiles;
+import model.ScoringToken;
 import model.board.Board;
-import utils.Event;
-import utils.Observable;
-import utils.Observer;
 
 import java.io.Serializable;
 import java.util.*;

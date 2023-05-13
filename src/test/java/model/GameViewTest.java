@@ -2,6 +2,10 @@ package model;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import model.views.ArrayListView;
+import model.views.BoxView;
+import model.views.GameView;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,7 +18,7 @@ class GameViewTest {
         nomi.add("marco");
         nomi.add("mario");
         Game game = new Game(nomi);
-        GameView gameView = new GameView(game);
+        model.views.GameView gameView = new model.views.GameView(game);
         BoxView[][] board = gameView.getBoard();
         assertFalse(board[0][0].getValid());
         assertTrue(board[4][4].getValid());
@@ -33,7 +37,7 @@ class GameViewTest {
         nomi.add("dario");
         nomi.add("matteo");
         Game game = new Game(nomi);
-        GameView gameView = new GameView(game);
+        model.views.GameView gameView = new model.views.GameView(game);
         for(int i=0;i<4;i++){
             game.getListBookshelf().get(i).setChoosenColumn(i);
             try {
@@ -42,7 +46,7 @@ class GameViewTest {
                 throw new RuntimeException(e);
             }
         }
-        ArrayListView list = gameView.getListBookshelf();
+        model.views.ArrayListView list = gameView.getListBookshelf();
         for(int i=0;i<4;i++){
             ItemTiles[][] shelf = (ItemTiles[][])list.get(i);
             assertSame(shelf[5][i].getType(), game.getListBookshelf().get(i).getItem(5, i).getType());
@@ -59,14 +63,14 @@ class GameViewTest {
         nomi.add("dario");
         nomi.add("matteo");
         Game game = new Game(nomi);
-        GameView gameView = new GameView(game);
+        model.views.GameView gameView = new model.views.GameView(game);
         game.getListBookshelf().get(3).setChoosenColumn(4);
         try {
             game.getListBookshelf().get(3).insert(new ItemTiles(Type.CATS,1));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        ArrayListView list = gameView.getListBookshelf();
+        model.views.ArrayListView list = gameView.getListBookshelf();
         ItemTiles[][] shelf = gameView.getParticularBookshelf(3);
         assertSame(game.getListBookshelf().get(3).getItem(5,4).getType(), shelf[5][4].getType());
 
@@ -80,14 +84,14 @@ class GameViewTest {
         nomi.add("dario");
         nomi.add("matteo");
         Game game = new Game(nomi);
-        GameView gameView = new GameView(game);
+        model.views.GameView gameView = new model.views.GameView(game);
         game.getCurrentBookshelf().setChoosenColumn(4);
         try {
             game.getCurrentBookshelf().insert(new ItemTiles(Type.CATS,1));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        ArrayListView list = gameView.getListBookshelf();
+        model.views.ArrayListView list = gameView.getListBookshelf();
         ItemTiles[][] shelf = gameView.getCurrentBookshelf();
         assertSame(game.getCurrentBookshelf().getItem(5,4).getType(), shelf[5][4].getType());
 
@@ -102,7 +106,7 @@ class GameViewTest {
         nomi.add("dario");
         nomi.add("matteo");
         Game game = new Game(nomi);
-        GameView gameView = new GameView(game);
+        model.views.GameView gameView = new model.views.GameView(game);
         game.getCurrentPosition().getPlayer().drawFromBoard(game.getBoard(),4,4);
         game.getCurrentPosition().getPlayer().drawFromBoard(game.getBoard(),4,5);
         game.getCurrentPosition().getPlayer().drawFromBoard(game.getBoard(),4,6);
@@ -119,8 +123,8 @@ class GameViewTest {
         nomi.add("dario");
         nomi.add("matteo");
         Game game = new Game(nomi);
-        GameView gameView = new GameView(game);
-        ArrayListView goal = gameView.getFirstCommonGoal();
+        model.views.GameView gameView = new model.views.GameView(game);
+        model.views.ArrayListView goal = gameView.getFirstCommonGoal();
         for(int i=0;i<goal.size();i++){
             assertEquals(gameView.getScoringToken1(i).getScore(),game.getFirstCommonGoal().getStack().get(i).getScore());
             assertEquals(gameView.getScoringToken1(i).getNumber(),game.getFirstCommonGoal().getStack().get(i).getNumber());
@@ -135,7 +139,7 @@ class GameViewTest {
         nomi.add("dario");
         nomi.add("matteo");
         Game game = new Game(nomi);
-        GameView gameView = new GameView(game);
+        model.views.GameView gameView = new model.views.GameView(game);
         ArrayListView goal = gameView.getSecondCommonGoal();
         for(int i=0;i<goal.size();i++){
             assertEquals(gameView.getScoringToken2(i).getScore(),game.getSecondCommonGoal().getStack().get(i).getScore());
@@ -152,7 +156,7 @@ class GameViewTest {
         nomi.add("dario");
         nomi.add("matteo");
         Game game = new Game(nomi);
-        GameView gameView = new GameView(game);
+        model.views.GameView gameView = new model.views.GameView(game);
         assertEquals(gameView.getHeightBookshelf(),game.getCurrentBookshelf().getHeight());
     }
 
@@ -164,7 +168,7 @@ class GameViewTest {
         nomi.add("dario");
         nomi.add("matteo");
         Game game = new Game(nomi);
-        GameView gameView = new GameView(game);
+        model.views.GameView gameView = new model.views.GameView(game);
         assertEquals(gameView.getLenghtBookshelf(),game.getCurrentBookshelf().getLength());
     }
 
@@ -176,7 +180,7 @@ class GameViewTest {
         nomi.add("dario");
         nomi.add("matteo");
         Game game = new Game(nomi);
-        GameView gameView = new GameView(game);
+        model.views.GameView gameView = new model.views.GameView(game);
         assertEquals(gameView.getHeightBoard(),game.getBoard().getMaxHeight());
     }
 
@@ -190,7 +194,7 @@ class GameViewTest {
         nomi.add("dario");
         nomi.add("matteo");
         Game game = new Game(nomi);
-        GameView gameView = new GameView(game);
+        model.views.GameView gameView = new model.views.GameView(game);
         assertEquals(gameView.getLenghtBoard(),game.getBoard().getMaxLength());
     }
 
@@ -204,7 +208,7 @@ class GameViewTest {
         nomi.add("dario");
         nomi.add("matteo");
         Game game = new Game(nomi);
-        GameView gameView = new GameView(game);
+        model.views.GameView gameView = new model.views.GameView(game);
         assertEquals(gameView.getCurrentPlayer().getUsername(),game.getCurrentPosition().getPlayer().getUsername());
     }
 
@@ -217,7 +221,7 @@ class GameViewTest {
         nomi.add("dario");
         nomi.add("matteo");
         Game game = new Game(nomi);
-        GameView gameView = new GameView(game);
+        model.views.GameView gameView = new model.views.GameView(game);
         assertEquals(gameView.getEndGame(),game.getEndGame());
     }
 
@@ -229,7 +233,7 @@ class GameViewTest {
         nomi.add("dario");
         nomi.add("matteo");
         Game game = new Game(nomi);
-        GameView gameView = new GameView(game);
+        model.views.GameView gameView = new model.views.GameView(game);
         assertEquals(gameView.getFirstPlayer(),game.getFirstPlayer());
     }
 
@@ -243,7 +247,7 @@ class GameViewTest {
         Game game = new Game(nomi);
         game.getCurrentPosition().getPlayer().setScore(100);
         game.setWinner();
-        GameView gameView = new GameView(game);
+        model.views.GameView gameView = new model.views.GameView(game);
         assertEquals(gameView.getWinner(),game.getWinner());
     }
 
@@ -255,7 +259,7 @@ class GameViewTest {
         nomi.add("dario");
         nomi.add("matteo");
         Game game = new Game(nomi);
-        GameView gameView = new GameView(game);
+        model.views.GameView gameView = new model.views.GameView(game);
         assertEquals(gameView.getMaxDrawable(),game.getCurrentBookshelf().getMaxDrowable());
     }
 
@@ -267,7 +271,7 @@ class GameViewTest {
         nomi.add("dario");
         nomi.add("matteo");
         Game game = new Game(nomi);
-        GameView gameView = new GameView(game);
+        model.views.GameView gameView = new model.views.GameView(game);
         assertEquals(gameView.getScore(),game.getCurrentPosition().getPlayer().getScore());
     }
 
@@ -279,7 +283,7 @@ class GameViewTest {
         nomi.add("dario");
         nomi.add("matteo");
         Game game = new Game(nomi);
-        GameView gameView = new GameView(game);
+        model.views.GameView gameView = new GameView(game);
         assertEquals(gameView.getNumPlayer(),game.getListBookshelf().size());
     }
 

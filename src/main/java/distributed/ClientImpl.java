@@ -1,8 +1,6 @@
 package distributed;
 
-import distributed.Client;
-import distributed.Server;
-import model.GameView;
+import model.views.GameView;
 import utils.Event;
 import view.Color;
 import view.TextualUI;

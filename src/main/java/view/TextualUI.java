@@ -1,8 +1,8 @@
 package view;
 
-import model.ArrayListView;
-import model.BoxView;
-import model.GameView;
+import model.views.ArrayListView;
+import model.views.BoxView;
+import model.views.GameView;
 import model.ItemTiles;
 import utils.*;
 
