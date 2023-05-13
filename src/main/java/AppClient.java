@@ -59,6 +59,7 @@ public class AppClient {
     }
 
     private static void startRmiClient() throws RemoteException, NotBoundException {
+        System.setProperty("java.rmi.server.hostname",Ip);
         Registry registry = LocateRegistry.getRegistry(Ip, 1099);
         Server server = (Server) registry.lookup("server");
         ClientImpl client = new ClientImpl(server);
