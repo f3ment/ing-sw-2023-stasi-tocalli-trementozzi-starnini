@@ -6,24 +6,25 @@ import model.ScoringToken;
 public class CheckRowDifferent extends CommonGoal{
     private int repetitions;
     private Boolean strategy; // false->orizzontale 5 e repetitions=2 , true -> orizzontale 3 diff
-    //private String descr;
 
     public CheckRowDifferent(int romanNumber, int playerNumber, int repetitions, Boolean strategy){
-        //this.descr = setDescription(strategy);
-        super(romanNumber, playerNumber/*,""*/);
-        //this.descr = setDescription(strategy);
+        super(romanNumber, playerNumber);
         this.repetitions = repetitions;
         this.strategy = strategy;
     }
 
-    /*private String setDescription(Boolean str){
-        if(str){
-            descr= new String("Four lines each formed by 5 tiles of maximum three different types. One lime can show the same or a different combination of another line.");
+    @Override
+    public String toString() {
+        String descr = null;
+        if(strategy){
+            descr = new String("Four lines each formed by 5 tiles of maximum three different types. One lime can show the same or a different combination of another line.");
         }else{
-            descr=new String("Two lines each formed by 5 different types of tiles. One line can show the same or a different combination of the other line.");
+            descr =new String("Two lines each formed by 5 different types of tiles. One line can show the same or a different combination of the other line.");
         }
         return descr;
-    }*/
+    }
+
+
     @Override
     public ScoringToken validate(Bookshelf bookshelf) {
         int flag = 0;

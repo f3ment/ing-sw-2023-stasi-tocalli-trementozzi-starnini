@@ -8,8 +8,13 @@ import java.util.ArrayList;
 public class CheckColumnLength extends CommonGoal{
 
     public CheckColumnLength(int romanNumber, int numberPlayers){
-        super(romanNumber, numberPlayers/*, "Five columns of increasing or decreasing height. Starting from the first column on the left or on the right, ach next column must be made of exactly one more tile. Tile can be of any type."*/);
+        super(romanNumber, numberPlayers);
+    }
 
+    @Override
+    public String toString() {
+        String str = new String("Five columns of increasing or decreasing height. Starting from the first column on the left or on the right, ach next column must be made of exactly one more tile. Tile can be of any type.");
+        return str;
     }
 
     @Override

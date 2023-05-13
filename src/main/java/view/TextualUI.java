@@ -146,6 +146,8 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 System.out.print(Color.YELLOW_BOLD_BRIGHT);
                 System.out.println(o.getCurrentPlayer().getUsername() + " is playing, wait for your turn!");
                 System.out.print(Color.RESET);
+                showFirstCommonGoal(o);
+                showSecondCommonGoal(o);
                 showAllBookshelf(o);
 
                 showBoard(o);
@@ -165,6 +167,8 @@ public class TextualUI extends Observable<Event> implements Runnable {
         System.out.print(Color.GREEN_BOLD_BRIGHT);
         System.out.println(o.getCurrentPlayer().getUsername() + ", it's your turn!");
         System.out.print(Color.RESET);
+        showFirstCommonGoal(o);
+        showSecondCommonGoal(o);
         showAllBookshelf(o);
         showBoard(o);
         playerDraw(o);
@@ -485,4 +489,12 @@ public class TextualUI extends Observable<Event> implements Runnable {
         }
         return userInput;
     }
+
+    public void showFirstCommonGoal(GameView o){
+        System.out.println(Color.YELLOW_BOLD_BRIGHT + "1st Common goal: " + Color.YELLOW + o.getFirstCommonGoalDescription() + Color.RESET);
+    }
+    public void showSecondCommonGoal(GameView o){
+        System.out.println(Color.YELLOW_BOLD_BRIGHT + "2nd common goal: " + Color.YELLOW + o.getSecondCommonGoalDescription() + Color.RESET);
+    }
+
 }

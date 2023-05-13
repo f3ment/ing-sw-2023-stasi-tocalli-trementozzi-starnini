@@ -93,6 +93,16 @@ public class GameView implements Serializable {
         return viewStack2;
     }
 
+    public String getFirstCommonGoalDescription(){
+        String desc = model.getFirstCommonGoal().toString();
+        return desc;
+    }
+
+    public String getSecondCommonGoalDescription(){
+        String desc = model.getSecondCommonGoal().toString();
+        return desc;
+    }
+
     public ScoringToken getScoringToken1(int x){
         return (ScoringToken) getFirstCommonGoal().get(x);
     }

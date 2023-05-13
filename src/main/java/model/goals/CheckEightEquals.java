@@ -8,7 +8,13 @@ import java.util.HashMap;
 
 public class CheckEightEquals extends CommonGoal{
     public CheckEightEquals(int romanNumber, int numberPlayers){
-        super(romanNumber, numberPlayers/*, "Eight tiles of the same type, There's no restriction about the position of these tiles."*/);
+        super(romanNumber, numberPlayers);
+    }
+
+    @Override
+    public String toString() {
+        String str = new String("Eight tiles of the same type, There's no restriction about the position of these tiles.");
+        return str;
     }
 
     @Override
