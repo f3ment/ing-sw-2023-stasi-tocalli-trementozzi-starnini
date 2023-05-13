@@ -105,9 +105,15 @@ public class TextualUI extends Observable<Event> implements Runnable {
             } else if (arg.equals(Event.LOGIN)) {
                 //System.out.println(Color.RED_BRIGHT + "Username NOT valid! Try again..." + Color.RESET)
                 System.out.println("Choose your Nickname: ");
-                System.out.print("> ");
-                Scanner input = new Scanner(System.in);
-                this.username = input.nextLine();
+                do{
+                    System.out.print("> ");
+                    Scanner input = new Scanner(System.in);
+                    this.username = input.nextLine();
+                    if(this.username.equals("")){
+                        System.out.println(Color.RED + "Username can't be an empty string! Retry!!" + Color.RESET);
+                    }
+                }while(this.username.equals(""));
+
                 System.out.println("Hi" + Color.GREEN_BRIGHT + " " + username.toUpperCase() + "! " + Color.RESET +"Choose the number of players: ");
 
                 int nPlayers = 0;
