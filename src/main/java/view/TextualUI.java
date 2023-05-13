@@ -1,15 +1,15 @@
 package view;
 
+import model.Player;
 import model.views.ArrayListView;
 import model.views.BoxView;
 import model.views.GameView;
 import model.ItemTiles;
 import utils.*;
+import utils.Observable;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 
 /*
@@ -148,6 +148,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 System.out.print(Color.RESET);
                 showFirstCommonGoal(o);
                 showSecondCommonGoal(o);
+                showAllScore(o);
                 showAllBookshelf(o);
 
                 showBoard(o);
@@ -169,6 +170,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
         System.out.print(Color.RESET);
         showFirstCommonGoal(o);
         showSecondCommonGoal(o);
+        showAllScore(o);
         showAllBookshelf(o);
         showBoard(o);
         playerDraw(o);
@@ -203,8 +205,8 @@ public class TextualUI extends Observable<Event> implements Runnable {
                         showItemTile(el);
 
                     } else {
-                        System.out.print(Color.BLACK_BRIGHT);
-                        System.out.print("   ");
+                        System.out.print(Color.BLACK);
+                        System.out.print(" ▓▓");
                         System.out.print(Color.RESET);
                     }
                 } else {
@@ -225,8 +227,15 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
 
 
-
+    void showAllScore(GameView o){
+        System.out.println("------- SCORE -------");
+        HashMap<String, Integer> playerScore = (HashMap<String, Integer>) o.getListPlayer();
+        for(Map.Entry<String, Integer> set : playerScore.entrySet()){
+            System.out.println("<" + set.getKey() + "> " + set.getValue());
+        }
+    }
     void showAllBookshelf(GameView o) {
+        System.out.println("----- BOOKSHELF -----");
         ArrayListView bookShelfList = o.getListBookshelf();
 
         for(int n=0; n<o.getNumPlayer(); n++){
@@ -489,6 +498,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
         }
         return userInput;
     }
+
 
     public void showFirstCommonGoal(GameView o){
         System.out.println(Color.YELLOW_BOLD_BRIGHT + "1st Common goal: " + Color.YELLOW + o.getFirstCommonGoalDescription() + Color.RESET);
