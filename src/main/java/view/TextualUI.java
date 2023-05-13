@@ -476,10 +476,15 @@ public class TextualUI extends Observable<Event> implements Runnable {
             System.out.println("error reading");
         }
         while (true) {
+            input = new Scanner(System.in);
             try {
                 userInput = input.nextInt();
-                break;
-            } catch (InputMismatchException | NumberFormatException ex) {
+                if (1 < userInput && userInput < 5) {
+                    break;
+                } else {
+                    System.out.println("Invalid Number, Please try again");
+                }
+            } catch (Exception e) {
                 System.out.println("Invalid Number, Please try again");
             }
         }
