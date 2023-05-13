@@ -7,7 +7,13 @@ public class CheckEqualsDiagonal extends CommonGoal{
 
 
     public CheckEqualsDiagonal(int romanNumber, int numberPlayers){
-        super(romanNumber, numberPlayers/*, "Five tiles of the same type forming a diagonal"*/);
+        super(romanNumber, numberPlayers);
+    }
+
+    @Override
+    public String toString() {
+        String str = new String("Five tiles of the same type forming a diagonal");
+        return str;
     }
 
     @Override

@@ -6,7 +6,13 @@ import model.ScoringToken;
 public class CheckCross extends CommonGoal{
 
     public CheckCross(int romanNumber, int numberPlayers){
-        super(romanNumber, numberPlayers/*, "Five tiles of the same type forming an X"*/);
+        super(romanNumber, numberPlayers);
+    }
+
+    @Override
+    public String toString() {
+        String str = new String("Five tiles of the same type forming an X");
+        return str;
     }
 
     // null = false

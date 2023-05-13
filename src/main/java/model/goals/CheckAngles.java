@@ -6,7 +6,13 @@ import model.ScoringToken;
 public class CheckAngles extends CommonGoal{
 
     public  CheckAngles(int romanNumber, int numberPlayers){
-        super(romanNumber,numberPlayers/*, "Four tiles of the same type in the four corners of the bookshelf."*/);
+        super(romanNumber,numberPlayers);
+    }
+
+    @Override
+    public String toString() {
+        String str = new String("Four tiles of the same type in the four corners of the bookshelf.");
+        return str;
     }
 
     @Override

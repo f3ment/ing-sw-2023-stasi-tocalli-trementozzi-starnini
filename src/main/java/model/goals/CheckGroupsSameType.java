@@ -14,6 +14,17 @@ public class CheckGroupsSameType extends CommonGoal{
     }
 
     @Override
+    public String toString() {
+        String str = null;
+        if(groupLength==4){
+             str = new String("Four groups each containing at least 4 tiles of the same type. The tiles of one group can be different from those of another group.");
+        }else if (groupLength == 2){
+            str = new String("Six groups each containing at least 2 tiles of the same type. The tiles of one group can be different from those of another group.");
+        }
+        return str;
+    }
+
+    @Override
     public ScoringToken validate(Bookshelf bookshelf)  {
         boolean[][] batrix = new boolean[bookshelf.getHeight()][bookshelf.getLength()];
         int rep = 0;
