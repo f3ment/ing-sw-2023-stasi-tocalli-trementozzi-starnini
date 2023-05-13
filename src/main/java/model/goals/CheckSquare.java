@@ -1,12 +1,12 @@
 package model.goals;
-
+// 1
 import model.Bookshelf;
 import model.ScoringToken;
 
 public class CheckSquare extends CommonGoal{
 
     public CheckSquare(int romanNumber, int numberPlayers){
-        super(romanNumber, numberPlayers);
+        super(romanNumber, numberPlayers/*, "Four cards of the same type that create a square in the Bookshelf" */);
     }
 
 /*

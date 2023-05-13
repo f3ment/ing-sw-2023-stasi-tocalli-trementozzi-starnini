@@ -1,13 +1,12 @@
 package model.goals;
-
+// 1
 import model.Bookshelf;
 import model.ScoringToken;
 
 public class CheckAngles extends CommonGoal{
 
     public  CheckAngles(int romanNumber, int numberPlayers){
-        super(romanNumber,numberPlayers);
-
+        super(romanNumber,numberPlayers/*, "Four tiles of the same type in the four corners of the bookshelf."*/);
     }
 
     @Override

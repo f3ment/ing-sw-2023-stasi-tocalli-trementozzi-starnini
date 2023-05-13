@@ -12,8 +12,9 @@ public abstract class CommonGoal implements Serializable {
     private int romanNumber;
     private Boolean completed;
     private Stack<ScoringToken> stack;
+    private String description;
 
-    public CommonGoal(int romanNumber, int numberPlayers){
+    public CommonGoal(int romanNumber, int numberPlayers/*, String description*/){
         this.romanNumber = romanNumber;
         stack = new Stack<ScoringToken>();
         switch (numberPlayers){
@@ -35,6 +36,7 @@ public abstract class CommonGoal implements Serializable {
         }
 
         this.completed = false;
+        this.description = description;
     }
     public abstract ScoringToken validate(Bookshelf bookshelf);
     public int getRomanNumber() {
@@ -54,5 +56,9 @@ public abstract class CommonGoal implements Serializable {
 
     public Boolean getCompleted() {
         return completed;
+    }
+
+    public String getDesc(){
+        return description;
     }
 }

@@ -2,7 +2,7 @@ package distributed;
 
 
 import model.views.GameView;
-import model.Message;
+//import model.Message;
 import utils.Event;
 
 import java.rmi.Remote;
