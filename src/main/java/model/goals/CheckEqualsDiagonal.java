@@ -1,5 +1,5 @@
 package model.goals;
-
+// 1
 import model.Bookshelf;
 import model.ScoringToken;
 
@@ -7,7 +7,7 @@ public class CheckEqualsDiagonal extends CommonGoal{
 
 
     public CheckEqualsDiagonal(int romanNumber, int numberPlayers){
-        super(romanNumber, numberPlayers);
+        super(romanNumber, numberPlayers/*, "Five tiles of the same type forming a diagonal"*/);
     }
 
     @Override

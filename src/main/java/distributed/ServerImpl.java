@@ -1,12 +1,12 @@
 package distributed;
 
-import controller.ChatController;
+//import controller.ChatController;
 import controller.GameController;
 import controller.GamesManagerController;
-import model.Chat;
+//import model.Chat;
 import model.Game;
 import controller.Lobby;
-import model.Message;
+//import model.Message;
 import utils.Event;
 import view.Color;
 
@@ -23,8 +23,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     private GameController controller;
     private Game model;
 
-    private ChatController chatController;
-    private Chat chatModel;
+    //private ChatController chatController;
+    //private Chat chatModel;
 
     private Lobby currentLobby;
 

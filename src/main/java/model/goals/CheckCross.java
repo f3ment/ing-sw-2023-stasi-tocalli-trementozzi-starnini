@@ -1,12 +1,12 @@
 package model.goals;
-
+// 1
 import model.Bookshelf;
 import model.ScoringToken;
 
 public class CheckCross extends CommonGoal{
 
     public CheckCross(int romanNumber, int numberPlayers){
-        super(romanNumber, numberPlayers);
+        super(romanNumber, numberPlayers/*, "Five tiles of the same type forming an X"*/);
     }
 
     // null = false

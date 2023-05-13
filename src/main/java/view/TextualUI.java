@@ -88,6 +88,16 @@ public class TextualUI extends Observable<Event> implements Runnable {
             } else if (arg.equals(Event.PLAYER_FINISH)) {
                 start(o);
             } else if (arg.equals(Event.NEW_TURN)) {
+                /*TODO: Cosa vuoi vedere? 3 opzioni - Common, Personal, Bookshelf
+                    while (flag){
+                        1) Show CommonGoal
+                        2) Show PersonalGoal
+                        3) Show All Boookshelf
+                        4) Continue (Play Turn / wait next turn)
+                    }
+                set changed
+                        notifyobservers(EVENT.common)
+                */
                 start(o);
             } else if (arg.equals(Event.FINISH_MATCH)) {
                 System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
@@ -253,6 +263,12 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
     }
 
+    void showCommonGoals(GameView o) {
+        ArrayListView fcg = o.getFirstCommonGoal();
+        ArrayListView scg = o.getSecondCommonGoal();
+
+
+    }
     void showBookshelf(GameView o) {
         System.out.println("This is your bookshelf : ");
         for (int j = 0; j < o.getLenghtBookshelf(); j++) {
