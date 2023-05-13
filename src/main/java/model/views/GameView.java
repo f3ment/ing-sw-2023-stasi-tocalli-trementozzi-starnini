@@ -1,9 +1,6 @@
 package model.views;
 
-import model.Bookshelf;
-import model.Game;
-import model.ItemTiles;
-import model.ScoringToken;
+import model.*;
 import model.board.Board;
 
 import java.io.Serializable;
@@ -34,6 +31,15 @@ public class GameView implements Serializable {
         return viewBoard;
     }
 
+    public Map<String, Integer> getListPlayer(){
+        List<Player> playerList = model.getListPlayer();
+        //ArrayListView returnPlayerList = new ArrayListView((ArrayList) playerList);
+        Map<String, Integer> returnMap = new HashMap<>();
+        for(int i=0; i<getNumPlayer(); i++){
+            returnMap.put(playerList.get(i).getUsername(), playerList.get(i).getScore());
+        }
+        return returnMap;
+    }
     public ArrayListView getListBookshelf(){
         List<Bookshelf> bookshelfList= model.getListBookshelf();
         List<ItemTiles[][]> viewBookshelfList= new ArrayList<ItemTiles[][]>();

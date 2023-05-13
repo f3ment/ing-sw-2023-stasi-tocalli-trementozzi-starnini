@@ -172,6 +172,15 @@ public class Game extends Observable<Event> implements Serializable {
         currentPosition=tablePositionList.get(newCurrentIndex);
     }
 
+    public List<Player> getListPlayer(){
+        List<Player> list = new ArrayList<Player>();
+        for(int i=0; i<tablePositionList.size(); i++){
+            list.add(tablePositionList.get(i).getPlayer());
+        }
+        return list;
+    }
+
+
     public List<Bookshelf> getListBookshelf(){
         List<Bookshelf> list= new ArrayList<Bookshelf>();
         for(int i=0;i<tablePositionList.size();i++){
