@@ -237,7 +237,13 @@ public class TextualUI extends Observable<Event> implements Runnable {
         System.out.println("------- SCORE -------");
         HashMap<String, Integer> playerScore = (HashMap<String, Integer>) o.getListPlayer();
         for(Map.Entry<String, Integer> set : playerScore.entrySet()){
+            if(o.getCurrentPlayer().getUsername().equals(set.getKey())){
+                System.out.print(Color.GREEN);
+            }else{
+                System.out.print(Color.BLUE);
+            }
             System.out.println("<" + set.getKey() + "> " + set.getValue());
+            System.out.print(Color.RESET);
         }
     }
     void showAllBookshelf(GameView o) {

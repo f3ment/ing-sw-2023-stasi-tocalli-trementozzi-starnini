@@ -150,6 +150,8 @@ public class GameView implements Serializable {
 
 
 
+
+
     public ItemTiles getHand(int x){
         return (ItemTiles)getPickedCards().get(x);
     }
