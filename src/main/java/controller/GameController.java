@@ -76,24 +76,24 @@ public class GameController {
     }
 
     //todo gestione input non validi
-    public void update(Client o, Enum arg, Integer columnNumber, ArrayList coords, String userName) {
+    public void update(Client o,Message message) {
         if(o==null){
             return;
         }
-        if (arg.equals(Event.PLAYER_DRAW_POSITIVE)) {
-            if(draw(coords)){
+        if (message.getEvent().equals(Event.PLAYER_DRAW_POSITIVE)) {
+            if(draw(message.getCoords())){
                 game.setChangedAndNotifyObservers(Event.PLAYER_DRAW_POSITIVE);
             }else{
                 game.setChangedAndNotifyObservers(Event.PLAYER_DRAW_NEGATIVE);
             }
 
-        } else if (arg.equals(Event.PLAYER_INSERT_POSITIVE)) {
-            if(insert(columnNumber, coords)){
+        } else if (message.getEvent().equals(Event.PLAYER_INSERT_POSITIVE)) {
+            if(insert(message.getColumnNumber(), message.getCoords())){
                 game.setChangedAndNotifyObservers(Event.PLAYER_INSERT_POSITIVE);
             }else{
                 game.setChangedAndNotifyObservers(Event.PLAYER_INSERT_NEGATIVE);
             }
-        } else if (arg.equals(Event.PLAYER_FINISH)) {
+        } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
             //Check if re-fill board
 
             if(game.getCurrentPosition().getBookshelf().isFull()){
@@ -111,13 +111,13 @@ public class GameController {
                 changeCurrentPosition();
                 game.setChangedAndNotifyObservers(Event.PLAYER_FINISH);
             }
-        }else if(arg.equals(Event.NEW_TURN)){
+        }else if(message.getEvent().equals(Event.NEW_TURN)){
 
             game.setChangedAndNotifyObservers(Event.NEW_TURN);
-        }else if(arg.equals(Event.FINISH_MATCH)){
+        }else if(message.getEvent().equals(Event.FINISH_MATCH)){
             game.setWinner();
             game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
-        } else if (arg.equals(Event.LOGIN_TRUE)) {
+        } else if (message.getEvent().equals(Event.LOGIN_TRUE)) {
             game.setChangedAndNotifyObservers(Event.LOGIN_TRUE);
         }
     }

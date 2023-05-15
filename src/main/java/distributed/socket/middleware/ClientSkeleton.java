@@ -2,6 +2,7 @@ package distributed.socket.middleware;
 
 import distributed.Client;
 import distributed.Server;
+import model.Message;
 import model.views.GameView;
 import utils.Event;
 
@@ -31,59 +32,26 @@ public class ClientSkeleton implements Client {
 
     }
 
-    @Override
-    public void update(GameView o, Event arg) throws RemoteException {
-        try{
-            oos.writeObject(o);
-            oos.reset();
-        }catch(IOException e){
-            throw new RemoteException("Cannot send gameview : " +e.getMessage());
+    public void receive(Server server) throws RemoteException{
+        Message message;
+        try {
+            message =(Message) ios.readObject();
+        } catch (IOException ex) {
+            throw new RuntimeException("Cannot receive event : " + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException("Cannot deserialize event : " + ex.getMessage());
         }
+        server.update(this, message);
+    }
+
+    @Override
+    public void update(Message message) throws RemoteException {
         try{
-            oos.writeObject(arg);
+            oos.writeObject(message);
             oos.reset();
             oos.flush();
-
         }catch(IOException e){
             throw new RemoteException("Cannot send event : " +e.getMessage());
         }
-    }
-
-    public void receive(Server server) throws RemoteException{
-        Event e;
-        try {
-            e =(Event) ios.readObject();
-        } catch (IOException ex) {
-            throw new RuntimeException("Cannot receive event : " + ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            throw new RuntimeException("Cannot deserialize event : " + ex.getMessage());
-        }
-        Integer cn;
-        try {
-            cn =(Integer) ios.readObject();
-        } catch (IOException ex) {
-            throw new RuntimeException("Cannot receive event : " + ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            throw new RuntimeException("Cannot deserialize event : " + ex.getMessage());
-        }
-
-        ArrayList coords;
-        try {
-            coords =(ArrayList) ios.readObject();
-        } catch (IOException ex) {
-            throw new RuntimeException("Cannot receive event : " + ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            throw new RuntimeException("Cannot deserialize event : " + ex.getMessage());
-        }
-        String UserName;
-        try {
-            UserName =(String) ios.readObject();
-        } catch (IOException ex) {
-            throw new RuntimeException("Cannot receive event : " + ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            throw new RuntimeException("Cannot deserialize event : " + ex.getMessage());
-        }
-        server.update(this, e, cn, coords , UserName);
-
     }
 }

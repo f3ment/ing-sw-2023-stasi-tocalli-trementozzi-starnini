@@ -1,5 +1,6 @@
 package distributed;
 
+import model.Message;
 import model.views.GameView;
 import utils.Event;
 import view.Color;
@@ -38,9 +39,9 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
 
     private void initialize(Server server) throws RemoteException{
         server.register(this);
-        view.addObserver((o, arg, columnNumber, coords , username)-> {
+        view.addObserver((o, message)-> {
             try {
-                server.update(this, (Event) arg, columnNumber, coords , username);
+                server.update(this, message);
             } catch (RemoteException e) {
                 System.err.println("Error while updating server : " + e.getMessage() + ". Skipping the update...");
             }
@@ -48,12 +49,18 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
     }
 
     @Override
-    public void update(GameView o, Event arg) {
-        view.update(o, arg);
+    public void update(Message message) throws RemoteException {
+        view.update(message);
     }
 
     @Override
     public void run() {
-        view.run();
+        new Thread(){
+            @Override
+            public void run(){
+                view.run();
+            }
+        }.start();
+
     }
 }

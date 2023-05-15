@@ -1,7 +1,9 @@
 package controller;
 
 import distributed.Client;
+import model.Chat;
 import model.Game;
+import model.Message;
 import model.views.GameView;
 import utils.Event;
 
@@ -13,6 +15,8 @@ import java.util.HashMap;
 public class Lobby {
 
     private Game model;
+    private Chat chat;
+    private ChatController chatController;
     private GameController gameController;
     private String id;
     private int nPlayers;
@@ -27,6 +31,17 @@ public class Lobby {
         }else{
             isFull = false;
         }
+
+        chat = new Chat();
+        chatController = new ChatController(chat);
+        this.chat.addObserver((o, message) -> {
+            try {
+                //todo creare una chatview
+                client.update(new Message(message.getUserName(),(Event) message.getEvent(), chat));
+            } catch (RemoteException e) {
+                System.err.println("Error while updating the client : " + e.getMessage() + ". Skipping the update...");
+            }
+        });
     }
 
     public String getId() {
@@ -50,6 +65,15 @@ public class Lobby {
                 isFull = true;
             }
         }
+
+        this.chat.addObserver((o, message) -> {
+            try {
+                //todo creare una chatview
+                user.update(new Message(message.getUserName(),(Event) message.getEvent(), chat));
+            } catch (RemoteException e) {
+                System.err.println("Error while updating the client : " + e.getMessage() + ". Skipping the update...");
+            }
+        });
         return true;
     }
 
@@ -77,18 +101,23 @@ public class Lobby {
             throw new RuntimeException(e);
         }
         for(Client c:usersId.values()){
-            this.model.addObserver((o, arg, columnNumber, coords, UserName) -> {
+            this.model.addObserver((o, message) -> {
                 try {
-                    c.update(new GameView(model), (Event) arg);
+                    c.update(new Message(new GameView(model), (Event) message.getEvent()));
                 } catch (RemoteException e) {
                     System.err.println("Error while updating the client : " + e.getMessage() + ". Skipping the update...");
-
                 }
             });
+
+
         }
     }
 
     public GameController getController() {
         return gameController;
+    }
+
+    public ChatController getChatController() {
+        return this.chatController;
     }
 }

@@ -1,6 +1,6 @@
 package utils;
 
-import java.util.ArrayList;
+import model.Message;
 
 /**
  * A class can implement the {@code Observer} interface when it
@@ -22,11 +22,10 @@ public interface Observer<SubjectType extends Observable<Event>, Event extends E
      * {@code notifyObservers} method to have all the object's
      * observers notified of the change.
      *
-     * @param   o     the observable object.
-     * @param   arg   an argument passed to the {@code notifyObservers}
-     *                 method.
+     * @param o       the observable object.
+     * @param message
      */
 
-    void update(SubjectType o, Enum arg , Integer columnNumber , ArrayList coords , String UserName);
+    void update(SubjectType o, Message message);
 }
 

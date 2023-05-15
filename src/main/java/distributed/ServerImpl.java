@@ -7,6 +7,7 @@ import controller.GamesManagerController;
 import model.Game;
 import controller.Lobby;
 //import model.Message;
+import model.Message;
 import utils.Event;
 import view.Color;
 
@@ -19,10 +20,6 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 public class ServerImpl extends UnicastRemoteObject implements Server {
-
-    private GameController controller;
-    private Game model;
-
     //private ChatController chatController;
     //private Chat chatModel;
 
@@ -45,16 +42,12 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         super(port);
         gamesManagerController = new GamesManagerController();
         currentLobby = null;
-
-
-
     }
 
     public ServerImpl(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
         super(port, csf, ssf);
         gamesManagerController = new GamesManagerController();
         currentLobby = null;
-
     }
 
 
@@ -69,23 +62,29 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     }
 
     @Override
-    public void update(Client client, Event event, Integer columnNumber, ArrayList coords, String UserName) throws RemoteException{
+    public void update(Client client, Message message) throws RemoteException {
         currentLobby = this.gamesManagerController.getLobbyByClient(client);
+
+        //CHAT UPDATE
+        if(currentLobby!=null &&( message.getEvent().equals(Event.GET_CHAT) || message.getEvent().equals(Event.EXIT_CHAT) || message.getEvent().equals(Event.SEND_MESSAGE))){
+            currentLobby.getChatController().update(client,message);
+        }else
+        //GAME UPDATE
         /*
-        *different clients notify players game's choices
-        */
-        if(!event.equals(Event.GAME_INIT) && !event.equals(Event.LOGIN)){
+         *different clients notify players game's choices
+         */
+        if(!message.getEvent().equals(Event.GAME_INIT) && !message.getEvent().equals(Event.LOGIN)){
             //prop.remove(UserName);
-            if(event.equals(Event.FINISH_MATCH)){
+            if(message.getEvent().equals(Event.FINISH_MATCH)){
                 for(String a: currentLobby.getClientsUsername()){
                     prop.remove(a);
                 }
             }
-            currentLobby.getController().update(client,event,columnNumber, coords , UserName);
-        /*
-        * player sends nickname and number of players to join a lobby
-        * */
-        }else if(event.equals(Event.LOGIN)){
+            currentLobby.getController().update(client, message);
+            /*
+             * player sends nickname and number of players to join a lobby
+             * */
+        }else if(message.getEvent().equals(Event.LOGIN)){
             boolean correctusername = true;
             synchronized (syncKey) {
                 FileInputStream ip;
@@ -97,7 +96,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                         throw new RuntimeException(e);
                     }
                 }
-                if (prop.containsKey(UserName)) {
+                if (prop.containsKey(message.getUserName())) {
                     //client.update(null, Event.LOGIN);
                     correctusername = false;
                 } else {
@@ -107,8 +106,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     } catch (IOException ex) {
                         System.out.println(ex);
                     }
-                    prop.setProperty(UserName, "1");
-                    String value = prop.getProperty(UserName).trim();
+                    prop.setProperty(message.getUserName(), "1");
+                    String value = prop.getProperty(message.getUserName()).trim();
 
                     try {
                         prop.store(new FileOutputStream(configFilePath), null);
@@ -118,24 +117,24 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                 }
             }
             if (!correctusername) {
-                client.update(null, Event.LOGIN);
+                client.update(new Message(Event.LOGIN));
             }else {
 
-                Lobby lobby = this.gamesManagerController.addPlayerToLobby(client, columnNumber, UserName);
+                Lobby lobby = this.gamesManagerController.addPlayerToLobby(client, message.getnPlayers(), message.getUserName());
+
+                client.update(new Message(Event.WAIT_START_OF_MATCH));
+
                 if (lobby != null) {
-                    lobby.getController().update(client, Event.LOGIN_TRUE, null, null, null);
-                } else {
-                    client.update(null, Event.WAIT_START_OF_MATCH);
+                    lobby.getController().update(client, new Message(Event.LOGIN_TRUE));
                 }
             }
-        /*
-        * hit by the client for server connection and starting of the login procedures
-        * */
+            /*
+             * hit by the client for server connection and starting of the login procedures
+             * */
         }else{
             //System.out.println(Color.RED_BRIGHT + "Username NOT valid" + Color.RESET);
-            client.update(null, Event.LOGIN);
+            client.update(new Message(Event.LOGIN));
         }
-
     }
 
     //TODO GESTIONE USERNAMES

@@ -5,6 +5,7 @@ import distributed.Client;
 import distributed.ClientImpl;
 import distributed.ServerImpl;
 import model.Game;
+import model.Message;
 import org.junit.jupiter.api.Test;
 import utils.Event;
 
@@ -84,7 +85,7 @@ class LobbyTest {
         Lobby lobby = new Lobby(2, "toky", client);
         lobby.insertPlayer(new ClientImpl(new ServerImpl()),"mike");
         lobby.game_init();
-        lobby.getController().update(client, Event.NEW_TURN,null,null,null);
+        lobby.getController().update(client, new Message(Event.NEW_TURN));
     }
 
 }

@@ -37,7 +37,7 @@ public class GamesManagerController {
             return null;
         /*
         *
-        * implementare logica controller games manager
+        * todo implementare logica controller games manager
         *
         * */
     }
@@ -54,12 +54,4 @@ public class GamesManagerController {
         return lobbies.get(client);
     }
 
-    /*public synchronized boolean checkUsername(String username){
-        for(Lobby a : lobbies_list){
-            if(a.getClientsUsername().contains(username)){
-                return false;
-            }
-        }
-        return true;
-    }*/
 }

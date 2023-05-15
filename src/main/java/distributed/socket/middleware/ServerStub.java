@@ -2,6 +2,7 @@ package distributed.socket.middleware;
 
 import distributed.Client;
 import distributed.Server;
+import model.Message;
 import model.views.GameView;
 import utils.Event;
 
@@ -48,30 +49,9 @@ public class ServerStub implements Server {
 
     //client che manda gli oggetti
     @Override
-    public void update(Client client, Event event, Integer columnNumber, ArrayList coords , String UserName) throws RemoteException {
+    public void update(Client client, Message message) throws RemoteException {
         try{
-            oos.writeObject(event);
-            oos.reset();
-        }catch (IOException e){
-            throw new RemoteException("Cannot send event : " + e.getMessage());
-        }
-
-        try{
-            oos.writeObject(columnNumber);
-            oos.reset();
-        }catch (IOException e){
-            throw new RemoteException("Cannot send columnNumber : " + e.getMessage());
-        }
-
-        try{
-            oos.writeObject(coords);
-            oos.reset();
-        }catch (IOException e){
-            throw new RemoteException("Cannot send coords : " + e.getMessage());
-        }
-
-        try{
-            oos.writeObject(UserName);
+            oos.writeObject(message);
             oos.reset();
             oos.flush();
         }catch (IOException e){
@@ -82,25 +62,25 @@ public class ServerStub implements Server {
     }
 
     public void receive(Client client) throws RemoteException{
-        GameView o;
+        Message message;
         try{
-            o = (GameView) ios.readObject();
+            message = (Message) ios.readObject();
         }catch (IOException e ){
-            throw new RemoteException("Cannot receive gameView : " + e.getMessage());
+            throw new RemoteException("Cannot receive Message : " + e.getMessage());
         }catch (ClassNotFoundException e){
-            throw new RemoteException("Cannot cast gameView : " + e.getMessage());
+            throw new RemoteException("Cannot cast Message " + e.getMessage());
         }
 
-        Event arg;
-        try{
-            arg = (Event) ios.readObject();
-        }catch (IOException e ){
-            throw new RemoteException("Cannot receive event : " + e.getMessage());
-        }catch (ClassNotFoundException e){
-            throw new RemoteException("Cannot cast event : " + e.getMessage());
-        }
-
-        client.update(o,arg);
+        new Thread() {
+            @Override
+            public void run(){
+                try {
+                    client.update(message);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }.start();
     }
 
     public void close() throws RemoteException {

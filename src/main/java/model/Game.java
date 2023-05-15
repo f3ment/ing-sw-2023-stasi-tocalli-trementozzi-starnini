@@ -10,7 +10,6 @@ import utils.Observable;
 
 import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Game extends Observable<Event> implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -216,7 +215,7 @@ public class Game extends Observable<Event> implements Serializable {
     //TODO notify...
     public void setChangedAndNotifyObservers(Event arg) {
         setChanged();
-        notifyObservers(arg,null,null,null);
+        notifyObservers(new Message(arg));
     }
 
     public String getFirstPlayer() {

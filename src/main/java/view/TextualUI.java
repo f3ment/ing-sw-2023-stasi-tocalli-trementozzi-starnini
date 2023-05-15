@@ -1,6 +1,6 @@
 package view;
 
-import model.Player;
+import model.Message;
 import model.views.ArrayListView;
 import model.views.BoxView;
 import model.views.GameView;
@@ -25,12 +25,13 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
     private String username;
     private boolean myTurn = true;
+    private boolean flagChat = false;
+
+    private boolean lobbyExist = false;
 
     //TODO vietare input client quando è in attesa;
     @Override
     public void run() {
-
-
         System.out.print(Color.BLACK_BACKGROUND);
         System.out.print(Color.RED_BOLD);
         System.out.println(".___  ___. ____    ____         _______. __    __   _______  __       _______  __   _______ " + "\033[0m");
@@ -60,34 +61,76 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
 
         setChanged();
-        notifyObservers(Event.GAME_INIT, null, null, null);
+        notifyObservers(new Message(Event.GAME_INIT));
 
     }
 
     //update chiamato direttamente dall'oggetto che si occupa di gestire il client
-    public void update(GameView o, Enum arg) {
-        if (o == null || o.getCurrentPlayer().getUsername().equals(username)) {
+    public synchronized void update(Message message) {
+        if(message.getEvent().equals(Event.GET_CHAT)){
+            if(message.getChat().getActive().contains(username)){
+                System.out.println("----------------------------");
+                System.out.println("This is the chat : ");
+                try{
+                    message.getChat().getLastTen().forEach(e -> e.forEach(
+                        (key, value) -> {
+                            if (key.equals(username)) {
+                                System.out.println("You" + " > " + value);
+                            } else {
+                                System.out.println(key + " > " + value);
+                            }
+                        }
+                    ));
+                }catch (Exception e){
+                    System.err.println(e.getMessage());
+                }
+            }
+        }else if (message.getEvent().equals(Event.SEND_MESSAGE) && flagChat) {
+            if(message.getChat().getActive().contains(username)) {
+                message.getChat().getLast().forEach((key, value) ->{
+                        if(!key.equals(username)){
+                            System.out.println(key + " > " + value);
+                        }
+            });
+            }
+        } else if (message.getEvent().equals(Event.EXIT_CHAT) && flagChat) {
+            if(!message.getChat().getActive().contains(username)){
+                flagChat = false;
+                notifyAll();
+                System.out.println("----------------------------");
+                System.out.println("Now you can play.");
+            }
+        }else if(flagChat){
+            while(flagChat){
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        if (message.getModel() == null || message.getModel().getCurrentPlayer().getUsername().equals(username)) {
             myTurn = true;
-            if (arg.equals(Event.PLAYER_DRAW_NEGATIVE)) {
+            if (message.getEvent().equals(Event.PLAYER_DRAW_NEGATIVE)) {
                 System.out.println(Color.RED + "The cards you have selected are invalid, please select other cards : " + Color.RESET);
-                playerDraw(o);
-            } else if (arg.equals(Event.PLAYER_DRAW_POSITIVE)) {
+                playerDraw(message.getModel());
+            } else if (message.getEvent().equals(Event.PLAYER_DRAW_POSITIVE)) {
                 System.out.println(Color.GREEN + "Cards picked correctly!" + Color.RESET);
                 //show picked cards
-                showHand(o);
-                playerInsert(o);
-            } else if (arg.equals(Event.PLAYER_INSERT_NEGATIVE)) {
+                showHand(message.getModel());
+                playerInsert(message.getModel());
+            } else if (message.getEvent().equals(Event.PLAYER_INSERT_NEGATIVE)) {
                 System.out.println(Color.RED + "The selected column is not valid! Retry. " + Color.RESET);
-                showHand(o);
-                playerInsert(o);
-            } else if (arg.equals(Event.PLAYER_INSERT_POSITIVE)) {
+                showHand(message.getModel());
+                playerInsert(message.getModel());
+            } else if (message.getEvent().equals(Event.PLAYER_INSERT_POSITIVE)) {
                 System.out.println(Color.GREEN + "Cards inserted correctly!" + Color.RESET);
-                showBookshelf(o);
+                showBookshelf(message.getModel());
                 setChanged();
-                notifyObservers(Event.PLAYER_FINISH, null, null, null);
-            } else if (arg.equals(Event.PLAYER_FINISH)) {
-                start(o);
-            } else if (arg.equals(Event.NEW_TURN)) {
+                notifyObservers(new Message(Event.PLAYER_FINISH));
+            } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
+                start(message.getModel());
+            } else if (message.getEvent().equals(Event.NEW_TURN)) {
                 /*TODO: Cosa vuoi vedere? 3 opzioni - Common, Personal, Bookshelf
                     while (flag){
                         1) Show CommonGoal
@@ -98,23 +141,25 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 set changed
                         notifyobservers(EVENT.common)
                 */
-                start(o);
-            } else if (arg.equals(Event.FINISH_MATCH)) {
+                start(message.getModel());
+            } else if (message.getEvent().equals(Event.FINISH_MATCH)) {
                 System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
-                System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + o.getWinner()  + Color.RESET);
-            } else if (arg.equals(Event.LOGIN)) {
+                System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
+            } else if (message.getEvent().equals(Event.LOGIN)) {
                 //System.out.println(Color.RED_BRIGHT + "Username NOT valid! Try again..." + Color.RESET)
                 System.out.println("Choose your Nickname: ");
-                do{
+                do {
                     System.out.print("> ");
                     Scanner input = new Scanner(System.in);
-                    this.username = input.nextLine();
-                    if(this.username.equals("")){
+                    synchronized (this){
+                        this.username = input.nextLine();
+                    }
+                    if (this.username.equals("")) {
                         System.out.println(Color.RED + "Username can't be an empty string! Retry!!" + Color.RESET);
                     }
-                }while(this.username.equals(""));
+                } while (this.username.equals(""));
 
-                System.out.println("Hi" + Color.GREEN_BRIGHT + " " + username.toUpperCase() + "! " + Color.RESET +"Choose the number of players: ");
+                System.out.println("Hi" + Color.GREEN_BRIGHT + " " + username.toUpperCase() + "! " + Color.RESET + "Choose the number of players: ");
 
                 int nPlayers = 0;
                 do {
@@ -129,11 +174,25 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 } while (nPlayers < 2 || nPlayers > 4);
 
                 setChanged();
-                notifyObservers(Event.LOGIN, nPlayers, null, username);
-            } else if (arg.equals(Event.WAIT_START_OF_MATCH)) {
+                notifyObservers(new Message(Event.LOGIN, nPlayers, username));
+            } else if (message.getEvent().equals(Event.WAIT_START_OF_MATCH)) {
+                lobbyExist = true;
+                new Thread(){
+                    @Override
+                    public void run(){
+                        while (true){
+                            readingForChat();
+                        }
+                    }
+                }.start();
                 System.out.println(Color.YELLOW_BOLD + "Waiting for other player to join the lobby..." + Color.RESET);
+                System.out.println(Color.BLUE_UNDERLINED+ "If you want to chat with the other players connected to your lobby : " + Color.RESET);
+                System.out.println(Color.BLUE_UNDERLINED+ " - write '/chat' in order to access to the chat section and to read and write messages;" + Color.RESET);
+                System.out.println(Color.BLUE_UNDERLINED+ " - write '/exit' in order to get back to the game. "  + Color.RESET);
 
-            } else if (arg.equals(Event.LOGIN_TRUE)) {
+            } else if (message.getEvent().equals(Event.LOGIN_TRUE)) {
+                lobbyExist = true;
+
                 System.out.print(Color.GREEN_BOLD);
                 System.out.println("Game is starting...");
                 System.out.print(Color.RESET);
@@ -143,21 +202,21 @@ public class TextualUI extends Observable<Event> implements Runnable {
                     throw new RuntimeException(e);
                 }
                 setChanged();
-                notifyObservers(Event.NEW_TURN, null, null, null);
+                notifyObservers(new Message(Event.NEW_TURN));
             }
         } else {
             if (myTurn) {
                 myTurn = false;
 
                 System.out.print(Color.YELLOW_BOLD_BRIGHT);
-                System.out.println(o.getCurrentPlayer().getUsername() + " is playing, wait for your turn!");
+                System.out.println(message.getModel().getCurrentPlayer().getUsername() + " is playing, wait for your turn!");
                 System.out.print(Color.RESET);
-                showFirstCommonGoal(o);
-                showSecondCommonGoal(o);
-                showAllScore(o);
-                showAllBookshelf(o);
+                showFirstCommonGoal(message.getModel());
+                showSecondCommonGoal(message.getModel());
+                showAllScore(message.getModel());
+                showAllBookshelf(message.getModel());
 
-                showBoard(o);
+                showBoard(message.getModel());
                 //showBookshelf(o); -> non si può usare perché mostriamo la currentBookshelf che non corrisponde a quella del giocatore in attesa
             }
         }
@@ -168,7 +227,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
         if (o.getFirstPlayer() == o.getCurrentPlayer().getUsername() && o.getEndGame()) {
             setChanged();
-            notifyObservers(Event.FINISH_MATCH, null, null, null);
+            notifyObservers(new Message(Event.FINISH_MATCH));
         }
 
         System.out.print(Color.GREEN_BOLD_BRIGHT);
@@ -386,7 +445,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
         column = readingInt() - 1;
         //choose column
         setChanged();
-        notifyObservers(Event.PLAYER_INSERT_POSITIVE, column, order, null);
+        notifyObservers(new Message(Event.PLAYER_INSERT_POSITIVE, column, order));
 
     }
 
@@ -474,7 +533,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
             }
         }
         setChanged();
-        notifyObservers(Event.PLAYER_DRAW_POSITIVE, null, drawen, null);
+        notifyObservers(new Message(Event.PLAYER_DRAW_POSITIVE, drawen));
     }
 
 
@@ -503,14 +562,16 @@ public class TextualUI extends Observable<Event> implements Runnable {
         while (true) {
             input = new Scanner(System.in);
             try {
-                userInput = input.nextInt();
-                if (1 < userInput && userInput < 5) {
+                synchronized (this){
+                    userInput = input.nextInt();
+                }
+                if (1 <= userInput && userInput < 10) {
                     break;
                 } else {
-                    System.out.println("Invalid Number, Please try again");
+                    System.err.println("Invalid Number, Please try again");
                 }
             } catch (Exception e) {
-                System.out.println("Invalid Number, Please try again");
+                System.err.println("Invalid Number, Please try again");
             }
         }
         return userInput;
@@ -524,4 +585,29 @@ public class TextualUI extends Observable<Event> implements Runnable {
         System.out.println(Color.YELLOW_BOLD_BRIGHT + "2nd common goal: " + Color.YELLOW + o.getSecondCommonGoalDescription() + Color.RESET);
     }
 
+    public void readingForChat(){
+        if (lobbyExist){
+            Scanner input = new Scanner(System.in);
+            String in = input.nextLine();
+            if (in.equals("/chat")) {
+                if (flagChat) {
+                    System.err.println("You are already chatting!");
+                } else {
+                    flagChat = true;
+                    setChanged();
+                    notifyObservers(new Message(Event.GET_CHAT, username));
+                }
+            } else if (in.equals("/exit")) {
+                if (!flagChat) {
+                    System.err.println("You are not in a chat!");
+                } else {
+                    setChanged();
+                    notifyObservers(new Message(Event.EXIT_CHAT, username));
+                }
+            } else if (flagChat) {
+                setChanged();
+                notifyObservers(new Message(Event.SEND_MESSAGE, username, in));
+            }
+        }
+    }
 }

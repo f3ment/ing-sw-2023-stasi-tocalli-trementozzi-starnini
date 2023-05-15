@@ -1,6 +1,7 @@
 package utils;
 
-import java.util.ArrayList;
+import model.Message;
+
 import java.util.Vector;
 
 
@@ -42,11 +43,11 @@ public abstract class Observable<Event extends Enum<Event>> {
 
 
     public void notifyObservers() {
-        notifyObservers(null,null,null , null);
+        notifyObservers(null);
     }
 
 
-    public void notifyObservers(Event arg , Integer columnNumber , ArrayList coords , String UserNames) {
+    public void notifyObservers(Message message) {
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -73,7 +74,7 @@ public abstract class Observable<Event extends Enum<Event>> {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--) {
-            ((Observer<Observable<Event>, Event>) arrLocal[i]).update(this,  arg,  columnNumber,  coords , UserNames);
+            ((Observer<Observable<Event>, Event>) arrLocal[i]).update(this, message);
         }
     }
 
