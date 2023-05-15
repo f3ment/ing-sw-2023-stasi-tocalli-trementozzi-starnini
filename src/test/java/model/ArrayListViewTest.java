@@ -1,5 +1,6 @@
 package model;
 
+import model.views.ArrayListView;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ class ArrayListViewTest {
     void ArrayListViewTest(){
         ArrayList<Object> arrayList = new ArrayList<>();
         arrayList.add(new Object());
-        ArrayListView arrayListView = new ArrayListView(arrayList);
+        model.views.ArrayListView arrayListView = new model.views.ArrayListView(arrayList);
         assertNotNull(arrayListView.get(0));
     }
 
@@ -20,7 +21,7 @@ class ArrayListViewTest {
     void sizeTest(){
         ArrayList<Object> arrayList = new ArrayList<>();
         arrayList.add(new Object());
-        ArrayListView arrayListView = new ArrayListView(arrayList);
+        model.views.ArrayListView arrayListView = new ArrayListView(arrayList);
         assertEquals(1, arrayListView.size());
     }
 }

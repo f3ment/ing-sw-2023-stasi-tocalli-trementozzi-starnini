@@ -1,4 +1,8 @@
-package model;
+package model.views;
+
+import model.ItemTiles;
+import model.ScoringToken;
+import model.TablePosition;
 
 import java.util.ArrayList;
 

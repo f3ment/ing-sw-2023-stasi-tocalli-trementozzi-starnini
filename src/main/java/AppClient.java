@@ -23,8 +23,9 @@ public class AppClient {
             /*
             * Client selected Rmi architecture
             * */
-            //todo scelta server rmi
-           startRmiClient();
+            //todo non chiedere porta
+            chooseNetworkAddress();
+            startRmiClient();
         }else{
             /*
             * client selected Socket architecture
@@ -58,7 +59,8 @@ public class AppClient {
     }
 
     private static void startRmiClient() throws RemoteException, NotBoundException {
-        Registry registry = LocateRegistry.getRegistry();
+        System.setProperty("java.rmi.server.hostname",Ip);
+        Registry registry = LocateRegistry.getRegistry(Ip, 1099);
         Server server = (Server) registry.lookup("server");
         ClientImpl client = new ClientImpl(server);
         client.run();

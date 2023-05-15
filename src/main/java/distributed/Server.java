@@ -1,5 +1,6 @@
 package distributed;
 
+//import model.Message;
 import utils.Event;
 
 import java.rmi.Remote;
@@ -12,4 +13,7 @@ public interface Server extends Remote {
 
     //posso chiamare update passando argomenti
     void update(Client client, Event event, Integer columnNumber, ArrayList coords , String UserName) throws RemoteException;
+
+    //void update(Message message) throws RemoteException;
 }
+

@@ -1,17 +1,14 @@
 package controller;
 
-import controller.GameController;
 import distributed.Client;
 import model.Game;
-import model.GameView;
+import model.views.GameView;
 import utils.Event;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.stream.Collectors;
 
 public class Lobby {
 

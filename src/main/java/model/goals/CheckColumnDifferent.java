@@ -1,5 +1,5 @@
 package model.goals;
-
+// 2
 import model.Bookshelf;
 import model.ScoringToken;
 
@@ -7,12 +7,25 @@ public class CheckColumnDifferent extends CommonGoal{
     private int repetitions;
     private boolean strategy; //false -> 3 max different for 3 columns , true -> verticale 2
 
+
     public CheckColumnDifferent(int romanNumber, int playerNumber,
                                 int repetitions, boolean strategy){
         super(romanNumber, playerNumber);
         this.repetitions = repetitions;
         this.strategy = strategy;
     }
+
+    @Override
+    public String toString() {
+        String str = null;
+        if(strategy){
+            str= new String("Six groups each containing at least 2 tiles of the same type. The tile of one group can be different from those of another group.");
+        }else if(!strategy){
+            str=new String("Three columns each formed by 6 tiles of maximum three different types. One column can show the same or a different combination of another column");
+        }
+        return str;
+    }
+
 
     @Override
     public ScoringToken validate(Bookshelf bookshelf) {

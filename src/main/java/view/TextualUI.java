@@ -1,15 +1,15 @@
 package view;
 
-import model.ArrayListView;
-import model.BoxView;
-import model.GameView;
+import model.Player;
+import model.views.ArrayListView;
+import model.views.BoxView;
+import model.views.GameView;
 import model.ItemTiles;
 import utils.*;
+import utils.Observable;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 
 /*
@@ -88,6 +88,16 @@ public class TextualUI extends Observable<Event> implements Runnable {
             } else if (arg.equals(Event.PLAYER_FINISH)) {
                 start(o);
             } else if (arg.equals(Event.NEW_TURN)) {
+                /*TODO: Cosa vuoi vedere? 3 opzioni - Common, Personal, Bookshelf
+                    while (flag){
+                        1) Show CommonGoal
+                        2) Show PersonalGoal
+                        3) Show All Boookshelf
+                        4) Continue (Play Turn / wait next turn)
+                    }
+                set changed
+                        notifyobservers(EVENT.common)
+                */
                 start(o);
             } else if (arg.equals(Event.FINISH_MATCH)) {
                 System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
@@ -95,9 +105,15 @@ public class TextualUI extends Observable<Event> implements Runnable {
             } else if (arg.equals(Event.LOGIN)) {
                 //System.out.println(Color.RED_BRIGHT + "Username NOT valid! Try again..." + Color.RESET)
                 System.out.println("Choose your Nickname: ");
-                System.out.print("> ");
-                Scanner input = new Scanner(System.in);
-                this.username = input.nextLine();
+                do{
+                    System.out.print("> ");
+                    Scanner input = new Scanner(System.in);
+                    this.username = input.nextLine();
+                    if(this.username.equals("")){
+                        System.out.println(Color.RED + "Username can't be an empty string! Retry!!" + Color.RESET);
+                    }
+                }while(this.username.equals(""));
+
                 System.out.println("Hi" + Color.GREEN_BRIGHT + " " + username.toUpperCase() + "! " + Color.RESET +"Choose the number of players: ");
 
                 int nPlayers = 0;
@@ -136,6 +152,9 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 System.out.print(Color.YELLOW_BOLD_BRIGHT);
                 System.out.println(o.getCurrentPlayer().getUsername() + " is playing, wait for your turn!");
                 System.out.print(Color.RESET);
+                showFirstCommonGoal(o);
+                showSecondCommonGoal(o);
+                showAllScore(o);
                 showAllBookshelf(o);
 
                 showBoard(o);
@@ -155,6 +174,9 @@ public class TextualUI extends Observable<Event> implements Runnable {
         System.out.print(Color.GREEN_BOLD_BRIGHT);
         System.out.println(o.getCurrentPlayer().getUsername() + ", it's your turn!");
         System.out.print(Color.RESET);
+        showFirstCommonGoal(o);
+        showSecondCommonGoal(o);
+        showAllScore(o);
         showAllBookshelf(o);
         showBoard(o);
         playerDraw(o);
@@ -189,8 +211,8 @@ public class TextualUI extends Observable<Event> implements Runnable {
                         showItemTile(el);
 
                     } else {
-                        System.out.print(Color.BLACK_BRIGHT);
-                        System.out.print("   ");
+                        System.out.print(Color.BLACK);
+                        System.out.print(" ▓▓");
                         System.out.print(Color.RESET);
                     }
                 } else {
@@ -211,8 +233,21 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
 
 
-
+    void showAllScore(GameView o){
+        System.out.println("------- SCORE -------");
+        HashMap<String, Integer> playerScore = (HashMap<String, Integer>) o.getListPlayer();
+        for(Map.Entry<String, Integer> set : playerScore.entrySet()){
+            if(o.getCurrentPlayer().getUsername().equals(set.getKey())){
+                System.out.print(Color.GREEN);
+            }else{
+                System.out.print(Color.BLUE);
+            }
+            System.out.println("<" + set.getKey() + "> " + set.getValue());
+            System.out.print(Color.RESET);
+        }
+    }
     void showAllBookshelf(GameView o) {
+        System.out.println("----- BOOKSHELF -----");
         ArrayListView bookShelfList = o.getListBookshelf();
 
         for(int n=0; n<o.getNumPlayer(); n++){
@@ -253,6 +288,12 @@ public class TextualUI extends Observable<Event> implements Runnable {
 
     }
 
+    void showCommonGoals(GameView o) {
+        ArrayListView fcg = o.getFirstCommonGoal();
+        ArrayListView scg = o.getSecondCommonGoal();
+
+
+    }
     void showBookshelf(GameView o) {
         System.out.println("This is your bookshelf : ");
         for (int j = 0; j < o.getLenghtBookshelf(); j++) {
@@ -460,13 +501,27 @@ public class TextualUI extends Observable<Event> implements Runnable {
             System.out.println("error reading");
         }
         while (true) {
+            input = new Scanner(System.in);
             try {
                 userInput = input.nextInt();
-                break;
-            } catch (InputMismatchException | NumberFormatException ex) {
+                if (1 < userInput && userInput < 5) {
+                    break;
+                } else {
+                    System.out.println("Invalid Number, Please try again");
+                }
+            } catch (Exception e) {
                 System.out.println("Invalid Number, Please try again");
             }
         }
         return userInput;
     }
+
+
+    public void showFirstCommonGoal(GameView o){
+        System.out.println(Color.YELLOW_BOLD_BRIGHT + "1st Common goal: " + Color.YELLOW + o.getFirstCommonGoalDescription() + Color.RESET);
+    }
+    public void showSecondCommonGoal(GameView o){
+        System.out.println(Color.YELLOW_BOLD_BRIGHT + "2nd common goal: " + Color.YELLOW + o.getSecondCommonGoalDescription() + Color.RESET);
+    }
+
 }

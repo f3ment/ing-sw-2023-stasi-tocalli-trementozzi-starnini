@@ -1,5 +1,5 @@
 package model.goals;
-
+// 2
 import model.Bookshelf;
 import model.ScoringToken;
 
@@ -11,6 +11,17 @@ public class CheckGroupsSameType extends CommonGoal{
         super(romanNumber, numberPlayers);
         this.groupLength = groupLength;
         this.repetitions = repetitions;
+    }
+
+    @Override
+    public String toString() {
+        String str = null;
+        if(groupLength==4){
+             str = new String("Four groups each containing at least 4 tiles of the same type. The tiles of one group can be different from those of another group.");
+        }else if (groupLength == 2){
+            str = new String("Six groups each containing at least 2 tiles of the same type. The tiles of one group can be different from those of another group.");
+        }
+        return str;
     }
 
     @Override

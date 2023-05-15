@@ -1,5 +1,5 @@
 package model.goals;
-
+// 1
 import model.Bookshelf;
 import model.ScoringToken;
 import model.Type;
@@ -9,6 +9,12 @@ import java.util.HashMap;
 public class CheckEightEquals extends CommonGoal{
     public CheckEightEquals(int romanNumber, int numberPlayers){
         super(romanNumber, numberPlayers);
+    }
+
+    @Override
+    public String toString() {
+        String str = new String("Eight tiles of the same type, There's no restriction about the position of these tiles.");
+        return str;
     }
 
     @Override

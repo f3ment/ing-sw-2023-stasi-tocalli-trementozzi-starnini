@@ -1,5 +1,5 @@
 package model.goals;
-
+// 2
 import model.Bookshelf;
 import model.ScoringToken;
 
@@ -12,6 +12,18 @@ public class CheckRowDifferent extends CommonGoal{
         this.repetitions = repetitions;
         this.strategy = strategy;
     }
+
+    @Override
+    public String toString() {
+        String descr = null;
+        if(strategy){
+            descr = new String("Four lines each formed by 5 tiles of maximum three different types. One lime can show the same or a different combination of another line.");
+        }else{
+            descr =new String("Two lines each formed by 5 different types of tiles. One line can show the same or a different combination of the other line.");
+        }
+        return descr;
+    }
+
 
     @Override
     public ScoringToken validate(Bookshelf bookshelf) {
