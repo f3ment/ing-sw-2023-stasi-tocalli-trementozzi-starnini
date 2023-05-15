@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.HelloController">
+    <children>
+        <ImageView fitHeight="675.0" fitWidth="1020.0">
+            <image>
+                <Image url="@../Images/misc/sfondoparquet.jpg" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="261.0" fitWidth="1020.0" layoutY="282.0" opacity="0.71">
+            <image>
+                <Image url="@../Images/Publishermaterial/banner1386x400px.png" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="133.0" fitWidth="1020.0" layoutY="543.0">
+            <image>
+                <Image url="@../Images/misc/base_pagina2.jpg" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="90.0" fitWidth="103.0" layoutX="909.0" layoutY="565.0" opacity="0.78">
+            <image>
+                <Image url="@../Images/Publishermaterial/Publisher.png" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="50.0" fitWidth="169.0" layoutX="740.0" layoutY="601.0" opacity="0.34">
+            <image>
+                <Image url="@../Images/Publishermaterial/Title2000x618px.png" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="233.0" fitWidth="905.0" layoutX="58.0" layoutY="368.0">
+            <image>
+                <Image url="@../Images/Publishermaterial/Title2000x618px.png" />
+            </image>
+        </ImageView>
+        <Button id="StartButton" fx:id="PlayButton" layoutX="372.0" layoutY="136.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#AskLobbyInfo" prefHeight="90.0" prefWidth="276.0" text="PLAY">
+            <font>
+                <Font name="DejaVuMathTeXGyre-Regular" size="49.0" />
+            </font>
+        </Button>
+    </children>
+</AnchorPane>
