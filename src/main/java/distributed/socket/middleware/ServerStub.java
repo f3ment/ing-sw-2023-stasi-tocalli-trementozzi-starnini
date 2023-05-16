@@ -70,17 +70,7 @@ public class ServerStub implements Server {
         }catch (ClassNotFoundException e){
             throw new RemoteException("Cannot cast Message " + e.getMessage());
         }
-
-        new Thread() {
-            @Override
-            public void run(){
-                try {
-                    client.update(message);
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }.start();
+        client.update(message);
     }
 
     public void close() throws RemoteException {
