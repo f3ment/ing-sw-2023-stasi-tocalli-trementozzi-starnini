@@ -54,4 +54,50 @@ public class GamesManagerController {
         return lobbies.get(client);
     }
 
+    /*public synchronized boolean checkUsername(String username){
+        for(Lobby a : lobbies_list){
+            if(a.getClientsUsername().contains(username)){
+                return false;
+            }
+        }
+        return true;
+    }*/
+    public Lobby LobbyByUsername(String username){
+        boolean flag=false;
+        Lobby g=null;
+        for(Lobby a:lobbies_list){
+            if(a.isUsernameContained(username)){
+                flag=true;
+                g=a;
+                break;
+            }
+        }
+        return g;
+    }
+
+    public boolean StatusUsername(String username,Lobby a){
+       return a.getStatusPlayer(username);
+    }
+
+   /* public void checkClientsConnections(){
+        new Thread(){
+            @Override
+            public void run() {
+                String username;
+                while(true){
+                    for(Lobby a : lobbies_list){
+                        for(String user: a.getClientsUsername() ){
+                            if(!a.getStatusPlayer(user)){
+                                username=new String(user);
+                                lobbies.
+                            }
+                        }
+                    }
+                }
+            }
+        }.start();
+    }*/
+    public ArrayList<Lobby> getLobbies_list(){
+        return lobbies_list;
+    }
 }

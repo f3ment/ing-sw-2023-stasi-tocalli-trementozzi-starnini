@@ -80,7 +80,14 @@ public class GameController {
         if(o==null){
             return;
         }
-        if (message.getEvent().equals(Event.PLAYER_DRAW_POSITIVE)) {
+        if(message.getEvent().equals(Event.CONNECTION_PROBLEM)) {
+            if(game.checkBoardEmpty()){
+                game.fillBoard();
+            }
+            game.getCurrentPosition().getPlayer().clearHand();
+            changeCurrentPosition();
+            game.setChangedAndNotifyObservers(Event.PLAYER_FINISH);
+        }else if (message.getEvent().equals(Event.PLAYER_DRAW_POSITIVE)) {
             if(draw(message.getCoords())){
                 game.setChangedAndNotifyObservers(Event.PLAYER_DRAW_POSITIVE);
             }else{

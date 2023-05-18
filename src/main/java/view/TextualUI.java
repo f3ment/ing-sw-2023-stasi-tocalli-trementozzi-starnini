@@ -66,7 +66,8 @@ public class TextualUI extends Observable<Event> implements Runnable {
     }
 
     //update chiamato direttamente dall'oggetto che si occupa di gestire il client
-    public synchronized void update(Message message) {
+    // problema pingo deadlock causato da synchronized su update
+    public void update(Message message) {
         if(message.getEvent().equals(Event.GET_CHAT)){
             if(message.getChat().getActive().contains(username)){
                 System.out.println("----------------------------");
@@ -151,9 +152,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 do {
                     System.out.print("> ");
                     Scanner input = new Scanner(System.in);
-                    synchronized (this){
-                        this.username = input.nextLine();
-                    }
+                    this.username = input.nextLine();
                     if (this.username.equals("")) {
                         System.out.println(Color.RED + "Username can't be an empty string! Retry!!" + Color.RESET);
                     }
@@ -177,19 +176,32 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 notifyObservers(new Message(Event.LOGIN, nPlayers, username));
             } else if (message.getEvent().equals(Event.WAIT_START_OF_MATCH)) {
                 lobbyExist = true;
-                new Thread(){
+
+                    new Thread(){
+                        @Override
+                        public void run() {
+                            while(true){
+                                try {
+                                    sleep(3000);
+                                } catch (InterruptedException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                ping();
+                            }
+                        }
+                    }.start();
+                /*new Thread(){
                     @Override
                     public void run(){
                         while (true){
                             readingForChat();
                         }
                     }
-                }.start();
+                }.start();*/
                 System.out.println(Color.YELLOW_BOLD + "Waiting for other player to join the lobby..." + Color.RESET);
                 System.out.println(Color.BLUE_UNDERLINED+ "If you want to chat with the other players connected to your lobby : " + Color.RESET);
                 System.out.println(Color.BLUE_UNDERLINED+ " - write '/chat' in order to access to the chat section and to read and write messages;" + Color.RESET);
                 System.out.println(Color.BLUE_UNDERLINED+ " - write '/exit' in order to get back to the game. "  + Color.RESET);
-
             } else if (message.getEvent().equals(Event.LOGIN_TRUE)) {
                 lobbyExist = true;
 
@@ -562,9 +574,7 @@ public class TextualUI extends Observable<Event> implements Runnable {
         while (true) {
             input = new Scanner(System.in);
             try {
-                synchronized (this){
-                    userInput = input.nextInt();
-                }
+                userInput = input.nextInt();
                 if (1 <= userInput && userInput < 10) {
                     break;
                 } else {
@@ -609,5 +619,10 @@ public class TextualUI extends Observable<Event> implements Runnable {
                 notifyObservers(new Message(Event.SEND_MESSAGE, username, in));
             }
         }
+    }
+    public void ping(){
+        //System.out.println("ciao");
+        setChanged();
+        notifyObservers(new Message(Event.PING));
     }
 }
