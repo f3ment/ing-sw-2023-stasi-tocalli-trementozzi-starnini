@@ -26,7 +26,7 @@ public class ChatController {
             chat.setChangedAndNotifyObservers(new Message(msg.getEvent()));
         }else if (msg.getEvent().equals(Event.EXIT_CHAT)){
             chat.removeActive(msg.getUserName());
-            chat.setChangedAndNotifyObservers(new Message(Event.EXIT_CHAT));
+            chat.setChangedAndNotifyObservers(new Message(Event.EXIT_CHAT, msg.getUserName()));
         }
     }
 }
