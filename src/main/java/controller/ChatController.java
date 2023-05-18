@@ -19,14 +19,14 @@ public class ChatController {
         }
         if(msg.getEvent().equals(Event.GET_CHAT)){
             chat.addActive(msg.getUserName());
-            chat.setChangedAndNotifyObservers(msg.getEvent());
+            chat.setChangedAndNotifyObservers(new Message(msg.getEvent(), msg.getUserName()));
         } else if (msg.getEvent().equals(Event.SEND_MESSAGE)) {
             chat.addActive(msg.getUserName());
-            chat.sendMessage(msg.getUserName(), msg.getMessage());
-            chat.setChangedAndNotifyObservers(msg.getEvent());
+            chat.sendMessage(msg.getUserName(), msg.getMessage(), msg.getReceiverUsername());
+            chat.setChangedAndNotifyObservers(new Message(msg.getEvent()));
         }else if (msg.getEvent().equals(Event.EXIT_CHAT)){
             chat.removeActive(msg.getUserName());
-            chat.setChangedAndNotifyObservers(Event.EXIT_CHAT);
+            chat.setChangedAndNotifyObservers(new Message(Event.EXIT_CHAT, msg.getUserName()));
         }
     }
 }

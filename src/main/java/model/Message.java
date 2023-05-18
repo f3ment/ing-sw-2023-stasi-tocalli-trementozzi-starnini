@@ -1,6 +1,7 @@
 package model;
 
 import distributed.Client;
+import model.views.ChatView;
 import model.views.GameView;
 import utils.Event;
 
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 
 public class Message implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Chat chat;
+    private ChatView chat;
     private Event event;
     private int nPlayers;
     private int columnNumber;
@@ -17,6 +18,7 @@ public class Message implements Serializable {
     private ArrayList coords;
     private String message;
     private model.views.GameView model;
+    private String receiverUsername;
 
     public Message(GameView o, Event event){
         this.event = event;
@@ -38,7 +40,7 @@ public class Message implements Serializable {
         this.coords = coords;
     }
 
-    public Message(String username, Event arg, Chat chat){
+    public Message(String username, Event arg, ChatView chat){
         this.userName = username;
         this.event = arg;
         this.chat = chat;
@@ -51,12 +53,12 @@ public class Message implements Serializable {
         this.userName = userName;
         this.coords = coords;
     }
-    public Message( Event event, String userName, String message) {
+    public Message( Event event, String userName, String message, String receiverUsername) {
+        this.receiverUsername = receiverUsername;
         this.event = event;
         this.userName = userName;
         this.message = message;
     }
-
     public Message(Event event, int nPlayers, String userName) {
         this.event = event;
         this.nPlayers = nPlayers;
@@ -92,11 +94,15 @@ public class Message implements Serializable {
         return event;
     }
 
-    public Chat getChat() {
+    public ChatView getChat() {
         return this.chat;
     }
 
     public GameView getModel() {
         return this.model;
+    }
+
+    public String getReceiverUsername() {
+        return receiverUsername;
     }
 }
