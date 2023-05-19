@@ -4,6 +4,7 @@ import distributed.Client;
 import model.Chat;
 import model.Game;
 import model.Message;
+import model.views.ChatView;
 import model.views.GameView;
 import utils.Event;
 
@@ -36,8 +37,7 @@ public class Lobby {
         chatController = new ChatController(chat);
         this.chat.addObserver((o, message) -> {
             try {
-                //todo creare una chatview
-                client.update(new Message(message.getUserName(),(Event) message.getEvent(), chat));
+                client.update(new Message(message.getUserName(),(Event) message.getEvent(), new ChatView(chat)));
             } catch (RemoteException e) {
                 System.err.println("Error while updating the client : " + e.getMessage() + ". Skipping the update...");
             }
@@ -68,8 +68,7 @@ public class Lobby {
 
         this.chat.addObserver((o, message) -> {
             try {
-                //todo creare una chatview
-                user.update(new Message(message.getUserName(),(Event) message.getEvent(), chat));
+                    user.update(new Message(message.getUserName(),(Event) message.getEvent(), new ChatView(chat)));
             } catch (RemoteException e) {
                 System.err.println("Error while updating the client : " + e.getMessage() + ". Skipping the update...");
             }

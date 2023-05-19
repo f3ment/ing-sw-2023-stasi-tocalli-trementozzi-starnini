@@ -9,29 +9,33 @@ import java.util.*;
 public class Chat extends Observable<Event> implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private LinkedHashMap<Integer, LinkedHashMap<String, String>> chat;
+    //sender -> to -> message
+    //if to is null, then the message is sent to evryone
+    private LinkedHashMap<Integer, LinkedHashMap<String,LinkedHashMap<String, String>>> chat;
 
     private int id;
 
-    private LinkedHashMap<String, String> last;
+    private LinkedHashMap<String, LinkedHashMap<String, String>> last;
     private ArrayList<Integer> lastTen;
     private ArrayList<String> online;
 
     public Chat() {
-        this.chat = new LinkedHashMap<Integer, LinkedHashMap<String, String>>();
+        this.chat = new LinkedHashMap<Integer, LinkedHashMap<String,LinkedHashMap<String, String>>>();
         lastTen = new ArrayList<Integer>();
         online = new ArrayList<String>();
         id = 0;
     }
 
-    public void setChangedAndNotifyObservers(Event e) {
+    public void setChangedAndNotifyObservers(Message message) {
         setChanged();
-        notifyObservers(new Message(e));
+        notifyObservers(message);
     }
 
-    public synchronized void sendMessage(String userName, String message) {
-        LinkedHashMap<String, String> msg = new LinkedHashMap<>();
-        msg.put(userName, message);
+    public synchronized void sendMessage(String userName, String message, String receiver) {
+        LinkedHashMap<String, LinkedHashMap<String, String>> msg = new LinkedHashMap<>();
+        LinkedHashMap<String, String> to = new LinkedHashMap<>();
+        to.put(message, receiver);
+        msg.put(userName, to);
         this.last = msg;
         this.chat.put(id,msg);
         if(this.lastTen.size() == 10){
@@ -41,24 +45,19 @@ public class Chat extends Observable<Event> implements Serializable {
         id++;
     }
 
-    public ArrayList<LinkedHashMap<String, String>> getLastTen() throws NullPointerException {
-        ArrayList<LinkedHashMap<String, String>> list = new ArrayList<>(this.lastTen.size());
+    public ArrayList<LinkedHashMap<String, LinkedHashMap<String, String>>> getLastTen() throws NullPointerException {
+        ArrayList<LinkedHashMap<String, LinkedHashMap<String,String>>> list = new ArrayList<>(this.lastTen.size());
         if(getLast().size() == 0){
             throw new NullPointerException("No message has been sent");
         }else{
             for(Integer i : this.lastTen){
-                LinkedHashMap<String, String> res = new LinkedHashMap<>();
-                HashMap<String, String> el = this.chat.get(i);
-                for(String usr : el.keySet()){
-                    res.put(usr, el.get(usr));
-                }
-                list.add(res);
+                list.add(this.chat.get(i));
             }
             return list;
         }
     }
 
-    public LinkedHashMap<String, String> getLast() throws NullPointerException{
+    public LinkedHashMap<String, LinkedHashMap<String, String>> getLast() throws NullPointerException{
         if(this.last == null){
             throw new NullPointerException("No message has been sent");
         }else{
