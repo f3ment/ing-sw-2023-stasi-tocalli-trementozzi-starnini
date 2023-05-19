@@ -29,6 +29,7 @@ public class TextualUI extends View implements Runnable {
 
     private boolean lobbyExist = false;
     private boolean firstChat;
+    private boolean choosing;
 
     //TODO vietare input client quando è in attesa;
     @Override
@@ -132,9 +133,10 @@ public class TextualUI extends View implements Runnable {
                     choice();
                     //showBookshelf(o); -> non si può usare perché mostriamo la currentBookshelf che non corrisponde a quella del giocatore in attesa
                 }
-            }        }else if(flagChat){
+            }
+        }else if(flagChat){
             synchronized (this){
-                while (flagChat) {
+                while (flagChat || choosing) {
                     try {
                         this.wait();
                     } catch (InterruptedException e) {
@@ -149,7 +151,7 @@ public class TextualUI extends View implements Runnable {
                 synchronized (this) {
                     System.out.println(Color.RED + "The cards you have selected are invalid, please select other cards : " + Color.RESET);
                     if (choice()) {
-                        while (flagChat) {
+                        while (flagChat || choosing) {
                             try {
                                 this.wait();
                             } catch (InterruptedException e) {
@@ -165,7 +167,7 @@ public class TextualUI extends View implements Runnable {
                     //show picked cards
                     showHand(message.getModel());
                     if (choice()) {
-                        while (flagChat) {
+                        while (flagChat || choosing) {
                             try {
                                 this.wait();
                             } catch (InterruptedException e) {
@@ -181,7 +183,7 @@ public class TextualUI extends View implements Runnable {
                     showHand(message.getModel());
 
                     if (choice()) {
-                        while (flagChat) {
+                        while (flagChat || choosing) {
                             try {
                                 this.wait();
                             } catch (InterruptedException e) {
@@ -201,7 +203,7 @@ public class TextualUI extends View implements Runnable {
             } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
                 synchronized (this) {
                     if (choice()) {
-                        while (flagChat) {
+                        while (flagChat || choosing) {
                             try {
                                 this.wait();
                             } catch (InterruptedException e) {
@@ -223,7 +225,7 @@ public class TextualUI extends View implements Runnable {
                         notifyobservers(EVENT.common)
                 */
                 synchronized (this) {
-                    while (flagChat) {
+                    while (flagChat || choosing) {
                         try {
                             this.wait();
                         } catch (InterruptedException e) {
@@ -276,9 +278,10 @@ public class TextualUI extends View implements Runnable {
                         readingForChat();
                     }
                 }).start();
+
                 synchronized (this) {
                     if (choice()) {
-                        while (flagChat) {
+                        while (flagChat || choosing) {
                             try {
                                 this.wait();
                             } catch (InterruptedException e) {
@@ -290,7 +293,7 @@ public class TextualUI extends View implements Runnable {
             } else if (message.getEvent().equals(Event.LOGIN_TRUE)) {
                 lobbyExist = true;
                 synchronized (this) {
-                    while (flagChat) {
+                    while (flagChat || choosing) {
                         try {
                             this.wait();
                         } catch (InterruptedException e) {
@@ -458,20 +461,7 @@ public class TextualUI extends View implements Runnable {
     }
 
     private void showItemTile(ItemTiles elem) {
-        switch (elem.getType().toString().charAt(0)) {
-            case 'C' ->
-                    System.out.print(" " + Color.GREEN_BRIGHT + "▓▓" + Color.RESET);
-            case 'B' ->
-                    System.out.print(" " + Color.YELLOW_BRIGHT + "▓▓" + Color.RESET);
-            case 'G' ->
-                    System.out.print(" " + Color.WHITE_BRIGHT + "▓▓" + Color.RESET);
-            case 'F' ->
-                    System.out.print(" " + Color.BLUE_BRIGHT + "▓▓" + Color.RESET);
-            case 'T' ->
-                    System.out.print(" " + Color.CYAN_BRIGHT + "▓▓" + Color.RESET);
-            case 'P' ->
-                    System.out.print(" " + Color.MAGENTA_BRIGHT + "▓▓" + Color.RESET);
-        }
+        System.out.print(" " + elem.getType().getColor() + "▓▓" + Color.RESET);
     }
 
     private void playerInsert(GameView o) {
@@ -678,24 +668,31 @@ public class TextualUI extends View implements Runnable {
 
     public boolean choice(){
         boolean flagErr;
-        do{
-            flagErr = false;
-            System.out.println("Write '/chat' to send and read messages or write '/play' to get back to the game");
-            Scanner in = new Scanner(System.in);
-            String input = in.nextLine();
-            if (input.equals("/chat")) {
-                flagChat = true;
-                firstChat = true;
-                System.out.println("Opening chat ...");
-            } else if (input.equals("/play")) {
-                flagChat = false;
-                firstChat = false;
-                System.out.println("Now you can continue to play.");
-            } else {
-                System.err.println("ERROR! Input is not valid.");
-                flagErr = true;
-            }
-        }while(flagErr);
+        if(!flagChat && !choosing){
+            choosing = true;
+            do {
+                flagErr = false;
+                System.out.println("Write '/chat' to send and read messages or write '/play' to get back to the game");
+                Scanner in = new Scanner(System.in);
+                String input = in.nextLine();
+                if (input.equals("/chat")) {
+                    flagChat = true;
+                    firstChat = true;
+                    choosing = false;
+                    System.out.println("Opening chat ...");
+                } else if (input.equals("/play")) {
+                    flagChat = false;
+                    choosing = false;
+                    firstChat = false;
+                    System.out.println("Now you can continue to play.");
+                } else {
+                    System.err.println("ERROR! Input is not valid.");
+                    flagErr = true;
+                }
+            } while (flagErr);
+        }else{
+            return true;
+        }
         return flagChat;
     }
 }

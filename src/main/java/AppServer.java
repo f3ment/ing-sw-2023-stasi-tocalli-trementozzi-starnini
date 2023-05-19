@@ -90,6 +90,7 @@ public class AppServer {
     }
 
     private static void startRMI() throws RemoteException {
+        System.setProperty("java.security.policy","./src/main/resources/tmp/test.policy");
         Registry registry = LocateRegistry.createRegistry(1099);
         registry.rebind("server", server);
     }
