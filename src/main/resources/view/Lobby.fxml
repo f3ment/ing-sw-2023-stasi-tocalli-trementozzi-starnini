@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="675.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ScenesController">
+   <children>
+      <ImageView fitHeight="675.0" fitWidth="1020.0">
+         <image>
+            <Image url="@../Images/misc/base_pagina2.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="174.0" layoutY="73.0" prefHeight="97.0" prefWidth="249.0" text="LOBBY" textFill="WHITE">
+         <font>
+            <Font name="DejaVuMathTeXGyre-Regular" size="67.0" />
+         </font>
+      </Label>
+      <AnchorPane layoutX="73.0" layoutY="193.0" prefHeight="424.0" prefWidth="451.0" style="-fx-background-color: rgba(1,1,1,0.3); -fx-background-radius: 15 15 15 15;">
+         <children>
+            <Label layoutX="98.0" layoutY="28.0" prefHeight="47.0" prefWidth="255.0" text="USERNAME" textFill="WHITE">
+               <font>
+                  <Font name="DejaVuMathTeXGyre-Regular" size="40.0" />
+               </font>
+            </Label>
+            <Label fx:id="player1" layoutX="161.0" layoutY="108.0" prefHeight="47.0" prefWidth="215.0" text="WAITING PLAYER..." textFill="WHITE">
+               <font>
+                  <Font name="DejaVuMathTeXGyre-Regular" size="25.0" />
+               </font>
+            </Label>
+            <Label fx:id="player2" layoutX="161.0" layoutY="165.0" prefHeight="47.0" prefWidth="215.0" text="WAITING PLAYER..." textFill="WHITE">
+               <font>
+                  <Font name="DejaVuMathTeXGyre-Regular" size="25.0" />
+               </font>
+            </Label>
+            <Label fx:id="player3" layoutX="161.0" layoutY="223.0" prefHeight="47.0" prefWidth="215.0" text="WAITING PLAYER..." textFill="WHITE">
+               <font>
+                  <Font name="DejaVuMathTeXGyre-Regular" size="25.0" />
+               </font>
+            </Label>
+            <Label fx:id="player4" layoutX="161.0" layoutY="282.0" prefHeight="47.0" prefWidth="215.0" text="WAITING PLAYER..." textFill="WHITE">
+               <font>
+                  <Font name="DejaVuMathTeXGyre-Regular" size="25.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <Label layoutX="641.0" layoutY="73.0" prefHeight="97.0" prefWidth="215.0" text="CHAT" textFill="WHITE">
+         <font>
+            <Font name="DejaVuMathTeXGyre-Regular" size="67.0" />
+         </font>
+      </Label>
+      <AnchorPane layoutX="560.0" layoutY="193.0" prefHeight="424.0" prefWidth="377.0" style="-fx-background-color: rgba(1,1,1,0.3); -fx-background-radius: 15 15 15 15;" />
+   </children>
+</AnchorPane>
