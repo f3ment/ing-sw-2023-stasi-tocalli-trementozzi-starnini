@@ -71,11 +71,9 @@ public class GameController {
      */
 
     private void changeCurrentPosition(){
-        //TODO Capire come gestire turni e ascoltare la view corretta
         game.changeCurrentPosition();
     }
 
-    //todo gestione input non validi
     public void update(Client o,Message message) {
         if(o==null){
             return;

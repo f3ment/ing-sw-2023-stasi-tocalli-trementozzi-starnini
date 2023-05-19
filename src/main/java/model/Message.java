@@ -6,6 +6,7 @@ import utils.Event;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class Message implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -17,6 +18,7 @@ public class Message implements Serializable {
     private ArrayList coords;
     private String message;
     private model.views.GameView model;
+    private ArrayList<String> nicknames;
 
     public Message(GameView o, Event event){
         this.event = event;
@@ -55,6 +57,11 @@ public class Message implements Serializable {
         this.event = event;
         this.userName = userName;
         this.message = message;
+    }
+
+    public Message(Event event, ArrayList<String> players , int nPlayers) {
+        this.event = event;
+        this.nicknames = players;
     }
 
     public Message(Event event, int nPlayers, String userName) {
@@ -98,5 +105,9 @@ public class Message implements Serializable {
 
     public GameView getModel() {
         return this.model;
+    }
+
+    public ArrayList<String> getNicknames() {
+        return this.nicknames;
     }
 }

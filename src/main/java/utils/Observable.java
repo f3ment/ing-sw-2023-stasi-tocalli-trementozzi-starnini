@@ -89,7 +89,7 @@ public abstract class Observable<Event extends Enum<Event>> {
      * Marks this {@code Observable} object as having been changed; the
      * {@code hasChanged} method will now return {@code true}.
      */
-    protected synchronized void setChanged() {
+    public synchronized void setChanged() {
         changed = true;
     }
 

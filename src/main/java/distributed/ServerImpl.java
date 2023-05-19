@@ -30,7 +30,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     String configFilePath = "./src/main/resources/usernames.properties";
     Properties prop = new Properties();
 
-    private static Object syncKey = new Object();
+    private static final Object syncKey = new Object();
 
     public ServerImpl() throws RemoteException {
         super();
@@ -121,8 +121,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
             }else {
 
                 Lobby lobby = this.gamesManagerController.addPlayerToLobby(client, message.getnPlayers(), message.getUserName());
-
-                client.update(new Message(Event.WAIT_START_OF_MATCH));
+                currentLobby = gamesManagerController.getLobbyByClient(client);
+                client.update(new Message(Event.WAIT_START_OF_MATCH, currentLobby.getClientsUsername() , currentLobby.getnPlayers()));
 
                 if (lobby != null) {
                     lobby.getController().update(client, new Message(Event.LOGIN_TRUE));
@@ -134,6 +134,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         }else{
             //System.out.println(Color.RED_BRIGHT + "Username NOT valid" + Color.RESET);
             client.update(new Message(Event.LOGIN));
+
         }
     }
 

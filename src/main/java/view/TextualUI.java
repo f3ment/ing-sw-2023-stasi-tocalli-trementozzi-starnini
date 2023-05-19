@@ -21,7 +21,7 @@ FRAMES = BLU_BACKGROUND_BRIGHT
 TROPHY = CYAN _BACKGROUND_BRIGHT
 PLANTS = MAGENTA_BACKGROUND_BRIGHT
  */
-public class TextualUI extends Observable<Event> implements Runnable {
+public class TextualUI extends View implements Runnable {
 
     private String username;
     private boolean myTurn = true;
