@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 public class Message implements Serializable {
     private static final long serialVersionUID = 1L;
+    private  String receiverUsername;
+    private  ArrayList<String> nicknames;
     private ChatView chat;
     private Event event;
     private int nPlayers;
