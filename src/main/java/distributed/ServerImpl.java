@@ -50,12 +50,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         currentLobby = null;
     }
 
-
-    //ci permette di acquisire un nuovo client
-    // damiani fa un 1to1 client server e model, cioè ad ogni client è associato un nuovo model e un nuovo controller
-    // la mia idea è di usare la lobby prima del model, il client si collega ad un server e con la funzione
-    // register si collega alla lobby
-    // todo metodo da rifare
     @Override
     public void register(Client client) throws RemoteException{
         System.out.println(Color.GREEN_BRIGHT + "Client correctly registered" + Color.RESET);
