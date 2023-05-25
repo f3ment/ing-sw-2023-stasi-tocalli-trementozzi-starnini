@@ -4,16 +4,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 //import javafx.event.Event;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import utils.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import model.Message;
 import utils.Observable;
 
+
+import javafx.scene.image.Image;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,7 +29,10 @@ import java.util.Set;
 public class ScenesController extends Observable<Event> implements Initializable {
 
     @FXML
-    private Label welcomeText;
+    private Button startButton;
+
+    @FXML
+    private GridPane boardGrid;
 
     @FXML
     private TextField nickname;
@@ -33,7 +42,7 @@ public class ScenesController extends Observable<Event> implements Initializable
     private ChoiceBox<Integer> nPlayers = new ChoiceBox<>();
 
     @FXML
-    private Label player1 = new Label();
+    private Label player1;
     @FXML
     private Label player2;
     @FXML
@@ -44,7 +53,6 @@ public class ScenesController extends Observable<Event> implements Initializable
     private String username;
     private Object matchSize;
 
-    final Object lock = new Object();
 
 
     /**
@@ -69,6 +77,10 @@ public class ScenesController extends Observable<Event> implements Initializable
         username = nickname.getText();
     }
 
+
+    public String getUsername() {
+        return username;
+    }
 
     @Override
     /**
@@ -128,6 +140,22 @@ public class ScenesController extends Observable<Event> implements Initializable
         //todo aggiungere dinamicamente altri giocatori in lobby
     }
 
+
+    public void startGame() {
+        new Thread(()->{
+            setChanged();
+            notifyObservers(new Message(Event.NEW_TURN));
+        }).start();
+    }
+
+    public void setGridImage(String s, int i, int j) {
+        Image image = new Image(getClass().getResourceAsStream(s));
+        ImageView tile = new ImageView(image);
+        tile.setFitHeight(90);
+        tile.setFitWidth(90);
+        tile.setPreserveRatio(true);
+        boardGrid.add(tile, j, i);
+    }
 
 }
 

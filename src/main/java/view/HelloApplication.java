@@ -51,7 +51,8 @@ public class HelloApplication extends Application {
                 System.err.println("Error while updating server : " + e.getMessage() + ". Skipping the update...");
             }
         });
-        CurrentStage.setScene(new Scene(root));
+        Scene scene = new Scene(root);
+        CurrentStage.setScene(scene);
         CurrentStage.setTitle("MyShelfie-" + source);
         CurrentStage.show();
     }
