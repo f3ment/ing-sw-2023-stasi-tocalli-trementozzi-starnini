@@ -80,44 +80,4 @@ public class PersonalGoal implements Serializable {
         return windows;
     }
 
-    public void showPersonalGoal(){
-        Map<String, String> elem;
-        boolean found;
-        for (int i = 0; i < height; i++){
-            System.out.print(Color.WHITE_BRIGHT + "|" + Color.RESET);
-            for(int j=0; j < length; j++){
-                found = false;
-                for (String e : windows.keySet()) {
-                    elem = (Map<String, String>) windows.get(e);
-                    if(Integer.valueOf(elem.get("X")).equals(i) && Integer.valueOf(elem.get("Y")).equals(j)){
-                        found = true;
-                        switch (e) {
-                            case "CATS" :
-                                System.out.print(" " + Type.CATS.getColor() + "▓▓" + Color.RESET);
-                                break;
-                            case "GAMES" :
-                                System.out.print(" " + Type.GAMES.getColor() + "▓▓" + Color.RESET);
-                                break;
-                            case "PLANTS" :
-                                System.out.print(" " + Type.PLANTS.getColor() + "▓▓" + Color.RESET);
-                                break;
-                            case "BOOKS" :
-                                System.out.print(" " + Type.BOOKS.getColor() + "▓▓" + Color.RESET);
-                                break;
-                            case "FRAMES" :
-                                System.out.print(" " + Type.FRAMES.getColor() + "▓▓" + Color.RESET);
-                                break;
-                            case "TROPHIES" :
-                                System.out.print(" " + Type.TROPHIES.getColor() + "▓▓" + Color.RESET);
-                                break;
-                        }
-                    }
-                }
-                if(!found){
-                    System.out.print(" " + Color.BLACK + "▓▓" + Color.RESET);
-                }
-            }
-            System.out.println(Color.WHITE_BRIGHT + " |" +Color.RESET);
-        }
-    }
 }

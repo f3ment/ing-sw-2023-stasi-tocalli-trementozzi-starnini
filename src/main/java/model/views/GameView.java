@@ -180,6 +180,16 @@ public class GameView implements Serializable {
         return this.model.getListBookshelf().size();
     }
 
+    public Map<String, Map<String, String>> getPersonalGoalByUsername(String username){
+        for(Player player : model.getListPlayer()){
+            if(player.getUsername().equals(username)){
+                return player.getCurrentPosition().getCurrentPGoal().getWindows();
+            }
+        }
+        //todo exception no player with that username
+        throw new NullPointerException("No player with this username found.");
+    }
+
 
 }
 

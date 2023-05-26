@@ -1,6 +1,7 @@
 package view;
 
 import model.Message;
+import model.Type;
 import model.views.ArrayListView;
 import model.views.BoxView;
 import model.views.GameView;
@@ -164,16 +165,6 @@ public class TextualUI extends View implements Runnable {
             } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
                 start(message.getModel());
             } else if (message.getEvent().equals(Event.NEW_TURN)) {
-                /*TODO: Cosa vuoi vedere? 3 opzioni - Common, Personal, Bookshelf
-                    while (flag){
-                        1) Show CommonGoal
-                        2) Show PersonalGoal
-                        3) Show All Boookshelf
-                        4) Continue (Play Turn / wait next turn)
-                    }
-                set changed
-                        notifyobservers(EVENT.common)
-                */
                 start(message.getModel());
             } else if (message.getEvent().equals(Event.FINISH_MATCH)) {
                 System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
@@ -263,12 +254,50 @@ public class TextualUI extends View implements Runnable {
         System.out.print(Color.GREEN_BOLD_BRIGHT);
         System.out.println(o.getCurrentPlayer().getUsername() + ", it's your turn!");
         System.out.print(Color.RESET);
-        showFirstCommonGoal(o);
-        showSecondCommonGoal(o);
         showAllScore(o);
-        showAllBookshelf(o);
+        menu(o);
         showBoard(o);
         playerDraw(o);
+    }
+
+    private void menu(GameView o) {
+        int choice;
+        System.out.print(Color.YELLOW_BOLD_BRIGHT);
+        System.out.println("This is the menu, select your choice : ");
+        System.out.print(Color.RESET);
+        System.out.print(Color.YELLOW);
+        System.out.println("    1) Show Common Goals ; ");
+        System.out.println("    2) Show Personal Goal ; ");
+        System.out.println("    3) Show all Bookshelves ; ");
+        System.out.println("    4) Continue to play ; ");
+        System.out.print(Color.RESET);
+
+        choice = readingInt();
+        while( choice <1 || choice >4){
+            System.err.println("Error! The selected choice is not in the menu! Retry : ");
+            choice = readingInt();
+        }
+        switch (choice) {
+            case 1:
+                showCommonGoals(o);
+                break;
+            case 2:
+                System.out.println("This is your personal goal : ");
+                showPersonalGoal(o);
+                break;
+            case 3:
+                showAllBookshelf(o);
+                break;
+            case 4:
+                System.out.println("Ready to play...");
+                break;
+        }
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     void showBoard(GameView o) {
@@ -630,5 +659,46 @@ public class TextualUI extends View implements Runnable {
             return true;
         }
         return flagChat;
+    }
+
+    public void showPersonalGoal(GameView o){
+        Map<String, String> elem;
+        boolean found;
+        for (int i = 0; i < o.getHeightBookshelf(); i++){
+            System.out.print(Color.WHITE_BRIGHT + "|" + Color.RESET);
+            for(int j=0; j < o.getLenghtBookshelf(); j++){
+                found = false;
+                for (String e : o.getPersonalGoalByUsername(username).keySet()) {
+                    elem = (Map<String, String>) o.getPersonalGoalByUsername(username).get(e);
+                    if(Integer.valueOf(elem.get("X")).equals(i) && Integer.valueOf(elem.get("Y")).equals(j)){
+                        found = true;
+                        switch (e) {
+                            case "CATS" :
+                                System.out.print(" " + Type.CATS.getColor() + "▓▓" + Color.RESET);
+                                break;
+                            case "GAMES" :
+                                System.out.print(" " + Type.GAMES.getColor() + "▓▓" + Color.RESET);
+                                break;
+                            case "PLANTS" :
+                                System.out.print(" " + Type.PLANTS.getColor() + "▓▓" + Color.RESET);
+                                break;
+                            case "BOOKS" :
+                                System.out.print(" " + Type.BOOKS.getColor() + "▓▓" + Color.RESET);
+                                break;
+                            case "FRAMES" :
+                                System.out.print(" " + Type.FRAMES.getColor() + "▓▓" + Color.RESET);
+                                break;
+                            case "TROPHIES" :
+                                System.out.print(" " + Type.TROPHIES.getColor() + "▓▓" + Color.RESET);
+                                break;
+                        }
+                    }
+                }
+                if(!found){
+                    System.out.print(" " + Color.BLACK + "▓▓" + Color.RESET);
+                }
+            }
+            System.out.println(Color.WHITE_BRIGHT + " |" +Color.RESET);
+        }
     }
 }
