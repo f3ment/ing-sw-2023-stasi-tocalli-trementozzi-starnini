@@ -25,7 +25,7 @@ PLANTS = MAGENTA_BACKGROUND_BRIGHT
 public class TextualUI extends View implements Runnable {
 
     private String username;
-    private boolean myTurn;
+    private boolean myTurn = true;
     private boolean flagChat = false;
 
     private boolean lobbyExist = false;
@@ -143,102 +143,123 @@ public class TextualUI extends View implements Runnable {
                 }
             }
         }*/
-        if (message.getModel() == null || message.getModel().getCurrentPlayer().getUsername().equals(username)) {
-            myTurn = true;
-            if (message.getEvent().equals(Event.PLAYER_DRAW_NEGATIVE)) {
-                System.out.println(Color.RED + "The cards you have selected are invalid, please select other cards : " + Color.RESET);
-                playerDraw(message.getModel());
-            } else if (message.getEvent().equals(Event.PLAYER_DRAW_POSITIVE)) {
-                System.out.println(Color.GREEN + "Cards picked correctly!" + Color.RESET);
-                //show picked cards
-                showHand(message.getModel());
-                playerInsert(message.getModel());
-            } else if (message.getEvent().equals(Event.PLAYER_INSERT_NEGATIVE)) {
-                System.out.println(Color.RED + "The selected column is not valid! Retry. " + Color.RESET);
-                showHand(message.getModel());
-                playerInsert(message.getModel());
-            } else if (message.getEvent().equals(Event.PLAYER_INSERT_POSITIVE)) {
-                System.out.println(Color.GREEN + "Cards inserted correctly!" + Color.RESET);
-                showBookshelf(message.getModel());
-                setChanged();
-                notifyObservers(new Message(Event.PLAYER_FINISH));
-            } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
-                start(message.getModel());
-            } else if (message.getEvent().equals(Event.NEW_TURN)) {
-                start(message.getModel());
-            } else if (message.getEvent().equals(Event.FINISH_MATCH)) {
+        if (message.getEvent().equals(Event.RECONNECTION)) {
+            System.out.println("you are in tha match!");
+        } else {
+            if (message.getEvent().equals(Event.FINISH_MATCH)) {
                 System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
                 System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
-            } else if (message.getEvent().equals(Event.LOGIN)) {
-                //System.out.println(Color.RED_BRIGHT + "Username NOT valid! Try again..." + Color.RESET)
-                System.out.println("Choose your Nickname: ");
-                do {
-                    System.out.print("> ");
-                    Scanner input = new Scanner(System.in);
-                    this.username = input.nextLine();
-                    if (this.username.equals("")) {
-                        System.out.println(Color.RED + "Username can't be an empty string! Retry!!" + Color.RESET);
+            } else if (message.getModel() == null || message.getModel().getCurrentPlayer().getUsername().equals(username)) {
+                myTurn = true;
+                if (message.getEvent().equals(Event.PLAYER_DRAW_NEGATIVE)) {
+                    System.out.println(Color.RED + "The cards you have selected are invalid, please select other cards : " + Color.RESET);
+                    playerDraw(message.getModel());
+                } else if (message.getEvent().equals(Event.PLAYER_DRAW_POSITIVE)) {
+                    System.out.println(Color.GREEN + "Cards picked correctly!" + Color.RESET);
+                    //show picked cards
+                    showHand(message.getModel());
+                    playerInsert(message.getModel());
+                } else if (message.getEvent().equals(Event.PLAYER_INSERT_NEGATIVE)) {
+                    System.out.println(Color.RED + "The selected column is not valid! Retry. " + Color.RESET);
+                    showHand(message.getModel());
+                    playerInsert(message.getModel());
+                } else if (message.getEvent().equals(Event.PLAYER_INSERT_POSITIVE)) {
+                    System.out.println(Color.GREEN + "Cards inserted correctly!" + Color.RESET);
+                    showBookshelf(message.getModel());
+                    setChanged();
+                    notifyObservers(new Message(Event.PLAYER_FINISH));
+                } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
+                    start(message.getModel());
+                } else if (message.getEvent().equals(Event.NEW_TURN)) {
+                /*TODO: Cosa vuoi vedere? 3 opzioni - Common, Personal, Bookshelf
+                    while (flag){
+                        1) Show CommonGoal
+                        2) Show PersonalGoal
+                        3) Show All Boookshelf
+                        4) Continue (Play Turn / wait next turn)
                     }
-                } while (this.username.equals(""));
-
-                System.out.println("Hi" + Color.GREEN_BRIGHT + " " + username.toUpperCase() + "! " + Color.RESET + "Choose the number of players: ");
-
-                int nPlayers = 0;
-                do {
-                    nPlayers = readingInt();
-                    if (nPlayers < 2 || nPlayers > 4) {
-                        System.out.print(Color.RED);
-                        System.out.println(nPlayers + " is not valid, please try again!!");
-                        System.out.println("Choose between those values: " + Color.RED_BOLD + "2, 3, 4.");
-                        System.out.print(Color.RESET);
+                set changed
+                        notifyobservers(EVENT.common)
+                */
+                    start(message.getModel());
+                } else if (message.getEvent().equals(Event.FINISH_MATCH)) {
+                    start(message.getModel());
+                } /*else if (message.getEvent().equals(Event.FINISH_MATCH)) {
+                    System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
+                    System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
+                //setChanged();
+                //notifyObservers(new Message(Event.DELETE_MATCH));
+            } */ else if (message.getEvent().equals(Event.LOGIN)) {
+                    //System.out.println(Color.RED_BRIGHT + "Username NOT valid! Try again..." + Color.RESET)
+                    System.out.println("Choose your Nickname: ");
+                    do {
                         System.out.print("> ");
-                    }
-                } while (nPlayers < 2 || nPlayers > 4);
+                        Scanner input = new Scanner(System.in);
+                        this.username = input.nextLine();
+                        if (this.username.equals("")) {
+                            System.out.println(Color.RED + "Username can't be an empty string! Retry!!" + Color.RESET);
+                        }
+                    } while (this.username.equals(""));
 
-                setChanged();
-                notifyObservers(new Message(Event.LOGIN, nPlayers, username));
-            } else if (message.getEvent().equals(Event.WAIT_START_OF_MATCH)) {
-                lobbyExist = true;
+                    System.out.println("Hi" + Color.GREEN_BRIGHT + " " + username.toUpperCase() + "! " + Color.RESET + "Choose the number of players: ");
 
-                System.out.println(Color.YELLOW_BOLD + "Waiting for other player to join the lobby..." + Color.RESET);
-                //System.out.println(Color.BLUE_UNDERLINED + "If you want to chat with the other players connected to your lobby : " + Color.RESET);
-                //System.out.println(Color.BLUE_UNDERLINED + " - write '/chat' in order to access to the chat section and to read and write messages;" + Color.RESET);
-                //System.out.println(Color.BLUE_UNDERLINED + " - write '/exit' in order to get back to the game. " + Color.RESET);
+                    int nPlayers = 0;
+                    do {
+                        nPlayers = readingInt();
+                        if (nPlayers < 2 || nPlayers > 4) {
+                            System.out.print(Color.RED);
+                            System.out.println(nPlayers + " is not valid, please try again!!");
+                            System.out.println("Choose between those values: " + Color.RED_BOLD + "2, 3, 4.");
+                            System.out.print(Color.RESET);
+                            System.out.print("> ");
+                        }
+                    } while (nPlayers < 2 || nPlayers > 4);
+
+                    setChanged();
+                    notifyObservers(new Message(Event.LOGIN, nPlayers, username));
+                } else if (message.getEvent().equals(Event.WAIT_START_OF_MATCH)) {
+                    lobbyExist = true;
+
+                    System.out.println(Color.YELLOW_BOLD + "Waiting for other player to join the lobby..." + Color.RESET);
+                    //System.out.println(Color.BLUE_UNDERLINED + "If you want to chat with the other players connected to your lobby : " + Color.RESET);
+                    //System.out.println(Color.BLUE_UNDERLINED + " - write '/chat' in order to access to the chat section and to read and write messages;" + Color.RESET);
+                    //System.out.println(Color.BLUE_UNDERLINED + " - write '/exit' in order to get back to the game. " + Color.RESET);
 
                 /*new Thread(() -> {
                     while (true) {
                         readingForChat();
                     }
                 }).start();*/
-            } else if (message.getEvent().equals(Event.LOGIN_TRUE)) {
-                lobbyExist = true;
+                } else if (message.getEvent().equals(Event.LOGIN_TRUE)) {
+                    lobbyExist = true;
 
-                System.out.print(Color.GREEN_BOLD);
-                System.out.println("Game is starting...");
-                System.out.print(Color.RESET);
-                try {
-                    Thread.sleep(1500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    System.out.print(Color.GREEN_BOLD);
+                    System.out.println("Game is starting...");
+                    System.out.print(Color.RESET);
+                    try {
+                        Thread.sleep(1500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    setChanged();
+                    notifyObservers(new Message(Event.NEW_TURN));
                 }
-                setChanged();
-                notifyObservers(new Message(Event.NEW_TURN));
-            }
-        }else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
-            if (myTurn) {
-                myTurn = false;
+            }else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
+                if (myTurn) {
+                    myTurn = false;
 
-                System.out.print(Color.YELLOW_BOLD_BRIGHT);
-                System.out.println(message.getModel().getCurrentPlayer().getUsername() + " is playing, wait for your turn!");
-                System.out.print(Color.RESET);
-                showFirstCommonGoal(message.getModel());
-                showSecondCommonGoal(message.getModel());
-                showAllScore(message.getModel());
-                showAllBookshelf(message.getModel());
+                    System.out.print(Color.YELLOW_BOLD_BRIGHT);
+                    System.out.println(message.getModel().getCurrentPlayer().getUsername() + " is playing, wait for your turn!");
+                    System.out.print(Color.RESET);
+                    showFirstCommonGoal(message.getModel());
+                    showSecondCommonGoal(message.getModel());
+                    showAllScore(message.getModel());
+                    showAllBookshelf(message.getModel());
 
-                showBoard(message.getModel());
-                //choice();
-                //showBookshelf(o); -> non si può usare perché mostriamo la currentBookshelf che non corrisponde a quella del giocatore in attesa
+                    showBoard(message.getModel());
+                    //choice();
+                    //showBookshelf(o); -> non si può usare perché mostriamo la currentBookshelf che non corrisponde a quella del giocatore in attesa
+                }
             }
         }
     }
@@ -249,15 +270,17 @@ public class TextualUI extends View implements Runnable {
         if (o.getFirstPlayer() == o.getCurrentPlayer().getUsername() && o.getEndGame()) {
             setChanged();
             notifyObservers(new Message(Event.FINISH_MATCH));
+        } else {
+            System.out.print(Color.GREEN_BOLD_BRIGHT);
+            System.out.println(o.getCurrentPlayer().getUsername() + ", it's your turn!");
+            System.out.print(Color.RESET);
+            showFirstCommonGoal(o);
+            showSecondCommonGoal(o);
+            showAllScore(o);
+            showAllBookshelf(o);
+            showBoard(o);
+            playerDraw(o);
         }
-
-        System.out.print(Color.GREEN_BOLD_BRIGHT);
-        System.out.println(o.getCurrentPlayer().getUsername() + ", it's your turn!");
-        System.out.print(Color.RESET);
-        showAllScore(o);
-        menu(o);
-        showBoard(o);
-        playerDraw(o);
     }
 
     private void menu(GameView o) {
