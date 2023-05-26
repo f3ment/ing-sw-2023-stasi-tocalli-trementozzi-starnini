@@ -7,6 +7,7 @@ import model.Message;
 import model.views.ChatView;
 import model.views.GameView;
 import utils.Event;
+import model.TablePosition;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -26,7 +27,12 @@ public class Lobby {
     private HashMap<String, Client> usersId;
     private HashMap<String,Timer> timerPlayers;
     private HashMap<String,Boolean> status;
+    private Timer timerOneLeftPlayer=new Timer();
     private boolean isFull;
+    private boolean on;
+    private int onlineplayers=0;
+    private boolean oneleft;
+    private boolean valid=true;
 
     public Lobby(int nPlayers, String userName, Client client){
         this.nPlayers = nPlayers;
@@ -34,6 +40,8 @@ public class Lobby {
         status=new HashMap<String,Boolean>(nPlayers);
         status.put(userName,true);
         usersId.put(userName,client);
+        on=true;
+        oneleft=false;
         Timer timer=new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -48,6 +56,7 @@ public class Lobby {
         }else{
             isFull = false;
         }
+        onlineplayers++;
 
         chat = new Chat();
         chatController = new ChatController(chat);
@@ -76,6 +85,7 @@ public class Lobby {
 
     public synchronized boolean insertPlayer(Client user,String userId){
         if(isFull&&!getStatusPlayer(userId)) {
+            on=true;
             status.put(userId,true);
             usersId.put(userId,user);
             Timer timer=new Timer();
@@ -86,6 +96,10 @@ public class Lobby {
                 }
             },8000);
             timerPlayers.put(userId,timer);
+            onlineplayers++;
+            if(onlineplayers>1){
+                oneleft=false;
+            }
         }else if(!isFull){
             status.put(userId,true);
             usersId.put(userId,user);
@@ -100,6 +114,7 @@ public class Lobby {
             if(usersId.size() == nPlayers){
                 isFull = true;
             }
+            onlineplayers++;
         }
 
         this.chat.addObserver((o, message) -> {
@@ -164,6 +179,7 @@ public class Lobby {
                     try {
                         if(getStatusPlayer(s)) {
                             System.out.println("inoltra");
+                            System.out.println(message.getEvent().toString());
                             usersId.get(s).update(new Message(new GameView(model), (Event) message.getEvent()));
                         }else{
                             System.out.println("death");
@@ -188,9 +204,25 @@ public class Lobby {
         return getClientsUsername().get(getClients().indexOf(client));
     }
 
-    public void setClientOffLine(String username){
+    public synchronized void setClientOffLine(String username){
         status.put(username,false);
         System.out.println("morto");
+        onlineplayers--;
+        boolean flag=false;
+        for(String s: status.keySet()){
+            if(status.get(s)){
+                flag=true;
+            }
+        }
+        if(!flag){
+            on=false;
+            resetFinalTimer();
+            oneleft=false;
+        }
+        if(onlineplayers==1){
+            oneleft=true;
+            setFinalTimer();
+        }
     }
     public boolean isUsernameContained(String username){
         if(usersId.containsKey(username)){
@@ -204,7 +236,45 @@ public class Lobby {
     }
 
     public String getCurrentPlayer(){
-        return model.getCurrentPosition().getPlayer().getUsername();
+        TablePosition position;
+        try{
+            position=model.getCurrentPosition();
+        }catch(NullPointerException e){
+            return null;
+        }
+        return position.getPlayer().getUsername();
     }
+    public boolean getStatusLobby(){
+        return on;
+    }
+
+    public synchronized int getOnlineplayers(){
+        return onlineplayers;
+    }
+    public synchronized boolean onlyOne(){
+        return oneleft;
+    }
+    public synchronized void setOne(boolean value){
+        oneleft=value;
+    }
+
+    public void setFinalTimer(){
+        timerOneLeftPlayer=new Timer();
+        timerOneLeftPlayer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                valid=false;
+            }
+        },20000);
+    }
+    public void resetFinalTimer(){
+        timerOneLeftPlayer.cancel();
+        if(onlineplayers!=1){
+            oneleft=false;
+        }
+    }
+    public boolean validateLobby(){
+        return valid;
+    }
+
 }
-//TODO: come eliminare un client da lista di lobbies del gamemanagercontroller

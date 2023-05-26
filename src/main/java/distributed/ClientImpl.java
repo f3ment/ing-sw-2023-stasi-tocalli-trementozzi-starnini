@@ -3,6 +3,7 @@ package distributed;
 import distributed.socket.middleware.ServerStub;
 import javafx.application.Application;
 import model.Message;
+import utils.Event;
 import view.*;
 
 import java.rmi.RemoteException;
@@ -17,6 +18,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
 
     private final View view;
     private final int choice;
+    Server sr;
+    Client cl=this;
 
     /**
      * This method is used to create a new client and initialize it with the
@@ -33,6 +36,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
         else{
             view = new GraphicalUI();
         }
+        sr=server;
         try {
             initialize(server);
         } catch (RemoteException e){
@@ -49,10 +53,14 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
             view = new GraphicalUI();
         }
         initialize(server, choice);
+        sr=server;
+        initialize(server);
     }
 
     public ClientImpl(Server server, int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
         super(port, csf, ssf);
+        sr=server;
+        initialize(server);
         if(chooseGraphicSettings()==1)
             view = new TextualUI();
         else{
@@ -113,7 +121,23 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
                 HelloApplication.setGui((GraphicalUI) view);
                 Application.launch(HelloApplication.class);
             }).start();
-
+        new Thread(){
+            @Override
+            public void run(){
+                while (true) {
+                  try{
+                      Thread.sleep(1000);
+                  }catch (InterruptedException e){
+                      throw new RuntimeException();
+                  }
+                   try{
+                       sr.update(cl,new Message(Event.PING));
+                   }catch (RemoteException e){
+                       System.err.println("Error while updating server : " + e.getMessage() + ". Skipping the update...");
+                   }
+                }
+            }
+        }.start();
     }
 
     /*public void startPingClient() {

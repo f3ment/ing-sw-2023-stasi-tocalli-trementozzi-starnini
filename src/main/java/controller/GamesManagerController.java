@@ -95,4 +95,16 @@ public class GamesManagerController {
     public ArrayList<Lobby> getLobbies_list(){
         return lobbies_list;
     }
+
+    public void insertPlayer(Client client,Lobby lobby,String username){
+        lobbies.remove(LobbyByUsername(username).getClientByUsername(username));
+        lobbies.put(client,lobby);
+    }
+    public void removePlayer(Client client){
+        lobbies.remove(client);
+    }
+
+    public void removeLobby(int index){
+        lobbies_list.remove(index);
+    }
 }

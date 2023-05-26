@@ -76,6 +76,10 @@ public class Message implements Serializable {
         this.event = getChat;
         this.userName = username;
     }
+    public Message(String userName,Event event){
+        this.event=event;
+        this.userName=userName;
+    }
 
     public int getnPlayers() {
         return nPlayers;

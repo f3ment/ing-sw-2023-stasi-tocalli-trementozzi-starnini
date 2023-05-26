@@ -107,23 +107,26 @@ public class GameController {
             if(game.getEndGame() && game.getCurrentPosition().getPlayer().getUsername()==game.getFirstPlayer()){
                 game.setWinner();
                 game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
-
-            }
-            if(game.checkBoardEmpty()){
-                game.fillBoard();
-            }
-            if(!game.getEndGame() || (game.getCurrentPosition().getPlayer().getUsername()!=game.getFirstPlayer()&& game.getEndGame())) {
-                changeCurrentPosition();
-                game.setChangedAndNotifyObservers(Event.PLAYER_FINISH);
+            }else {
+                if (game.checkBoardEmpty()) {
+                    game.fillBoard();
+                }
+                if (!game.getEndGame() || (game.getCurrentPosition().getPlayer().getUsername() != game.getFirstPlayer() && game.getEndGame())) {
+                    changeCurrentPosition();
+                    game.setChangedAndNotifyObservers(Event.PLAYER_FINISH);
+                }
             }
         }else if(message.getEvent().equals(Event.NEW_TURN)){
-
             game.setChangedAndNotifyObservers(Event.NEW_TURN);
         }else if(message.getEvent().equals(Event.FINISH_MATCH)){
             game.setWinner();
             game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
         } else if (message.getEvent().equals(Event.LOGIN_TRUE)) {
             game.setChangedAndNotifyObservers(Event.LOGIN_TRUE);
+        }else if (message.getEvent().equals(Event.FORCED_END_MATCH)) {
+            game.setForcedWinner(message.getUserName());
+            game.setForcedCurrentPosition(message.getUserName());
+            game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
         }
     }
 
