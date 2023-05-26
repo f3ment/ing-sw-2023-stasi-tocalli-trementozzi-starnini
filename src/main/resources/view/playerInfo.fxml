@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="675.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.HelloController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="675.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ScenesController">
    <children>
       <ImageView fitHeight="675.0" fitWidth="1020.0">
          <image>
@@ -44,14 +44,14 @@
                   <Font name="DejaVu Sans Condensed Bold" size="26.0" />
                </font>
             </Label>
-            <ChoiceBox layoutX="385.0" layoutY="120.0" prefHeight="26.0" prefWidth="152.0" />
+            <ChoiceBox  fx:id="nPlayers" layoutX="385.0" layoutY="120.0" prefHeight="26.0" prefWidth="152.0" />
             <Label layoutX="75.0" layoutY="193.0" text="Scegli il tuo Nickname" textFill="#610909">
                <font>
                   <Font name="DejaVuMathTeXGyre-Regular" size="20.0" />
                </font>
             </Label>
-            <TextField layoutX="385.0" layoutY="193.0" promptText="es. MARIO" />
-            <Button layoutX="198.0" layoutY="288.0" mnemonicParsing="false" prefHeight="79.0" prefWidth="230.0" style="-fx-background-radius: 15 15 15 15; -fx-background-color: #610909;" text="JOIN LOBBY" textFill="WHITE">
+            <TextField fx:id="nickname" layoutX="385.0" layoutY="193.0" onAction="#handleNickname" promptText="es. MARIO" />
+            <Button fx:id="joinButton" layoutX="198.0" layoutY="288.0" mnemonicParsing="false" onAction="#sendPlayerInfo" prefHeight="79.0" prefWidth="230.0" style="-fx-background-radius: 15 15 15 15; -fx-background-color: #610909;" text="JOIN LOBBY" textFill="WHITE">
                <font>
                   <Font size="24.0" />
                </font>

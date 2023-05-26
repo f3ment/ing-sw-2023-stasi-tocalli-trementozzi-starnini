@@ -3,6 +3,7 @@ package model.goals;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import model.Bookshelf;
+import model.Game;
 import model.ItemTiles;
 import model.Type;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -79,5 +82,21 @@ class PersonalGoalTest {
             assertTrue(false);
         }
 
+    }
+
+    @Test
+    void showPersonalGoal() {
+        ArrayList<String> user = new ArrayList<>();
+        user.add("Ciao");
+        user.add("Myke");
+        user.add("Toky");
+        Game game;
+        try {
+            game = new Game(user);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        game.getCurrentPosition().getCurrentPGoal().showPersonalGoal();
     }
 }

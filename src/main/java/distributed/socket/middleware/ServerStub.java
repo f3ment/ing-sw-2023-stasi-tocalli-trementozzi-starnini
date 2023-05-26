@@ -77,7 +77,7 @@ public class ServerStub implements Server {
         try {
             socket.close();
         }catch(IOException e){
-            throw new RemoteException("Cannote close socket " + e.getMessage());
+            throw new RemoteException("Cannot close socket " + e.getMessage());
         }
     }
 }

@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 public class Message implements Serializable {
     private static final long serialVersionUID = 1L;
+    private  String receiverUsername;
+    private  ArrayList<String> nicknames;
     private ChatView chat;
     private Event event;
     private int nPlayers;
@@ -18,7 +20,6 @@ public class Message implements Serializable {
     private ArrayList coords;
     private String message;
     private model.views.GameView model;
-    private String receiverUsername;
 
     public Message(GameView o, Event event){
         this.event = event;
@@ -59,6 +60,12 @@ public class Message implements Serializable {
         this.userName = userName;
         this.message = message;
     }
+
+    public Message(Event event, ArrayList<String> players , int nPlayers) {
+        this.event = event;
+        this.nicknames = players;
+    }
+
     public Message(Event event, int nPlayers, String userName) {
         this.event = event;
         this.nPlayers = nPlayers;
@@ -100,6 +107,10 @@ public class Message implements Serializable {
 
     public GameView getModel() {
         return this.model;
+    }
+
+    public ArrayList<String> getNicknames() {
+        return this.nicknames;
     }
 
     public String getReceiverUsername() {

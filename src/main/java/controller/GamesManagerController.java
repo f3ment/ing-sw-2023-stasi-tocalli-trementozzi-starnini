@@ -35,11 +35,6 @@ public class GamesManagerController {
             return newLobby;
         }else
             return null;
-        /*
-        *
-        * todo implementare logica controller games manager
-        *
-        * */
     }
 
     public synchronized boolean checkStart(Lobby lobby){

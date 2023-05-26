@@ -20,10 +20,6 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 public class ServerImpl extends UnicastRemoteObject implements Server {
-
-    private GameController controller;
-    private Game model;
-
     //private ChatController chatController;
     //private Chat chatModel;
 
@@ -34,7 +30,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     String configFilePath = "./src/main/resources/usernames.properties";
     Properties prop = new Properties();
 
-    private static Object syncKey = new Object();
+    private static final Object syncKey = new Object();
 
     public ServerImpl() throws RemoteException {
         super();
@@ -117,12 +113,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         }.start();
     }
 
-
-    //ci permette di acquisire un nuovo client
-    // damiani fa un 1to1 client server e model, cioè ad ogni client è associato un nuovo model e un nuovo controller
-    // la mia idea è di usare la lobby prima del model, il client si collega ad un server e con la funzione
-    // register si collega alla lobby
-    // todo metodo da rifare
     @Override
     public void register(Client client) throws RemoteException{
         System.out.println(Color.GREEN_BRIGHT + "Client correctly registered" + Color.RESET);
@@ -179,24 +169,20 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                         prop.setProperty(message.getUserName(), "1");
                         String value = prop.getProperty(message.getUserName()).trim();
 
-                        try {
-                            prop.store(new FileOutputStream(configFilePath), null);
-                        } catch (IOException ex) {
-                            System.out.println(ex);
-                        }
+                    try {
+                        prop.store(new FileOutputStream(configFilePath), null);
+                    } catch (IOException ex) {
+                        System.out.println(ex);
                     }
                 }
-                if (!correctusername) {
-                    //if (gamesManagerController.StatusUsername(message.getUserName(), gamesManagerController.LobbyByUsername(message.getUserName()))) {
-                        client.update(new Message(Event.LOGIN));
-                    //} else {
-                        //gamesManagerController.LobbyByUsername(message.getUserName()).insertPlayer(client, message.getUserName());
-                    //}
-                } else {
+            }
+            if (!correctusername) {
+                client.update(new Message(Event.LOGIN));
+            }else {
 
-                    Lobby lobby = this.gamesManagerController.addPlayerToLobby(client, message.getnPlayers(), message.getUserName());
-
-                    client.update(new Message(Event.WAIT_START_OF_MATCH));
+                Lobby lobby = this.gamesManagerController.addPlayerToLobby(client, message.getnPlayers(), message.getUserName());
+                currentLobby = gamesManagerController.getLobbyByClient(client);
+                client.update(new Message(Event.WAIT_START_OF_MATCH, currentLobby.getClientsUsername() , currentLobby.getnPlayers()));
 
                     if (lobby != null) {
                         lobby.getController().update(client, new Message(Event.LOGIN_TRUE));

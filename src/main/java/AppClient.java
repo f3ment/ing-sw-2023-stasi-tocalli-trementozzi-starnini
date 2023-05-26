@@ -2,6 +2,7 @@ import distributed.Server;
 import distributed.ClientImpl;
 import distributed.socket.middleware.ServerStub;
 import view.Color;
+import view.ScenesController;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -15,27 +16,23 @@ public class AppClient {
     //Default network address
     private static int Port = 1234;
     private static String Ip = "localhost";
-
+    
+    private static ScenesController helloController;
 
     public static void main(String[] args) throws RemoteException, NotBoundException {
-
         if(chooseNetworkArchitecture()==1){
-            /*
-            * Client selected Rmi architecture
-            * */
+            //Client selected Rmi architecture
             //todo non chiedere porta
             chooseNetworkAddress();
             startRmiClient();
         }else{
-            /*
-            * client selected Socket architecture
-            * */
+            //client selected Socket architecture
             chooseNetworkAddress();
             startSocketClient();
         }
-
     }
-
+    
+    
     public static int chooseNetworkArchitecture(){
         int choice;
         System.out.println("Welcome to MyShelfie!\nPlease choose what architecture do you want to connect with:\n" +
