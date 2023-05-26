@@ -61,6 +61,7 @@ public class AppClient {
         Server server = (Server) registry.lookup("server");
         ClientImpl client = new ClientImpl(server);
         client.run();
+        //client.startPingClient();
     }
 
     private static void startSocketClient() throws RemoteException {
@@ -85,7 +86,9 @@ public class AppClient {
             }
         }.start();
         client.run();
+        //client.startPingClient();
     }
+
 
 
     private static void chooseNetworkAddress(){

@@ -95,3 +95,4 @@ public class AppServer {
         registry.rebind("server", server);
     }
 }
+//TODO gestione username.properties
