@@ -31,7 +31,14 @@ public class GameView implements Serializable {
         return viewBoard;
     }
 
-    public Map<String, Integer> getListPlayer(){
+    public ArrayListView getPlayerList(){
+        ArrayList<PlayerView> playerViews = new ArrayList<>();
+        model.getListPlayer().forEach(e ->playerViews.add(new PlayerView(e)));
+        ArrayListView returnPlayerList = new ArrayListView(playerViews);
+        return returnPlayerList;
+    }
+
+    public Map<String, Integer> getMapPlayerScore(){
         List<Player> playerList = model.getListPlayer();
         //ArrayListView returnPlayerList = new ArrayListView((ArrayList) playerList);
         Map<String, Integer> returnMap = new HashMap<>();
@@ -144,7 +151,7 @@ public class GameView implements Serializable {
     }
 
     public PlayerView getCurrentPlayer(){
-        PlayerView res = new PlayerView(model.getCurrentPosition().getPlayer().getUsername(),model.getCurrentPosition().getPlayer().getStatus(),model.getCurrentPosition().getPlayer().getScore(),model.getCurrentPosition().getPlayer().getPickedCards(),model.getCurrentPosition().getPlayer().getCurrentPosition(),model.getCurrentPosition().getPlayer().getToken());
+        PlayerView res = new PlayerView(model.getCurrentPosition().getPlayer());
         return res;
     }
 

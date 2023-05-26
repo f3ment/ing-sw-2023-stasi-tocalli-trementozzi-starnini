@@ -1,29 +1,42 @@
 package model.views;
 
 import model.ItemTiles;
+import model.Player;
 import model.ScoringToken;
 import model.TablePosition;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerView {
 
-    private final String username;
-    private final boolean status;
-    private final int score;
-    private final ArrayList<ItemTiles> PickedCards;
-    private final TablePosition currentPosition;
+    private String username;
+    private boolean status;
+    private int score;
+    private ArrayList<ItemTiles> PickedCards;
+    private TablePosition currentPosition;
 
-    final ArrayList<ScoringToken> tokens;
+    private ArrayList<ScoringToken> tokens;
+    private ItemTiles[][] bookshelf;
 
+    public PlayerView(Player player){
+        this.username = player.getUsername();
+        this.status = player.getStatus();
+        this.score = player.getScore();
+        PickedCards = player.getPickedCards();
+        this.currentPosition = player.getCurrentPosition();
+        this.tokens = player.getToken();
+        this.bookshelf = new ItemTiles[player.getCurrentPosition().getBookshelf().getHeight()][player.getCurrentPosition().getBookshelf().getLength()];
 
-    public PlayerView(String username, boolean status, int score, ArrayList<ItemTiles> pickedCards, TablePosition currentPosition,ArrayList<ScoringToken> tokens){
-        this.username = username;
-        this.status = status;
-        this.score = score;
-        PickedCards = pickedCards;
-        this.currentPosition = currentPosition;
-        this.tokens = tokens;
+        for(int k=0;k< player.getCurrentPosition().getBookshelf().getHeight();k++){
+            for(int j=0;j<player.getCurrentPosition().getBookshelf().getLength();j++){
+                try{
+                    bookshelf[k][j]= new ItemTiles(player.getCurrentPosition().getBookshelf().getItem(k,j).getType(),player.getCurrentPosition().getBookshelf().getItem(k,j).getId());
+                }catch (Exception e){
+                    bookshelf[k][j]=null;
+                }
+            }
+        }
     }
 
     public ArrayList<ItemTiles> getPickedCards() {
@@ -44,5 +57,9 @@ public class PlayerView {
 
     public TablePosition getCurrentPosition() {
         return currentPosition;
+    }
+
+    public ItemTiles[][] getBookshelf() {
+        return bookshelf;
     }
 }

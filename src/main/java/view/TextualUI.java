@@ -1,15 +1,17 @@
 package view;
 
 import model.Message;
+import model.Player;
 import model.Type;
 import model.views.ArrayListView;
 import model.views.BoxView;
 import model.views.GameView;
 import model.ItemTiles;
+import model.views.PlayerView;
 import utils.*;
-import utils.Observable;
 
 import java.io.IOException;
+import java.security.cert.CertificateParsingException;
 import java.util.*;
 
 
@@ -254,7 +256,7 @@ public class TextualUI extends View implements Runnable {
                     showFirstCommonGoal(message.getModel());
                     showSecondCommonGoal(message.getModel());
                     showAllScore(message.getModel());
-                    showAllBookshelf(message.getModel());
+                    showAllBookshelves(message.getModel());
 
                     showBoard(message.getModel());
                     //choice();
@@ -274,10 +276,7 @@ public class TextualUI extends View implements Runnable {
             System.out.print(Color.GREEN_BOLD_BRIGHT);
             System.out.println(o.getCurrentPlayer().getUsername() + ", it's your turn!");
             System.out.print(Color.RESET);
-            showFirstCommonGoal(o);
-            showSecondCommonGoal(o);
-            showAllScore(o);
-            showAllBookshelf(o);
+            menu(o);
             showBoard(o);
             playerDraw(o);
         }
@@ -309,7 +308,7 @@ public class TextualUI extends View implements Runnable {
                 showPersonalGoal(o);
                 break;
             case 3:
-                showAllBookshelf(o);
+                showAllBookshelves(o);
                 break;
             case 4:
                 System.out.println("Ready to play...");
@@ -371,7 +370,7 @@ public class TextualUI extends View implements Runnable {
 
     void showAllScore(GameView o){
         System.out.println("------- SCORE -------");
-        HashMap<String, Integer> playerScore = (HashMap<String, Integer>) o.getListPlayer();
+        HashMap<String, Integer> playerScore = (HashMap<String, Integer>) o.getMapPlayerScore();
         for(Map.Entry<String, Integer> set : playerScore.entrySet()){
             if(o.getCurrentPlayer().getUsername().equals(set.getKey())){
                 System.out.print(Color.GREEN);
@@ -382,16 +381,28 @@ public class TextualUI extends View implements Runnable {
             System.out.print(Color.RESET);
         }
     }
-    void showAllBookshelf(GameView o) {
+    void showAllBookshelves(GameView o) {
         System.out.println("----- BOOKSHELF -----");
-        ArrayListView bookShelfList = o.getListBookshelf();
+        ArrayListView PlayerList = o.getPlayerList();
 
         for(int n=0; n<o.getNumPlayer(); n++){
-          // TODO: STAMPARE GLI USERNAME
+            PlayerView player = (PlayerView) PlayerList.get(n);
           // Verificarer se lo username è più lungo della board
           // operare in modo differente a seconda del controllo precedente
           //lo spezzone di codice che c'è sotto è per quando gli username sono più 'corti' della bookshelf
+            System.out.print(" ");
+            for (int j = 0; j < o.getLenghtBookshelf()*3; j++) {
+                if(j<((PlayerView) PlayerList.get(n)).getUsername().length()){
+                    System.out.print(Color.WHITE_BRIGHT);
+                    System.out.print(((PlayerView) PlayerList.get(n)).getUsername().charAt(j));
+                    System.out.print(Color.RESET);
+                }else {
+                    System.out.print(" ");
+                }
+            }
+            System.out.print("  ");
         }
+        System.out.print("\n");
         for(int n=0; n<o.getNumPlayer(); n++) {
             //System.out.print(Color.WHITE_BRIGHT + "| " + Color.RESET);
             for (int j = 0; j < o.getLenghtBookshelf(); j++) {
@@ -405,7 +416,7 @@ public class TextualUI extends View implements Runnable {
             for (int n = 0; n < o.getNumPlayer(); n++) {
                 //System.out.print(Color.WHITE_BRIGHT + "| " + Color.RESET);
                 for (int j = 0; j < o.getLenghtBookshelf(); j++) {
-                    ItemTiles[][] curr = (ItemTiles[][]) bookShelfList.get(n);
+                    ItemTiles[][] curr = (ItemTiles[][])((PlayerView) PlayerList.get(n)).getBookshelf();
                     ItemTiles elem;
                     try {
                         elem = curr[i][j];
