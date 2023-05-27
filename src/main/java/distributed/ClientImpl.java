@@ -75,6 +75,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
                 "To play with "+Color.YELLOW+"CLI "+Color.RESET+"press 1\n" +
                 "To play with "+Color.YELLOW+"GUI " +Color.RESET+ "press 2");
         do {
+            System.out.print("> ");
             Scanner read = new Scanner(System.in);
             try {
                 graphicSettings = read.nextInt();
