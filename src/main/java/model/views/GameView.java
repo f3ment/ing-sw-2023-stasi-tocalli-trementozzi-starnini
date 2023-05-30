@@ -115,9 +115,6 @@ public class GameView implements Serializable {
         String desc = model.getSecondCommonGoal().toString();
         return desc;
     }
-    public int getPersonalGoalIndex(){
-        return model.getPersonalGoalIndex();
-    }
     public String getFirstCommonGoalScource(){
         return model.getFirstCommonGoal().getSource();
     }
@@ -200,6 +197,16 @@ public class GameView implements Serializable {
         for(Player player : model.getListPlayer()){
             if(player.getUsername().equals(username)){
                 return player.getCurrentPosition().getCurrentPGoal().getWindows();
+            }
+        }
+        //todo exception no player with that username
+        throw new NullPointerException("No player with this username found.");
+    }
+
+    public int getPersonalGoalIdByUsername(String username){
+        for(Player player : model.getListPlayer()){
+            if(player.getUsername().equals(username)){
+                return player.getCurrentPosition().getCurrentPGoal().getId();
             }
         }
         //todo exception no player with that username

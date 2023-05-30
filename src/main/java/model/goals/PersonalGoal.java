@@ -19,7 +19,7 @@ public class PersonalGoal implements Serializable {
     private static final long serialVersionUID = 1L;
     private final int height;
     private final int length;
-
+    private final int id;
     /*
      * Apertura file di configurazione
      * */
@@ -30,7 +30,7 @@ public class PersonalGoal implements Serializable {
 
     private Map<String, Map<String, String>> windows;
     private int done;
-    public PersonalGoal(Map<String, Map<String, String>> windows){
+    public PersonalGoal(Map<String, Map<String, String>> windows, int id){
         FileInputStream ip;
 
         {
@@ -45,6 +45,7 @@ public class PersonalGoal implements Serializable {
         this.length = Integer.parseInt(prop.getProperty("bookshelf.width"));
         this.windows = windows;
         this.done = 0;
+        this.id = id;
     }
 
     public int getDone(){
@@ -74,6 +75,10 @@ public class PersonalGoal implements Serializable {
         }
         return getScore();
 
+    }
+
+    public int getId() {
+        return id;
     }
 
     public Map<String, Map<String, String>> getWindows() {

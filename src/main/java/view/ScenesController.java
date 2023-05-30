@@ -4,14 +4,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 //import javafx.event.Event;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.BoxBlur;
+import javafx.scene.effect.Glow;
+import javafx.scene.effect.MotionBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import model.ScoringToken;
+import model.Token;
 import model.Type;
 import model.views.GameView;
 import utils.Event;
@@ -25,7 +29,6 @@ import javafx.scene.image.Image;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ScenesController extends Observable<Event> implements Initializable {
 
@@ -63,6 +66,8 @@ public class ScenesController extends Observable<Event> implements Initializable
     private ImageView chair2;
     @FXML
     private ImageView chair3;
+    @FXML
+    private ImageView boardImage;
     @FXML
     private ImageView chair4;
     @FXML
@@ -138,6 +143,8 @@ public class ScenesController extends Observable<Event> implements Initializable
     ArrayList<Integer> tileOrder = new ArrayList<>();
     private ArrayList<ImageView> playerHand = new ArrayList<>(0);
     private boolean goodDraw;
+    @FXML
+    private ImageView wallpaper;
 
     /**
      * This method will change the welcome page to the login page
@@ -179,6 +186,7 @@ public class ScenesController extends Observable<Event> implements Initializable
                 4
         );
         nPlayers.setItems(options);
+        nPlayers.setValue(2);
     }
 
     @FXML
@@ -325,8 +333,8 @@ public class ScenesController extends Observable<Event> implements Initializable
 
 
     @FXML
-    public void setPersonalGoal(GameView model) {
-        ImageView pGoal = new ImageView(new Image(getClass().getResourceAsStream("/Images/personalgoalcards/Personal_Goals" + model.getPersonalGoalIndex() + ".png")));
+    public void setPersonalGoal(GameView model, String username) {
+        ImageView pGoal = new ImageView(new Image(getClass().getResourceAsStream("/Images/personalgoalcards/Personal_Goals" + model.getPersonalGoalIdByUsername(username) + ".png")));
         pGoal.setFitHeight(283);
         pGoal.setFitWidth(204);
         personalGoal.getChildren().add(pGoal);
@@ -373,7 +381,8 @@ public class ScenesController extends Observable<Event> implements Initializable
         if(myTurn){
             if(goodDraw){
                 tileOrder.add(position-1);
-                hand.getChildren().remove(tileCopy);
+                tileCopy.setFitWidth(75);
+                tileCopy.setFitHeight(75);
                 if(tileOrder.size() == drawen.size()){
                     goodDraw = false;
                     insertInShelf();
@@ -423,6 +432,9 @@ public class ScenesController extends Observable<Event> implements Initializable
 
     @FXML
     public void badDraw() {
+        boardGrid.setEffect(new MotionBlur(10,10));
+        boardImage.setEffect(new MotionBlur(10,10));
+        wallpaper.setEffect(new MotionBlur(10,10));
         dialogText.setText("You can only draw adjacent tiles\non same column or row and they\nmust have at least one free side!");
         nDraws = 0;
         drawen.clear();
@@ -440,7 +452,9 @@ public class ScenesController extends Observable<Event> implements Initializable
     }
 
     public void retry(ActionEvent actionEvent) {
-        dialogText.setStyle("-fx-text-fill: #000000;");
+        boardGrid.setEffect(null);
+        boardImage.setEffect(null);
+        wallpaper.setEffect(null);
         retryButton.setVisible(false);
         letDraw();
     }
@@ -449,7 +463,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         goodDraw = true;
         dialogText.setText("You have drawn " + nDraws + " tiles!\nnow click them by the order\nyou want to place them in your shelf");
         nDraws=0;
-        //drawen.clear();
     }
 
     private void insertInShelf() {
@@ -471,6 +484,7 @@ public class ScenesController extends Observable<Event> implements Initializable
     }
 
     private void setColumn(int i) {
+        hand.getChildren().clear();
         column1.setOnMouseClicked(null);
         column2.setOnMouseClicked(null);
         column3.setOnMouseClicked(null);
@@ -484,7 +498,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         new Thread(()->{
             setChanged();
             notifyObservers(new Message(Event.PLAYER_INSERT_POSITIVE,i-1,tileOrder));
-            tileOrder.clear();
         }).start();
     }
 
@@ -492,7 +505,12 @@ public class ScenesController extends Observable<Event> implements Initializable
         dialogText.setText("Tiles inserted correctly!");
         updateShelf(model);
         hand.getChildren().clear();
+        tileOrder.clear();
         playerHand.clear();
+        new Thread(()->{
+            setChanged();
+            notifyObservers(new Message(Event.PLAYER_FINISH));
+        }).start();
     }
 
     public void insertNegative(GameView model) {
@@ -533,6 +551,60 @@ public class ScenesController extends Observable<Event> implements Initializable
     }
 
 
+    public void updateScores(GameView model,String username) {
+        ArrayList<String> players = new ArrayList<>(model.getMapPlayerScore().keySet());
+        players.remove(username);
+        score1.setText(String.valueOf(model.getScore()));
+        score2.setText(String.valueOf(model.getMapPlayerScore().get(players.get(0))));
+        players.remove(players.get(0));
+        if(players.size()>0){
+            score3.setText(String.valueOf(model.getMapPlayerScore().get(players.get(0))));
+            players.remove(players.get(0));
+            if (players.size()>0){
+                score4.setText(String.valueOf(model.getMapPlayerScore().get(players.get(0))));
+                players.remove(players.get(0));
+            }
+        }
+    }
+
+    public void updateStack(GameView model) {
+        int sizeStack1 = model.getFirstCommonGoal().size();
+        int sizeStack2 = model.getSecondCommonGoal().size();
+        getNewStackScore(sizeStack1,model,stack1);
+        getNewStackScore(sizeStack2,model,stack2);
+    }
+
+    private void getNewStackScore(int sizeStack,GameView model,Pane stack){
+        if(sizeStack == 0) {
+            stack1.setVisible(false);
+        }else{
+            switch (model.getScoringToken1(sizeStack - 1).getScore()) {
+                case 2:
+                    setStackToken(2,stack);
+                    break;
+                case 4:
+                    setStackToken(4,stack);
+                    break;
+                case 6:
+                    setStackToken(6,stack);
+                    break;
+                case 8:
+                    setStackToken(8,stack);
+                    break;
+            }
+        }
+    }
+
+    private void setStackToken ( int i,Pane stack){
+        stack.getChildren().clear();
+        ImageView s1 = new ImageView(new Image(getClass().getResourceAsStream("/Images/scoringtokens/scoring_" + i + ".jpg")));
+        s1.setFitWidth(80);
+        s1.setFitHeight(78);
+        s1.setVisible(true);
+        stack.getChildren().add(s1);
+        stack.setVisible(true);
+        stack.toFront();
+    }
 }
 
 
