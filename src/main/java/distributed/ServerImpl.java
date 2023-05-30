@@ -33,97 +33,17 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
     public ServerImpl() throws RemoteException {
         super();
-        gamesManagerController = new GamesManagerController();
-        currentLobby = null;
-        final ArrayList<Integer> index = new ArrayList<>();
-        boolean destroy=false;
-        new Thread(){
-                    @Override
-                    public void run(){
-                        while (true){
-                            try {
-                                sleep(5000);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            for(Lobby l : gamesManagerController.getLobbies_list()){
-                                if(l!=null&&l.isFull()){
-                                    if(l.getCurrentPlayer()!=null&&!l.getStatusPlayer(l.getCurrentPlayer())&&!l.onlyOne()&&l.getStatusLobby()){
-                                        l.getController().update(l.getClientByUsername(l.getCurrentPlayer()), new Message(Event.CONNECTION_PROBLEM));;
-                                    }else if(!l.validateLobby()){
-                                            for(String s:l.getClientsUsername()){
-                                                if(l.getStatusPlayer(s)){
-                                                    l.getController().update(l.getClientByUsername(s),new Message(s,Event.FORCED_END_MATCH));
-
-                                                    Lobbydeletion(l,index);
-                                                }
-                                            }
-                                    }else if(!l.getStatusLobby()){
-                                       Lobbydeletion(l,index);
-
-                                    }
-                                }
-                            }
-                            for(Integer i:index){
-                                gamesManagerController.removeLobby(i);
-                            }
-                            index.clear();
-                            System.out.println(gamesManagerController.getLobbies_list().size());
-
-                        }
-                    }
-                }.start();
+        initialize();
     }
 
     public ServerImpl(int port) throws RemoteException {
         super(port);
-        gamesManagerController = new GamesManagerController();
-        currentLobby = null;
-        new Thread(){
-            @Override
-            public void run(){
-                while (true){
-                    try {
-                        sleep(5000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    for(Lobby l : gamesManagerController.getLobbies_list()){
-                        if(l.isFull()&&l!=null){
-                            if(!l.getStatusPlayer(l.getCurrentPlayer())){
-                                l.getController().update(l.getClientByUsername(l.getCurrentPlayer()), new Message(Event.CONNECTION_PROBLEM));;
-                            }
-                        }
-                    }
-                }
-            }
-        }.start();
+        initialize();
     }
 
     public ServerImpl(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
         super(port, csf, ssf);
-        gamesManagerController = new GamesManagerController();
-        currentLobby = null;
-        new Thread(){
-            @Override
-            public void run(){
-                while (true){
-                    try {
-                        sleep(5000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    for(Lobby l : gamesManagerController.getLobbies_list()){
-                        if(l!=null&&l.isFull()){
-                            if(!l.getStatusPlayer(l.getCurrentPlayer())){
-                                //System.out.println("thread condizione");
-                                l.getController().update(l.getClientByUsername(l.getCurrentPlayer()), new Message(Event.CONNECTION_PROBLEM));;
-                            }
-                        }
-                    }
-                }
-            }
-        }.start();
+        initialize();
     }
 
     @Override
@@ -267,7 +187,63 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         index.add(gamesManagerController.getLobbies_list().indexOf(l));
     }
 
+    private void initialize(){
+        gamesManagerController = new GamesManagerController();
+        currentLobby = null;
+        final ArrayList<Integer> index = new ArrayList<>();
+        FileInputStream ip;
+        try {
+            ip = new FileInputStream(configFilePath);
+            prop.load(ip);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        prop.clear();
+        try {
+            prop.store(new FileOutputStream(configFilePath), null);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
+        boolean destroy=false;
+        new Thread(){
+            @Override
+            public void run(){
+                while (true){
+                    try {
+                        sleep(5000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    for(Lobby l : gamesManagerController.getLobbies_list()){
+                        if(l!=null&&l.isFull()){
+                            if(l.getCurrentPlayer()!=null&&!l.getStatusPlayer(l.getCurrentPlayer())&&!l.onlyOne()&&l.getStatusLobby()){
+                                l.getController().update(l.getClientByUsername(l.getCurrentPlayer()), new Message(Event.CONNECTION_PROBLEM));
+                            }else if(!l.validateLobby()&&l.isFull()){
+                                //for(String s:l.getClientsUsername()){
+                                    //if(l.getStatusPlayer(s)){
+                                        l.getController().update(l.getClientByUsername(l.getWinner()),new Message(l.getWinner(),Event.FORCED_END_MATCH));
+                                        //l.getClientByUsername(l.getWinner()).update(l.getClientByUsername(l.getWinner()),new Message(s,Event.FORCED_END_MATCH));
+
+                                        Lobbydeletion(l,index);
+                                    //}
+                                //}
+                            }else if(!l.getStatusLobby()&&l.isFull()){
+                                Lobbydeletion(l,index);
+
+                            }
+                        }
+                    }
+                    for(Integer i:index){
+                        gamesManagerController.removeLobby(i);
+                    }
+                    index.clear();
+                    System.out.println(gamesManagerController.getLobbies_list().size());
+
+                }
+            }
+        }.start();
+    }
 
 
 }

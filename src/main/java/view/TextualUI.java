@@ -153,6 +153,8 @@ public class TextualUI extends View implements Runnable {
                     System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
                     System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
                 }
+                setChanged();
+                notifyObservers(new Message(Event.FINISH_MATCH));
             } else if (message.getModel() == null || message.getModel().getCurrentPlayer().getUsername().equals(username)) {
                 myTurn = true;
                 if (message.getEvent().equals(Event.PLAYER_DRAW_NEGATIVE)) {

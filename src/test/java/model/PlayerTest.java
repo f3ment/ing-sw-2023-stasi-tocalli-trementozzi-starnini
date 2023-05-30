@@ -10,8 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Properties;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 class PlayerTest {
 
@@ -62,6 +61,8 @@ class PlayerTest {
             assertEquals(player.getScore(), token2.getScore() + token1.getScore());
             System.out.println("Test passato!");
 
+            assertEquals(token1, player.getToken(0));
+            assertEquals(token2, player.getToken(1));
 
 
         }catch (Exception e){
@@ -152,6 +153,9 @@ class PlayerTest {
             * so one card is still in his hand
             */
             assertFalse(player.getPickedCards().isEmpty());
+            assertNotNull(player.getPickedCard(0));
+            player.clearHand();
+            assertTrue(player.getPickedCards().isEmpty());
 
             System.out.println("Test passato!");
 
@@ -160,6 +164,66 @@ class PlayerTest {
             System.out.println(e.getMessage());
             System.out.println(Arrays.toString(e.getStackTrace()));
         }
+    }
+
+    @Test
+    void getUsernameTest(){
+        try {
+            bookshelf = new Bookshelf();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String username = "Luca";
+        position = new TablePosition(username ,personalGoal,bookshelf);
+        player = position.getPlayer();
+        Board board = new Board(4);
+        board.setBox(new Bag());
+        assertEquals(player.getUsername(), "Luca");
+    }
+
+    @Test
+    void getStatusTest(){
+        try {
+            bookshelf = new Bookshelf();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String username = "Luca";
+        position = new TablePosition(username ,personalGoal,bookshelf);
+        player = position.getPlayer();
+        Board board = new Board(4);
+        board.setBox(new Bag());
+        assertEquals(false, player.getStatus());
+        player.setStatus(true);
+        assertEquals(true, player.getStatus());
+    }
+
+    @Test
+    void getTokenTest(){
+        try {
+            bookshelf = new Bookshelf();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String username = "Luca";
+        position = new TablePosition(username ,personalGoal,bookshelf);
+        player = position.getPlayer();
+        assertNotNull(player.getToken());
+    }
+
+    @Test
+    void getCurrentPositionTest(){
+        try {
+            bookshelf = new Bookshelf();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String username = "Luca";
+        position = new TablePosition(username ,personalGoal,bookshelf);
+        player = position.getPlayer();
+
+        assertNotNull(player.getCurrentPosition());
+
     }
 
 }
