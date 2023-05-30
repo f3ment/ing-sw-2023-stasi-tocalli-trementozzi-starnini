@@ -69,6 +69,7 @@ class PersonalGoalTest {
             assertTrue(pg.getDone()==6);
             assertTrue(pg.validate(new Bookshelf()) == 0);
 
+
             System.out.println("Test passato!");
 
         } catch (FileNotFoundException e) {
@@ -83,4 +84,27 @@ class PersonalGoalTest {
         }
 
     }
+
+    @Test
+    void getWindowsTest(){
+        Gson gson = new Gson();
+        Map<String, Map<String, Map<String, String>>> windows;
+
+
+        try {
+            windows = gson.fromJson(new FileReader("./src/test/resources/personalGoals.json"),
+                    new TypeToken<Map<String, Map<String, Map<String, String>>>>() {}.getType());
+                    PersonalGoal pg  = new PersonalGoal(windows.get("1"));
+                    assertNotNull(pg.getWindows());
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    /*@Test
+    void getNullWindowsTest(){
+        Map<String, Map<String, Map<String, String>>> windows;
+    }*/
 }

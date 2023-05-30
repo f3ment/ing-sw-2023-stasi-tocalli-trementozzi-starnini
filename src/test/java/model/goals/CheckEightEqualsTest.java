@@ -93,4 +93,16 @@ class CheckEightEqualsTest {
             System.out.println(Arrays.toString(e.getStackTrace()));
         }
     }
+
+    @Test
+    void toStringTest(){
+        CommonGoal commonGoal = new CheckEightEquals(1,4);
+        assertNotNull(commonGoal.toString());
+    }
+
+    @Test
+    void getSourceTest(){
+        CommonGoal commonGoal = new CheckEightEquals(1,4);
+        assertNotNull(commonGoal.getSource());
+    }
 }

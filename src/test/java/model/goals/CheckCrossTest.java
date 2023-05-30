@@ -79,15 +79,61 @@ class CheckCrossTest {
 
             assertNull(cm.validate(bookshelf));
 
-            System.out.println("Test passato!");
         }
         catch(Exception e){
-            System.out.println("Test fallito!");
             System.out.println(e.getMessage());
             System.out.println(Arrays.toString(e.getStackTrace()));
         }
     }
-}
 
-//todo implements other corner cases
+    @Test
+    void validateNull() {
+
+        this.cm = new CheckCross(1,4);
+
+        try {
+
+            //testing positive: CATS cross at the down left corner
+
+            bookshelf = null;
+
+/*
+            bookshelf.setChoosenColumn(0);
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+
+
+            bookshelf.setChoosenColumn(1);
+            bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+
+            bookshelf.setChoosenColumn(4);
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            bookshelf.insert(new ItemTiles(Type.GAMES, 1));
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+
+*/
+            scoringToken = new ScoringToken(8, 1);
+            assertNull(cm.validate(bookshelf));
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            System.out.println(Arrays.toString(e.getStackTrace()));
+        }
+    }
+
+    @Test
+    void toStringTest(){
+        CommonGoal commonGoal = new CheckCross(1,4);
+        assertNotNull(commonGoal.toString());
+    }
+
+    @Test
+    void getSourceTest(){
+        CommonGoal commonGoal = new CheckCross(1,4);
+        assertNotNull(commonGoal.getSource());
+    }
+}
 

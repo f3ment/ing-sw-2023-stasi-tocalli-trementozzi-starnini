@@ -52,9 +52,61 @@ class CheckAnglesTest {
     }
 
     @Test
+    void validateNull() {
+        this.cm = new CheckAngles(1,3);
+
+        try{
+            this.bookshelf = new Bookshelf();
+            this.bookshelf.setChoosenColumn(0);
+            this.bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            this.bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            this.bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            this.bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            this.bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            this.bookshelf.insert(new ItemTiles(Type.CATS, 1));
+
+            this.bookshelf.setChoosenColumn(4);
+            this.bookshelf.insert(new ItemTiles(Type.BOOKS, 1));
+            this.bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            this.bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            this.bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            this.bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            this.bookshelf.insert(new ItemTiles(Type.CATS, 1));
+
+            this.scoringToken = new ScoringToken(6, 1);
+            assertNull(cm.validate(bookshelf));
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            System.out.println(Arrays.toString(e.getStackTrace()));
+
+
+        }
+    }
+
+
+    @Test
     void setComplete(){
         CommonGoal commonGoal = new CheckAngles(2,3);
         commonGoal.setCompleted(true);
         assertTrue(commonGoal.getCompleted());
+    }
+
+    @Test
+    void setComplete2(){
+        CommonGoal commonGoal = new CheckAngles(2,3);
+        commonGoal.setCompleted(true);
+        assertTrue(commonGoal.getCompleted());
+    }
+
+    @Test
+    void toStringTest(){
+        CommonGoal commonGoal = new CheckAngles(2,3);
+        assertNotNull(commonGoal.toString());
+    }
+
+    @Test
+    void getSourceTest(){
+        CommonGoal commonGoal = new CheckAngles(2,3);
+        assertNotNull(commonGoal.getSource());
     }
 }
