@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -133,6 +134,8 @@ public class ScenesController extends Observable<Event> implements Initializable
     private Button button3;
     @FXML
     private GridPane hand;
+
+    ArrayList<Integer> tileOrder = new ArrayList<>();
     private ArrayList<ImageView> playerHand = new ArrayList<>(0);
 
     /**
@@ -234,10 +237,17 @@ public class ScenesController extends Observable<Event> implements Initializable
         Image image = new Image(getClass().getResourceAsStream(s));
         ImageView tile = new ImageView(image);
         tile.setOnMouseClicked(event ->tileSelected(i,j,tile));
+        tile.setOnMouseEntered(event -> hoverOnTiles(tile));
+        tile.setOnMouseExited(event -> tile.setOpacity(1));
         tile.setFitHeight(90);
         tile.setFitWidth(90);
         tile.setPreserveRatio(true);
         boardGrid.add(tile, j, i);
+    }
+
+    private void hoverOnTiles(ImageView tile) {
+        if(myTurn)
+            tile.setOpacity(0.5);
     }
 
     @FXML
@@ -340,6 +350,7 @@ public class ScenesController extends Observable<Event> implements Initializable
                 drawen.add(coords);
                 tile.setVisible(false);
                 ImageView tileCopy = new ImageView(tile.getImage());
+                tileCopy.setOnMouseClicked(event ->tileOrderSelection(tileCopy));
                 tileCopy.setFitHeight(90);
                 tileCopy.setFitWidth(90);
                 hand.add(tileCopy,0,3-drawen.size());
@@ -351,6 +362,14 @@ public class ScenesController extends Observable<Event> implements Initializable
                     }).start();
                 }
             }
+        }else{
+            dialogText.setText("it's not your turn!");
+        }
+    }
+
+    private void tileOrderSelection(ImageView tileCopy) {
+        if(myTurn){
+
         }else{
             dialogText.setText("it's not your turn!");
         }
@@ -399,6 +418,11 @@ public class ScenesController extends Observable<Event> implements Initializable
         dialogText.setText("You can only draw adjacent tiles\non same column or row and they\nmust have at least one free side!");
         nDraws = 0;
         drawen.clear();
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         for(ImageView tile : playerHand){
             tile.setVisible(true);
             hand.getChildren().clear();
@@ -414,19 +438,28 @@ public class ScenesController extends Observable<Event> implements Initializable
     }
 
     public void goodDraw() {
-        dialogText.setText("You have drawn " + nDraws + " tiles!\nnow place them in your shelf,\nSelect a column to place your tiles");
+        dialogText.setText("You have drawn " + nDraws + " tiles!\nnow place them in your shelf,\nSelect a column by clicking on it");
         nDraws=0;
         drawen.clear();
         insertInShelf();
     }
 
     private void insertInShelf() {
+        column1.setOnMouseEntered(event -> column1.setOpacity(0.25));
         column1.setOnMouseClicked(event -> setColumn(1));
+        column1.setOnMouseExited(event -> column1.setOpacity(0));
+        column2.setOnMouseEntered(event -> column2.setOpacity(0.25));
+        column2.setOnMouseExited(event -> column2.setOpacity(0));
         column2.setOnMouseClicked(event -> setColumn(2));
+        column3.setOnMouseEntered(event -> column3.setOpacity(0.25));
+        column3.setOnMouseExited(event -> column3.setOpacity(0));
         column3.setOnMouseClicked(event -> setColumn(3));
+        column4.setOnMouseEntered(event -> column4.setOpacity(0.25));
+        column4.setOnMouseExited(event -> column4.setOpacity(0));
         column4.setOnMouseClicked(event -> setColumn(4));
+        column5.setOnMouseEntered(event -> column5.setOpacity(0.25));
+        column5.setOnMouseExited(event -> column5.setOpacity(0));
         column5.setOnMouseClicked(event -> setColumn(5));
-
     }
 
     private void setColumn(int i) {
@@ -435,12 +468,15 @@ public class ScenesController extends Observable<Event> implements Initializable
         column3.setOnMouseClicked(null);
         column4.setOnMouseClicked(null);
         column5.setOnMouseClicked(null);
-        ArrayList<Integer> order = new ArrayList<>();//todo gestire scelta order
-        order.add(0,0);
-        order.add(1,1);
+        column1.setOnMouseEntered(null);
+        column2.setOnMouseEntered(null);
+        column3.setOnMouseEntered(null);
+        column4.setOnMouseEntered(null);
+        column5.setOnMouseEntered(null);
+        //todo gestire scelta order
         new Thread(()->{
             setChanged();
-            notifyObservers(new Message(Event.PLAYER_INSERT_POSITIVE,i-1,order));
+            notifyObservers(new Message(Event.PLAYER_INSERT_POSITIVE,i-1,tileOrder));
         }).start();
     }
 
@@ -456,8 +492,8 @@ public class ScenesController extends Observable<Event> implements Initializable
             for(int j=0; j< model.getLenghtBookshelf(); j++){
                 if(model.getCurrentBookshelf()[i][j]!=null){
                     ImageView tile = new ImageView(new Image(getClass().getResourceAsStream(pickTileImage(model.getCurrentBookshelf()[i][j].getType(),model.getCurrentBookshelf()[i][j].getId()))));
-                    tile.setFitHeight(58);
-                    tile.setFitWidth(58);
+                    tile.setFitHeight(63);
+                    tile.setFitWidth(63);
                     shelfGrid.add(tile,j,i);
                 }
             }

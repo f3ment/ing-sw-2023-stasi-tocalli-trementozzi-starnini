@@ -3,11 +3,13 @@ import model.Bookshelf;
 import model.ItemTiles;
 import model.ScoringToken;
 import model.Type;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 /*
 import org.junit.After;
 import org.junit.Before;
@@ -165,5 +167,17 @@ class CheckColumnLengthTest {
             System.out.println(Arrays.toString(e.getStackTrace()));
         }
 
+    }
+
+    @Test
+    void toStringTest(){
+        CommonGoal commonGoal = new CheckColumnLength(1,4);
+        assertNotNull(commonGoal.toString());
+    }
+
+    @Test
+    void getSourceTest(){
+        CommonGoal commonGoal = new CheckColumnLength(1,4);
+        assertNotNull(commonGoal.getSource());
     }
 }

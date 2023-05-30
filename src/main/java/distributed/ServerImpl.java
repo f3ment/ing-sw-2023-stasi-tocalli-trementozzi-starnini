@@ -54,8 +54,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     @Override
     public void update(Client client, Message message) throws RemoteException {
         currentLobby = this.gamesManagerController.getLobbyByClient(client);
-            //CHAT UPDATE
-            if (currentLobby != null && (message.getEvent().equals(Event.GET_CHAT) || message.getEvent().equals(Event.EXIT_CHAT) || message.getEvent().equals(Event.SEND_MESSAGE))) {
+        //CHAT UPDATE
+        if (currentLobby != null && (message.getEvent().equals(Event.GET_CHAT) || message.getEvent().equals(Event.EXIT_CHAT) || message.getEvent().equals(Event.SEND_MESSAGE))) {
                 currentLobby.getChatController().update(client, message);
             } else if (!message.getEvent().equals(Event.GAME_INIT) && !message.getEvent().equals(Event.LOGIN)) {
                 //GAME UPDATE
@@ -79,6 +79,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                         for(Client c: currentLobby.getClients()){
                             gamesManagerController.removePlayer(c);
                         }
+                        //todo rimuovere lobby SOLO quando nessuno è in chat e nessuno è in partita
                         gamesManagerController.getLobbies_list().remove(currentLobby);
                     }else {
 
@@ -160,6 +161,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                 client.update(new Message(Event.LOGIN));
             }
     }
+
 
 
     public void Lobbydeletion(Lobby l,ArrayList<Integer> index){

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 
 import static junit.framework.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CheckSquareTest {
     private Bookshelf bookshelf;
@@ -142,5 +143,17 @@ public class CheckSquareTest {
             System.out.println(e.getMessage());
             System.out.println(Arrays.toString(e.getStackTrace()));
         }
+    }
+
+    @Test
+    void toStringTest(){
+        CommonGoal commonGoal = new CheckSquare(2,3);
+        assertNotNull(commonGoal.toString());
+    }
+
+    @Test
+    void getSourceTest(){
+        CommonGoal commonGoal = new CheckSquare(2,3);
+        assertNotNull(commonGoal.getSource());
     }
 }

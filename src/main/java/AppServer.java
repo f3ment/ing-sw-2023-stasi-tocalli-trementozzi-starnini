@@ -5,6 +5,7 @@ import view.Color;
 
 import java.io.IOException;
 import java.net.*;
+import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -22,6 +23,18 @@ public class AppServer {
 
 
     public static void main(String[] args) throws RemoteException {
+        DatagramSocket datagramSocket = null;
+        try {
+            datagramSocket = new DatagramSocket();
+            datagramSocket.connect(InetAddress.getByName("8.8.8.8"),10002);
+            String currentIp = datagramSocket.getLocalAddress().getHostAddress();
+            System.setProperty("java.rmi.server.hostname",currentIp);
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
+
         server = new ServerImpl();
 
         Thread rmiThread = new Thread() {
@@ -31,10 +44,6 @@ public class AppServer {
                     startRMI();
                 } catch (RemoteException e) {
                     System.err.println("Cannot start RMI. This protocol will be disabled.");
-                } catch (SocketException e) {
-                    throw new RuntimeException(e);
-                } catch (UnknownHostException e) {
-                    throw new RuntimeException(e);
                 }
             }
         };
@@ -92,13 +101,13 @@ public class AppServer {
         }
     }
 
-    private static void startRMI() throws RemoteException, SocketException, UnknownHostException {
-        DatagramSocket datagramSocket = new DatagramSocket();
-        datagramSocket.connect(InetAddress.getByName("8.8.8.8"),10002);
-        String currentIp = datagramSocket.getLocalAddress().getHostAddress();
-        System.setProperty("java.rmi.server.hostname",currentIp);
+    private static void startRMI() throws RemoteException{
         Registry registry = LocateRegistry.createRegistry(1099);
-        registry.rebind("server", server);
+        try {
+            registry.bind("server", server);
+        } catch (AlreadyBoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 //TODO gestione username.properties

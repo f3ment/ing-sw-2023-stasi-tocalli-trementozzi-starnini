@@ -66,6 +66,7 @@ public class AppClient {
         datagramSocket.connect(InetAddress.getByName("8.8.8.8"),10002);
         String currentIp = datagramSocket.getLocalAddress().getHostAddress();
         System.setProperty("java.rmi.server.hostname",currentIp);
+        System.out.println("Client IP: " + currentIp);
         Registry registry = LocateRegistry.getRegistry(Ip);
         Server server = (Server) registry.lookup("server");
         ClientImpl client = new ClientImpl(server);

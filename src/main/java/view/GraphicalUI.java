@@ -108,9 +108,6 @@ public class GraphicalUI extends View implements Runnable {
             Platform.runLater(() -> {
                 GuiController.setMyTurn(false , message.getModel().getCurrentPlayer().getUsername());
             });
-
-
-
         }
         if (message.getModel() == null || message.getModel().getCurrentPlayer().getUsername().equals(username)) {
             myTurn = true;
@@ -123,10 +120,7 @@ public class GraphicalUI extends View implements Runnable {
                     GuiController.goodDraw();
                 });
             } else if (message.getEvent().equals(Event.PLAYER_INSERT_NEGATIVE)) {
-                synchronized (this) {
-                    //todo gestire errore selezione colonna
-                }
-                //playerInsert(message.getModel());
+
             } else if (message.getEvent().equals(Event.PLAYER_INSERT_POSITIVE)) {
                Platform.runLater(() -> {
                    GuiController.insertPositive(message.getModel());
