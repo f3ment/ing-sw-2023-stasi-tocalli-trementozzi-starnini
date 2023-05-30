@@ -120,16 +120,15 @@ public class GraphicalUI extends View implements Runnable {
                     GuiController.goodDraw();
                 });
             } else if (message.getEvent().equals(Event.PLAYER_INSERT_NEGATIVE)) {
-
+                Platform.runLater(() -> {
+                    GuiController.insertNegative(message.getModel());
+                });
             } else if (message.getEvent().equals(Event.PLAYER_INSERT_POSITIVE)) {
                Platform.runLater(() -> {
                    GuiController.insertPositive(message.getModel());
                });
             } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
                 //todo gestire
-                //start(message.getModel());
-                //////////////////////////////// F A T T O //////////////////////////////////////////////////////////////
-                ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             } else if (message.getEvent().equals(Event.NEW_TURN)) {
                 Platform.runLater(() -> {
                     GuiController.setMyTurn(true, null);

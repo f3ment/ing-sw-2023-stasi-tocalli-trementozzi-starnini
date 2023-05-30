@@ -350,8 +350,9 @@ public class ScenesController extends Observable<Event> implements Initializable
                 coords.add(1,j);
                 drawen.add(coords);
                 tile.setVisible(false);
+                int position = drawen.size();
                 ImageView tileCopy = new ImageView(tile.getImage());
-                tileCopy.setOnMouseClicked(event ->tileOrderSelection(tileCopy,drawen.size()));
+                tileCopy.setOnMouseClicked(event ->tileOrderSelection(tileCopy,position));
                 tileCopy.setFitHeight(90);
                 tileCopy.setFitWidth(90);
                 hand.add(tileCopy,0,3-drawen.size());
@@ -422,7 +423,6 @@ public class ScenesController extends Observable<Event> implements Initializable
 
     @FXML
     public void badDraw() {
-        dialogText.setStyle("-fx-text-fill: #e30f0f;");
         dialogText.setText("You can only draw adjacent tiles\non same column or row and they\nmust have at least one free side!");
         nDraws = 0;
         drawen.clear();
@@ -481,7 +481,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         column3.setOnMouseEntered(null);
         column4.setOnMouseEntered(null);
         column5.setOnMouseEntered(null);
-        //todo gestire scelta order
         new Thread(()->{
             setChanged();
             notifyObservers(new Message(Event.PLAYER_INSERT_POSITIVE,i-1,tileOrder));
@@ -494,6 +493,11 @@ public class ScenesController extends Observable<Event> implements Initializable
         updateShelf(model);
         hand.getChildren().clear();
         playerHand.clear();
+    }
+
+    public void insertNegative(GameView model) {
+        dialogText.setText("You can't insert tiles in that column!");
+        insertInShelf();
     }
 
     private void updateShelf(GameView model) {
@@ -527,6 +531,8 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
         return null;
     }
+
+
 }
 
 
