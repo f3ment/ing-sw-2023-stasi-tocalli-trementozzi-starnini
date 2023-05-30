@@ -1,7 +1,6 @@
 package view;
 
 import model.Message;
-import model.Player;
 import model.Type;
 import model.views.ArrayListView;
 import model.views.BoxView;
@@ -11,7 +10,6 @@ import model.views.PlayerView;
 import utils.*;
 
 import java.io.IOException;
-import java.security.cert.CertificateParsingException;
 import java.util.*;
 public class TextualUI extends View implements Runnable {
 
@@ -21,8 +19,8 @@ public class TextualUI extends View implements Runnable {
 
     private boolean lobbyExist = false;
     private boolean firstChat;
-    private boolean choosing;
-    //TODO vietare input client quando è in attesa;
+    private boolean choosing = false;
+
     @Override
     public void run() {
         System.out.print(Color.BLACK_BACKGROUND);
@@ -58,7 +56,7 @@ public class TextualUI extends View implements Runnable {
 
     }
     public void update(Message message) {
-        /*if(message.getEvent().equals(Event.GET_CHAT) && message.getUserName().equals(username)){
+        if(message.getEvent().equals(Event.GET_CHAT) && message.getUserName().equals(username)){
             if(message.getChat().getActive().contains(username)){
                 this.flagChat = true;
                 System.out.println("----------------------------");
@@ -100,30 +98,42 @@ public class TextualUI extends View implements Runnable {
         }else if(message.getEvent().equals(Event.EXIT_CHAT) && message.getUserName().equals(username)){
             if (!message.getChat().getActive().contains(username)){
                 synchronized (this){
+                    System.out.println("----------------------------");
+                    System.out.println("Now you can play.");
                     this.notifyAll();
                 }
-                System.out.println("----------------------------");
-                System.out.println("Now you can play.");
             }
-        }else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
-                if (myTurn) {
-                    myTurn = false;
+        }
+        else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
+            if(!flagChat && !choosing){
+                synchronized (this){
+                    if (myTurn && !flagChat) {
+                        myTurn = false;
 
-                    System.out.print(Color.YELLOW_BOLD_BRIGHT);
-                    System.out.println(message.getModel().getCurrentPlayer().getUsername() + " is playing, wait for your turn!");
-                    System.out.print(Color.RESET);
-                    showFirstCommonGoal(message.getModel());
-                    showSecondCommonGoal(message.getModel());
-                    showAllScore(message.getModel());
-                    showAllBookshelf(message.getModel());
+                        System.out.print(Color.YELLOW_BOLD_BRIGHT);
+                        System.out.println(message.getModel().getCurrentPlayer().getUsername() + " is playing, wait for your turn!");
+                        System.out.print(Color.RESET);
+                        showFirstCommonGoal(message.getModel());
+                        showSecondCommonGoal(message.getModel());
+                        showAllScore(message.getModel());
+                        showAllBookshelves(message.getModel());
 
-                    showBoard(message.getModel());
-                    choice();
-                    //showBookshelf(o); -> non si può usare perché mostriamo la currentBookshelf che non corrisponde a quella del giocatore in attesa
+                        showBoard(message.getModel());
+                        choice();
+                        while (flagChat) {
+                            try {
+                                this.wait();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException();
+                            }
+                        }
+                        //showBookshelf(o); -> non si può usare perché mostriamo la currentBookshelf che non corrisponde a quella del giocatore in attesa
+                    }
                 }
+            }
         }else if(flagChat){
             synchronized (this){
-                while (flagChat || choosing) {
+                while (flagChat) {
                     try {
                         this.wait();
                     } catch (InterruptedException e) {
@@ -131,38 +141,76 @@ public class TextualUI extends View implements Runnable {
                     }
                 }
             }
-        }*/
+        }
+
         if (message.getEvent().equals(Event.RECONNECTION)) {
-            System.out.println("you are in tha match!");
+            synchronized (this){
+                System.out.println("you are in tha match!");
+            }
         } else {
             if (message.getEvent().equals(Event.FINISH_MATCH)) {
-                System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
-                System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
+                synchronized (this) {
+                    System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
+                    System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
+                }
             } else if (message.getModel() == null || message.getModel().getCurrentPlayer().getUsername().equals(username)) {
                 myTurn = true;
                 if (message.getEvent().equals(Event.PLAYER_DRAW_NEGATIVE)) {
-                    System.out.println(Color.RED + "The cards you have selected are invalid, please select other cards : " + Color.RESET);
+                    synchronized (this){
+                        System.out.println(Color.RED + "The cards you have selected are invalid, please select other cards : " + Color.RESET);
+                    }
                     playerDraw(message.getModel());
                 } else if (message.getEvent().equals(Event.PLAYER_DRAW_POSITIVE)) {
-                    System.out.println(Color.GREEN + "Cards picked correctly!" + Color.RESET);
-                    //show picked cards
-                    showHand(message.getModel());
+                    synchronized (this){
+                        System.out.println(Color.GREEN + "Cards picked correctly!" + Color.RESET);
+                        //show picked cards
+                        showHand(message.getModel());
+                    }
                     playerInsert(message.getModel());
                 } else if (message.getEvent().equals(Event.PLAYER_INSERT_NEGATIVE)) {
-                    System.out.println(Color.RED + "The selected column is not valid! Retry. " + Color.RESET);
-                    showHand(message.getModel());
+                    synchronized (this){
+                        System.out.println(Color.RED + "The selected column is not valid! Retry. " + Color.RESET);
+                        showHand(message.getModel());
+                    }
                     playerInsert(message.getModel());
                 } else if (message.getEvent().equals(Event.PLAYER_INSERT_POSITIVE)) {
-                    System.out.println(Color.GREEN + "Cards inserted correctly!" + Color.RESET);
-                    showBookshelf(message.getModel());
+                    synchronized (this){
+                        System.out.println(Color.GREEN + "Cards inserted correctly!" + Color.RESET);
+                        showBookshelf(message.getModel());
+                    }
                     setChanged();
                     notifyObservers(new Message(Event.PLAYER_FINISH));
                     //todo adjust events with start method
                 } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
+                    synchronized (this) {
+                        if (choice()) {
+                            while (flagChat) {
+                                try {
+                                    this.wait();
+                                } catch (InterruptedException e) {
+                                    throw new RuntimeException();
+                                }
+                            }
+                        }
+                    }
                     start(message.getModel());
                 } else if (message.getEvent().equals(Event.NEW_TURN)) {
+                    synchronized (this) {
+                        if (choice()) {
+                            while (flagChat || choosing) {
+                                try {
+                                    this.wait();
+                                } catch (InterruptedException e) {
+                                    throw new RuntimeException();
+                                }
+                            }
+                        }
+                    }
                     start(message.getModel());
                 } else if (message.getEvent().equals(Event.FINISH_MATCH)) {
+                    synchronized (this){
+                        System.out.println("Game is finished!");
+                    }
                     start(message.getModel());
                 } /*else if (message.getEvent().equals(Event.FINISH_MATCH)) {
                     System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
@@ -201,44 +249,46 @@ public class TextualUI extends View implements Runnable {
                     lobbyExist = true;
 
                     System.out.println(Color.YELLOW_BOLD + "Waiting for other player to join the lobby..." + Color.RESET);
-                    //System.out.println(Color.BLUE_UNDERLINED + "If you want to chat with the other players connected to your lobby : " + Color.RESET);
-                    //System.out.println(Color.BLUE_UNDERLINED + " - write '/chat' in order to access to the chat section and to read and write messages;" + Color.RESET);
-                    //System.out.println(Color.BLUE_UNDERLINED + " - write '/exit' in order to get back to the game. " + Color.RESET);
-
-                /*new Thread(() -> {
-                    while (true) {
-                        readingForChat();
+                    System.out.println(Color.BLUE_UNDERLINED + "If you want to chat with the other players connected to your lobby : " + Color.RESET);
+                    System.out.println(Color.BLUE_UNDERLINED + " - write '/chat' in order to access to the chat section and to read and write messages;" + Color.RESET);
+                    System.out.println(Color.BLUE_UNDERLINED + " - write '/exit' in order to get back to the game. " + Color.RESET);
+                    new Thread(() -> {
+                        while (true) {
+                            readingForChat();
+                        }
+                    }).start();
+                    synchronized (this) {
+                        if (choice()) {
+                            while (flagChat) {
+                                try {
+                                    this.wait();
+                                } catch (InterruptedException e) {
+                                    throw new RuntimeException();
+                                }
+                            }
+                        }
                     }
-                }).start();*/
                 } else if (message.getEvent().equals(Event.LOGIN_TRUE)) {
                     lobbyExist = true;
-
-                    System.out.print(Color.GREEN_BOLD);
-                    System.out.println("Game is starting...");
-                    System.out.print(Color.RESET);
-                    try {
-                        Thread.sleep(1500);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                    synchronized (this) {
+                        while (flagChat) {
+                            try {
+                                this.wait();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            System.out.print(Color.GREEN_BOLD);
+                            System.out.println("Game is starting...");
+                            System.out.print(Color.RESET);
+                            try {
+                                Thread.sleep(1500);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
                     }
                     setChanged();
                     notifyObservers(new Message(Event.NEW_TURN));
-                }
-            }else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
-                if (myTurn) {
-                    myTurn = false;
-
-                    System.out.print(Color.YELLOW_BOLD_BRIGHT);
-                    System.out.println(message.getModel().getCurrentPlayer().getUsername() + " is playing, wait for your turn!");
-                    System.out.print(Color.RESET);
-                    showFirstCommonGoal(message.getModel());
-                    showSecondCommonGoal(message.getModel());
-                    showAllScore(message.getModel());
-                    showAllBookshelves(message.getModel());
-
-                    showBoard(message.getModel());
-                    //choice();
-                    //showBookshelf(o); -> non si può usare perché mostriamo la currentBookshelf che non corrisponde a quella del giocatore in attesa
                 }
             }
         }
@@ -393,7 +443,7 @@ public class TextualUI extends View implements Runnable {
             PlayerView player = (PlayerView) PlayerList.get(n);
           // Verificarer se lo username è più lungo della board
           // operare in modo differente a seconda del controllo precedente
-          //lo spezzone di codice che c'è sotto è per quando gli username sono più 'corti' della bookshelf
+          // lo spezzone di codice che c'è sotto è per quando gli username sono più 'corti' della bookshelf
             System.out.print(" ");
             String nick = player.getUsername();
             if(nick.equals(username)){
@@ -677,11 +727,9 @@ public class TextualUI extends View implements Runnable {
                 if (input.equals("/chat")) {
                     flagChat = true;
                     firstChat = true;
-                    choosing = false;
                     System.out.println("Opening chat ...");
                 } else if (input.equals("/play")) {
                     flagChat = false;
-                    choosing = false;
                     firstChat = false;
                     System.out.println("Now you can continue to play.");
                 } else {
@@ -692,6 +740,7 @@ public class TextualUI extends View implements Runnable {
         }else{
             return true;
         }
+        choosing = false;
         return flagChat;
     }
 

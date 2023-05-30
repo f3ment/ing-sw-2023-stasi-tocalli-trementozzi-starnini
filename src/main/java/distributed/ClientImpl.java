@@ -40,35 +40,11 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
         try {
             initialize(server);
         } catch (RemoteException e){
-            System.err.println(Color.RED_BOLD + "Server unreachable!");
+            System.err.println(Color.RED_BOLD + "Server unreachable!" );
             System.err.println(Color.RED + "Client is unable to establish a connection to the server, either because the server is offline or there is an issue with the network connection.\n\n");
+            e.printStackTrace();
         }
     }
-/*
-    public ClientImpl(Server server, int port) throws RemoteException {
-        super(port);
-        if(chooseGraphicSettings()==1)
-            view = new TextualUI();
-        else{
-            view = new GraphicalUI();
-        }
-        initialize(server, choice);
-        sr=server;
-        initialize(server);
-    }
-
-    public ClientImpl(Server server, int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
-        super(port, csf, ssf);
-        sr=server;
-        initialize(server);
-        if(chooseGraphicSettings()==1)
-            view = new TextualUI();
-        else{
-            view = new GraphicalUI();
-        }
-        initialize(server, choice);
-    }
-*/
     private static int chooseGraphicSettings() {
         int graphicSettings;
         System.out.println("Please choose whether playing from COMMAND-LINE or from the GRAPHICAL APP:\n" +
