@@ -34,6 +34,8 @@ public class Lobby {
     private boolean oneleft;
     private boolean valid=true;
 
+    private String winner;
+
     public Lobby(int nPlayers, String userName, Client client){
         this.nPlayers = nPlayers;
         usersId = new HashMap<String,Client>(nPlayers);
@@ -222,6 +224,12 @@ public class Lobby {
         if(onlineplayers==1){
             oneleft=true;
             setFinalTimer();
+            for(String s : usersId.keySet()){
+                if(getStatusPlayer(s)){
+                    winner=s;
+                    break;
+                }
+            }
         }
     }
     public boolean isUsernameContained(String username){
@@ -271,10 +279,14 @@ public class Lobby {
         timerOneLeftPlayer.cancel();
         if(onlineplayers!=1){
             oneleft=false;
+            winner=null;
         }
     }
     public boolean validateLobby(){
         return valid;
     }
 
+    public String getWinner() {
+        return winner;
+    }
 }

@@ -105,6 +105,11 @@ public class GamesManagerController {
     }
 
     public void removeLobby(int index){
-        lobbies_list.remove(index);
+        try{
+            lobbies_list.remove(index);
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("Lobby problem");
+        }
+
     }
 }
