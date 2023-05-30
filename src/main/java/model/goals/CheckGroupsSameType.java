@@ -12,7 +12,13 @@ public class CheckGroupsSameType extends CommonGoal{
         this.groupLength = groupLength;
         this.repetitions = repetitions;
     }
-
+    public String getSource(){
+        if(groupLength==4)
+            return "3.jpg";
+        else if(groupLength==2)
+            return "4.jpg";
+        return null;
+    }
     @Override
     public String toString() {
         String str = null;

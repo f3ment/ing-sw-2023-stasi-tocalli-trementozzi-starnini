@@ -523,7 +523,7 @@ public class TextualUI extends View implements Runnable {
     }
 
     private void playerDraw(GameView o) {
-        ArrayList<ArrayList<Integer>> drawen = new ArrayList<ArrayList<Integer>>();
+        ArrayList<ArrayList<Integer>> drawen = new ArrayList<>();
         int nCards, x, y;
         boolean flag;
         ArrayList<Integer> coords;

@@ -15,6 +15,10 @@ public class CheckSquare extends CommonGoal{
         return str;
     }
 
+    public String getSource(){
+        return "1.jpg";
+    }
+
     /*
         * * * * * * * *
         *  DEPRECATED *

@@ -38,6 +38,8 @@ public abstract class CommonGoal implements Serializable {
         this.completed = false;
     }
     public abstract ScoringToken validate(Bookshelf bookshelf);
+
+    public abstract String getSource();
     public int getRomanNumber() {
         return romanNumber;
     }

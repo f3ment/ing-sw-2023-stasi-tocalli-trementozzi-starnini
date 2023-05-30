@@ -16,7 +16,9 @@ public class CheckEightEquals extends CommonGoal{
         String str = new String("Eight tiles of the same type, There's no restriction about the position of these tiles.");
         return str;
     }
-
+    public String getSource(){
+        return "9.jpg";
+    }
     @Override
     public ScoringToken validate(Bookshelf bookshelf) {
         HashMap<Type,Integer> Counter = new HashMap<Type,Integer>();

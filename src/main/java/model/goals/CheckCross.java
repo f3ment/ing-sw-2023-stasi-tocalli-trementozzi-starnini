@@ -15,6 +15,11 @@ public class CheckCross extends CommonGoal{
         return str;
     }
 
+    public String getSource(){
+        return "10.jpg";
+    }
+
+
     // null = false
     @Override
     public ScoringToken validate(Bookshelf bookshelf) {

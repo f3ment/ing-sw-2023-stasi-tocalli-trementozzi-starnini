@@ -13,6 +13,13 @@ public class CheckRowDifferent extends CommonGoal{
         this.strategy = strategy;
     }
 
+    public String getSource(){
+        if(strategy)
+            return "7.jpg";
+        else
+            return "2.jpg";
+    }
+
     @Override
     public String toString() {
         String descr = null;

@@ -138,7 +138,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         }
     }
 
-    //TODO GESTIONE USERNAMES
 
 
 

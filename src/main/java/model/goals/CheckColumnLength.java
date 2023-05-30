@@ -17,6 +17,12 @@ public class CheckColumnLength extends CommonGoal{
         return str;
     }
 
+
+    public String getSource(){
+        return "12.jpg";
+    }
+
+
     @Override
     public ScoringToken validate(Bookshelf bookshelf) {
         boolean flagCresc = true;

@@ -13,6 +13,7 @@ import java.util.*;
 
 public class Game extends Observable<Event> implements Serializable {
     private static final long serialVersionUID = 1L;
+    private int personalGoalIndex;
     private boolean finish;
     private final int playerNumber;
     private TablePosition currentPosition;
@@ -94,7 +95,8 @@ public class Game extends Observable<Event> implements Serializable {
                 index =1+randomInt.nextInt(11);
             }while(nums[index-1]);
             nums[index]=true;
-            this.tablePositionList.add(i, new TablePosition(usernames.get(i), new PersonalGoal(windowsArr.remove(randomInt.nextInt(windowsArr.size()))), new Bookshelf()));
+            personalGoalIndex = randomInt.nextInt(windowsArr.size());
+            this.tablePositionList.add(i, new TablePosition(usernames.get(i), new PersonalGoal(windowsArr.remove(personalGoalIndex)), new Bookshelf()));
         }
 
         index = randomInt.nextInt(playerNumber);
@@ -250,6 +252,9 @@ public class Game extends Observable<Event> implements Serializable {
         setCurrentPosition();
     }
 
+    public int getPersonalGoalIndex() {
+        return personalGoalIndex+1;
+    }
 
     /*
      * check if there is a column in the shelf with enough space to insert all the chosen tiles

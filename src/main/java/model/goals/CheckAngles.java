@@ -14,7 +14,9 @@ public class CheckAngles extends CommonGoal{
         String str = new String("Four tiles of the same type in the four corners of the bookshelf.");
         return str;
     }
-
+    public String getSource(){
+        return "8.jpg";
+    }
     @Override
     public ScoringToken validate(Bookshelf bookshelf) {
         try{

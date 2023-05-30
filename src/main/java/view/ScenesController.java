@@ -4,14 +4,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 //import javafx.event.Event;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import model.Type;
+import model.views.GameView;
 import utils.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,14 +23,53 @@ import utils.Observable;
 import javafx.scene.image.Image;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ScenesController extends Observable<Event> implements Initializable {
 
     @FXML
+    private Label scoreLabel1;
+    @FXML
+    private Label score1;
+    @FXML
+    private Label name1;
+    @FXML
+    private ImageView shelf1;
+    @FXML
+    private ImageView shelf3;
+    @FXML
+    private ImageView shelf4;
+    @FXML
+    private Label name2;
+    @FXML
+    private Label name3;
+    @FXML
+    private Label name4;
+    @FXML
+    private Label scoreLabel4;
+    @FXML
+    private Label scoreLabel3;
+    @FXML
+    private Label scoreLabel2;
+    @FXML
+    private Label score2;
+    @FXML
+    private Label score3;
+    @FXML
+    private Label score4;
+    @FXML
+    private ImageView chair2;
+    @FXML
+    private ImageView chair3;
+    @FXML
+    private ImageView chair4;
+    @FXML
+    private ImageView chair1;
+    @FXML
     private Button startButton;
+    @FXML
+    private Button retryButton;
 
     @FXML
     private GridPane boardGrid;
@@ -49,11 +89,51 @@ public class ScenesController extends Observable<Event> implements Initializable
     private Label player3;
     @FXML
     private Label player4;
+    @FXML
+    private Pane common1;
+    @FXML
+    private Pane common2;
+    @FXML
+    private Pane stack2;
+    @FXML
+    private Pane stack1;
+    @FXML
+    private Pane personalGoal;
+    @FXML
+    private Label dialogText;
+    @FXML
+    private GridPane shelfGrid;
+    @FXML
+    private Pane column1;
+    @FXML
+    private Pane column2;
+    @FXML
+    private Pane column3;
+    @FXML
+    private Pane column4;
+    @FXML
+    private Pane column5;
+
 
     private String username;
     private Object matchSize;
+    private String playerName3;
+    private String playerName4;
+    private String playerName2;
+    private boolean myTurn;
 
+    private int nDraws = 0;
 
+    private ArrayList<ArrayList<Integer>> drawen = new ArrayList<>(0);
+    @FXML
+    private Button button1;
+    @FXML
+    private Button button2;
+    @FXML
+    private Button button3;
+    @FXML
+    private GridPane hand;
+    private ArrayList<ImageView> playerHand = new ArrayList<>(0);
 
     /**
      * This method will change the welcome page to the login page
@@ -119,7 +199,7 @@ public class ScenesController extends Observable<Event> implements Initializable
             }).start();
         }
 
-
+    @FXML
     /**
      * This method displays the current players' nicknames in the lobby
      * @param nicknames the list of the players' nicknames
@@ -137,7 +217,7 @@ public class ScenesController extends Observable<Event> implements Initializable
         if(player4.getText().equals("WAITING PLAYER...") && nicknames.size()>3){
             player4.setText(nicknames.get(3));
         }
-        //todo aggiungere dinamicamente altri giocatori in lobby
+        //todo modificare lobby page
     }
 
 
@@ -148,14 +228,261 @@ public class ScenesController extends Observable<Event> implements Initializable
         }).start();
     }
 
+
+    @FXML
     public void setGridImage(String s, int i, int j) {
         Image image = new Image(getClass().getResourceAsStream(s));
         ImageView tile = new ImageView(image);
+        tile.setOnMouseClicked(event ->tileSelected(i,j,tile));
         tile.setFitHeight(90);
         tile.setFitWidth(90);
         tile.setPreserveRatio(true);
         boardGrid.add(tile, j, i);
     }
 
+    @FXML
+    public void showShelves(GameView model, String myName) {
+        ArrayList<String> players = new ArrayList<>(model.getListPlayer().keySet());
+        int Nplayers = players.size();
+        name1.setText(myName);
+        players.remove(myName);
+        playerName2 = players.get(0).toString();
+        players.remove(playerName2);
+        name2.setText(playerName2);
+        if(Nplayers >= 3){
+            shelf3.setVisible(true);
+            playerName3 = players.get(0).toString();
+            players.remove(playerName3);
+            name3.setText(playerName3);
+            name3.setVisible(true);
+            scoreLabel3.setVisible(true);
+            score3.setVisible(true);
+            if(Nplayers == 4){
+                shelf4.setVisible(true);
+                playerName4 = players.get(0).toString();
+                players.remove(playerName4);
+                name4.setText(playerName4);
+                name4.setVisible(true);
+                scoreLabel4.setVisible(true);
+                score4.setVisible(true);
+            }
+        }
+    }
+
+
+    @FXML
+    public void setChair(GameView model,String myName) {
+        String first = model.getFirstPlayer();
+        if(first.equals(myName)){
+            chair1.setVisible(true);
+        }else if(first.equals(playerName2)){
+            chair2.setVisible(true);
+        }else if(first.equals(playerName3)) {
+            chair3.setVisible(true);
+        }else if(first.equals(playerName4)){
+            chair4.setVisible(true);
+        }
+    }
+
+    @FXML
+    public void setCommongoals(GameView model) {
+        ImageView cg1 = new ImageView(new Image(getClass().getResourceAsStream("/Images/commongoalcards/" + model.getFirstCommonGoalScource())));
+        cg1.setFitHeight(150);
+        cg1.setFitWidth(266);
+        //cg1.setRotate(12.5);
+        ImageView cg2 = new ImageView(new Image(getClass().getResourceAsStream("/Images/commongoalcards/" + model.getSecondCommonGoalScource())));
+        cg2.setFitHeight(150);
+        cg2.setFitWidth(266);
+        //cg2.setRotate(12.5);
+        common1.getChildren().add(cg1);
+        common2.getChildren().add(cg2);
+        ImageView s1 = new ImageView(new Image(getClass().getResourceAsStream("/Images/scoringtokens/scoring_8.jpg")));
+        s1.setFitWidth(80);
+        s1.setFitHeight(78);
+        s1.setVisible(true);
+        ImageView s2 = new ImageView(new Image(getClass().getResourceAsStream("/Images/scoringtokens/scoring_8.jpg")));
+        s2.setFitWidth(80);
+        s2.setFitHeight(78);
+        s2.setVisible(true);
+        stack1.getChildren().add(s1);
+        stack1.setVisible(true);
+        stack1.toFront();
+        stack2.getChildren().add(s2);
+        stack2.setVisible(true);
+        stack2.toFront();
+    }
+
+
+    @FXML
+    public void setPersonalGoal(GameView model) {
+        ImageView pGoal = new ImageView(new Image(getClass().getResourceAsStream("/Images/personalgoalcards/Personal_Goals" + model.getPersonalGoalIndex() + ".png")));
+        pGoal.setFitHeight(283);
+        pGoal.setFitWidth(204);
+        personalGoal.getChildren().add(pGoal);
+    }
+
+    @FXML
+    public void setMyTurn(boolean b , String currentPlayer) {
+        if(!b){
+            dialogText.setText(currentPlayer + " is playing,\nWait for your turn...");
+        }
+        this.myTurn = b;
+    }
+
+
+    @FXML
+    private void tileSelected(int i, int j, ImageView tile) {
+        if(myTurn){
+            if(drawen.size()<nDraws){
+                ArrayList<Integer> coords = new ArrayList<>(2);
+                coords.add(0,i);
+                coords.add(1,j);
+                drawen.add(coords);
+                tile.setVisible(false);
+                ImageView tileCopy = new ImageView(tile.getImage());
+                tileCopy.setFitHeight(90);
+                tileCopy.setFitWidth(90);
+                hand.add(tileCopy,0,3-drawen.size());
+                playerHand.add(tile);
+                if(drawen.size()==nDraws) {
+                    new Thread(()->{
+                        setChanged();
+                        notifyObservers(new Message(Event.PLAYER_DRAW_POSITIVE,drawen));
+                    }).start();
+                }
+            }
+        }else{
+            dialogText.setText("it's not your turn!");
+        }
+    }
+
+    @FXML
+    public void draw1(ActionEvent actionEvent) {
+        button1.setVisible(false);
+        button2.setVisible(false);
+        button3.setVisible(false);
+        nDraws = 1;
+        dialogText.setText("Select 1 tile from the living room");
+    }
+
+    @FXML
+    public void draw2(ActionEvent actionEvent) {
+        button1.setVisible(false);
+        button2.setVisible(false);
+        button3.setVisible(false);
+        nDraws = 2;
+        dialogText.setText("Select 2 tiles from the living room");
+
+    }
+
+    @FXML
+    public void draw3(ActionEvent actionEvent) {
+        button1.setVisible(false);
+        button2.setVisible(false);
+        button3.setVisible(false);
+        nDraws = 3;
+        dialogText.setText("Select 3 tiles from the living room");
+    }
+
+    @FXML
+    public void letDraw() {
+        button1.setVisible(true);
+        button2.setVisible(true);
+        button3.setVisible(true);
+        dialogText.setText("Choose how many tiles \nyou want to draw ");
+
+    }
+
+    @FXML
+    public void badDraw() {
+        dialogText.setStyle("-fx-text-fill: #e30f0f;");
+        dialogText.setText("You can only draw adjacent tiles\non same column or row and they\nmust have at least one free side!");
+        nDraws = 0;
+        drawen.clear();
+        for(ImageView tile : playerHand){
+            tile.setVisible(true);
+            hand.getChildren().clear();
+        }
+        playerHand.clear();
+        retryButton.setVisible(true);
+    }
+
+    public void retry(ActionEvent actionEvent) {
+        dialogText.setStyle("-fx-text-fill: #000000;");
+        retryButton.setVisible(false);
+        letDraw();
+    }
+
+    public void goodDraw() {
+        dialogText.setText("You have drawn " + nDraws + " tiles!\nnow place them in your shelf,\nSelect a column to place your tiles");
+        nDraws=0;
+        drawen.clear();
+        insertInShelf();
+    }
+
+    private void insertInShelf() {
+        column1.setOnMouseClicked(event -> setColumn(1));
+        column2.setOnMouseClicked(event -> setColumn(2));
+        column3.setOnMouseClicked(event -> setColumn(3));
+        column4.setOnMouseClicked(event -> setColumn(4));
+        column5.setOnMouseClicked(event -> setColumn(5));
+
+    }
+
+    private void setColumn(int i) {
+        column1.setOnMouseClicked(null);
+        column2.setOnMouseClicked(null);
+        column3.setOnMouseClicked(null);
+        column4.setOnMouseClicked(null);
+        column5.setOnMouseClicked(null);
+        ArrayList<Integer> order = new ArrayList<>();//todo gestire scelta order
+        order.add(0,0);
+        order.add(1,1);
+        new Thread(()->{
+            setChanged();
+            notifyObservers(new Message(Event.PLAYER_INSERT_POSITIVE,i-1,order));
+        }).start();
+    }
+
+    public void insertPositive(GameView model) {
+        dialogText.setText("Tiles inserted correctly!");
+        updateShelf(model);
+        hand.getChildren().clear();
+        playerHand.clear();
+    }
+
+    private void updateShelf(GameView model) {
+        for(int i=0; i< model.getHeightBookshelf(); i++){
+            for(int j=0; j< model.getLenghtBookshelf(); j++){
+                if(model.getCurrentBookshelf()[i][j]!=null){
+                    ImageView tile = new ImageView(new Image(getClass().getResourceAsStream(pickTileImage(model.getCurrentBookshelf()[i][j].getType(),model.getCurrentBookshelf()[i][j].getId()))));
+                    tile.setFitHeight(58);
+                    tile.setFitWidth(58);
+                    shelfGrid.add(tile,j,i);
+                }
+            }
+        }
+    }
+
+    public String pickTileImage(Type type, int id) {
+        int ID = id+1;
+        switch (type){
+            case CATS:
+                return "/Images/itemtiles/Gatti1." + ID + ".png";
+            case TROPHIES:
+                return "/Images/itemtiles/Trofei1." + ID + ".png";
+            case PLANTS:
+                return "/Images/itemtiles/Piante1." + ID + ".png";
+            case BOOKS:
+                return "/Images/itemtiles/Libri1." + ID + ".png";
+            case FRAMES:
+                return "/Images/itemtiles/Cornici1." + ID + ".png";
+            case GAMES:
+                return "/Images/itemtiles/Giochi1." + ID + ".png";
+        }
+        return null;
+    }
 }
+
+
 

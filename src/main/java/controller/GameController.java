@@ -34,6 +34,7 @@ public class GameController {
 
 
 
+
     private boolean insert(int columnNumber, ArrayList<Integer> insertionOrder ){
         if(game.checkInsert(columnNumber)){
             //test

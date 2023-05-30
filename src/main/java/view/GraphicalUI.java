@@ -94,71 +94,53 @@ public class GraphicalUI extends View implements Runnable {
                 }
                 // todo gestire chat
             }
+        }else if (message.getEvent().equals(Event.LOGIN_TRUE)) {
+            Platform.runLater(() -> {
+                try {
+                    HelloApplication.setScene("game");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                initGameScene(message.getModel());
+                GuiController.startGame();
+            });
         }else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
-            synchronized (this){
-                if (myTurn) {
-                    myTurn = false;
-                    Platform.runLater(() -> {
-                        try {
-                            HelloApplication.setScene("game");
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
-                    Platform.runLater(() -> {
-                        fillBoard(message.getModel());
-                    });
-                    //todo rendere tasti ingiocabili
-                }
-            }
-        }/*else if(flagChat){
-            synchronized (this){
-                while (flagChat || choosing) {
-                    try {
-                        this.wait();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-        }*/
+            Platform.runLater(() -> {
+                GuiController.setMyTurn(false , message.getModel().getCurrentPlayer().getUsername());
+            });
+
+
+
+        }
         if (message.getModel() == null || message.getModel().getCurrentPlayer().getUsername().equals(username)) {
             myTurn = true;
             if (message.getEvent().equals(Event.PLAYER_DRAW_NEGATIVE)) {
-                synchronized (this) {
-                    //todo gestire errore selezione carte dalla board
-                }
+                Platform.runLater(() -> {
+                    GuiController.badDraw();
+                });
             } else if (message.getEvent().equals(Event.PLAYER_DRAW_POSITIVE)) {
-                synchronized (this) {
-                    //todo gestire selezione colonna per inserimento carte
-                }
-                //playerInsert(message.getModel());
+                Platform.runLater(() -> {
+                    GuiController.goodDraw();
+                });
             } else if (message.getEvent().equals(Event.PLAYER_INSERT_NEGATIVE)) {
                 synchronized (this) {
                     //todo gestire errore selezione colonna
                 }
                 //playerInsert(message.getModel());
             } else if (message.getEvent().equals(Event.PLAYER_INSERT_POSITIVE)) {
-                synchronized (this) {
-                    //todo gestire fine turno
-                }
-                setChanged();
-                notifyObservers(new Message(Event.PLAYER_FINISH));
+               Platform.runLater(() -> {
+                   GuiController.insertPositive(message.getModel());
+               });
             } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
                 //todo gestire
                 //start(message.getModel());
+                //////////////////////////////// F A T T O //////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             } else if (message.getEvent().equals(Event.NEW_TURN)) {
                 Platform.runLater(() -> {
-                    try {
-                        HelloApplication.setScene("game");
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    GuiController.setMyTurn(true, null);
+                    GuiController.letDraw();
                 });
-                Platform.runLater(() -> {
-                    fillBoard(message.getModel());
-                });
-                //start(message.getModel());
             } else if (message.getEvent().equals(Event.FINISH_MATCH)) {
                 //todo gestire finestra vincitore fine partita
             } else if (message.getEvent().equals(Event.LOGIN)) {
@@ -180,13 +162,20 @@ public class GraphicalUI extends View implements Runnable {
                     }
                     GuiController.addPlayerNameToLobby(nicknames);
                 });
-            } else if (message.getEvent().equals(Event.LOGIN_TRUE)) {
-                Platform.runLater(() -> {
-                    GuiController.startGame();
-                });
             }
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         }
     }
+
+    private void initGameScene(GameView model) {
+        fillBoard(model);
+        GuiController.showShelves(model,username);
+        GuiController.setChair(model,username);
+        GuiController.setCommongoals(model);
+        GuiController.setPersonalGoal(model);
+    }
+
+
 
     private void fillBoard(GameView o) {
        for(int i=0;i<o.getHeightBoard();i++){
@@ -195,31 +184,14 @@ public class GraphicalUI extends View implements Runnable {
                if (box.getValid()) {
                    ItemTiles el = box.getItemContained();
                    if (el != null) {
-                       GuiController.setGridImage(pickTileImage(el.getType(),el.getId()) , i, j);
+                       GuiController.setGridImage(GuiController.pickTileImage(el.getType(),el.getId()) , i, j);
                    }
                }
            }
        }
     }
 
-    private String pickTileImage(Type type, int id) {
-        int ID = id+1;
-        switch (type){
-            case CATS:
-                return "/Images/itemtiles/Gatti1." + ID + ".png";
-            case TROPHIES:
-                return "/Images/itemtiles/Trofei1." + ID + ".png";
-            case PLANTS:
-                return "/Images/itemtiles/Piante1." + ID + ".png";
-            case BOOKS:
-                return "/Images/itemtiles/Libri1." + ID + ".png";
-            case FRAMES:
-                return "/Images/itemtiles/Cornici1." + ID + ".png";
-            case GAMES:
-                return "/Images/itemtiles/Giochi1." + ID + ".png";
-        }
-        return null;
-    }
+
 
 }
 

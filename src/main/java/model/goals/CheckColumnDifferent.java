@@ -26,6 +26,14 @@ public class CheckColumnDifferent extends CommonGoal{
         return str;
     }
 
+    public String getSource(){
+        if(strategy){
+            return "4.jpg";
+        }else
+            return "5.jpg";
+    }
+
+
 
     @Override
     public ScoringToken validate(Bookshelf bookshelf) {
