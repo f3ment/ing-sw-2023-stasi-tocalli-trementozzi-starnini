@@ -1,9 +1,8 @@
 package model.board;
 
-import model.Bag;
-import model.Box;
-import model.Token;
+import model.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,6 +63,31 @@ class BoardTest {
         int length = board.getMaxLength();
         assertTrue(length == 9);
         System.out.println("Test passato!");
+    }
+
+    @Test
+    void drawMethodTest(){
+        Board board = new Board(4);
+        for(int i=0; i<board.getMaxHeight(); i++){
+            for(int j=0; j< board.getMaxLength(); j++){
+                assertEquals(board.getBox(i,j).getItemContained(), board.draw(i,j));
+            }
+        }
+        board.draw(4,5);
+    }
+
+    @Test
+    void outOfBoundGetBoxTest(){
+        Board board = new Board(4);
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> {
+            board.getBox(board.getMaxHeight(), board.getMaxLength());
+        });
+
+        String expectedMessage = "out of bounds for length";
+        String actualMessage = exception.getMessage();
+
+        //System.out.println("------------------Messaggi------------------\nExpected: " + expectedMessage + "\nActual: " + actualMessage + "\n");
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
 }
