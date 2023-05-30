@@ -143,7 +143,7 @@ public class ScenesController extends Observable<Event> implements Initializable
     public void AskLobbyInfo(ActionEvent actionEvent) throws IOException, InterruptedException {
         new Thread(()->{
             setChanged();
-            notifyObservers(new Message(Event.LOGIN,4,"toky"));
+            notifyObservers(new Message(Event.GAME_INIT));
         }).start();
     }
 
@@ -242,7 +242,7 @@ public class ScenesController extends Observable<Event> implements Initializable
 
     @FXML
     public void showShelves(GameView model, String myName) {
-        ArrayList<String> players = new ArrayList<>(model.getListPlayer().keySet());
+        ArrayList<String> players = new ArrayList<>(model.getMapPlayerScore().keySet());
         int Nplayers = players.size();
         name1.setText(myName);
         players.remove(myName);

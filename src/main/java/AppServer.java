@@ -4,8 +4,7 @@ import distributed.socket.middleware.ClientSkeleton;
 import view.Color;
 
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -32,6 +31,10 @@ public class AppServer {
                     startRMI();
                 } catch (RemoteException e) {
                     System.err.println("Cannot start RMI. This protocol will be disabled.");
+                } catch (SocketException e) {
+                    throw new RuntimeException(e);
+                } catch (UnknownHostException e) {
+                    throw new RuntimeException(e);
                 }
             }
         };
@@ -89,8 +92,11 @@ public class AppServer {
         }
     }
 
-    private static void startRMI() throws RemoteException {
-        System.setProperty("java.security.policy","./src/main/resources/tmp/test.policy");
+    private static void startRMI() throws RemoteException, SocketException, UnknownHostException {
+        DatagramSocket datagramSocket = new DatagramSocket();
+        datagramSocket.connect(InetAddress.getByName("8.8.8.8"),10002);
+        String currentIp = datagramSocket.getLocalAddress().getHostAddress();
+        System.setProperty("java.rmi.server.hostname",currentIp);
         Registry registry = LocateRegistry.createRegistry(1099);
         registry.rebind("server", server);
     }

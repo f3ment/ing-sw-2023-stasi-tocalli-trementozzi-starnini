@@ -4,6 +4,7 @@ import distributed.socket.middleware.ServerStub;
 import view.Color;
 import view.ScenesController;
 
+import java.net.*;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -24,7 +25,11 @@ public class AppClient {
             //Client selected Rmi architecture
             //todo non chiedere porta
             chooseNetworkAddress();
-            startRmiClient();
+            try {
+                startRmiClient();
+            } catch (Exception e) {
+                System.out.println("failed to start rmi connection");
+            }
         }else{
             //client selected Socket architecture
             chooseNetworkAddress();
@@ -56,9 +61,12 @@ public class AppClient {
         return choice;
     }
 
-    private static void startRmiClient() throws RemoteException, NotBoundException {
-        System.setProperty("java.rmi.server.hostname",Ip);
-        Registry registry = LocateRegistry.getRegistry(Ip, 1099);
+    private static void startRmiClient() throws RemoteException, NotBoundException, UnknownHostException, SocketException {
+        DatagramSocket datagramSocket = new DatagramSocket();
+        datagramSocket.connect(InetAddress.getByName("8.8.8.8"),10002);
+        String currentIp = datagramSocket.getLocalAddress().getHostAddress();
+        System.setProperty("java.rmi.server.hostname",currentIp);
+        Registry registry = LocateRegistry.getRegistry(Ip);
         Server server = (Server) registry.lookup("server");
         ClientImpl client = new ClientImpl(server);
         client.run();
