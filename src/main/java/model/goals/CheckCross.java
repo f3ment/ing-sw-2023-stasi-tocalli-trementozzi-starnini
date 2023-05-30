@@ -35,9 +35,7 @@ public class CheckCross extends CommonGoal{
                                 return getStack().pop();  // Esiste una <X> dello stesso tipo
                             }
                         }catch (Exception e){
-                            continue;
-                        }
-
+                            continue;}
                     } else continue;
                 }
             }
