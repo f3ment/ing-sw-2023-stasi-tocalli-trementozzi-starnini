@@ -128,7 +128,17 @@ class CheckRowDifferentTest {
 
 
         }
+    }
 
+    @Test
+    void toStringTest(){
+        CommonGoal commonGoal = new CheckRowDifferent(1,4,4,true);
+        assertNotNull(commonGoal.toString());
+    }
 
+    @Test
+    void getSourceTest(){
+        CommonGoal commonGoal = new CheckRowDifferent(1,4,4,true);
+        assertNotNull(commonGoal.getSource());
     }
 }

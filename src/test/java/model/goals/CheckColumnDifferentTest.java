@@ -184,10 +184,20 @@ class CheckColumnDifferentTest {
 
             assertNull(cm.validate(new Bookshelf()));
 
-            System.out.println("Test passato!");
         }catch (Exception e){
-            System.out.println("Test non passato!");
             System.out.println(e.getMessage());
         }
+    }
+
+    @Test
+    void toStringTest(){
+        CommonGoal commonGoal = new CheckColumnDifferent(1,4,3,false);
+        assertNotNull(commonGoal.toString());
+    }
+
+    @Test
+    void getSourceTest(){
+        CommonGoal commonGoal = new CheckColumnDifferent(1,4, 3,false);
+        assertNotNull(commonGoal.getSource());
     }
 }

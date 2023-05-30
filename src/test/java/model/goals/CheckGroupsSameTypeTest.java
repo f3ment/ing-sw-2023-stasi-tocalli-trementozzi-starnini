@@ -296,4 +296,20 @@ public class CheckGroupsSameTypeTest {
             System.out.println(Arrays.toString(e.getStackTrace()));
         }
     }
+
+    @Test
+    void toStringTest(){
+        CommonGoal commonGoal = new CheckGroupsSameType(1,4,4,4);
+        assertNotNull(commonGoal.toString());
+        commonGoal = new CheckGroupsSameType(1,4,2,6);
+        assertNotNull(commonGoal.toString());
+    }
+
+    @Test
+    void getSourceTest(){
+        CommonGoal commonGoal = new CheckGroupsSameType(1,4,4,4);
+        assertNotNull(commonGoal.getSource());
+        commonGoal = new CheckGroupsSameType(1,4,2,6);
+        assertNotNull(commonGoal.getSource());
+    }
 }
