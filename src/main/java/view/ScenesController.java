@@ -137,6 +137,7 @@ public class ScenesController extends Observable<Event> implements Initializable
 
     ArrayList<Integer> tileOrder = new ArrayList<>();
     private ArrayList<ImageView> playerHand = new ArrayList<>(0);
+    private boolean goodDraw;
 
     /**
      * This method will change the welcome page to the login page
@@ -350,7 +351,7 @@ public class ScenesController extends Observable<Event> implements Initializable
                 drawen.add(coords);
                 tile.setVisible(false);
                 ImageView tileCopy = new ImageView(tile.getImage());
-                tileCopy.setOnMouseClicked(event ->tileOrderSelection(tileCopy));
+                tileCopy.setOnMouseClicked(event ->tileOrderSelection(tileCopy,drawen.size()));
                 tileCopy.setFitHeight(90);
                 tileCopy.setFitWidth(90);
                 hand.add(tileCopy,0,3-drawen.size());
@@ -367,9 +368,18 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
-    private void tileOrderSelection(ImageView tileCopy) {
+    private void tileOrderSelection(ImageView tileCopy, int position) {
         if(myTurn){
-
+            if(goodDraw){
+                tileOrder.add(position-1);
+                hand.getChildren().remove(tileCopy);
+                if(tileOrder.size() == drawen.size()){
+                    goodDraw = false;
+                    insertInShelf();
+                    dialogText.setText("Now click on the column where you \nwant to insert the tiles");
+                    drawen.clear();
+                }
+            }
         }else{
             dialogText.setText("it's not your turn!");
         }
@@ -391,7 +401,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         button3.setVisible(false);
         nDraws = 2;
         dialogText.setText("Select 2 tiles from the living room");
-
     }
 
     @FXML
@@ -409,7 +418,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         button2.setVisible(true);
         button3.setVisible(true);
         dialogText.setText("Choose how many tiles \nyou want to draw ");
-
     }
 
     @FXML
@@ -438,10 +446,10 @@ public class ScenesController extends Observable<Event> implements Initializable
     }
 
     public void goodDraw() {
-        dialogText.setText("You have drawn " + nDraws + " tiles!\nnow place them in your shelf,\nSelect a column by clicking on it");
+        goodDraw = true;
+        dialogText.setText("You have drawn " + nDraws + " tiles!\nnow click them by the order\nyou want to place them in your shelf");
         nDraws=0;
-        drawen.clear();
-        insertInShelf();
+        //drawen.clear();
     }
 
     private void insertInShelf() {
@@ -477,6 +485,7 @@ public class ScenesController extends Observable<Event> implements Initializable
         new Thread(()->{
             setChanged();
             notifyObservers(new Message(Event.PLAYER_INSERT_POSITIVE,i-1,tileOrder));
+            tileOrder.clear();
         }).start();
     }
 
