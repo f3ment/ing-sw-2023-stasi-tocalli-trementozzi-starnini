@@ -229,4 +229,16 @@ class CheckEqualsDiagonalTest {
             System.out.println(e.getMessage() + Arrays.toString(e.getStackTrace()));
         }
     }
+
+    @Test
+    void toStringTest(){
+        CommonGoal commonGoal = new CheckEqualsDiagonal(1,4);
+        assertNotNull(commonGoal.toString());
+    }
+
+    @Test
+    void getSourceTest(){
+        CommonGoal commonGoal = new CheckEqualsDiagonal(1,4);
+        assertNotNull(commonGoal.getSource());
+    }
 }
