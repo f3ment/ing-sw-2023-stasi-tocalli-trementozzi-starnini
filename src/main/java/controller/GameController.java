@@ -127,6 +127,7 @@ public class GameController {
         }else if (message.getEvent().equals(Event.FORCED_END_MATCH)) {
             game.setForcedWinner(message.getUserName());
             game.setForcedCurrentPosition(message.getUserName());
+            //o.update(new Message(Event.FORCED_END_MATCH));
             game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
         }
     }

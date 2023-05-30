@@ -50,14 +50,22 @@ public class ServerStub implements Server {
     //client che manda gli oggetti
     @Override
     public void update(Client client, Message message) throws RemoteException {
-        try{
-            oos.writeObject(message);
-            oos.reset();
-            oos.flush();
-        }catch (IOException e){
-            throw new RemoteException("Cannot send UserName : " + e.getMessage());
+        if(message.getEvent().equals(Event.FINISH_MATCH)){
+            try {
+                Thread.sleep(10000);
+            }catch (InterruptedException e){
+                System.out.println("no sllepùù");
+            }
+            close();
+        }else {
+            try {
+                oos.writeObject(message);
+                oos.reset();
+                oos.flush();
+            } catch (IOException e) {
+                throw new RemoteException("Cannot send UserName : " + e.getMessage());
+            }
         }
-
 
     }
 
@@ -76,6 +84,8 @@ public class ServerStub implements Server {
     public void close() throws RemoteException {
         try {
             socket.close();
+            System.exit(1);
+
         }catch(IOException e){
             throw new RemoteException("Cannot close socket " + e.getMessage());
         }
