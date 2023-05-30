@@ -83,20 +83,4 @@ class PersonalGoalTest {
         }
 
     }
-
-    @Test
-    void showPersonalGoal() {
-        ArrayList<String> user = new ArrayList<>();
-        user.add("Ciao");
-        user.add("Myke");
-        user.add("Toky");
-        Game game;
-        try {
-            game = new Game(user);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        game.getCurrentPosition().getCurrentPGoal().showPersonalGoal();
-    }
 }

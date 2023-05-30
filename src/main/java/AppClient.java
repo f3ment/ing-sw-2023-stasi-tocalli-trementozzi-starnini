@@ -39,6 +39,7 @@ public class AppClient {
                 "To use "+Color.YELLOW+"RMI "+Color.RESET+"press 1\n" +
                 "To use "+Color.YELLOW+"SOCKET " +Color.RESET+ "press 2");
         while(true){
+            System.out.print("> ");
             Scanner read = new Scanner(System.in);
             try{
                 choice = read.nextInt();
@@ -61,6 +62,7 @@ public class AppClient {
         Server server = (Server) registry.lookup("server");
         ClientImpl client = new ClientImpl(server);
         client.run();
+        //client.startPingClient();
     }
 
     private static void startSocketClient() throws RemoteException {
@@ -85,7 +87,9 @@ public class AppClient {
             }
         }.start();
         client.run();
+        //client.startPingClient();
     }
+
 
 
     private static void chooseNetworkAddress(){
@@ -93,6 +97,7 @@ public class AppClient {
         System.out.println("Now enter the" + Color.BLUE_BRIGHT + " Port Number " +Color.RESET + "and the " +Color.BLUE_BRIGHT+ "IP address "+Color.RESET +"of the server you want to join");
         System.out.println("PORT NUMBER (Press Enter to use default): ");
         while(true){
+            System.out.print("> ");
             Scanner PortNumber = new Scanner(System.in);
             String StringPort = PortNumber.nextLine();
             if(!(Objects.equals(StringPort, ""))){
@@ -108,10 +113,21 @@ public class AppClient {
         }
 
         System.out.println("IP ADDRESS (Press Enter to use default): ");
-        Scanner IpAddress = new Scanner(System.in);
-        String ip = IpAddress.nextLine();
-        if(!ip.equals("")){
-            Ip = ip;
+        while (true){
+            System.out.print(">");
+            Scanner IpAddress = new Scanner(System.in);
+            String ip = IpAddress.nextLine();
+
+            if (!isNumeric(ip) && !ip.equals("localhost") && !ip.equals("")) {
+                System.err.println(Color.RED + "Not numeric input! please try again..." + Color.RESET);
+            } else{
+                if (!ip.equals("")) {
+                    Ip = ip;
+                    break;
+                } else {
+                    break;
+                }
+            }
         }
     }
 

@@ -237,6 +237,10 @@ public class Game extends Observable<Event> implements Serializable {
         this.winner= winner;
     }
 
+    public void setForcedWinner(String username){
+        this.winner=username;
+    }
+
     public String getWinner() {
         return winner;
     }
@@ -368,5 +372,12 @@ public class Game extends Observable<Event> implements Serializable {
             }
         }
         return true;
+    }
+    public void setForcedCurrentPosition(String user){
+        for(TablePosition t :tablePositionList){
+            if(t.getPlayer().getUsername().equals(user)){
+                this.currentPosition=t;
+            }
+        }
     }
 }

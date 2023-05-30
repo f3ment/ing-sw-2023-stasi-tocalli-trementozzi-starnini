@@ -7,11 +7,14 @@ import model.Message;
 import model.views.ChatView;
 import model.views.GameView;
 import utils.Event;
+import model.TablePosition;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Lobby {
 
@@ -22,16 +25,38 @@ public class Lobby {
     private String id;
     private int nPlayers;
     private HashMap<String, Client> usersId;
+    private HashMap<String,Timer> timerPlayers;
+    private HashMap<String,Boolean> status;
+    private Timer timerOneLeftPlayer=new Timer();
     private boolean isFull;
+    private boolean on;
+    private int onlineplayers=0;
+    private boolean oneleft;
+    private boolean valid=true;
+
     public Lobby(int nPlayers, String userName, Client client){
         this.nPlayers = nPlayers;
         usersId = new HashMap<String,Client>(nPlayers);
+        status=new HashMap<String,Boolean>(nPlayers);
+        status.put(userName,true);
         usersId.put(userName,client);
+        on=true;
+        oneleft=false;
+        Timer timer=new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                setClientOffLine(userName);
+            }
+        },8000);
+        timerPlayers=new HashMap<String,Timer>(nPlayers);
+        timerPlayers.put(userName,timer);
         if(usersId.size() == nPlayers){
             isFull = true;
         }else{
             isFull = false;
         }
+        onlineplayers++;
 
         chat = new Chat();
         chatController = new ChatController(chat);
@@ -58,12 +83,38 @@ public class Lobby {
 
     //returns true if usersId are full;
 
-    public boolean insertPlayer(Client user,String userId){
-        if(!isFull){
+    public synchronized boolean insertPlayer(Client user,String userId){
+        if(isFull&&!getStatusPlayer(userId)) {
+            on=true;
+            status.put(userId,true);
             usersId.put(userId,user);
+            Timer timer=new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    setClientOffLine(userId);
+                }
+            },8000);
+            timerPlayers.put(userId,timer);
+            onlineplayers++;
+            if(onlineplayers>1){
+                oneleft=false;
+            }
+        }else if(!isFull){
+            status.put(userId,true);
+            usersId.put(userId,user);
+            Timer timer=new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    setClientOffLine(userId);
+                }
+            },8000);
+            timerPlayers.put(userId,timer);
             if(usersId.size() == nPlayers){
                 isFull = true;
             }
+            onlineplayers++;
         }
 
         this.chat.addObserver((o, message) -> {
@@ -76,6 +127,21 @@ public class Lobby {
         return true;
     }
 
+    public void resetTimer(String username){
+        timerPlayers.get(username).cancel();
+        Timer timero=new Timer();
+        timero.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                setClientOffLine(username);
+            }
+        },8000);
+        timerPlayers.put(username,timero);
+    }
+
+    public Boolean getStatusPlayer(String username){
+        return status.get(username);
+    }
     public boolean isFull() {
         return isFull;
     }
@@ -99,7 +165,7 @@ public class Lobby {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        for(Client c:usersId.values()){
+        /*for(Client c:usersId.values()){
             this.model.addObserver((o, message) -> {
                 try {
                     c.update(new Message(new GameView(model), (Event) message.getEvent()));
@@ -107,8 +173,22 @@ public class Lobby {
                     System.err.println("Error while updating the client : " + e.getMessage() + ". Skipping the update...");
                 }
             });
+        }*/
+       for (String s : usersId.keySet()) {
+                this.model.addObserver((o, message) -> {
+                    try {
+                        if(getStatusPlayer(s)) {
+                            System.out.println("inoltra");
+                            System.out.println(message.getEvent().toString());
+                            usersId.get(s).update(new Message(new GameView(model), (Event) message.getEvent()));
+                        }else{
+                            System.out.println("death");
+                        }
+                    } catch (RemoteException e) {
+                        System.err.println("Error while updating the client : " + e.getMessage() + ". Skipping the update...");
 
-
+                    }
+                });
         }
     }
 
@@ -119,4 +199,82 @@ public class Lobby {
     public ChatController getChatController() {
         return this.chatController;
     }
+
+    public synchronized String getUsernameByclient(Client client){
+        return getClientsUsername().get(getClients().indexOf(client));
+    }
+
+    public synchronized void setClientOffLine(String username){
+        status.put(username,false);
+        System.out.println("morto");
+        onlineplayers--;
+        boolean flag=false;
+        for(String s: status.keySet()){
+            if(status.get(s)){
+                flag=true;
+            }
+        }
+        if(!flag){
+            on=false;
+            resetFinalTimer();
+            oneleft=false;
+        }
+        if(onlineplayers==1){
+            oneleft=true;
+            setFinalTimer();
+        }
+    }
+    public boolean isUsernameContained(String username){
+        if(usersId.containsKey(username)){
+            return true;
+        }
+        return false;
+    }
+
+    public Client getClientByUsername(String username){
+        return usersId.get(username);
+    }
+
+    public String getCurrentPlayer(){
+        TablePosition position;
+        try{
+            position=model.getCurrentPosition();
+        }catch(NullPointerException e){
+            return null;
+        }
+        return position.getPlayer().getUsername();
+    }
+    public boolean getStatusLobby(){
+        return on;
+    }
+
+    public synchronized int getOnlineplayers(){
+        return onlineplayers;
+    }
+    public synchronized boolean onlyOne(){
+        return oneleft;
+    }
+    public synchronized void setOne(boolean value){
+        oneleft=value;
+    }
+
+    public void setFinalTimer(){
+        timerOneLeftPlayer=new Timer();
+        timerOneLeftPlayer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                valid=false;
+            }
+        },20000);
+    }
+    public void resetFinalTimer(){
+        timerOneLeftPlayer.cancel();
+        if(onlineplayers!=1){
+            oneleft=false;
+        }
+    }
+    public boolean validateLobby(){
+        return valid;
+    }
+
 }

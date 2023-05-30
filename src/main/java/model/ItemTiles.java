@@ -7,7 +7,6 @@ public class ItemTiles implements Serializable {
     private static final long serialVersionUID = 1L;
 
     final private int id;
-    //todo possono esistere carte diverse
     public ItemTiles(Type item_type, int id){
         this.id = id;
         this.itemType=item_type;

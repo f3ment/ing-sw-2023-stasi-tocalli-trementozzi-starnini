@@ -31,7 +31,14 @@ public class GameView implements Serializable {
         return viewBoard;
     }
 
-    public Map<String, Integer> getListPlayer(){
+    public ArrayListView getPlayerList(){
+        ArrayList<PlayerView> playerViews = new ArrayList<>();
+        model.getListPlayer().forEach(e ->playerViews.add(new PlayerView(e)));
+        ArrayListView returnPlayerList = new ArrayListView(playerViews);
+        return returnPlayerList;
+    }
+
+    public Map<String, Integer> getMapPlayerScore(){
         List<Player> playerList = model.getListPlayer();
         //ArrayListView returnPlayerList = new ArrayListView((ArrayList) playerList);
         Map<String, Integer> returnMap = new HashMap<>();
@@ -153,7 +160,7 @@ public class GameView implements Serializable {
     }
 
     public PlayerView getCurrentPlayer(){
-        PlayerView res = new PlayerView(model.getCurrentPosition().getPlayer().getUsername(),model.getCurrentPosition().getPlayer().getStatus(),model.getCurrentPosition().getPlayer().getScore(),model.getCurrentPosition().getPlayer().getPickedCards(),model.getCurrentPosition().getPlayer().getCurrentPosition(),model.getCurrentPosition().getPlayer().getToken());
+        PlayerView res = new PlayerView(model.getCurrentPosition().getPlayer());
         return res;
     }
 
@@ -187,6 +194,16 @@ public class GameView implements Serializable {
 
     public int getNumPlayer(){
         return this.model.getListBookshelf().size();
+    }
+
+    public Map<String, Map<String, String>> getPersonalGoalByUsername(String username){
+        for(Player player : model.getListPlayer()){
+            if(player.getUsername().equals(username)){
+                return player.getCurrentPosition().getCurrentPGoal().getWindows();
+            }
+        }
+        //todo exception no player with that username
+        throw new NullPointerException("No player with this username found.");
     }
 
 

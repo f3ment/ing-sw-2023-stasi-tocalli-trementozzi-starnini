@@ -1,36 +1,27 @@
 package view;
 
 import model.Message;
+import model.Player;
+import model.Type;
 import model.views.ArrayListView;
 import model.views.BoxView;
 import model.views.GameView;
 import model.ItemTiles;
+import model.views.PlayerView;
 import utils.*;
-import utils.Observable;
 
 import java.io.IOException;
+import java.security.cert.CertificateParsingException;
 import java.util.*;
-
-
-/*
-1 Item = 1 cella
-CAT = GREEN_BACKGROUND_BRIGHT
-BOOKS = WHITE_BACKGROUND_BRIGHT
-GAMES = YELLOW_BACKGROUND_BRIGHT
-FRAMES = BLU_BACKGROUND_BRIGHT
-TROPHY = CYAN _BACKGROUND_BRIGHT
-PLANTS = MAGENTA_BACKGROUND_BRIGHT
- */
 public class TextualUI extends View implements Runnable {
 
     private String username;
-    private boolean myTurn;
+    private boolean myTurn = true;
     private boolean flagChat = false;
 
     private boolean lobbyExist = false;
     private boolean firstChat;
     private boolean choosing;
-
     //TODO vietare input client quando è in attesa;
     @Override
     public void run() {
@@ -66,10 +57,8 @@ public class TextualUI extends View implements Runnable {
         notifyObservers(new Message(Event.GAME_INIT));
 
     }
-
-    //update chiamato direttamente dall'oggetto che si occupa di gestire il client
     public void update(Message message) {
-        if(message.getEvent().equals(Event.GET_CHAT) && message.getUserName().equals(username)){
+        /*if(message.getEvent().equals(Event.GET_CHAT) && message.getUserName().equals(username)){
             if(message.getChat().getActive().contains(username)){
                 this.flagChat = true;
                 System.out.println("----------------------------");
@@ -117,7 +106,6 @@ public class TextualUI extends View implements Runnable {
                 System.out.println("Now you can play.");
             }
         }else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
-            synchronized (this){
                 if (myTurn) {
                     myTurn = false;
 
@@ -133,7 +121,6 @@ public class TextualUI extends View implements Runnable {
                     choice();
                     //showBookshelf(o); -> non si può usare perché mostriamo la currentBookshelf che non corrisponde a quella del giocatore in attesa
                 }
-            }
         }else if(flagChat){
             synchronized (this){
                 while (flagChat || choosing) {
@@ -144,201 +131,188 @@ public class TextualUI extends View implements Runnable {
                     }
                 }
             }
-        }
-        if (message.getModel() == null || message.getModel().getCurrentPlayer().getUsername().equals(username)) {
-            myTurn = true;
-            if (message.getEvent().equals(Event.PLAYER_DRAW_NEGATIVE)) {
-                synchronized (this) {
+        }*/
+        if (message.getEvent().equals(Event.RECONNECTION)) {
+            System.out.println("you are in tha match!");
+        } else {
+            if (message.getEvent().equals(Event.FINISH_MATCH)) {
+                System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
+                System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
+            } else if (message.getModel() == null || message.getModel().getCurrentPlayer().getUsername().equals(username)) {
+                myTurn = true;
+                if (message.getEvent().equals(Event.PLAYER_DRAW_NEGATIVE)) {
                     System.out.println(Color.RED + "The cards you have selected are invalid, please select other cards : " + Color.RESET);
-                    if (choice()) {
-                        while (flagChat || choosing) {
-                            try {
-                                this.wait();
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException();
-                            }
-                        }
-                    }
-                }
-                playerDraw(message.getModel());
-            } else if (message.getEvent().equals(Event.PLAYER_DRAW_POSITIVE)) {
-                synchronized (this) {
+                    playerDraw(message.getModel());
+                } else if (message.getEvent().equals(Event.PLAYER_DRAW_POSITIVE)) {
                     System.out.println(Color.GREEN + "Cards picked correctly!" + Color.RESET);
                     //show picked cards
                     showHand(message.getModel());
-                    if (choice()) {
-                        while (flagChat || choosing) {
-                            try {
-                                this.wait();
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException();
-                            }
-                        }
-                    }
-                }
-                playerInsert(message.getModel());
-            } else if (message.getEvent().equals(Event.PLAYER_INSERT_NEGATIVE)) {
-                synchronized (this) {
+                    playerInsert(message.getModel());
+                } else if (message.getEvent().equals(Event.PLAYER_INSERT_NEGATIVE)) {
                     System.out.println(Color.RED + "The selected column is not valid! Retry. " + Color.RESET);
                     showHand(message.getModel());
-
-                    if (choice()) {
-                        while (flagChat || choosing) {
-                            try {
-                                this.wait();
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException();
-                            }
-                        }
-                    }
-                }
-                playerInsert(message.getModel());
-            } else if (message.getEvent().equals(Event.PLAYER_INSERT_POSITIVE)) {
-                synchronized (this) {
+                    playerInsert(message.getModel());
+                } else if (message.getEvent().equals(Event.PLAYER_INSERT_POSITIVE)) {
                     System.out.println(Color.GREEN + "Cards inserted correctly!" + Color.RESET);
                     showBookshelf(message.getModel());
-                }
-                setChanged();
-                notifyObservers(new Message(Event.PLAYER_FINISH));
-            } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
-                synchronized (this) {
-                    if (choice()) {
-                        while (flagChat || choosing) {
-                            try {
-                                this.wait();
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException();
-                            }
-                        }
-                    }
-                }
-                start(message.getModel());
-            } else if (message.getEvent().equals(Event.NEW_TURN)) {
-                /*TODO: Cosa vuoi vedere? 3 opzioni - Common, Personal, Bookshelf
-                    while (flag){
-                        1) Show CommonGoal
-                        2) Show PersonalGoal
-                        3) Show All Boookshelf
-                        4) Continue (Play Turn / wait next turn)
-                    }
-                set changed
-                        notifyobservers(EVENT.common)
-                */
-                synchronized (this) {
-                    while (flagChat || choosing) {
-                        try {
-                            this.wait();
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException();
-                        }
-                    }
-                }
-                start(message.getModel());
-            } else if (message.getEvent().equals(Event.FINISH_MATCH)) {
-                System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
-                System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
-            } else if (message.getEvent().equals(Event.LOGIN)) {
-                //System.out.println(Color.RED_BRIGHT + "Username NOT valid! Try again..." + Color.RESET)
-                System.out.println("Choose your Nickname: ");
-                do {
-                    System.out.print("> ");
-                    Scanner input = new Scanner(System.in);
-                    this.username = input.nextLine();
-                    if (this.username.equals("")) {
-                        System.out.println(Color.RED + "Username can't be an empty string! Retry!!" + Color.RESET);
-                    }
-                } while (this.username.equals(""));
-
-                System.out.println("Hi" + Color.GREEN_BRIGHT + " " + username.toUpperCase() + "! " + Color.RESET + "Choose the number of players: ");
-
-                int nPlayers = 0;
-                do {
-                    nPlayers = readingInt();
-                    if (nPlayers < 2 || nPlayers > 4) {
-                        System.out.print(Color.RED);
-                        System.out.println(nPlayers + " is not valid, please try again!!");
-                        System.out.println("Choose between those values: " + Color.RED_BOLD + "2, 3, 4.");
-                        System.out.print(Color.RESET);
+                    setChanged();
+                    notifyObservers(new Message(Event.PLAYER_FINISH));
+                    //todo adjust events with start method
+                } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
+                    start(message.getModel());
+                } else if (message.getEvent().equals(Event.NEW_TURN)) {
+                    start(message.getModel());
+                } else if (message.getEvent().equals(Event.FINISH_MATCH)) {
+                    start(message.getModel());
+                } /*else if (message.getEvent().equals(Event.FINISH_MATCH)) {
+                    System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
+                    System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
+                //setChanged();
+                //notifyObservers(new Message(Event.DELETE_MATCH));
+            } */ else if (message.getEvent().equals(Event.LOGIN)) {
+                    //System.out.println(Color.RED_BRIGHT + "Username NOT valid! Try again..." + Color.RESET)
+                    System.out.println("Choose your Nickname: ");
+                    do {
                         System.out.print("> ");
-                    }
-                } while (nPlayers < 2 || nPlayers > 4);
+                        Scanner input = new Scanner(System.in);
+                        this.username = input.nextLine();
+                        if (this.username.equals("")) {
+                            System.out.println(Color.RED + "Username can't be an empty string! Retry!!" + Color.RESET);
+                        }
+                    } while (this.username.equals(""));
 
-                setChanged();
-                notifyObservers(new Message(Event.LOGIN, nPlayers, username));
-            } else if (message.getEvent().equals(Event.WAIT_START_OF_MATCH)) {
-                lobbyExist = true;
+                    System.out.println("Hi" + Color.GREEN_BRIGHT + " " + username.toUpperCase() + "! " + Color.RESET + "Choose the number of players: ");
 
-                System.out.println(Color.YELLOW_BOLD + "Waiting for other player to join the lobby..." + Color.RESET);
-                System.out.println(Color.BLUE_UNDERLINED + "If you want to chat with the other players connected to your lobby : " + Color.RESET);
-                System.out.println(Color.BLUE_UNDERLINED + " - write '/chat' in order to access to the chat section and to read and write messages;" + Color.RESET);
-                System.out.println(Color.BLUE_UNDERLINED + " - write '/exit' in order to get back to the game. " + Color.RESET);
+                    int nPlayers = 0;
+                    do {
+                        nPlayers = readingInt();
+                        if (nPlayers < 2 || nPlayers > 4) {
+                            System.out.print(Color.RED);
+                            System.out.println(nPlayers + " is not valid, please try again!!");
+                            System.out.println("Choose between those values: " + Color.RED_BOLD + "2, 3, 4.");
+                            System.out.print(Color.RESET);
+                            System.out.print("> ");
+                        }
+                    } while (nPlayers < 2 || nPlayers > 4);
 
-                new Thread(() -> {
+                    setChanged();
+                    notifyObservers(new Message(Event.LOGIN, nPlayers, username));
+                } else if (message.getEvent().equals(Event.WAIT_START_OF_MATCH)) {
+                    lobbyExist = true;
+
+                    System.out.println(Color.YELLOW_BOLD + "Waiting for other player to join the lobby..." + Color.RESET);
+                    //System.out.println(Color.BLUE_UNDERLINED + "If you want to chat with the other players connected to your lobby : " + Color.RESET);
+                    //System.out.println(Color.BLUE_UNDERLINED + " - write '/chat' in order to access to the chat section and to read and write messages;" + Color.RESET);
+                    //System.out.println(Color.BLUE_UNDERLINED + " - write '/exit' in order to get back to the game. " + Color.RESET);
+
+                /*new Thread(() -> {
                     while (true) {
                         readingForChat();
                     }
-                }).start();
+                }).start();*/
+                } else if (message.getEvent().equals(Event.LOGIN_TRUE)) {
+                    lobbyExist = true;
 
-                synchronized (this) {
-                    if (choice()) {
-                        while (flagChat || choosing) {
-                            try {
-                                this.wait();
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException();
-                            }
-                        }
+                    System.out.print(Color.GREEN_BOLD);
+                    System.out.println("Game is starting...");
+                    System.out.print(Color.RESET);
+                    try {
+                        Thread.sleep(1500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
                     }
+                    setChanged();
+                    notifyObservers(new Message(Event.NEW_TURN));
                 }
-            } else if (message.getEvent().equals(Event.LOGIN_TRUE)) {
-                lobbyExist = true;
-                synchronized (this) {
-                    while (flagChat || choosing) {
-                        try {
-                            this.wait();
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                        System.out.print(Color.GREEN_BOLD);
-                        System.out.println("Game is starting...");
-                        System.out.print(Color.RESET);
-                        try {
-                            Thread.sleep(1500);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
+            }else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
+                if (myTurn) {
+                    myTurn = false;
+
+                    System.out.print(Color.YELLOW_BOLD_BRIGHT);
+                    System.out.println(message.getModel().getCurrentPlayer().getUsername() + " is playing, wait for your turn!");
+                    System.out.print(Color.RESET);
+                    showFirstCommonGoal(message.getModel());
+                    showSecondCommonGoal(message.getModel());
+                    showAllScore(message.getModel());
+                    showAllBookshelves(message.getModel());
+
+                    showBoard(message.getModel());
+                    //choice();
+                    //showBookshelf(o); -> non si può usare perché mostriamo la currentBookshelf che non corrisponde a quella del giocatore in attesa
                 }
-                setChanged();
-                notifyObservers(new Message(Event.NEW_TURN));
             }
         }
     }
-
     private void start(GameView o) {
-
-
         if (o.getFirstPlayer() == o.getCurrentPlayer().getUsername() && o.getEndGame()) {
             setChanged();
             notifyObservers(new Message(Event.FINISH_MATCH));
+        } else {
+            System.out.print(Color.GREEN_BOLD_BRIGHT);
+            System.out.println(o.getCurrentPlayer().getUsername() + ", it's your turn!");
+            System.out.print(Color.RESET);
+            menu(o);
+            showBoard(o);
+            playerDraw(o);
         }
-
-        System.out.print(Color.GREEN_BOLD_BRIGHT);
-        System.out.println(o.getCurrentPlayer().getUsername() + ", it's your turn!");
-        System.out.print(Color.RESET);
-        showFirstCommonGoal(o);
-        showSecondCommonGoal(o);
-        showAllScore(o);
-        showAllBookshelf(o);
-        showBoard(o);
-        playerDraw(o);
     }
 
-    void showBoard(GameView o) {
-        System.out.print(Color.BLUE_UNDERLINED);
-        //4System.out.print(Color.GREEN);
-        System.out.println("This is the actual Living Room :");
+    /**
+     * This method shows a menu to the player before and allows him to choose what he wants to see.
+     * The possible choices are:
+     * 1) Show Common Goals; (show the common goals of the game)
+     * 2) Show Personal Goal; (show the personal goal of the player who is playing)
+     * 3) Show all Bookshelves;
+     * 4) Continue to play;
+     * @param o is the GameView object that contains all the information about the game
+     */
+    private void menu(GameView o) {
+        int choice;
+        System.out.print(Color.YELLOW_BOLD_BRIGHT);
+        System.out.println("This is the menu, select your choice : ");
         System.out.print(Color.RESET);
+        System.out.print(Color.YELLOW);
+        System.out.println("    1) Show Common Goals ; ");
+        System.out.println("    2) Show Personal Goal ; ");
+        System.out.println("    3) Show all Bookshelves ; ");
+        System.out.println("    4) Continue to play ; ");
+        System.out.print(Color.RESET);
+
+        choice = readingInt();
+        while( choice <1 || choice >4){
+            System.err.println("Error! The selected choice is not in the menu! Retry : ");
+            choice = readingInt();
+        }
+        switch (choice) {
+            case 1:
+                showFirstCommonGoal(o);
+                showSecondCommonGoal(o);
+                break;
+            case 2:
+                System.out.println("This is your personal goal : ");
+                showPersonalGoal(o);
+                break;
+            case 3:
+                showAllBookshelves(o);
+                break;
+            case 4:
+                System.out.println("Ready to play...");
+                break;
+        }
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * This method shows the board of the game, printing the matrix of the living room with its Item Tiles
+     * @param o is the GameView object that contains the model of the game
+     */
+    void showBoard(GameView o) {
+        System.out.println("------- BOARD -------");
         int a;
         System.out.print(" ");
         for (int j = 0; j < o.getHeightBoard(); j++) {
@@ -378,31 +352,65 @@ public class TextualUI extends View implements Runnable {
         //System.out.print(Color.BLACK_BRIGHT + "  \\");
         //for (int i = 0; i <= 2 * o.getLenghtBoard(); i++) System.out.print(" -");
         System.out.print("\n" + Color.RESET);
+        System.out.println("");
     }
 
+    /**
+     * Method that shows all scores of all players with their username in vertical
+     * @param o GameView object that contains all the information about the game
+     */
     void showAllScore(GameView o){
         System.out.println("------- SCORE -------");
-        HashMap<String, Integer> playerScore = (HashMap<String, Integer>) o.getListPlayer();
+        HashMap<String, Integer> playerScore = (HashMap<String, Integer>) o.getMapPlayerScore();
         for(Map.Entry<String, Integer> set : playerScore.entrySet()){
-            if(o.getCurrentPlayer().getUsername().equals(set.getKey())){
+            String nick = set.getKey();
+
+            if(o.getCurrentPlayer().getUsername().equals(nick)){
                 System.out.print(Color.GREEN);
             }else{
                 System.out.print(Color.BLUE);
             }
-            System.out.println("<" + set.getKey() + "> " + set.getValue());
+
+            if(nick.equals(username)){
+                nick = "You";
+            }
+
+            System.out.println("<" + nick + "> " + set.getValue());
             System.out.print(Color.RESET);
         }
+        System.out.println("");
     }
-    void showAllBookshelf(GameView o) {
+
+    /**
+     *  Method that shows all bookshelves of all players with their username in horizontal
+     * @param o GameView object that contains all the information about the game
+     */
+    void showAllBookshelves(GameView o) {
         System.out.println("----- BOOKSHELF -----");
-        ArrayListView bookShelfList = o.getListBookshelf();
+        ArrayListView PlayerList = o.getPlayerList();
 
         for(int n=0; n<o.getNumPlayer(); n++){
-          // TODO: STAMPARE GLI USERNAME
+            PlayerView player = (PlayerView) PlayerList.get(n);
           // Verificarer se lo username è più lungo della board
           // operare in modo differente a seconda del controllo precedente
           //lo spezzone di codice che c'è sotto è per quando gli username sono più 'corti' della bookshelf
+            System.out.print(" ");
+            String nick = player.getUsername();
+            if(nick.equals(username)){
+                nick = "You";
+            }
+            for (int j = 0; j < o.getLenghtBookshelf()*3; j++) {
+                if(j<nick.length()){
+                    System.out.print(Color.WHITE_BRIGHT);
+                    System.out.print(nick.charAt(j));
+                    System.out.print(Color.RESET);
+                }else {
+                    System.out.print(" ");
+                }
+            }
+            System.out.print(" ");
         }
+        System.out.print("\n");
         for(int n=0; n<o.getNumPlayer(); n++) {
             //System.out.print(Color.WHITE_BRIGHT + "| " + Color.RESET);
             for (int j = 0; j < o.getLenghtBookshelf(); j++) {
@@ -416,7 +424,7 @@ public class TextualUI extends View implements Runnable {
             for (int n = 0; n < o.getNumPlayer(); n++) {
                 //System.out.print(Color.WHITE_BRIGHT + "| " + Color.RESET);
                 for (int j = 0; j < o.getLenghtBookshelf(); j++) {
-                    ItemTiles[][] curr = (ItemTiles[][]) bookShelfList.get(n);
+                    ItemTiles[][] curr = (ItemTiles[][])((PlayerView) PlayerList.get(n)).getBookshelf();
                     ItemTiles elem;
                     try {
                         elem = curr[i][j];
@@ -431,14 +439,13 @@ public class TextualUI extends View implements Runnable {
             //System.out.print(Color.WHITE_BRIGHT + "|" + Color.RESET);
             System.out.print("\n");
         }
+        System.out.println("");
     }
 
-    void showCommonGoals(GameView o) {
-        ArrayListView fcg = o.getFirstCommonGoal();
-        ArrayListView scg = o.getSecondCommonGoal();
-
-
-    }
+    /**
+     * Method that shows the bookshelf of the current player
+     * @param o GameView object that contains all the information about the game
+     */
     void showBookshelf(GameView o) {
         System.out.println("This is your bookshelf : ");
         for (int j = 0; j < o.getLenghtBookshelf(); j++) {
@@ -501,16 +508,7 @@ public class TextualUI extends View implements Runnable {
         } while (!flag);
 
         System.out.println(Color.WHITE_BRIGHT + "The choosen order is : " + Color.RESET);
-        /*TODO: aggiustare la riga successiva perché non stampa correttamente
-        prende il riferimento all'ItemTile
-        esempio di riferimento preso:
-                                        model.ItemTiles@1612d6fb
-
-                                        quindi stampa 'm' sempre
-
-         */
-        order.forEach(e -> System.out.println(e + 1 + " " + o.getHand(e).getType().toString().charAt(0) + " "));
-
+        order.forEach(e -> System.out.println(e + 1 + " " + o.getHand(e).getType().getColor() + "▓▓" +Color.RESET));
         showBookshelf(o);
 
         System.out.println("Now insert in which column would you like to insert your cards. ");
@@ -592,19 +590,18 @@ public class TextualUI extends View implements Runnable {
 
     void showHand(GameView o) {
         for (int i = 0; i < o.getPickedCards().size(); i++) {
-            System.out.print(i + 1 + " ");
+            System.out.print(i + 1 + "  ");
         }
         System.out.print("\n");
 
         for (int i = 0; i < o.getPickedCards().size(); i++) {
-            System.out.print(o.getHand(i).getType().toString().charAt(0) + " ");
+            System.out.print(o.getHand(i).getType().getColor()+  "▓▓ " + Color.RESET);
         }
         System.out.print("\n");
     }
 
     public int readingInt() {
         int userInput;
-
         Scanner input = new Scanner(System.in);
         try {
             while (System.in.available() > 0) {
@@ -614,6 +611,7 @@ public class TextualUI extends View implements Runnable {
             System.out.println("error reading");
         }
         while (true) {
+            System.out.print("> ");
             input = new Scanner(System.in);
             try {
                 userInput = input.nextInt();
@@ -634,7 +632,7 @@ public class TextualUI extends View implements Runnable {
         System.out.println(Color.YELLOW_BOLD_BRIGHT + "1st Common goal: " + Color.YELLOW + o.getFirstCommonGoalDescription() + Color.RESET);
     }
     public void showSecondCommonGoal(GameView o){
-        System.out.println(Color.YELLOW_BOLD_BRIGHT + "2nd common goal: " + Color.YELLOW + o.getSecondCommonGoalDescription() + Color.RESET);
+        System.out.println(Color.YELLOW_BOLD_BRIGHT + "2nd Common goal: " + Color.YELLOW + o.getSecondCommonGoalDescription() + Color.RESET);
     }
 
     public synchronized void readingForChat(){
@@ -658,6 +656,7 @@ public class TextualUI extends View implements Runnable {
                 if(in.contains("/to")){
                     in = in.substring(3);
                     to = in.split(" ", 2)[0];
+                    //todo parte l'eccezione se la stringa è vuota
                     in = in.split(" ", 2)[1];
                 }
                 setChanged();
@@ -694,5 +693,46 @@ public class TextualUI extends View implements Runnable {
             return true;
         }
         return flagChat;
+    }
+
+    public void showPersonalGoal(GameView o){
+        Map<String, String> elem;
+        boolean found;
+        for (int i = 0; i < o.getHeightBookshelf(); i++){
+            System.out.print(Color.WHITE_BRIGHT + "|" + Color.RESET);
+            for(int j=0; j < o.getLenghtBookshelf(); j++){
+                found = false;
+                for (String e : o.getPersonalGoalByUsername(username).keySet()) {
+                    elem = (Map<String, String>) o.getPersonalGoalByUsername(username).get(e);
+                    if(Integer.valueOf(elem.get("X")).equals(i) && Integer.valueOf(elem.get("Y")).equals(j)){
+                        found = true;
+                        switch (e) {
+                            case "CATS" :
+                                System.out.print(" " + Type.CATS.getColor() + "▓▓" + Color.RESET);
+                                break;
+                            case "GAMES" :
+                                System.out.print(" " + Type.GAMES.getColor() + "▓▓" + Color.RESET);
+                                break;
+                            case "PLANTS" :
+                                System.out.print(" " + Type.PLANTS.getColor() + "▓▓" + Color.RESET);
+                                break;
+                            case "BOOKS" :
+                                System.out.print(" " + Type.BOOKS.getColor() + "▓▓" + Color.RESET);
+                                break;
+                            case "FRAMES" :
+                                System.out.print(" " + Type.FRAMES.getColor() + "▓▓" + Color.RESET);
+                                break;
+                            case "TROPHIES" :
+                                System.out.print(" " + Type.TROPHIES.getColor() + "▓▓" + Color.RESET);
+                                break;
+                        }
+                    }
+                }
+                if(!found){
+                    System.out.print(" " + Color.BLACK + "▓▓" + Color.RESET);
+                }
+            }
+            System.out.println(Color.WHITE_BRIGHT + " |" +Color.RESET);
+        }
     }
 }
