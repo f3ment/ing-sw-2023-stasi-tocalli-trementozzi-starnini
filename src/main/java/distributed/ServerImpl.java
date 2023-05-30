@@ -243,6 +243,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     }
 
 
+
     public void Lobbydeletion(Lobby l,ArrayList<Integer> index){
         for (String a : l.getClientsUsername()) {
             //codice per rimuovere parola dal file properties
