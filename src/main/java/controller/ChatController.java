@@ -22,7 +22,7 @@ public class ChatController {
             chat.setChangedAndNotifyObservers(new Message(msg.getEvent(), msg.getUserName()));
         } else if (msg.getEvent().equals(Event.SEND_MESSAGE)) {
             chat.addActive(msg.getUserName());
-            chat.sendMessage(msg.getUserName(), msg.getMessage(), msg.getReceiverUsername());
+            chat.sendMessage(msg.getChatMessage());
             chat.setChangedAndNotifyObservers(new Message(msg.getEvent()));
         }else if (msg.getEvent().equals(Event.EXIT_CHAT)){
             chat.removeActive(msg.getUserName());

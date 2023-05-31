@@ -12,7 +12,10 @@ import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import model.Chat;
+import model.ChatMessage;
 import model.Type;
+import model.views.ChatView;
 import model.views.GameView;
 import utils.Event;
 import javafx.fxml.FXML;
@@ -28,7 +31,14 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ScenesController extends Observable<Event> implements Initializable {
-
+    @FXML
+    private TextField chatInputText;
+    @FXML
+    private ListView chatArea;
+    @FXML
+    private Pane chatView;
+    @FXML
+    private ImageView gameView;
     @FXML
     private Label scoreLabel1;
     @FXML
@@ -114,14 +124,17 @@ public class ScenesController extends Observable<Event> implements Initializable
     private Pane column4;
     @FXML
     private Pane column5;
-
-
+    @FXML
+    private Tab showGame;
+    @FXML
+    private Tab chatButton;
     private String username;
     private Object matchSize;
     private String playerName3;
     private String playerName4;
     private String playerName2;
     private boolean myTurn;
+    ObservableList<ChatMessage> chatMessages = FXCollections.observableArrayList();
 
     private int nDraws = 0;
 
@@ -225,7 +238,8 @@ public class ScenesController extends Observable<Event> implements Initializable
     }
 
 
-    public void startGame() {
+    public void startGame(String username) {
+        this.username = username;
         new Thread(()->{
             setChanged();
             notifyObservers(new Message(Event.NEW_TURN));
@@ -532,6 +546,37 @@ public class ScenesController extends Observable<Event> implements Initializable
         return null;
     }
 
+    public void clickChatButton(){
+
+        chatInputText.setOnAction(event -> {
+            if(!chatInputText.getText().equals("")){
+                String message = chatInputText.getText();
+                new Thread(()->{
+                    setChanged();
+                    notifyObservers(new Message(Event.SEND_MESSAGE, new ChatMessage(message, username, null)));
+                }).start();
+                chatInputText.clear();
+            }
+        });
+
+        chatArea.setItems(chatMessages);
+
+        chatArea.setCellFactory(param -> new ListCell<ChatMessage>(){
+            @Override
+            protected void updateItem(ChatMessage item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText((item.getSender().equals(username)? "You" : item.getSender()) + (item.getReceiver()!=null && item.getReceiver().equals(username)? " to You" : "") + " > " + item.getMessage());
+                }
+            }
+        });
+    }
+
+    public void updateChat(ChatMessage message){
+        chatMessages.add(message);
+    }
 
 }
 

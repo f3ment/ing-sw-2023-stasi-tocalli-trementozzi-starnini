@@ -1,10 +1,12 @@
 package model.views;
 
 import model.Chat;
+import model.ChatMessage;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 public class ChatView implements Serializable {
     private Chat model;
@@ -14,15 +16,18 @@ public class ChatView implements Serializable {
         this.model = chat;
     }
 
-    public ArrayList<LinkedHashMap<String, LinkedHashMap<String, String>>> getLastTen() throws NullPointerException {
+    public List<ChatMessage> getLastTen() throws NullPointerException {
         return this.model.getLastTen();
     }
 
-    public LinkedHashMap<String, LinkedHashMap<String, String>> getLast() throws NullPointerException{
+    public ChatMessage getLast() throws NullPointerException{
         return this.model.getLast();
     }
 
     public ArrayList<String> getActive() {
         return this.model.getActive();
+    }
+    public ArrayList<ChatMessage> getChat() {
+        return this.model.getChat();
     }
 }

@@ -1,5 +1,6 @@
 package view;
 
+import model.ChatMessage;
 import model.Message;
 import model.Type;
 import model.views.ArrayListView;
@@ -64,36 +65,18 @@ public class TextualUI extends View implements Runnable {
                 System.out.println(" -> Use '/toUSERNAME' to send a private message to the 'USERNAME' specified;");
                 System.out.println("This is the chat : ");
                 try{
-                    message.getChat().getLastTen().forEach(e -> e.forEach(
-                        (key, value) -> {
-                            if (key.equals(username)) {
-                                value.forEach((mesg, to) ->{
-                                        System.out.println("You" +( to!=null? " to " + to + " > " + mesg : ">" + mesg) );
-                                });
-                            } else {
-                                value.forEach((mesg, to) ->{
-                                    System.out.println(key +( to!=null? (to.equals(username)? " to You > " + mesg :  " > " + mesg ) : ">" + mesg) );
-                                });
-                            }
-                        }
-                    ));
+                    message.getChat().getLastTen().forEach(e ->
+                            System.out.println((e.getSender().equals(username)? "You" : e.getSender()) + (e.getReceiver()!=null && e.getReceiver().equals(username)? " to You" : "") + " > " + e.getMessage()));
                 }catch (Exception e){
                     System.err.println(e.getMessage());
                 }
             }
         }else if (message.getEvent().equals(Event.SEND_MESSAGE)) {
             if (message.getChat().getActive().contains(username)) {
-                message.getChat().getLast().forEach((key, value) -> {
-                    if (!key.equals(username)) {
-                        value.forEach((mesg, to) -> {
-                            if (to != null && to.equals(username)) {
-                                System.out.println(key + " to you > " + mesg);
-                            } else if (to == null) {
-                                System.out.println(key + " > " + mesg);
-                            }
-                        });
-                    }
-                });
+                ChatMessage last = message.getChat().getLast();
+                if (!last.getSender().equals(username)) {
+                    System.out.println((last.getSender().equals(username)? "You" : last.getSender()) + (last.getReceiver()!=null && last.getReceiver().equals(username)? " to You" : "") + " > " + last.getMessage());
+                }
             }
         }else if(message.getEvent().equals(Event.EXIT_CHAT) && message.getUserName().equals(username)){
             if (!message.getChat().getActive().contains(username)){
@@ -712,7 +695,7 @@ public class TextualUI extends View implements Runnable {
                     in = in.split(" ", 2)[1];
                 }
                 setChanged();
-                notifyObservers(new Message(Event.SEND_MESSAGE, username, in, to));
+                notifyObservers(new Message(Event.SEND_MESSAGE, new ChatMessage( username, in, to)));
            }
         }
     }

@@ -11,19 +11,12 @@ public class Chat extends Observable<Event> implements Serializable {
     private static final long serialVersionUID = 1L;
     //sender -> to -> message
     //if to is null, then the message is sent to evryone
-    private LinkedHashMap<Integer, LinkedHashMap<String,LinkedHashMap<String, String>>> chat;
-
-    private int id;
-
-    private LinkedHashMap<String, LinkedHashMap<String, String>> last;
-    private ArrayList<Integer> lastTen;
+    private ArrayList<ChatMessage> chat;
     private ArrayList<String> online;
 
     public Chat() {
-        this.chat = new LinkedHashMap<Integer, LinkedHashMap<String,LinkedHashMap<String, String>>>();
-        lastTen = new ArrayList<Integer>();
+        this.chat = new ArrayList<ChatMessage>();
         online = new ArrayList<String>();
-        id = 0;
     }
 
     public void setChangedAndNotifyObservers(Message message) {
@@ -31,37 +24,24 @@ public class Chat extends Observable<Event> implements Serializable {
         notifyObservers(message);
     }
 
-    public synchronized void sendMessage(String userName, String message, String receiver) {
-        LinkedHashMap<String, LinkedHashMap<String, String>> msg = new LinkedHashMap<>();
-        LinkedHashMap<String, String> to = new LinkedHashMap<>();
-        to.put(message, receiver);
-        msg.put(userName, to);
-        this.last = msg;
-        this.chat.put(id,msg);
-        if(this.lastTen.size() == 10){
-            lastTen.remove(0);
-        }
-        this.lastTen.add(id);
-        id++;
+    public synchronized void sendMessage(ChatMessage message) {
+        this.chat.add(new ChatMessage(message.getMessage(), message.getSender(), message.getReceiver()));
+        this.online.add(message.getSender());
     }
 
-    public ArrayList<LinkedHashMap<String, LinkedHashMap<String, String>>> getLastTen() throws NullPointerException {
-        ArrayList<LinkedHashMap<String, LinkedHashMap<String,String>>> list = new ArrayList<>(this.lastTen.size());
-        if(getLast().size() == 0){
+    public List<ChatMessage> getLastTen() throws NullPointerException {
+        if(this.chat.size() == 0){
             throw new NullPointerException("No message has been sent");
         }else{
-            for(Integer i : this.lastTen){
-                list.add(this.chat.get(i));
-            }
-            return list;
+            return this.chat.subList(Math.max(this.chat.size() - 10-1, 0), this.chat.size()-1);
         }
     }
 
-    public LinkedHashMap<String, LinkedHashMap<String, String>> getLast() throws NullPointerException{
-        if(this.last == null){
+    public ChatMessage getLast() throws NullPointerException{
+        if(this.chat.size() == 0){
             throw new NullPointerException("No message has been sent");
         }else{
-            return this.last;
+            return this.chat.get(this.chat.size()-1);
         }
     }
     public ArrayList<String> getActive() {
@@ -74,5 +54,9 @@ public class Chat extends Observable<Event> implements Serializable {
     }
     public void removeActive(String userName){
         this.online.remove(userName);
+    }
+
+    public ArrayList<ChatMessage> getChat() {
+        return chat;
     }
 }

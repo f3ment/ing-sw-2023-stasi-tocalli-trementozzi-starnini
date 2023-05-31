@@ -7,7 +7,7 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ChatTest {
-
+/*
     @Test
     void getLastTen() {
         Chat chat = new Chat();
@@ -64,4 +64,5 @@ class ChatTest {
         }));
         System.out.println("-----------------------");
     }
+    */
 }

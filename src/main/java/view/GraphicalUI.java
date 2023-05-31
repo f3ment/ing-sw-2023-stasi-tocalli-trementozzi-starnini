@@ -51,49 +51,10 @@ public class GraphicalUI extends View implements Runnable {
      * @param message the message received from the server
      */
     public void update(Message message) {
-        if(message.getEvent().equals(Event.GET_CHAT) && message.getUserName().equals(username)){
-            if(message.getChat().getActive().contains(username)){
-                this.flagChat = true;
-                // todo mostrare chat
-                try{
-                    message.getChat().getLastTen().forEach(e -> e.forEach(
-                            (key, value) -> {
-                                if (key.equals(username)) {
-                                    value.forEach((mesg, to) ->{
-                                        //todo mostrare messaggi
-                                    });
-                                } else {
-                                    value.forEach((mesg, to) ->{
-                                        //todo altri messaggi
-                                    });
-                                }
-                            }
-                    ));
-                }catch (Exception e){
-                    System.err.println(e.getMessage());
-                }
-            }
-        }else if (message.getEvent().equals(Event.SEND_MESSAGE)) {
-            if (message.getChat().getActive().contains(username)) {
-                message.getChat().getLast().forEach((key, value) -> {
-                    if (!key.equals(username)) {
-                        value.forEach((mesg, to) -> {
-                            if (to != null && to.equals(username)) {
-                                //todo altri messaggi
-                            } else if (to == null) {
-                                //todo altri messaggi
-                            }
-                        });
-                    }
+        if (message.getEvent().equals(Event.SEND_MESSAGE)) {
+                Platform.runLater(() -> {
+                    GuiController.updateChat(message.getChat().getLast());
                 });
-            }
-        }else if(message.getEvent().equals(Event.EXIT_CHAT) && message.getUserName().equals(username)){
-            if (!message.getChat().getActive().contains(username)){
-                synchronized (this){
-                    this.notifyAll();
-                }
-                // todo gestire chat
-            }
         }else if (message.getEvent().equals(Event.LOGIN_TRUE)) {
             Platform.runLater(() -> {
                 try {
@@ -102,7 +63,7 @@ public class GraphicalUI extends View implements Runnable {
                     throw new RuntimeException(e);
                 }
                 initGameScene(message.getModel());
-                GuiController.startGame();
+                GuiController.startGame(username);
             });
         }else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
             Platform.runLater(() -> {
