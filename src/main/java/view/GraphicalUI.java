@@ -68,6 +68,8 @@ public class GraphicalUI extends View implements Runnable {
         }else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
             Platform.runLater(() -> {
                 GuiController.setMyTurn(false , message.getModel().getCurrentPlayer().getUsername());
+                GuiController.updateScores(message.getModel(),username);
+                GuiController.updateStack(message.getModel());
             });
         }
         if (message.getModel() == null || message.getModel().getCurrentPlayer().getUsername().equals(username)) {
@@ -89,12 +91,9 @@ public class GraphicalUI extends View implements Runnable {
                    GuiController.insertPositive(message.getModel());
                });
             } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
-                //todo gestire
+                startNewTurn(message.getModel());
             } else if (message.getEvent().equals(Event.NEW_TURN)) {
-                Platform.runLater(() -> {
-                    GuiController.setMyTurn(true, null);
-                    GuiController.letDraw();
-                });
+                startNewTurn(message.getModel());
             } else if (message.getEvent().equals(Event.FINISH_MATCH)) {
                 //todo gestire finestra vincitore fine partita
             } else if (message.getEvent().equals(Event.LOGIN)) {
@@ -121,12 +120,21 @@ public class GraphicalUI extends View implements Runnable {
         }
     }
 
+    private void startNewTurn(GameView model) {
+        Platform.runLater(() -> {
+            GuiController.setMyTurn(true, null);
+            GuiController.letDraw();
+            GuiController.updateStack(model);
+            GuiController.updateScores(model,username);
+        });
+    }
+
     private void initGameScene(GameView model) {
         fillBoard(model);
         GuiController.showShelves(model,username);
         GuiController.setChair(model,username);
         GuiController.setCommongoals(model);
-        GuiController.setPersonalGoal(model);
+        GuiController.setPersonalGoal(model,username);
     }
 
 

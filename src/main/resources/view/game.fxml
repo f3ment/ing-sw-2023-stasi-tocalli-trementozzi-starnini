@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -24,12 +25,12 @@
          <content>
             <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="1000.0" minWidth="1700.0" prefHeight="1000.0" prefWidth="1750.0">
                <children>
-                  <ImageView fx:id="gameView" fitHeight="1000.0" fitWidth="1750.0" mouseTransparent="true">
+                  <ImageView fx:id="wallpaper" fitHeight="1000.0" fitWidth="1750.0" mouseTransparent="true">
                      <image>
                         <Image url="@../Images/misc/sfondoparquet.jpg" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="876.0" fitWidth="876.0" layoutX="249.0" layoutY="62.0">
+                  <ImageView fx:id="boardImage" fitHeight="876.0" fitWidth="876.0" layoutX="249.0" layoutY="62.0">
                      <image>
                         <Image url="@../Images/boards/livingroom.png" />
                      </image>
@@ -189,7 +190,9 @@
                            <font>
                               <Font name="DejaVu Serif Condensed" size="23.0" />
                            </font>
-                        </Label>
+                            <effect>
+                                <Glow />
+                            </effect></Label>
                         <Button fx:id="button1" layoutX="451.0" layoutY="20.0" mnemonicParsing="false" onAction="#draw1" prefHeight="24.0" prefWidth="69.0" text="1" visible="false">
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -227,9 +230,6 @@
                      <cursor>
                         <Cursor fx:constant="DEFAULT" />
                      </cursor>
-                     <effect>
-                        <DropShadow />
-                     </effect>
                   </GridPane>
                   <GridPane fx:id="shelfGrid" layoutX="1284.0" layoutY="462.0" prefHeight="362.0" prefWidth="363.0">
                     <columnConstraints>
