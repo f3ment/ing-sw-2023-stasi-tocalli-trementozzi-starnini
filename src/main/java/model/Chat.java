@@ -26,14 +26,14 @@ public class Chat extends Observable<Event> implements Serializable {
 
     public synchronized void sendMessage(ChatMessage message) {
         this.chat.add(new ChatMessage(message.getMessage(), message.getSender(), message.getReceiver()));
-        this.online.add(message.getSender());
+        addActive(message.getSender());
     }
 
     public List<ChatMessage> getLastTen() throws NullPointerException {
         if(this.chat.size() == 0){
             throw new NullPointerException("No message has been sent");
         }else{
-            return this.chat.subList(Math.max(this.chat.size() - 10-1, 0), this.chat.size()-1);
+            return this.chat.subList(Math.max(this.chat.size() - 10, 0), this.chat.size());
         }
     }
 
