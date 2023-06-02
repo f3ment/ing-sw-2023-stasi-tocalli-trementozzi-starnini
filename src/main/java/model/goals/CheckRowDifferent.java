@@ -66,6 +66,7 @@ public class CheckRowDifferent extends CommonGoal{
         }
 
         if(rep >= repetitions){
+            System.out.println("Goal completed");
             return getStack().pop();
         }else{
             return null;

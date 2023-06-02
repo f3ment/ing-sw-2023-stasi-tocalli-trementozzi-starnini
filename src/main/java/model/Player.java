@@ -14,6 +14,8 @@ public class Player implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int score;
+
+    private int adjacentScore;
     private ArrayList<ItemTiles> PickedCards;
     private final TablePosition currentPosition;
 
@@ -25,7 +27,7 @@ public class Player implements Serializable {
      * */
     String configFilePath = "./src/main/resources/config.properties";
     Properties prop = new Properties();
-
+    private int personalGoalScore;
 
 
     public Player(TablePosition currentPosition,String username){
@@ -51,6 +53,8 @@ public class Player implements Serializable {
             tokens.add(null);
         }
         this.score = 0;
+        this.adjacentScore = 0;
+        this.personalGoalScore = 0;
     }
 
     public String getUsername(){
@@ -63,6 +67,14 @@ public class Player implements Serializable {
 
     public int getScore() {
         return score;
+    }
+
+    public int getAdjacentScore() {
+        return adjacentScore;
+    }
+
+    public void setAdjacentScore(int adjacentScore) {
+        this.adjacentScore = adjacentScore;
     }
 
     public void setScore(int score) {
@@ -115,5 +127,12 @@ public class Player implements Serializable {
 
     public ItemTiles getPickedCard(int index) {
         return PickedCards.get(index);
+    }
+
+    public int getPersonalGoalScore() {
+        return this.personalGoalScore;
+    }
+    public void setPersonalGoalScore(int personalGoalScore) {
+        this.personalGoalScore = personalGoalScore;
     }
 }

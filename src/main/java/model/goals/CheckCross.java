@@ -32,6 +32,7 @@ public class CheckCross extends CommonGoal{
                                     bookshelf.getItem(i, j).getType().equals(bookshelf.getItem(i + 1, j + 1).getType()) &&
                                     bookshelf.getItem(i, j).getType().equals(bookshelf.getItem(i + 2, j).getType()) &&
                                     bookshelf.getItem(i, j).getType().equals(bookshelf.getItem(i + 2, j + 2).getType())) {
+                                System.out.println("Hai completato l'obiettivo: 5 tessere dello stesso tipo formano una X");
                                 return getStack().pop();  // Esiste una <X> dello stesso tipo
                             }
                         }catch (Exception e){

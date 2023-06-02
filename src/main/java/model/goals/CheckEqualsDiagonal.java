@@ -38,7 +38,8 @@ public class CheckEqualsDiagonal extends CommonGoal{
                 toSudEastDiag(bookshelf, 1, 0) ||
                 toSudWestDiag(bookshelf, 0, 4) ||
                 toSudWestDiag(bookshelf, 1, 4))
-        { return getStack().pop(); } else return null;
+        {   System.out.println("Diagonale trovata");
+            return getStack().pop(); } else return null;
     }
 
     private boolean toSudEastDiag (Bookshelf bookshelf, int i, int j){

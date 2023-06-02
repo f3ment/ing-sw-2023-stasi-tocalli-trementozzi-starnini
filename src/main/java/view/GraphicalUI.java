@@ -70,6 +70,7 @@ public class GraphicalUI extends View implements Runnable {
                 GuiController.setMyTurn(false , message.getModel().getCurrentPlayer().getUsername());
                 GuiController.updateScores(message.getModel(),username);
                 GuiController.updateStack(message.getModel());
+                fillBoard(message.getModel());
             });
         }
         if (message.getModel() == null || message.getModel().getCurrentPlayer().getUsername().equals(username)) {
@@ -122,6 +123,7 @@ public class GraphicalUI extends View implements Runnable {
 
     private void startNewTurn(GameView model) {
         Platform.runLater(() -> {
+            fillBoard(model);
             GuiController.setMyTurn(true, null);
             GuiController.letDraw();
             GuiController.updateStack(model);
@@ -140,6 +142,7 @@ public class GraphicalUI extends View implements Runnable {
 
 
     private void fillBoard(GameView o) {
+       GuiController.cleanBoard();
        for(int i=0;i<o.getHeightBoard();i++){
            for(int j=0;j<o.getLenghtBoard();j++){
                BoxView box = o.getBoard()[i][j];

@@ -83,6 +83,7 @@ public class CheckGroupsSameType extends CommonGoal{
                         }
                     }
                     if (rep == repetitions) {
+                        System.out.println("Goal completed");
                         return getStack().pop();
                     }
                 }

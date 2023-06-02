@@ -129,7 +129,10 @@ public class Game extends Observable<Event> implements Serializable {
     }
     public void validatePersonalGoal(TablePosition tablePosition){
         int res = tablePosition.getCurrentPGoal().validate(tablePosition.getBookshelf());
-        tablePosition.getPlayer().setScore(tablePosition.getPlayer().getScore() + res);
+        int currentPersonalScore = tablePosition.getPlayer().getPersonalGoalScore();
+        tablePosition.getPlayer().setScore(tablePosition.getPlayer().getScore() - currentPersonalScore);
+        tablePosition.getPlayer().setPersonalGoalScore((Math.max(res, currentPersonalScore)));
+        tablePosition.getPlayer().setScore(tablePosition.getPlayer().getScore() + tablePosition.getPlayer().getPersonalGoalScore());
     }
 
     //validateAdjacent(position,0,0,0,batrix di false,null,true,0,occupied di false)
@@ -147,7 +150,10 @@ public class Game extends Observable<Event> implements Serializable {
         }
         int res;
         res = tablePosition.getBookshelf().validateAdjacentRecursive(tablePosition, 0, 0,0, batrix, null, true, 0, occupied);
-        tablePosition.getPlayer().setScore(tablePosition.getPlayer().getScore() + res );
+        int currentAdjacentScore = tablePosition.getPlayer().getAdjacentScore();
+        tablePosition.getPlayer().setScore(tablePosition.getPlayer().getScore() - currentAdjacentScore);
+        tablePosition.getPlayer().setAdjacentScore(Math.max(res, currentAdjacentScore));
+        tablePosition.getPlayer().setScore(tablePosition.getPlayer().getScore() + tablePosition.getPlayer().getAdjacentScore());
         return res;
     }
 

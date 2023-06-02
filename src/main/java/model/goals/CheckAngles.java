@@ -23,6 +23,7 @@ public class CheckAngles extends CommonGoal{
             if(bookshelf.getItem(0,0).getType().equals(bookshelf.getItem(0, bookshelf.getLength()-1).getType())  &&
                     bookshelf.getItem(0,0).getType().equals(bookshelf.getItem(bookshelf.getHeight()-1, bookshelf.getLength()-1).getType())  &&
                     bookshelf.getItem(0,0).getType().equals(bookshelf.getItem(bookshelf.getHeight()-1, 0).getType())){
+                System.out.println("check angles completed");
                 return getStack().pop();
             }else{
                 return null;

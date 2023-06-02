@@ -76,7 +76,10 @@ public class CheckSquare extends CommonGoal{
                             batrix[i + 1][j + 1] = true;
                             /* ENGLISH VERSION (REMOVE ITALIAN VERSION TOO) */
                             found++;
-                            if (found == 2) return getStack().pop();
+                            if (found == 2){
+                                System.out.println("Found 2 square");
+                                return getStack().pop();
+                            }
 
                         }
                     }
@@ -87,7 +90,7 @@ public class CheckSquare extends CommonGoal{
             }
         }
         // <ITALIAN VERSION>
-        //CHECK THAT THERE ARE AT LEAST TWO SQUARE OF THE SAME CARD'S TYPE
+        //CHECK THAT THERE ARE AT LEAST TWO SQUARE OF THE SAME CARD'S T{YPE
 /*        for(int i=0; i< bookshelf.getHeight(); i++){
             for(int j=0; j<bookshelf.getLength(); j++){
                 int count=0;

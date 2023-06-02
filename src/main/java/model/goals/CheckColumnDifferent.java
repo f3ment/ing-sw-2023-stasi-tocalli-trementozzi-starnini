@@ -69,7 +69,10 @@ public class CheckColumnDifferent extends CommonGoal{
 
         }
 
-        if(rep >= repetitions) return getStack().pop();
+        if(rep >= repetitions){
+            System.out.println("Goal completed");
+            return getStack().pop();
+        }
         else return null;
     }
 }

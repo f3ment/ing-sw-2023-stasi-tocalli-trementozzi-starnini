@@ -37,6 +37,7 @@ public class CheckColumnLength extends CommonGoal{
             }
         }
         if(flagDecresc || flagCresc ){
+            System.out.println("Hai completato l'obiettivo");
             return getStack().pop();
         }else{
             return null;

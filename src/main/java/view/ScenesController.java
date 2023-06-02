@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.effect.MotionBlur;
 import javafx.scene.image.ImageView;
@@ -262,8 +263,8 @@ public class ScenesController extends Observable<Event> implements Initializable
         tile.setOnMouseClicked(event ->tileSelected(i,j,tile));
         tile.setOnMouseEntered(event -> hoverOnTiles(tile));
         tile.setOnMouseExited(event -> tile.setOpacity(1));
-        tile.setFitHeight(90);
-        tile.setFitWidth(90);
+        tile.setFitHeight(83);
+        tile.setFitWidth(83);
         tile.setPreserveRatio(true);
         boardGrid.add(tile, j, i);
     }
@@ -394,6 +395,7 @@ public class ScenesController extends Observable<Event> implements Initializable
     private void tileOrderSelection(ImageView tileCopy, int position) {
         if(myTurn){
             if(goodDraw){
+                tileCopy.setOnMouseClicked(null);
                 tileOrder.add(position-1);
                 tileCopy.setFitWidth(75);
                 tileCopy.setFitHeight(75);
@@ -467,7 +469,7 @@ public class ScenesController extends Observable<Event> implements Initializable
 
     public void retry(ActionEvent actionEvent) {
         boardGrid.setEffect(null);
-        boardImage.setEffect(null);
+        boardImage.setEffect(new DropShadow());
         wallpaper.setEffect(null);
         retryButton.setVisible(false);
         letDraw();
@@ -597,17 +599,12 @@ public class ScenesController extends Observable<Event> implements Initializable
     }
 
     public void updateScores(GameView model,String username) {
-        ArrayList<String> players = new ArrayList<>(model.getMapPlayerScore().keySet());
-        players.remove(username);
-        score1.setText(String.valueOf(model.getScore()));
-        score2.setText(String.valueOf(model.getMapPlayerScore().get(players.get(0))));
-        players.remove(players.get(0));
-        if(players.size()>0){
-            score3.setText(String.valueOf(model.getMapPlayerScore().get(players.get(0))));
-            players.remove(players.get(0));
-            if (players.size()>0){
-                score4.setText(String.valueOf(model.getMapPlayerScore().get(players.get(0))));
-                players.remove(players.get(0));
+        score1.setText(String.valueOf(model.getMapPlayerScore().get(username)));
+        score2.setText(String.valueOf(model.getMapPlayerScore().get(name2.getText())));
+        if(model.getMapPlayerScore().size()>2){
+            score3.setText(String.valueOf(model.getMapPlayerScore().get(name3.getText())));
+            if(model.getMapPlayerScore().size()>3){
+                score4.setText(String.valueOf(model.getMapPlayerScore().get(name4.getText())));
             }
         }
     }
@@ -615,15 +612,15 @@ public class ScenesController extends Observable<Event> implements Initializable
     public void updateStack(GameView model) {
         int sizeStack1 = model.getFirstCommonGoal().size();
         int sizeStack2 = model.getSecondCommonGoal().size();
-        getNewStackScore(sizeStack1,model,stack1);
-        getNewStackScore(sizeStack2,model,stack2);
+        getNewStackScore(sizeStack1,model,2,stack1);
+        getNewStackScore(sizeStack2,model,2,stack2);
     }
 
-    private void getNewStackScore(int sizeStack,GameView model,Pane stack){
+    private void getNewStackScore(int sizeStack,GameView model,int commonNumber,Pane stack){
         if(sizeStack == 0) {
-            stack1.setVisible(false);
+            stack.setVisible(false);
         }else{
-            switch (model.getScoringToken1(sizeStack - 1).getScore()) {
+            switch (model.getScoringTokenByNumber(commonNumber,sizeStack - 1).getScore()) {
                 case 2:
                     setStackToken(2,stack);
                     break;
@@ -649,6 +646,10 @@ public class ScenesController extends Observable<Event> implements Initializable
         stack.getChildren().add(s1);
         stack.setVisible(true);
         stack.toFront();
+    }
+
+    public void cleanBoard() {
+        boardGrid.getChildren().clear();
     }
 }
 
