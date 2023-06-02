@@ -159,6 +159,9 @@ public class ScenesController extends Observable<Event> implements Initializable
     @FXML
     private ImageView wallpaper;
 
+    @FXML
+    private ChoiceBox<String> choiceBox;
+
     /**
      * This method will change the welcome page to the login page
      * @param actionEvent the event that triggers the method , in this case the "play" button click
@@ -566,12 +569,14 @@ public class ScenesController extends Observable<Event> implements Initializable
 
     public void clickChatButton(){
 
+        inizializeChatBox();
+
         chatInputText.setOnAction(event -> {
             if(!chatInputText.getText().equals("")){
                 String message = chatInputText.getText();
                 new Thread(()->{
                     setChanged();
-                    notifyObservers(new Message(Event.SEND_MESSAGE, new ChatMessage(message, username, null)));
+                    notifyObservers(new Message(Event.SEND_MESSAGE, new ChatMessage(message, username, choiceBox.getValue().equals("All")? null : choiceBox.getValue().substring(19))));
                 }).start();
                 chatInputText.clear();
             }
@@ -586,10 +591,26 @@ public class ScenesController extends Observable<Event> implements Initializable
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    setText((item.getSender().equals(username)? "You" : item.getSender()) + (item.getReceiver()!=null && item.getReceiver().equals(username)? " to You" : "") + " > " + item.getMessage());
+                    setText((item.getSender().equals(username)? "You" : item.getSender()) + (item.getReceiver()!=null?( item.getReceiver().equals(username)? " to You" : (item.getSender().equals(username)? " to " + item.getReceiver() : "")) : "") + " > " + item.getMessage());
                 }
             }
         });
+    }
+    @FXML
+    private void inizializeChatBox() {
+        if(choiceBox.getItems().isEmpty()){
+            choiceBox.getItems().add("All");
+            if (playerName2 != null) {
+                choiceBox.getItems().add("Private message to " + playerName2);
+            }
+            if (playerName3 != null) {
+                choiceBox.getItems().add("Private message to " + playerName3);
+            }
+            if (playerName4 != null) {
+                choiceBox.getItems().add("Private message to " + playerName4);
+            }
+            choiceBox.setValue("All");
+        }
     }
 
     public void updateChat(ChatMessage message){

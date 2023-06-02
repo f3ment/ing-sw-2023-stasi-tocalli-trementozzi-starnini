@@ -691,7 +691,11 @@ public class TextualUI extends View implements Runnable {
                     in = in.substring(3);
                     to = in.split(" ", 2)[0];
                     //todo parte l'eccezione se la stringa è vuota
-                    in = in.split(" ", 2)[1];
+                    try{
+                        in = in.split(" ", 2)[1];
+                    }catch (Exception e){
+                        in = "";
+                    }
                 }
                 setChanged();
                 notifyObservers(new Message(Event.SEND_MESSAGE, new ChatMessage( in, username, to)));
