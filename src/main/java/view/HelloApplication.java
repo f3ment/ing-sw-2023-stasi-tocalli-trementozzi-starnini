@@ -5,8 +5,10 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import distributed.Server;
+
 import java.io.IOException;
 import java.rmi.RemoteException;
 
@@ -35,6 +37,7 @@ public class HelloApplication extends Application {
             }
         });
         stage.setTitle("MyShelfie");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/Publishermaterial/Icon50x50px.png")));
         stage.setScene(new Scene(root));
         stage.show();
     }
@@ -54,6 +57,7 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(root);
         CurrentStage.setScene(scene);
         CurrentStage.setTitle("MyShelfie-" + source);
+        CurrentStage.getIcons().add(new Image(HelloApplication.class.getResourceAsStream("/Images/Publishermaterial/Icon50x50px.png")));
         CurrentStage.show();
     }
     public static void  setGui(GraphicalUI gui){
