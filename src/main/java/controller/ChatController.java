@@ -21,7 +21,7 @@ public class ChatController {
             chat.addActive(msg.getUserName());
             chat.setChangedAndNotifyObservers(new Message(msg.getEvent(), msg.getUserName()));
         } else if (msg.getEvent().equals(Event.SEND_MESSAGE)) {
-            chat.addActive(msg.getUserName());
+            chat.getActive().forEach(e -> System.out.println("ACTIVE - " + e));
             chat.sendMessage(msg.getChatMessage());
             chat.setChangedAndNotifyObservers(new Message(msg.getEvent()));
         }else if (msg.getEvent().equals(Event.EXIT_CHAT)){

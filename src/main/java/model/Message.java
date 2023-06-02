@@ -61,6 +61,7 @@ public class Message implements Serializable {
     public Message(Event event, ArrayList<String> players , int nPlayers) {
         this.event = event;
         this.nicknames = players;
+        this.nPlayers = nPlayers;
     }
 
     public Message(Event event, int nPlayers, String userName) {

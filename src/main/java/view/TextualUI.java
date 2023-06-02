@@ -75,7 +75,7 @@ public class TextualUI extends View implements Runnable {
             if (message.getChat().getActive().contains(username)) {
                 ChatMessage last = message.getChat().getLast();
                 if (!last.getSender().equals(username)) {
-                    System.out.println((last.getSender().equals(username)? "You" : last.getSender()) + (last.getReceiver()!=null && last.getReceiver().equals(username)? " to You" : "") + " > " + last.getMessage());
+                    System.out.println( last.getSender() + (last.getReceiver()!=null && last.getReceiver().equals(username)? " to You" : "") + " > " + last.getMessage());
                 }
             }
         }else if(message.getEvent().equals(Event.EXIT_CHAT) && message.getUserName().equals(username)){
@@ -86,8 +86,7 @@ public class TextualUI extends View implements Runnable {
                     this.notifyAll();
                 }
             }
-        }
-        else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
+        } else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
             if(!flagChat && !choosing){
                 synchronized (this){
                     if (myTurn && !flagChat) {
@@ -692,10 +691,14 @@ public class TextualUI extends View implements Runnable {
                     in = in.substring(3);
                     to = in.split(" ", 2)[0];
                     //todo parte l'eccezione se la stringa è vuota
-                    in = in.split(" ", 2)[1];
+                    try{
+                        in = in.split(" ", 2)[1];
+                    }catch (Exception e){
+                        in = "";
+                    }
                 }
                 setChanged();
-                notifyObservers(new Message(Event.SEND_MESSAGE, new ChatMessage( username, in, to)));
+                notifyObservers(new Message(Event.SEND_MESSAGE, new ChatMessage( in, username, to)));
            }
         }
     }
