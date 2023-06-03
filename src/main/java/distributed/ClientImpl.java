@@ -18,8 +18,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
 
     private final View view;
     private final int choice;
-    Server sr;
-    Client cl=this;
+    private final Server sr;
+    private final Client cl=this;
 
     /**
      * This method is used to create a new client and initialize it with the
@@ -45,6 +45,13 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
             e.printStackTrace();
         }
     }
+
+    /**
+     * This method is used to ask the user to choose which User Interface he wants to use.
+     * The user can choose between a textual or a graphical interface.
+     * The field choice is set to 1 if the user chooses the textual interface, 2 otherwise.
+     * @return the choice of the user, which is represented by an integer value that can be either 1 or 2
+     */
     private static int chooseGraphicSettings() {
         int graphicSettings;
         System.out.println("Please choose whether playing from COMMAND-LINE or from the GRAPHICAL APP:\n" +
