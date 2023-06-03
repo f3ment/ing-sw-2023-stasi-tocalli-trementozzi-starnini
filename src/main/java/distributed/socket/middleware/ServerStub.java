@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ServerStub implements Server {
 
@@ -54,7 +55,7 @@ public class ServerStub implements Server {
             try {
                 Thread.sleep(10000);
             }catch (InterruptedException e){
-                System.out.println("no sllepùù");
+                System.err.println("Interrupted Exception");
             }
             close();
         }else {
@@ -63,7 +64,7 @@ public class ServerStub implements Server {
                 oos.reset();
                 oos.flush();
             } catch (IOException e) {
-                throw new RemoteException("Cannot send UserName : " + e.getMessage());
+                throw new RemoteException("Cannot send Message : " + e.getMessage() );
             }
         }
 
@@ -74,7 +75,7 @@ public class ServerStub implements Server {
         try{
             message = (Message) ios.readObject();
         }catch (IOException e ){
-            throw new RemoteException("Cannot receive Message : " + e.getMessage());
+            throw new RemoteException("Cannot receive Message : " + e.getMessage() + Arrays.toString(e.getStackTrace()));
         }catch (ClassNotFoundException e){
             throw new RemoteException("Cannot cast Message " + e.getMessage());
         }

@@ -98,6 +98,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
                 HelloApplication.setGui((GraphicalUI) view);
                 Application.launch(HelloApplication.class);
             }).start();
+
         new Thread(){
             @Override
             public void run(){
