@@ -13,8 +13,16 @@ partita verrà lanciata una istanza del server in grado di gestire una partita a
 (uno per giocatore) che possono partecipare ad una sola partita alla volta. Si richiede l'utilizzo del pattern
 Model-View-Controller - MVC per progettare l'intero sistema.
 
+### Legenda
+| Colore                        |                 Significato                 |
+|:------------------------------|:-------------------------------------------:|
+| ![#c5f015](https://via.placeholder.com/15/008000/000000?text=+) |     Funzionalità implementata e testata     |
+| ![#c5f015](https://placehold.it/15/ffdd00/ffdd00) | Funzionalità implementata non completamente |
+| ![#c5f015](https://via.placeholder.com/15/ff0000/000000?text=+) |        Funzionalità non implementata        |
 
-| Funzionalità avanzata          |                                  Stato                                   |
+## Funzionalità implementate
+
+| Funzionalità avanzata          |                      Stato                                               |
 |:-------------------------------|:------------------------------------------------------------------------:|
 | Regole semplificate            |     ![#c5f015](https://via.placeholder.com/15/008000/000000?text=+)      |
 | Regole complete                |     ![#c5f015](https://via.placeholder.com/15/008000/000000?text=+)      |
@@ -25,3 +33,7 @@ Model-View-Controller - MVC per progettare l'intero sistema.
 | Partite multiple               |     ![#c5f015](https://via.placeholder.com/15/008000/000000?text=+)      |
 | Resilienza alle disconnessioni |     ![#c5f015](https://via.placeholder.com/15/008000/000000?text=+)      |
 | Chat                           |     ![#c5f015](https://via.placeholder.com/15/008000/000000?text=+)      |
+|Persistenza|     ![#c5f015](https://via.placeholder.com/15/ff0000/000000?text=+)      |
+
+### Socket :
+ - se il client utilizza un'architettura socket e una Graphical User Interface, il client crasha 
