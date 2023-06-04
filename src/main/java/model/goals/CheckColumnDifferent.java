@@ -19,7 +19,7 @@ public class CheckColumnDifferent extends CommonGoal{
     public String toString() {
         String str = null;
         if(strategy){
-            str= new String("Six groups each containing at least 2 tiles of the same type. The tile of one group can be different from those of another group.");
+            str= new String("Two columns each formed by 6 different types. One column can show the same or a different combination of another column");
         }else if(!strategy){
             str=new String("Three columns each formed by 6 tiles of maximum three different types. One column can show the same or a different combination of another column");
         }
@@ -28,7 +28,7 @@ public class CheckColumnDifferent extends CommonGoal{
 
     public String getSource(){
         if(strategy){
-            return "4.jpg";
+            return "2.jpg";
         }else
             return "5.jpg";
     }
@@ -70,7 +70,6 @@ public class CheckColumnDifferent extends CommonGoal{
         }
 
         if(rep >= repetitions){
-            System.out.println("Goal completed");
             return getStack().pop();
         }
         else return null;

@@ -77,7 +77,6 @@ public class CheckSquare extends CommonGoal{
                             /* ENGLISH VERSION (REMOVE ITALIAN VERSION TOO) */
                             found++;
                             if (found == 2){
-                                System.out.println("Found 2 square");
                                 return getStack().pop();
                             }
 

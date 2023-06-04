@@ -13,6 +13,7 @@ import java.util.*;
 
 public class Game extends Observable<Event> implements Serializable {
     private static final long serialVersionUID = 1L;
+    private int lastIndex;
     private boolean finish;
     private final int playerNumber;
     private TablePosition currentPosition;
@@ -67,6 +68,7 @@ public class Game extends Observable<Event> implements Serializable {
 
         this.playerNumber = usernames.size();
         this.bag = new Bag();
+        this.lastIndex = -1;
 
         //initializes the personal goal deck with 12 cards
         //every card is a hashmap of 6 couplets of key (Type) and value (pair of coordinates)
@@ -84,8 +86,8 @@ public class Game extends Observable<Event> implements Serializable {
                     k -> k.getValue()).forEach(i -> System.out.println(i.get("X")));
         });
         */
-        this.tablePositionList = new ArrayList<TablePosition>();
-        ArrayList<Map<String, Map<String, String>>> windowsArr = new ArrayList<Map<String, Map<String, String>>>();
+        this.tablePositionList = new ArrayList<>();
+        ArrayList<Map<String, Map<String, String>>> windowsArr = new ArrayList<>();
         for(int i = 0; i< windows.size(); i++){
             windowsArr.add(windows.get(Integer.toString(i+1)));
         }
@@ -95,7 +97,11 @@ public class Game extends Observable<Event> implements Serializable {
             }while(nums[index-1]);
             nums[index]=true;
             int personalGoalIndex = randomInt.nextInt(windowsArr.size());
-            this.tablePositionList.add(i, new TablePosition(usernames.get(i), new PersonalGoal(windowsArr.remove(personalGoalIndex), personalGoalIndex+1), new Bookshelf()));
+            while(personalGoalIndex == lastIndex){
+                personalGoalIndex = randomInt.nextInt(windowsArr.size());
+            }
+            lastIndex = personalGoalIndex;
+            this.tablePositionList.add(i, new TablePosition(usernames.get(i), new PersonalGoal(windowsArr.get(personalGoalIndex), personalGoalIndex+1), new Bookshelf()));
         }
 
         index = randomInt.nextInt(playerNumber);

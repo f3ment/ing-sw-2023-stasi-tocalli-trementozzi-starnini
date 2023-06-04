@@ -326,11 +326,9 @@ public class ScenesController extends Observable<Event> implements Initializable
         ImageView cg1 = new ImageView(new Image(getClass().getResourceAsStream("/Images/commongoalcards/" + model.getFirstCommonGoalScource())));
         cg1.setFitHeight(150);
         cg1.setFitWidth(266);
-        //cg1.setRotate(12.5);
         ImageView cg2 = new ImageView(new Image(getClass().getResourceAsStream("/Images/commongoalcards/" + model.getSecondCommonGoalScource())));
         cg2.setFitHeight(150);
         cg2.setFitWidth(266);
-        //cg2.setRotate(12.5);
         common1.getChildren().add(cg1);
         common2.getChildren().add(cg2);
         ImageView s1 = new ImageView(new Image(getClass().getResourceAsStream("/Images/scoringtokens/scoring_8.jpg")));

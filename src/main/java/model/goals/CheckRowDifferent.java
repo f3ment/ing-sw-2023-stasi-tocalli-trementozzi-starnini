@@ -17,7 +17,7 @@ public class CheckRowDifferent extends CommonGoal{
         if(strategy)
             return "7.jpg";
         else
-            return "2.jpg";
+            return "6.jpg";
     }
 
     @Override
@@ -66,7 +66,6 @@ public class CheckRowDifferent extends CommonGoal{
         }
 
         if(rep >= repetitions){
-            System.out.println("Goal completed");
             return getStack().pop();
         }else{
             return null;
