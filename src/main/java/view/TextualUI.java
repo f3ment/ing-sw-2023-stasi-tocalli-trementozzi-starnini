@@ -58,33 +58,27 @@ public class TextualUI extends View implements Runnable {
     }
     public void update(Message message) {
         if(message.getEvent().equals(Event.GET_CHAT) && message.getUserName().equals(username)){
-            if(message.getChat().getActive().contains(username)){
-                this.flagChat = true;
-                System.out.println("----------------------------");
-                System.out.println(" -> Use '/exit' to get back to the game;");
-                System.out.println(" -> Use '/toUSERNAME' to send a private message to the 'USERNAME' specified;");
-                System.out.println("This is the chat : ");
-                try{
-                    message.getChat().getLastTen().forEach(e ->
-                            System.out.println((e.getSender().equals(username)? "You" : e.getSender()) + (e.getReceiver()!=null && e.getReceiver().equals(username)? " to You" : "") + " > " + e.getMessage()));
-                }catch (Exception e){
-                    System.err.println(e.getMessage());
-                }
+            this.flagChat = true;
+            System.out.println("----------------------------");
+            System.out.println(" -> Use '/exit' to get back to the game;");
+            System.out.println(" -> Use '/toUSERNAME' to send a private message to the 'USERNAME' specified;");
+            System.out.println("This is the chat : ");
+            try{
+                message.getChat().getLastTen().forEach(e ->
+                        System.out.println((e.getSender().equals(username)? "You" : e.getSender()) + (e.getReceiver()!=null && e.getReceiver().equals(username)? " to You" : "") + " > " + e.getMessage()));
+            }catch (Exception e){
+                System.err.println(e.getMessage());
             }
         }else if (message.getEvent().equals(Event.SEND_MESSAGE)) {
-            if (message.getChat().getActive().contains(username)) {
                 ChatMessage last = message.getChat().getLast();
                 if (!last.getSender().equals(username)) {
                     System.out.println( last.getSender() + (last.getReceiver()!=null && last.getReceiver().equals(username)? " to You" : "") + " > " + last.getMessage());
                 }
-            }
         }else if(message.getEvent().equals(Event.EXIT_CHAT) && message.getUserName().equals(username)){
-            if (!message.getChat().getActive().contains(username)){
-                synchronized (this){
-                    System.out.println("----------------------------");
-                    System.out.println("Now you can play.");
-                    this.notifyAll();
-                }
+            synchronized (this){
+                System.out.println("----------------------------");
+                System.out.println("Now you can play.");
+                this.notifyAll();
             }
         } else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
             if(!flagChat && !choosing){
