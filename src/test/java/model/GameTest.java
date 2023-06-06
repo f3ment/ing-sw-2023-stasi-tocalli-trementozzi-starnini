@@ -7,7 +7,6 @@ import model.goals.PersonalGoal;
 import utils.Event;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
@@ -162,8 +161,8 @@ String configFilePath = "./src/main/resources/config.properties";
             game = new Game(usernames);
             for(int i=0;i<usernames.size();i++){
                 game.validateCommonGoal(game.getCurrentPosition());
-                assertNull(game.getCurrentPosition().getPlayer().getToken(0));
-                assertNull(game.getCurrentPosition().getPlayer().getToken(1));
+                assertNull(game.getCurrentPosition().getPlayer().getTokenById(0));
+                assertNull(game.getCurrentPosition().getPlayer().getTokenById(1));
                 assertEquals(0, game.getCurrentPosition().getPlayer().getScore());
                 game.setCurrentPosition();
             }

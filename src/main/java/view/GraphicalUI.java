@@ -43,6 +43,8 @@ public class GraphicalUI extends View implements Runnable {
     }
 
 
+    //todo implementare un eventHandler per ogni evento che arriva dal server (idem per testuale)
+
     @Override
     /**
      * this method will be called by the server when a new message
@@ -117,7 +119,6 @@ public class GraphicalUI extends View implements Runnable {
                     GuiController.addPlayerNameToLobby(nicknames);
                 });
             }
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         }
     }
 
@@ -128,6 +129,7 @@ public class GraphicalUI extends View implements Runnable {
             GuiController.letDraw();
             GuiController.updateStack(model);
             GuiController.updateScores(model,username);
+            GuiController.showShelves(model,username);
         });
     }
 
@@ -141,6 +143,8 @@ public class GraphicalUI extends View implements Runnable {
 
 
 
+
+//todo capire perchè java heap error quando c'è il refill
     private void fillBoard(GameView o) {
        GuiController.cleanBoard();
        for(int i=0;i<o.getHeightBoard();i++){

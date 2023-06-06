@@ -3,10 +3,12 @@ package model.goals;
 import model.Bookshelf;
 import model.ScoringToken;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Stack;
 
 public abstract class CommonGoal implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private int romanNumber;
@@ -16,7 +18,7 @@ public abstract class CommonGoal implements Serializable {
 
     public CommonGoal(int romanNumber, int numberPlayers){
         this.romanNumber = romanNumber;
-        stack = new Stack<ScoringToken>();
+        stack = new Stack<>();
         switch (numberPlayers){
             case 2:
                 this.stack.add(new ScoringToken(4, romanNumber));

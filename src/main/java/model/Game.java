@@ -27,17 +27,6 @@ public class Game extends Observable<Event> implements Serializable {
     private String winner;
 
 
-    //private   <Map<Type , Pair<Integer , Integer>>> PersonalGoalDeck;
-    //private   <Map<Type , Pair<Integer , Integer>>> PersonalGoalDeck;
-
-
-    // The Game constructor:
-    // -creates a new game taking the number of players and their nicknames as parameters
-    // -initializes all the table positions with their relative players
-    // -initializes all the game attributes relative to the game and the board
-    // -randomly assigns player's personal goal and chooses two game's common goals
-
-
 
     public Game(ArrayList<String> usernames) throws IOException {
         super();
@@ -122,15 +111,27 @@ public class Game extends Observable<Event> implements Serializable {
     }
     public void validateCommonGoal(TablePosition tablePosition) {
         ScoringToken res;
-        //check if player at current tableposition has already achieved the first commmon goal
-        if(tablePosition.getPlayer().getToken(firstCommonGoal.getRomanNumber()-1) == null && !firstCommonGoal.getCompleted()){
+        //check if player at current tableposition has already achieved the first common goal
+        if(!tablePosition.getPlayer().hasCompletedFirst() && !firstCommonGoal.getCompleted()){
+            System.out.println("sto validando il primo obiettivo comune, hasCompletedFirst = " + tablePosition.getPlayer().hasCompletedFirst());
             //add token to current player returned from validate
-            tablePosition.getPlayer().setToken(firstCommonGoal.validate(tablePosition.getBookshelf()));
+            tablePosition.getPlayer().setToken(firstCommonGoal.validate(tablePosition.getBookshelf()),firstCommonGoal.getRomanNumber());
+            if(firstCommonGoal.getStack().isEmpty()){
+                firstCommonGoal.setCompleted(true);
+            }
+        }else{
+            System.out.println("il primo obiettivo comune è già stato completato");
         }
-        //check if player at current tableposition has already achieved the second commmon goal
-        if(tablePosition.getPlayer().getToken(secondCommonGoal.getRomanNumber()-1) == null && !secondCommonGoal.getCompleted()){
+        //check if player at current tableposition has already achieved the second common goal
+        if(!tablePosition.getPlayer().hasCompletedSecond() && !secondCommonGoal.getCompleted()){
+            System.out.println("sto validando il secondo obiettivo comune, hasCompletedSecond = " + tablePosition.getPlayer().hasCompletedSecond());
             //add token to current player returned from validate
-            tablePosition.getPlayer().setToken(secondCommonGoal.validate(tablePosition.getBookshelf()));
+            tablePosition.getPlayer().setToken(secondCommonGoal.validate(tablePosition.getBookshelf()),secondCommonGoal.getRomanNumber());
+            if (secondCommonGoal.getStack().isEmpty()) {
+                secondCommonGoal.setCompleted(true);
+            }
+        }else{
+            System.out.println("il secondo obiettivo comune è già stato completato");
         }
     }
     public void validatePersonalGoal(TablePosition tablePosition){
@@ -190,6 +191,14 @@ public class Game extends Observable<Event> implements Serializable {
             list.add(tablePositionList.get(i).getPlayer());
         }
         return list;
+    }
+
+    public Map<String, Player> getPlayerByNickname() {
+        Map<String,Player> players = new HashMap<>();
+        for(int i=0; i<tablePositionList.size(); i++){
+            players.put(tablePositionList.get(i).getPlayer().getUsername(), tablePositionList.get(i).getPlayer());
+        }
+        return players;
     }
 
 

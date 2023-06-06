@@ -48,21 +48,21 @@ class PlayerTest {
         try{
             token1 = new ScoringToken(8,1);
             token2 = new ScoringToken(6,2);
-            personalGoal = new PersonalGoal(new HashMap<>());
+            personalGoal = new PersonalGoal(new HashMap<>(),1);
             bookshelf = new Bookshelf();
             position = new TablePosition("Mario",personalGoal,bookshelf);
 
             player = position.getPlayer();
 
-            player.setToken(token2);
-            player.setToken(token1);
+            player.setToken(token2, secondCommonGoal.getRomanNumber());
+            player.setToken(token1, secondCommonGoal.getRomanNumber());
 
 
             assertEquals(player.getScore(), token2.getScore() + token1.getScore());
             System.out.println("Test passato!");
 
-            assertEquals(token1, player.getToken(0));
-            assertEquals(token2, player.getToken(1));
+            assertEquals(token1, player.getTokenById(0));
+            assertEquals(token2, player.getTokenById(1));
 
 
         }catch (Exception e){
