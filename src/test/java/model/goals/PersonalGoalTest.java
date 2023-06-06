@@ -29,7 +29,7 @@ class PersonalGoalTest {
             windows = gson.fromJson(new FileReader("./src/test/resources/personalGoals.json"),
                     new TypeToken<Map<String, Map<String, Map<String, String>>>>() {}.getType());
 
-            pg  = new PersonalGoal(windows.get("1"));
+            pg  = new PersonalGoal(windows.get("1"), 1);
             bookshelf = new Bookshelf();
             bookshelf.setChoosenColumn(0);
             bookshelf.insert(new ItemTiles(Type.PLANTS, 1)); // x = 5
@@ -94,7 +94,7 @@ class PersonalGoalTest {
         try {
             windows = gson.fromJson(new FileReader("./src/test/resources/personalGoals.json"),
                     new TypeToken<Map<String, Map<String, Map<String, String>>>>() {}.getType());
-                    PersonalGoal pg  = new PersonalGoal(windows.get("1"));
+                    PersonalGoal pg  = new PersonalGoal(windows.get("1"),1);
                     assertNotNull(pg.getWindows());
 
         } catch (FileNotFoundException e) {

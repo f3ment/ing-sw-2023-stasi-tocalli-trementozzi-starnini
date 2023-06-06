@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 public class Player implements Serializable {
@@ -19,7 +21,7 @@ public class Player implements Serializable {
     private ArrayList<ItemTiles> PickedCards;
     private final TablePosition currentPosition;
 
-    ArrayList<ScoringToken> tokens; //common goal
+    Map<Integer,ScoringToken> tokens; //common goal
 
 
     /*
@@ -28,6 +30,8 @@ public class Player implements Serializable {
     String configFilePath = "./src/main/resources/config.properties";
     Properties prop = new Properties();
     private int personalGoalScore;
+    private boolean firstGoal;
+    private boolean secondGoal;
 
 
     public Player(TablePosition currentPosition,String username){
@@ -47,14 +51,12 @@ public class Player implements Serializable {
         this.username=username;
         PickedCards = new ArrayList(Integer.parseInt(
                 prop.getProperty("cards.maxDrowable")));
-        tokens = new ArrayList<ScoringToken>(Integer.parseInt(
-                prop.getProperty("cards.maxCommonGoal")));
-        for(int i=0;i<Integer.parseInt(prop.getProperty("cards.maxCommonGoal"));i++){
-            tokens.add(null);
-        }
+        tokens = new HashMap<>();
         this.score = 0;
         this.adjacentScore = 0;
         this.personalGoalScore = 0;
+        this.firstGoal = false;
+        this.secondGoal = false;
     }
 
     public String getUsername(){
@@ -81,22 +83,40 @@ public class Player implements Serializable {
         this.score = score;
     }
 
-    public void setToken( ScoringToken token) {
+    public void setToken(ScoringToken token, int romanNumber) {
         try {
-            this.tokens.set(token.getNumber() - 1, token);
-            this.setScore(this.getScore() + token.getScore());
+            if(token!=null){
+                this.tokens.put(token.getNumber(), token);
+                this.setScore(this.getScore() + token.getScore());
+                switch (romanNumber) {
+                    case 1:
+                        this.firstGoal = true;
+                        break;
+                    case 2:
+                        this.secondGoal = true;
+                        break;
+                }
+            }
         }catch(Exception e){
             return;
         }
     }
-    public ScoringToken getToken(int index){
-
+    public ScoringToken getTokenById(int index){
         return this.tokens.get(index);
     }
 
-    public ArrayList<ScoringToken> getToken(){
+    public boolean hasCompletedFirst (){
+        return this.firstGoal;
+    }
+
+    public boolean hasCompletedSecond (){
+        return this.secondGoal;
+    }
+
+    public Map<Integer,ScoringToken> getToken(){
         return this.tokens;
     }
+
 
     public void setStatus(boolean status){
         this.status=status;

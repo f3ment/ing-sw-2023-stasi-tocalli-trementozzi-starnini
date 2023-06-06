@@ -7,6 +7,7 @@ import model.TablePosition;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PlayerView {
 
@@ -16,7 +17,7 @@ public class PlayerView {
     private ArrayList<ItemTiles> PickedCards;
     private TablePosition currentPosition;
 
-    private ArrayList<ScoringToken> tokens;
+    private Map<Integer, ScoringToken> tokens;
     private ItemTiles[][] bookshelf;
 
     public PlayerView(Player player){
@@ -43,7 +44,7 @@ public class PlayerView {
         return PickedCards;
     }
 
-    public ArrayList<ScoringToken> getTokens() {
+    public Map<Integer,ScoringToken> getTokens() {
         return tokens;
     }
 

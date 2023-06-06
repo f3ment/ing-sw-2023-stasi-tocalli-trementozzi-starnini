@@ -16,7 +16,7 @@ class TablePositionTest {
     @Test
     void getPlayer() {
         try{
-            TablePosition table = new TablePosition(new String("Michi"), new PersonalGoal(null), new Bookshelf());
+            TablePosition table = new TablePosition(new String("Michi"), new PersonalGoal(null,1), new Bookshelf());
             assertTrue(table.getPlayer().getUsername().equals("Michi"));
             assertTrue(table.getPlayer().getScore() == 0);
 
@@ -30,7 +30,7 @@ class TablePositionTest {
     @Test
     void getCurrentPGoal() throws IOException {
 
-        TablePosition table = new TablePosition(new String("Michi"), new PersonalGoal(null), new Bookshelf());
+        TablePosition table = new TablePosition(new String("Michi"), new PersonalGoal(null,1), new Bookshelf());
         assertTrue(table.getCurrentPGoal().getWindows()==null);
         assertTrue(table.getCurrentPGoal().getDone()==0);
     }
@@ -75,7 +75,7 @@ class TablePositionTest {
             bookshelf.insert(new ItemTiles(Type.CATS, 1));
             bookshelf.insert(new ItemTiles(Type.CATS, 1));
 
-            TablePosition table = new TablePosition(new String("Michi"), new PersonalGoal(null), bookshelf);
+            TablePosition table = new TablePosition(new String("Michi"), new PersonalGoal(null,1), bookshelf);
 
             Bookshelf book2 = new Bookshelf();
             book2.setChoosenColumn(0);
@@ -128,7 +128,7 @@ class TablePositionTest {
 
     @Test
     void setFirstPosition() throws IOException { //and isfirstposition
-        TablePosition table = new TablePosition(new String("Michi"), new PersonalGoal(null), new Bookshelf());
+        TablePosition table = new TablePosition(new String("Michi"), new PersonalGoal(null,1), new Bookshelf());
         table.setFirstPosition(false);
         assertTrue(table.isFirstPosition()==false);
         table.setFirstPosition(true);

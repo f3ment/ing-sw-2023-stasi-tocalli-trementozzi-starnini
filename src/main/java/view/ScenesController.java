@@ -4,28 +4,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 //import javafx.event.Event;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Glow;
 import javafx.scene.effect.MotionBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import model.Chat;
-import model.ChatMessage;
-import model.ScoringToken;
-import model.Token;
-import model.Type;
-import model.views.ChatView;
+import model.*;
 import model.views.GameView;
+import model.views.PlayerView;
 import utils.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import model.Message;
 import utils.Observable;
 
 
@@ -162,6 +155,12 @@ public class ScenesController extends Observable<Event> implements Initializable
 
     @FXML
     private ChoiceBox<String> choiceBox;
+    @FXML
+    private GridPane shelfGrid3;
+    @FXML
+    private GridPane shelfGrid4;
+    @FXML
+    private GridPane shelfGrid2;
 
     /**
      * This method will change the welcome page to the login page
@@ -282,26 +281,58 @@ public class ScenesController extends Observable<Event> implements Initializable
         ArrayList<String> players = new ArrayList<>(model.getMapPlayerScore().keySet());
         int Nplayers = players.size();
         name1.setText(myName);
+        updateShelf(model);
         players.remove(myName);
         playerName2 = players.get(0).toString();
         players.remove(playerName2);
         name2.setText(playerName2);
+        updateOtherShelves(model,shelfGrid2,playerName2);
         if(Nplayers >= 3){
             shelf3.setVisible(true);
+            shelfGrid3.setVisible(true);
             playerName3 = players.get(0).toString();
             players.remove(playerName3);
             name3.setText(playerName3);
             name3.setVisible(true);
             scoreLabel3.setVisible(true);
             score3.setVisible(true);
+            updateOtherShelves(model,shelfGrid2,playerName3);
             if(Nplayers == 4){
                 shelf4.setVisible(true);
+                shelfGrid4.setVisible(true);
                 playerName4 = players.get(0).toString();
                 players.remove(playerName4);
                 name4.setText(playerName4);
                 name4.setVisible(true);
                 scoreLabel4.setVisible(true);
                 score4.setVisible(true);
+                updateOtherShelves(model,shelfGrid2,playerName4);
+            }
+        }
+    }
+
+    private void updateShelf(GameView model) {
+        for(int i=0; i< model.getHeightBookshelf(); i++){
+            for(int j=0; j< model.getLenghtBookshelf(); j++){
+                if(model.getCurrentBookshelf()[i][j]!=null){
+                    ImageView tile = new ImageView(new Image(getClass().getResourceAsStream(pickTileImage(model.getCurrentBookshelf()[i][j].getType(),model.getCurrentBookshelf()[i][j].getId()))));
+                    tile.setFitHeight(63);
+                    tile.setFitWidth(63);
+                    shelfGrid.add(tile,j,i);
+                }
+            }
+        }
+    }
+
+    private void updateOtherShelves(GameView model, GridPane shelfGrid, String playerName) {
+        for(int i=0; i< model.getHeightBookshelf(); i++){
+            for(int j=0; j< model.getLenghtBookshelf(); j++){
+                if((model.getPlayerByUsername().get(playerName)).getBookshelf()[i][j]!=null){
+                    ImageView tile = new ImageView(new Image(getClass().getResourceAsStream(pickTileImage(( model.getPlayerByUsername().get(playerName)).getBookshelf()[i][j].getType(), (model.getPlayerByUsername().get(playerName)).getBookshelf()[i][j].getId()))));
+                    tile.setFitHeight(26);
+                    tile.setFitWidth(30);
+                    shelfGrid.add(tile,j,i);
+                }
             }
         }
     }
@@ -535,18 +566,9 @@ public class ScenesController extends Observable<Event> implements Initializable
         insertInShelf();
     }
 
-    private void updateShelf(GameView model) {
-        for(int i=0; i< model.getHeightBookshelf(); i++){
-            for(int j=0; j< model.getLenghtBookshelf(); j++){
-                if(model.getCurrentBookshelf()[i][j]!=null){
-                    ImageView tile = new ImageView(new Image(getClass().getResourceAsStream(pickTileImage(model.getCurrentBookshelf()[i][j].getType(),model.getCurrentBookshelf()[i][j].getId()))));
-                    tile.setFitHeight(63);
-                    tile.setFitWidth(63);
-                    shelfGrid.add(tile,j,i);
-                }
-            }
-        }
-    }
+
+
+
 
     public String pickTileImage(Type type, int id) {
         int ID = id+1;
@@ -631,7 +653,7 @@ public class ScenesController extends Observable<Event> implements Initializable
     public void updateStack(GameView model) {
         int sizeStack1 = model.getFirstCommonGoal().size();
         int sizeStack2 = model.getSecondCommonGoal().size();
-        getNewStackScore(sizeStack1,model,2,stack1);
+        getNewStackScore(sizeStack1,model,1,stack1);
         getNewStackScore(sizeStack2,model,2,stack2);
     }
 

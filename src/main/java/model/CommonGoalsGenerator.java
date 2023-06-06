@@ -8,7 +8,7 @@ import java.util.Random;
 public class CommonGoalsGenerator {
     private final CommonGoal first, second;
     public CommonGoalsGenerator(int playerNumber){
-        ArrayList<CommonGoal> commonGoals = new ArrayList<CommonGoal>();
+        ArrayList<CommonGoal> commonGoals = new ArrayList<>();
         commonGoals.add( new CheckAngles(0,playerNumber));
         commonGoals.add( new CheckColumnDifferent(0,playerNumber, 2, true));
         commonGoals.add( new CheckColumnDifferent(0,playerNumber, 3, false));
@@ -24,12 +24,12 @@ public class CommonGoalsGenerator {
 
         Random randomInt = new Random();
 
-        int index = randomInt.nextInt(commonGoals.size()-1);
+        int index = randomInt.nextInt(commonGoals.size());
         this.first = commonGoals.get(index);
         commonGoals.remove(index);
         this.first.setRomanNumber(1);
 
-        index = randomInt.nextInt(commonGoals.size()-1);
+        index = randomInt.nextInt(commonGoals.size());
         this.second = commonGoals.get(index);
         this.second.setRomanNumber(2);
 

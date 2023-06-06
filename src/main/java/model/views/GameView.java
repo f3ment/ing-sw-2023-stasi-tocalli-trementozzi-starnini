@@ -66,6 +66,14 @@ public class GameView implements Serializable {
         return viewBookshelfList2;
     }
 
+    public Map<String,PlayerView> getPlayerByUsername(){
+        Map<String,PlayerView> mapPlayerByUsername = new HashMap<>();
+        for (Player player : model.getListPlayer()) {
+            mapPlayerByUsername.put(player.getUsername(), new PlayerView(player));
+        }
+        return mapPlayerByUsername;
+    }
+
 
     public ItemTiles[][] getParticularBookshelf(int x){
         return (ItemTiles[][])getListBookshelf().get(x);
@@ -98,7 +106,7 @@ public class GameView implements Serializable {
 
     public ArrayListView getFirstCommonGoal(){
         Stack<ScoringToken> stack=model.getFirstCommonGoal().getStack();
-        ArrayList<ScoringToken> viewStack= new ArrayList<ScoringToken>();
+        ArrayList<ScoringToken> viewStack= new ArrayList<>();
         for (ScoringToken scoringToken : stack) {
             viewStack.add(new ScoringToken(scoringToken.getScore(), scoringToken.getNumber()));
         }
