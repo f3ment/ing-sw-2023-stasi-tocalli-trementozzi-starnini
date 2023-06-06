@@ -54,15 +54,15 @@ class PlayerTest {
 
             player = position.getPlayer();
 
-            player.setToken(token2, secondCommonGoal.getRomanNumber());
-            player.setToken(token1, secondCommonGoal.getRomanNumber());
+            player.setToken(token2, token1.getNumber());
+            player.setToken(token1, token2.getNumber());
 
 
             assertEquals(player.getScore(), token2.getScore() + token1.getScore());
             System.out.println("Test passato!");
 
-            assertEquals(token1, player.getTokenById(0));
-            assertEquals(token2, player.getTokenById(1));
+            assertEquals(token1, player.getTokenById(1));
+            assertEquals(token2, player.getTokenById(2));
 
 
         }catch (Exception e){

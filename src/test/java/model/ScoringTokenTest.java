@@ -20,7 +20,7 @@ class ScoringTokenTest {
     void TokenMainFunctions(){
         scoringtoken = new ScoringToken(6,2);
         try {
-            personalGoal = new PersonalGoal(new HashMap<>());
+            personalGoal = new PersonalGoal(new HashMap<>(),1);
             bookshelf = new Bookshelf();
             tablePosition = new TablePosition("Mario",personalGoal,bookshelf);
 
