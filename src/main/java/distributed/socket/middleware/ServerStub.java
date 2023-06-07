@@ -23,6 +23,9 @@ public class ServerStub implements Server {
     private ObjectOutputStream oos;
     private ObjectInputStream ios;
 
+    private Object inputlock = new Object();
+    private Object outputlock = new Object();
+
     public ServerStub(String ip, int port){
         this.ip = ip;
         this.port = port;
@@ -31,7 +34,6 @@ public class ServerStub implements Server {
     public void register(Client client) throws RemoteException {
         try {
             this.socket = new Socket(ip, port);
-            //ordine importante, fare diversamente crea deadlock
             try{
                 this.oos = new ObjectOutputStream(socket.getOutputStream());
             }catch(IOException e){
@@ -58,11 +60,13 @@ public class ServerStub implements Server {
                 System.err.println("Interrupted Exception");
             }
             close();
-        }else {
+        } else {
             try {
-                oos.writeObject(message);
-                oos.reset();
-                oos.flush();
+                synchronized (outputlock){
+                    oos.writeObject(message);
+                    oos.reset();
+                    oos.flush();
+                }
             } catch (IOException e) {
                 throw new RemoteException("Cannot send Message : " + e.getMessage() );
             }
@@ -72,21 +76,22 @@ public class ServerStub implements Server {
 
     public void receive(Client client) throws RemoteException{
         Message message;
-        try{
-            message = (Message) ios.readObject();
-        }catch (IOException e ){
-            throw new RemoteException("Cannot receive Message : " + e.getMessage() + Arrays.toString(e.getStackTrace()));
-        }catch (ClassNotFoundException e){
-            throw new RemoteException("Cannot cast Message " + e.getMessage());
-        }
+            try {
+                synchronized (inputlock){
+                    message = (Message) ios.readObject();
+                }
+            } catch (IOException e) {
+                throw new RemoteException("Cannot receive Message : " + e.getMessage() + Arrays.toString(e.getStackTrace()));
+            } catch (ClassNotFoundException e) {
+                throw new RemoteException("Cannot cast Message " + e.getMessage());
+            }
         client.update(message);
+
     }
 
     public void close() throws RemoteException {
         try {
             socket.close();
-            System.exit(1);
-
         }catch(IOException e){
             throw new RemoteException("Cannot close socket " + e.getMessage());
         }

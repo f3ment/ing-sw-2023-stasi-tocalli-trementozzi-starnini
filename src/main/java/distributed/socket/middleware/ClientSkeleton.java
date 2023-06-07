@@ -18,6 +18,9 @@ public class ClientSkeleton implements Client {
     private final ObjectOutputStream oos;
     private final ObjectInputStream ios;
 
+    private Object inputlock = new Object();
+    private Object outputlock = new Object();
+
     public ClientSkeleton(Socket socket){
         try {
             this.oos = new ObjectOutputStream(socket.getOutputStream());
@@ -35,7 +38,9 @@ public class ClientSkeleton implements Client {
     public void receive(Server server) throws RemoteException{
         Message message;
         try {
-            message =(Message) ios.readObject();
+            synchronized (inputlock){
+                message = (Message) ios.readObject();
+            }
         } catch (IOException ex) {
             throw new RuntimeException("Cannot receive event : " + ex.getMessage());
         } catch (ClassNotFoundException ex) {
@@ -47,9 +52,11 @@ public class ClientSkeleton implements Client {
     @Override
     public void update(Message message) throws RemoteException {
         try{
-            oos.writeObject(message);
-            oos.reset();
-            oos.flush();
+            synchronized (outputlock){
+                oos.writeObject(message);
+                oos.reset();
+                oos.flush();
+            }
         }catch(IOException e){
             throw new RemoteException("Cannot send event : " +e.getMessage());
         }
