@@ -307,4 +307,8 @@ public class Lobby {
     public String getWinner() {
         return winner;
     }
+
+    public GameView getModel() {
+        return new GameView(model);
+    }
 }

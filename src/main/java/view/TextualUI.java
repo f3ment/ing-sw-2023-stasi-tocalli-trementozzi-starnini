@@ -65,13 +65,13 @@ public class TextualUI extends View implements Runnable {
             System.out.println("This is the chat : ");
             try{
                 message.getChat().getLastTen().forEach(e ->
-                        System.out.println((e.getSender().equals(username)? "You" : e.getSender()) + (e.getReceiver()!=null && e.getReceiver().equals(username)? " to You" : "") + " > " + e.getMessage()));
+                        System.out.println((e.getSender().equals(username)? "You" : e.getSender()) + (e.getReceiver()!=null && e.getSender().equals(username)? " to " + e.getReceiver() : "") + " > " + e.getMessage()));
             }catch (Exception e){
                 System.err.println(e.getMessage());
             }
         }else if (message.getEvent().equals(Event.SEND_MESSAGE)) {
                 ChatMessage last = message.getChat().getLast();
-                if (!last.getSender().equals(username)) {
+                if (!last.getSender().equals(username) && message.getChat().getActive().contains(username)) {
                     System.out.println( last.getSender() + (last.getReceiver()!=null && last.getReceiver().equals(username)? " to You" : "") + " > " + last.getMessage());
                 }
         }else if(message.getEvent().equals(Event.EXIT_CHAT) && message.getUserName().equals(username)){
@@ -129,6 +129,8 @@ public class TextualUI extends View implements Runnable {
                     System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
                     System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
                 }
+
+                //todo nasce eccezione perché la lobby non esiste più e di conseguenza NullPpointer su ServerImpl : 86
                 setChanged();
                 notifyObservers(new Message(Event.FINISH_MATCH));
             } else if (message.getModel() == null || message.getModel().getCurrentPlayer().getUsername().equals(username)) {

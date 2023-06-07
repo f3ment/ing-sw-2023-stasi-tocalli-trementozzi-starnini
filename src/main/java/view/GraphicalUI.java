@@ -53,7 +53,20 @@ public class GraphicalUI extends View implements Runnable {
      * @param message the message received from the server
      */
     public void update(Message message) {
-        if (message.getEvent().equals(Event.SEND_MESSAGE)) {
+        if (message.getEvent().equals(Event.RECONNECTION)){
+            Platform.runLater(() -> {
+                username = GuiController.getUsername();
+
+                try {
+                    HelloApplication.setScene("game");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                initGameScene(message.getModel());
+                GuiController.setMyTurn(false, "You have been reconnected succesfully \n to the game. " + message.getModel().getCurrentPlayer().getUsername());
+
+            });
+        }else if (message.getEvent().equals(Event.SEND_MESSAGE)) {
                 Platform.runLater(() -> {
                     GuiController.updateChat(message.getChat().getLast());
                 });
@@ -90,9 +103,9 @@ public class GraphicalUI extends View implements Runnable {
                     GuiController.insertNegative(message.getModel());
                 });
             } else if (message.getEvent().equals(Event.PLAYER_INSERT_POSITIVE)) {
-               Platform.runLater(() -> {
-                   GuiController.insertPositive(message.getModel());
-               });
+                Platform.runLater(() -> {
+                    GuiController.insertPositive(message.getModel());
+                });
             } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
                 startNewTurn(message.getModel());
             } else if (message.getEvent().equals(Event.NEW_TURN)) {
@@ -120,6 +133,7 @@ public class GraphicalUI extends View implements Runnable {
                 });
             }
         }
+
     }
 
     private void startNewTurn(GameView model) {
