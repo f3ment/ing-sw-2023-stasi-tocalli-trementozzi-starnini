@@ -17,7 +17,15 @@ class CheckAnglesTest {
     @Test
     void validate() {
         this.cm = new CheckAngles(1,3);
-
+        /**
+         *      0 1 2 3 4
+         *  0   C       C
+         *  1   C       C
+         *  2   C       C
+         *  3   C       C
+         *  4   C       C
+         *  5   C       C
+         */
         try{
             this.bookshelf = new Bookshelf();
             this.bookshelf.setChoosenColumn(0);
@@ -42,15 +50,17 @@ class CheckAnglesTest {
 
             this.bookshelf = new Bookshelf();
             assertNull(cm.validate(bookshelf));
-
+            System.out.println("CheckAnglesTest validate: OK");
         }catch (Exception e){
             System.out.println(e.getMessage());
             System.out.println(Arrays.toString(e.getStackTrace()));
-
-
+            System.out.println("CheckAnglesTest validate: FAIL");
         }
     }
 
+    /**
+     * Test validate with an angle with Type different from CATS
+     */
     @Test
     void validateNull() {
         this.cm = new CheckAngles(1,3);
@@ -75,13 +85,32 @@ class CheckAnglesTest {
 
             this.scoringToken = new ScoringToken(6, 1);
             assertNull(cm.validate(bookshelf));
+            System.out.println("CheckAnglesTest validateNull: OK");
         }catch (Exception e){
             System.out.println(e.getMessage());
             System.out.println(Arrays.toString(e.getStackTrace()));
-
-
+            System.out.println("CheckAnglesTest validateNull: FAIL");
         }
     }
+
+
+    /**
+     * Test validate with an empty bookshelf
+     */
+    @Test
+    void validateEmptyBookshelf(){
+        this.cm = new CheckAngles(1,3);
+        try{
+            this.bookshelf = new Bookshelf();
+            assertNull(cm.validate(bookshelf));
+            System.out.println("CheckAnglesTest validateEmptyBookshelf: OK");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            System.out.println(Arrays.toString(e.getStackTrace()));
+            System.out.println("CheckAnglesTest validateEmptyBookshelf: FAIL");
+        }
+    }
+
 
 
     @Test
