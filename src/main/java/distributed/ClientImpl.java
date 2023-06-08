@@ -82,6 +82,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
                     server.update(this, message);
                 } catch (RemoteException e) {
                     System.err.println("Error while updating server : " + e.getMessage() + ". Skipping the update...");
+
                 }
             });
         }else {
@@ -118,7 +119,16 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
                    try{
                        sr.update(cl,new Message(Event.PING));
                    }catch (RemoteException e){
+                       Thread.interrupted();
                        System.err.println("Error while updating server : " + e.getMessage() + ". Skipping the update...");
+                       System.out.println("Error server side");
+                       try {
+                           Thread.sleep(5000);
+                       } catch (InterruptedException ex) {
+                           throw new RuntimeException(ex);
+                       }
+                       //view.close();
+                       //TODO close per cli e gui
                    }
                 }
             }
