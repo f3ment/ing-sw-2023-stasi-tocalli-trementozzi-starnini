@@ -26,7 +26,7 @@ Model-View-Controller - MVC per progettare l'intero sistema.
 |:-------------------------------|:------------------------------------------------------------------------:|
 | Regole semplificate            |     ![#c5f015](https://via.placeholder.com/15/008000/000000?text=+)      |
 | Regole complete                |     ![#c5f015](https://via.placeholder.com/15/008000/000000?text=+)      |
-| Socket                         |            ![#c5f015](https://placehold.it/15/ffdd00/ffdd00)             |
+| Socket                         |                 ![#c5f015](https://via.placeholder.com/15/008000/000000?text=+)        |
 | RMI                            |     ![#c5f015](https://via.placeholder.com/15/008000/000000?text=+)      |
 | GUI                            |     ![#c5f015](https://via.placeholder.com/15/008000/000000?text=+)      |
 | CLI                            |     ![#c5f015](https://via.placeholder.com/15/008000/000000?text=+)      |
@@ -34,6 +34,3 @@ Model-View-Controller - MVC per progettare l'intero sistema.
 | Resilienza alle disconnessioni |     ![#c5f015](https://via.placeholder.com/15/008000/000000?text=+)      |
 | Chat                           |     ![#c5f015](https://via.placeholder.com/15/008000/000000?text=+)      |
 |Persistenza|     ![#c5f015](https://via.placeholder.com/15/ff0000/000000?text=+)      |
-
-### Socket :
- - se il client utilizza un'architettura socket e una Graphical User Interface, il client crasha 
