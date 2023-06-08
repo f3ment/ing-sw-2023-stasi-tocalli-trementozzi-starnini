@@ -21,6 +21,7 @@ public class CheckEqualsDiagonal extends CommonGoal{
 
     @Override
     public ScoringToken validate(Bookshelf bookshelf) {
+        if (bookshelf == null) return null;
         // ho 4 possibili 'start' per la diagonale:
         // (0,0), (1,0) che proseguono in direzione sud-est
         // (0,4), (1,4) che proseguono in direzione sud-ovest

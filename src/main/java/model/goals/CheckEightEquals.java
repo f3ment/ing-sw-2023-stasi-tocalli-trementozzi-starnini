@@ -21,6 +21,7 @@ public class CheckEightEquals extends CommonGoal{
     }
     @Override
     public ScoringToken validate(Bookshelf bookshelf) {
+        if (bookshelf == null) return null;
         HashMap<Type,Integer> Counter = new HashMap<Type,Integer>();
         Counter.put(Type.CATS , 0);
         Counter.put(Type.BOOKS , 0);
