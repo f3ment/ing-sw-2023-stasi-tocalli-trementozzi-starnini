@@ -7,6 +7,7 @@ import model.Type;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import static junit.framework.Assert.assertNull;
@@ -26,6 +27,16 @@ class CheckEightEqualsTest {
         try {
 
             //testing positive case: #CATS == 8
+
+            /**
+             *   0 1 2 3 4
+             * 0
+             * 1 C
+             * 2 *     *
+             * 3 *     * C
+             * 4 C     * C
+             * 5 C   C C C
+             */
 
             bookshelf = new Bookshelf();
 
@@ -55,9 +66,24 @@ class CheckEightEqualsTest {
 
             scoringToken = new ScoringToken(8 , 1);
             assertTrue(scoringToken.getScore() == cm.validate(bookshelf).getScore());
+            System.out.println("CheckEightEqualsTest validate 1: OK");
+        }catch (Exception e) {
+            System.out.println("CheckEightEqualsTest validate 1: FAIL");
+            System.out.println(e.getMessage());
+            System.out.println(Arrays.toString(e.getStackTrace()));
+        }
 
+        try {
             //testing negative case: #CATS = 7
-
+            /**
+             *   0 1 2 3 4
+             * 0
+             * 1 C
+             * 2 *     *
+             * 3 *     * C
+             * 4 C     * C
+             * 5 C     C C
+             */
             bookshelf = new Bookshelf();
 
             bookshelf.setChoosenColumn(0);
@@ -83,14 +109,25 @@ class CheckEightEqualsTest {
             scoringToken = new ScoringToken(8, 1);
 
             assertNull(cm.validate(bookshelf));
-
-
-            System.out.println("Test passato!");
-        }
-        catch(Exception e){
-            System.out.println("Test fallito!");
+            System.out.println("CheckEightEqualsTest validate 2: OK");
+        }catch(Exception e){
+            System.out.println("CheckEightEqualsTest validate 2: FAIL");
             System.out.println(e.getMessage());
             System.out.println(Arrays.toString(e.getStackTrace()));
+        }
+    }
+
+    @Test
+    void validateNull(){
+        CommonGoal commonGoal = new CheckEightEquals(1,4);
+        assertNull(commonGoal.validate(null));
+        System.out.println("CheckEightEqualsTest validateNull 1: OK");
+        try {
+            assertNull(commonGoal.validate(new Bookshelf()));
+            System.out.println("CheckEightEqualsTest validateNull 2: OK");
+        } catch (IOException e) {
+            System.out.println("CheckEightEqualsTest validateNull 2: FAIL");
+            System.out.println(e.getMessage());
         }
     }
 
