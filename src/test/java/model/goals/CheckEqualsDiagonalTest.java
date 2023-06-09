@@ -6,6 +6,7 @@ import model.ScoringToken;
 import model.Type;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,7 +18,7 @@ class CheckEqualsDiagonalTest {
     @Test
     void validate() {
         cm = new CheckEqualsDiagonal(1 , 4);
-        try{
+        try {
         /*
         x
         x x
@@ -61,7 +62,11 @@ class CheckEqualsDiagonalTest {
             scoringToken = new ScoringToken(8, 1);
 
             assertTrue(scoringToken.getScore() == cm.validate(bookshelf).getScore());
-
+            System.out.println("CheckEqualsDiagonalTest validate 1 : OK");
+        } catch (Exception e) {
+            System.out.println("CheckEqualsDiagonalTest validate 1 : FAIL");
+            System.out.println(e.getMessage());
+        }
         /*
 
         x
@@ -70,7 +75,7 @@ class CheckEqualsDiagonalTest {
         x x x x
         x x x x x
          */
-
+        try{
             bookshelf = new Bookshelf();
 
             bookshelf.setChoosenColumn(0);
@@ -101,6 +106,11 @@ class CheckEqualsDiagonalTest {
             scoringToken = new ScoringToken(6, 1);
 
             assertTrue(scoringToken.getScore() == cm.validate(bookshelf).getScore());
+            System.out.println("CheckEqualsDiagonalTest validate 2 : OK");
+        }catch (Exception e){
+            System.out.println("CheckEqualsDiagonalTest validate 2 : FAIL");
+            System.out.println(e.getMessage());
+        }
 
         /*
                 x
@@ -109,6 +119,8 @@ class CheckEqualsDiagonalTest {
           x x x x
         x x x x x
          */
+        try{
+
             bookshelf = new Bookshelf();
 
             bookshelf.setChoosenColumn(4);
@@ -139,7 +151,13 @@ class CheckEqualsDiagonalTest {
             scoringToken = new ScoringToken(4, 1);
 
             assertTrue(scoringToken.getScore() == cm.validate(bookshelf).getScore());
-        /*
+            System.out.println("CheckEqualsDiagonalTest validate 3 : OK");
+        }catch (Exception e){
+            System.out.println("CheckEqualsDiagonalTest validate 3 : FAIL");
+            System.out.println(e.getMessage());
+        }
+
+            /*
                 x
               x x
             x x x
@@ -147,7 +165,7 @@ class CheckEqualsDiagonalTest {
         x x x x x
         x x x x x
          */
-
+        try{
             bookshelf = new Bookshelf();
 
             bookshelf.setChoosenColumn(4);
@@ -183,9 +201,16 @@ class CheckEqualsDiagonalTest {
             scoringToken = new ScoringToken(2, 1);
 
             assertTrue(scoringToken.getScore() == cm.validate(bookshelf).getScore());
+            System.out.println("CheckEqualsDiagonalTest validate 4 : OK");
+        }catch (Exception e){
+            System.out.println("CheckEqualsDiagonalTest validate 4 : FAIL");
+            System.out.println(e.getMessage());
+        }
+
 
             cm = new CheckEqualsDiagonal(1,4);
 
+        try{
             bookshelf = new Bookshelf();
 
             //tipi diversi sulle diagonali
@@ -220,12 +245,26 @@ class CheckEqualsDiagonalTest {
             bookshelf.insert(new ItemTiles(Type.FRAMES, 1));
 
             assertNull(cm.validate(bookshelf));
-
-            //bookshelf vuota
-            assertNull(cm.validate(new Bookshelf()));
-            System.out.println("Test passato!");
+            System.out.println("CheckEqualsDiagonalTest validate 5 : OK");
         }catch (Exception e){
-            System.out.println("Test non passato!");
+            System.out.println("CheckEqualsDiagonalTest validate 5 : FAIL");
+            System.out.println(e.getMessage() + Arrays.toString(e.getStackTrace()));
+        }
+    }
+
+    /**
+     * Test validate method with null parameter or empty bookshelf
+     */
+    @Test
+    void validateNull(){
+        CommonGoal commonGoal = new CheckEqualsDiagonal(1,4);
+        assertNull(commonGoal.validate(null));
+        System.out.println("CheckEqualsDiagonal validateNull 1: OK");
+        try {
+            assertNull(commonGoal.validate(new Bookshelf()));
+            System.out.println("CheckEqualsDiagonal validateNull 2: OK");
+        } catch (IOException e) {
+            System.out.println("CheckEqualsDiagonal validateNull 2: FAIL");
             System.out.println(e.getMessage() + Arrays.toString(e.getStackTrace()));
         }
     }

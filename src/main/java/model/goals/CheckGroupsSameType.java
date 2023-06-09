@@ -32,13 +32,13 @@ public class CheckGroupsSameType extends CommonGoal{
 
     @Override
     public ScoringToken validate(Bookshelf bookshelf)  {
+        if (bookshelf == null) return null;
         boolean[][] batrix = new boolean[bookshelf.getHeight()][bookshelf.getLength()];
         int rep = 0;
         boolean flag = false;
-        try{
-            for (int i = 0; i < bookshelf.getHeight(); i++) {
-                for (int j = 0; j < bookshelf.getLength(); j++) {
-
+        for (int i = 0; i < bookshelf.getHeight(); i++) {
+            for (int j = 0; j < bookshelf.getLength(); j++) {
+                try{
                     if (j <= bookshelf.getLength() - groupLength) {
                         for (int k = 1; k < groupLength; k++) {
                             if (batrix[i][j] || batrix[i][j + k]) {
@@ -60,7 +60,11 @@ public class CheckGroupsSameType extends CommonGoal{
                             flag = false;
                         }
                     }
+                }catch (Exception e){
+                    continue;
+                }
 
+                try{
                     if (i <= bookshelf.getHeight() - groupLength) {
                         for (int k = 1; k < groupLength; k++) {
                             if (batrix[i][j] || batrix[i + k][j]) {
@@ -82,14 +86,14 @@ public class CheckGroupsSameType extends CommonGoal{
                             flag = false;
                         }
                     }
-                    if (rep == repetitions) {
-                        return getStack().pop();
-                    }
+                }catch (Exception e){
+                    continue;
+                }
+                if (rep == repetitions) {
+                    return getStack().pop();
                 }
             }
-            return null;
-        }catch(Exception e){
-            return null;
         }
+        return null;
     }
 }
