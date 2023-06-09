@@ -7,6 +7,7 @@ import model.Type;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import static junit.framework.Assert.*;
@@ -137,11 +138,59 @@ public class CheckSquareTest {
             scoringToken = new ScoringToken(4,1);
             assertEquals(scoringToken.getScore(), cm.validate(bookshelf).getScore());
 
+            bookshelf = new Bookshelf();
+
+            bookshelf.setChoosenColumn(0);
+            bookshelf.insert(new ItemTiles(Type.GAMES,1));
+            bookshelf.insert(new ItemTiles(Type.GAMES,1));
+
+            bookshelf.setChoosenColumn(1);
+            bookshelf.insert(new ItemTiles(Type.GAMES,1));
+            bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+
+            bookshelf.setChoosenColumn(2);
+            bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+            bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+
+            assertNull(cm.validate(bookshelf));
+
+            bookshelf = new Bookshelf();
+
+            bookshelf.setChoosenColumn(0);
+            bookshelf.insert(new ItemTiles(Type.GAMES,1));
+            bookshelf.insert(new ItemTiles(Type.GAMES,1));
+
+            bookshelf.setChoosenColumn(1);
+            bookshelf.insert(new ItemTiles(Type.GAMES,1));
+            bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+
+            bookshelf.setChoosenColumn(2);
+            bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+            bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+
+            bookshelf.setChoosenColumn(3);
+            bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+            bookshelf.insert(new ItemTiles(Type.TROPHIES,1));
+            assertNull(cm.validate(bookshelf));
+
             System.out.println("Test passato");
         }catch(Exception e) {
             System.out.println("Non riuscito!");
             System.out.println(e.getMessage());
             System.out.println(Arrays.toString(e.getStackTrace()));
+        }
+    }
+
+    @Test
+    void validateNull(){
+        CommonGoal commonGoal = new CheckSquare(2,3);
+        assertNull(commonGoal.validate(null));
+        System.out.println("CheckSquare validateNull 1 : OK");
+        try {
+            assertNull(commonGoal.validate(new Bookshelf()));
+            System.out.println("CheckSquare validateNull 2 : OK");
+        } catch (IOException e) {
+            System.out.println("CheckSquare validateNull 2 : FAIL");
         }
     }
 

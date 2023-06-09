@@ -57,6 +57,7 @@ public class CheckSquare extends CommonGoal{
         }*/
     @Override
     public ScoringToken validate(Bookshelf bookshelf){
+        if (bookshelf == null) return null;
         boolean[][] batrix = new boolean[bookshelf.getHeight()][bookshelf.getLength()];
         int found=0;
 
