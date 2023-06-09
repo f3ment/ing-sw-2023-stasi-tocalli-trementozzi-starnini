@@ -137,6 +137,8 @@ public class ScenesController extends Observable<Event> implements Initializable
 
     private int nDraws = 0;
 
+    private boolean endGame = false;
+
     private ArrayList<ArrayList<Integer>> drawen = new ArrayList<>(0);
     @FXML
     private Button button1;
@@ -161,6 +163,8 @@ public class ScenesController extends Observable<Event> implements Initializable
     private GridPane shelfGrid4;
     @FXML
     private GridPane shelfGrid2;
+    @FXML
+    private ImageView endToken;
 
     /**
      * This method will change the welcome page to the login page
@@ -555,6 +559,9 @@ public class ScenesController extends Observable<Event> implements Initializable
         hand.getChildren().clear();
         tileOrder.clear();
         playerHand.clear();
+        if(model.myBookshelfIsFull() && !endGame) {
+            setEndGameToken(model);
+        }
         new Thread(()->{
             setChanged();
             notifyObservers(new Message(Event.PLAYER_FINISH));
@@ -691,6 +698,27 @@ public class ScenesController extends Observable<Event> implements Initializable
 
     public void cleanBoard() {
         boardGrid.getChildren().clear();
+    }
+
+    public void setEndGameToken(GameView model) {
+        chair1.setVisible(true);
+        chair1 = new ImageView(endToken.getImage());
+        endToken.setImage(null);
+        endToken.setVisible(false);
+    }
+
+    public void checkEndTokenAssigned(GameView model) {
+        this.endGame = model.getEndGameToken();
+        if(endGame){
+            dialogText.setText(model.GetShelfCompletedBy().toUpperCase() + " has completed his shelf!");
+            endToken.setImage(null);
+            endToken.setVisible(false);
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
 

@@ -25,7 +25,8 @@ public class Game extends Observable<Event> implements Serializable {
     private final Board board;
 
     private String winner;
-
+    private boolean endGameToken;
+    private String shelfCompletedBy;
 
 
     public Game(ArrayList<String> usernames) throws IOException {
@@ -58,6 +59,7 @@ public class Game extends Observable<Event> implements Serializable {
         this.playerNumber = usernames.size();
         this.bag = new Bag();
         this.lastIndex = -1;
+        this.endGameToken = false;
 
         //initializes the personal goal deck with 12 cards
         //every card is a hashmap of 6 couplets of key (Type) and value (pair of coordinates)
@@ -269,11 +271,24 @@ public class Game extends Observable<Event> implements Serializable {
         if(getCurrentPosition().getBookshelf().isFull()){
             setEndGame(true);
             getCurrentPosition().getPlayer().setScore(getCurrentPosition().getPlayer().getScore()+1);
+            setEndGameToken(true,getCurrentPosition().getPlayer().getUsername());
         }
         validateAdjacent(getCurrentPosition());
         validateCommonGoal(getCurrentPosition());
         validatePersonalGoal(getCurrentPosition());
         setCurrentPosition();
+    }
+
+    private void setEndGameToken(boolean b, String username) {
+        this.endGameToken=b;
+        this.shelfCompletedBy=username;
+    }
+
+    public boolean getEndGameToken(){
+        return this.endGameToken;
+    }
+    public String getShelfCompletedBy() {
+        return shelfCompletedBy;
     }
 
     /*

@@ -54,6 +54,7 @@ public class GraphicalUI extends View implements Runnable {
      */
     public void update(Message message) {
         if (message.getEvent().equals(Event.RECONNECTION)){
+            System.out.println("sono riconnesso");
             Platform.runLater(() -> {
                 username = GuiController.getUsername();
 
@@ -111,7 +112,13 @@ public class GraphicalUI extends View implements Runnable {
             } else if (message.getEvent().equals(Event.NEW_TURN)) {
                 startNewTurn(message.getModel());
             } else if (message.getEvent().equals(Event.FINISH_MATCH)) {
-                //todo gestire finestra vincitore fine partita
+                Platform.runLater(() -> {
+                    try {
+                        HelloApplication.setScene("endGame");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             } else if (message.getEvent().equals(Event.LOGIN)) {
                 Platform.runLater(() -> {
                     try {
@@ -139,6 +146,7 @@ public class GraphicalUI extends View implements Runnable {
     private void startNewTurn(GameView model) {
         Platform.runLater(() -> {
             fillBoard(model);
+            GuiController.checkEndTokenAssigned(model);
             GuiController.setMyTurn(true, null);
             GuiController.letDraw();
             GuiController.updateStack(model);

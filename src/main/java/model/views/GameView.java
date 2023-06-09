@@ -94,6 +94,10 @@ public class GameView implements Serializable {
         return viewCurrentBookshelf;
     }
 
+    public boolean getEndGameToken(){
+        return model.getEndGameToken();
+    }
+
     public ArrayListView getPickedCards(){
         ArrayList<ItemTiles> hand= model.getPickedCards();
         ArrayList<ItemTiles> viewHand= new ArrayList<ItemTiles>();
@@ -232,5 +236,12 @@ public class GameView implements Serializable {
     }
 
 
+    public boolean myBookshelfIsFull() {
+        return model.getCurrentPosition().getPlayer().getCurrentPosition().getBookshelf().isFull();
+    }
+
+    public String GetShelfCompletedBy(){
+        return model.getShelfCompletedBy();
+    }
 }
 

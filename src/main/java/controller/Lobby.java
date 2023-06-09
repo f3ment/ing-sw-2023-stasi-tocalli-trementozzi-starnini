@@ -291,7 +291,7 @@ public class Lobby {
             public void run() {
                 valid=false;
             }
-        },20000);
+        },60000);
     }
     public void resetFinalTimer(){
         timerOneLeftPlayer.cancel();

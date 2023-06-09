@@ -155,4 +155,5 @@ public class Player implements Serializable {
     public void setPersonalGoalScore(int personalGoalScore) {
         this.personalGoalScore = personalGoalScore;
     }
+
 }
