@@ -38,6 +38,7 @@ public class CheckGroupsSameType extends CommonGoal{
         boolean flag = false;
         for (int i = 0; i < bookshelf.getHeight(); i++) {
             for (int j = 0; j < bookshelf.getLength(); j++) {
+                flag = false;
                 try{
                     if (j <= bookshelf.getLength() - groupLength) {
                         for (int k = 1; k < groupLength; k++) {
@@ -63,8 +64,18 @@ public class CheckGroupsSameType extends CommonGoal{
                 }catch (Exception e){
                     continue;
                 }
+                if (rep == repetitions) {
+                    return getStack().pop();
+                }
+            }
+        }
 
-                try{
+
+        for (int i = 0; i < bookshelf.getHeight(); i++) {
+            for (int j = 0; j < bookshelf.getLength(); j++) {
+                flag = false;
+                try {
+
                     if (i <= bookshelf.getHeight() - groupLength) {
                         for (int k = 1; k < groupLength; k++) {
                             if (batrix[i][j] || batrix[i + k][j]) {
@@ -86,7 +97,7 @@ public class CheckGroupsSameType extends CommonGoal{
                             flag = false;
                         }
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     continue;
                 }
                 if (rep == repetitions) {

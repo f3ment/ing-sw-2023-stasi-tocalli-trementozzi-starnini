@@ -85,10 +85,12 @@ public class CheckGroupsSameTypeTest {
         }
     }
 
+
+
     @Test
-    void sixGroupswithSixDiffTypes(){
+    void fourGroupswithFourDiffTypes(){
         try {
-            cm = new CheckGroupsSameType(1,4, 2,6);
+            cm = new CheckGroupsSameType(1,4, 4,4);
             scoringToken = new ScoringToken(8,1);
             bookshelf = new Bookshelf();
 
@@ -124,16 +126,119 @@ public class CheckGroupsSameTypeTest {
     }
 
     @Test
+    void threeGroupsTricky(){
+        try {
+            /**
+             *   0 1 2 3 4
+             * 0
+             * 1
+             * 2         G
+             * 3         G
+             * 4         G
+             * 5   G G G G
+             */
+
+            //tricky angle, it is just one couple, or vertical or horizontal, so it counts as one group
+            cm = new CheckGroupsSameType(1,4, 4,4);
+            scoringToken = new ScoringToken(8,1);
+            bookshelf = new Bookshelf();
+
+            bookshelf.setChoosenColumn(0);
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+
+            bookshelf.setChoosenColumn(1);
+            bookshelf.insert(new ItemTiles(Type.GAMES, 1));
+            bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+            bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+            bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+            bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+
+            bookshelf.setChoosenColumn(2);
+            bookshelf.insert(new ItemTiles(Type.GAMES, 1));
+
+            bookshelf.setChoosenColumn(3);
+            bookshelf.insert(new ItemTiles(Type.GAMES, 1));
+
+            bookshelf.setChoosenColumn(4);
+            bookshelf.insert(new ItemTiles(Type.GAMES, 1));
+            bookshelf.insert(new ItemTiles(Type.GAMES, 1));
+            bookshelf.insert(new ItemTiles(Type.GAMES, 1));
+            bookshelf.insert(new ItemTiles(Type.GAMES, 1));
+
+            assertNull(cm.validate(bookshelf));
+            //assertEquals(scoringToken.getScore(), cm.validate(bookshelf).getScore());
+            System.out.println("CheckGroupsSameTypeTest threeGroupsTricky: OK");
+        } catch (Exception e) {
+            System.out.println("CheckGroupsSameTypeTest threeGroupsTricky: FAIL");
+            System.out.println(e.getMessage());
+            System.out.println(Arrays.toString(e.getStackTrace()));
+        }
+    }
+
+    @Test
+    void sixGroupswithSixDiffTypes(){
+        try {
+
+            /**
+             *   0 1 2 3 4
+             * 0
+             * 1
+             * 2 T
+             * 3 T     P P
+             * 4 P P B B G
+             * 5 C C T G G
+             */
+            cm = new CheckGroupsSameType(1,4, 2,6);
+            scoringToken = new ScoringToken(8,1);
+            bookshelf = new Bookshelf();
+
+            bookshelf.setChoosenColumn(0);
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+            bookshelf.insert(new ItemTiles(Type.TROPHIES, 1));
+            bookshelf.insert(new ItemTiles(Type.TROPHIES, 1));
+
+            bookshelf.setChoosenColumn(1);
+            bookshelf.insert(new ItemTiles(Type.CATS, 1));
+            bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+
+            bookshelf.setChoosenColumn(2);
+            bookshelf.insert(new ItemTiles(Type.TROPHIES, 1));
+            bookshelf.insert(new ItemTiles(Type.BOOKS, 1));
+
+            bookshelf.setChoosenColumn(3);
+            bookshelf.insert(new ItemTiles(Type.GAMES, 1));
+            bookshelf.insert(new ItemTiles(Type.BOOKS, 1));
+            bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+
+            bookshelf.setChoosenColumn(4);
+            bookshelf.insert(new ItemTiles(Type.GAMES, 1));
+            bookshelf.insert(new ItemTiles(Type.GAMES, 1));
+            bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+
+            assertEquals(scoringToken.getScore(), cm.validate(bookshelf).getScore());
+            System.out.println("CheckGroupsSameTypeTest sixGroupswithSixDiffTypes: OK");
+        } catch (Exception e) {
+            System.out.println("CheckGroupsSameTypeTest sixGroupswithSixDiffTypes: FAIL");
+            System.out.println(e.getMessage());
+            System.out.println(Arrays.toString(e.getStackTrace()));
+        }
+    }
+
+    @Test
     void fiveGroupsTricky(){
         try {
             /**
              *   0 1 2 3 4
              * 0
              * 1
-             * 2
-             * 3
-             * 4         G
-             * 5       G G
+             * 2 T
+             * 3 T
+             * 4 P P B B G
+             * 5 C C T G G
              */
 
             //tricky angle, it is just one couple, or vertical or horizontal, so it counts as one group
@@ -144,13 +249,15 @@ public class CheckGroupsSameTypeTest {
             bookshelf.setChoosenColumn(0);
             bookshelf.insert(new ItemTiles(Type.CATS, 1));
             bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
+            bookshelf.insert(new ItemTiles(Type.TROPHIES, 1));
+            bookshelf.insert(new ItemTiles(Type.TROPHIES, 1));
 
             bookshelf.setChoosenColumn(1);
             bookshelf.insert(new ItemTiles(Type.CATS, 1));
             bookshelf.insert(new ItemTiles(Type.PLANTS, 1));
 
             bookshelf.setChoosenColumn(2);
-            bookshelf.insert(new ItemTiles(Type.GAMES, 1));
+            bookshelf.insert(new ItemTiles(Type.TROPHIES, 1));
             bookshelf.insert(new ItemTiles(Type.BOOKS, 1));
 
             bookshelf.setChoosenColumn(3);
@@ -170,6 +277,8 @@ public class CheckGroupsSameTypeTest {
             System.out.println(Arrays.toString(e.getStackTrace()));
         }
     }
+
+
 
     @Test
     void bookshelfFullSameTypeAssertTrue4of4() {
