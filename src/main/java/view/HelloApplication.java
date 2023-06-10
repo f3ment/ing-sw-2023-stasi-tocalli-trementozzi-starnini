@@ -37,6 +37,10 @@ public class HelloApplication extends Application {
             }
         });
         stage.setTitle("MyShelfie");
+        CurrentStage.setOnCloseRequest(event -> {
+            // Terminate the program
+            System.exit(0);
+        });
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/Publishermaterial/Icon50x50px.png")));
         stage.setScene(new Scene(root));
         stage.show();
@@ -56,6 +60,11 @@ public class HelloApplication extends Application {
         });
         Scene scene = new Scene(root);
         CurrentStage.setScene(scene);
+        CurrentStage.setFullScreen(true);
+        CurrentStage.setOnCloseRequest(event -> {
+            // Terminate the program
+            System.exit(0);
+        });
         CurrentStage.setTitle("MyShelfie-" + source);
         CurrentStage.getIcons().add(new Image(HelloApplication.class.getResourceAsStream("/Images/Publishermaterial/Icon50x50px.png")));
         CurrentStage.show();

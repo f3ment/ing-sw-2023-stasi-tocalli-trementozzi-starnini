@@ -15,7 +15,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import model.*;
 import model.views.GameView;
-import model.views.PlayerView;
 import utils.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -56,6 +55,8 @@ public class ScenesController extends Observable<Event> implements Initializable
     private Label name4;
     @FXML
     private Label scoreLabel4;
+    @FXML
+    private Label winner;
     @FXML
     private Label scoreLabel3;
     @FXML
@@ -165,6 +166,7 @@ public class ScenesController extends Observable<Event> implements Initializable
     private GridPane shelfGrid2;
     @FXML
     private ImageView endToken;
+    private int maxDraw;
 
     /**
      * This method will change the welcome page to the login page
@@ -292,22 +294,22 @@ public class ScenesController extends Observable<Event> implements Initializable
         name2.setText(playerName2);
         updateOtherShelves(model,shelfGrid2,playerName2);
         if(Nplayers >= 3){
-            shelf3.setVisible(true);
+            shelf3.setOpacity(1);
             shelfGrid3.setVisible(true);
             playerName3 = players.get(0).toString();
             players.remove(playerName3);
             name3.setText(playerName3);
-            name3.setVisible(true);
+            name3.setOpacity(1);
             scoreLabel3.setVisible(true);
             score3.setVisible(true);
             updateOtherShelves(model,shelfGrid2,playerName3);
             if(Nplayers == 4){
-                shelf4.setVisible(true);
+                shelf4.setOpacity(1);
                 shelfGrid4.setVisible(true);
                 playerName4 = players.get(0).toString();
                 players.remove(playerName4);
                 name4.setText(playerName4);
-                name4.setVisible(true);
+                name4.setOpacity(1);
                 scoreLabel4.setVisible(true);
                 score4.setVisible(true);
                 updateOtherShelves(model,shelfGrid2,playerName4);
@@ -475,10 +477,22 @@ public class ScenesController extends Observable<Event> implements Initializable
     }
 
     @FXML
-    public void letDraw() {
-        button1.setVisible(true);
-        button2.setVisible(true);
-        button3.setVisible(true);
+    public void letDraw(int max) {
+        maxDraw = max;
+        switch (max){
+            case 1:
+                button1.setVisible(true);
+                break;
+            case 2:
+                button1.setVisible(true);
+                button2.setVisible(true);
+                break;
+            case 3:
+                button1.setVisible(true);
+                button2.setVisible(true);
+                button3.setVisible(true);
+                break;
+        }
         dialogText.setText("Choose how many tiles \nyou want to draw ");
     }
 
@@ -508,7 +522,7 @@ public class ScenesController extends Observable<Event> implements Initializable
         boardImage.setEffect(new DropShadow());
         wallpaper.setEffect(null);
         retryButton.setVisible(false);
-        letDraw();
+        letDraw(maxDraw);
     }
 
     public void goodDraw() {
@@ -702,7 +716,7 @@ public class ScenesController extends Observable<Event> implements Initializable
 
     public void setEndGameToken(GameView model) {
         chair1.setVisible(true);
-        chair1 = new ImageView(endToken.getImage());
+        chair1.setImage(endToken.getImage());
         endToken.setImage(null);
         endToken.setVisible(false);
     }
@@ -711,6 +725,16 @@ public class ScenesController extends Observable<Event> implements Initializable
         this.endGame = model.getEndGameToken();
         if(endGame){
             dialogText.setText(model.GetShelfCompletedBy().toUpperCase() + " has completed his shelf!");
+            if(model.GetShelfCompletedBy().equals(playerName2)){
+                chair2.setVisible(true);
+                chair2.setImage(endToken.getImage());
+            }else if(model.GetShelfCompletedBy().equals(playerName3)){
+                chair3.setVisible(true);
+                chair3.setImage(endToken.getImage());
+            }else if(model.GetShelfCompletedBy().equals(playerName4)){
+                chair4.setVisible(true);
+                chair4.setImage(endToken.getImage());
+            }
             endToken.setImage(null);
             endToken.setVisible(false);
             try {
@@ -719,6 +743,10 @@ public class ScenesController extends Observable<Event> implements Initializable
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public void showWinner(GameView model) {
+        winner.setText(model.getWinner().toUpperCase() + " WON!");
     }
 }
 

@@ -54,7 +54,6 @@ public class GraphicalUI extends View implements Runnable {
      */
     public void update(Message message) {
         if (message.getEvent().equals(Event.RECONNECTION)){
-            System.out.println("sono riconnesso");
             Platform.runLater(() -> {
                 username = GuiController.getUsername();
 
@@ -83,6 +82,15 @@ public class GraphicalUI extends View implements Runnable {
             });
         }else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
             Platform.runLater(() -> {
+                if(message.getEvent().equals(Event.FINISH_MATCH)){
+                    try {
+                        HelloApplication.setScene("endGameScene");
+                        GuiController.showWinner(message.getModel());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                GuiController.checkEndTokenAssigned(message.getModel());
                 GuiController.setMyTurn(false , message.getModel().getCurrentPlayer().getUsername());
                 GuiController.updateScores(message.getModel(),username);
                 GuiController.updateStack(message.getModel());
@@ -114,7 +122,8 @@ public class GraphicalUI extends View implements Runnable {
             } else if (message.getEvent().equals(Event.FINISH_MATCH)) {
                 Platform.runLater(() -> {
                     try {
-                        HelloApplication.setScene("endGame");
+                        HelloApplication.setScene("endGameScene");
+                        GuiController.showWinner(message.getModel());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -148,7 +157,7 @@ public class GraphicalUI extends View implements Runnable {
             fillBoard(model);
             GuiController.checkEndTokenAssigned(model);
             GuiController.setMyTurn(true, null);
-            GuiController.letDraw();
+            GuiController.letDraw(model.getMaxDrawable());
             GuiController.updateStack(model);
             GuiController.updateScores(model,username);
             GuiController.showShelves(model,username);
