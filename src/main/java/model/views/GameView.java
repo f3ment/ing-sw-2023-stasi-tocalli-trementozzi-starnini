@@ -243,5 +243,9 @@ public class GameView implements Serializable {
     public String GetShelfCompletedBy(){
         return model.getShelfCompletedBy();
     }
+
+    public String getFinalResult(int position) {
+        return model.getFinalResult(position);
+    }
 }
 

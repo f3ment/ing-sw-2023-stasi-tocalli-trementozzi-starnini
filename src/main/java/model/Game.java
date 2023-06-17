@@ -411,4 +411,13 @@ public class Game extends Observable<Event> implements Serializable {
             }
         }
     }
+
+    public String getFinalResult(int position) {
+        Map <Integer,String> finalResult = new HashMap<>();
+        for(TablePosition t : tablePositionList){
+            finalResult.put(t.getPlayer().getScore(),t.getPlayer().getUsername());
+        }
+        List <Integer> finalScore = new ArrayList<>((Collection) finalResult.keySet().stream().sorted(Comparator.reverseOrder()));
+        return finalResult.get(finalScore.get(position));
+    }
 }

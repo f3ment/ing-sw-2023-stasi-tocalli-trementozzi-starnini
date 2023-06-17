@@ -21,14 +21,6 @@
             <Image url="@../Images/misc/base_pagina2.jpg" />
          </image>
       </ImageView>
-      <ImageView fitHeight="236.0" fitWidth="992.0" layoutX="464.0" layoutY="745.0" opacity="0.83">
-         <image>
-            <Image url="@../Images/Publishermaterial/Title2000x618px.png" />
-         </image>
-         <effect>
-            <DropShadow />
-         </effect>
-      </ImageView>
       <ImageView fitHeight="263.0" fitWidth="333.0" layoutX="1537.0" layoutY="718.0" opacity="0.26">
          <image>
             <Image url="@../Images/Publishermaterial/Publisher.png" />
@@ -88,5 +80,37 @@
             <Image url="@../Images/misc/fire2.png" />
          </image>
       </ImageView>
+      <Label fx:id="firstPlace" layoutX="585.0" layoutY="795.0" prefHeight="0.0" prefWidth="733.0" text="1st: TOKYFDRTERSD 189" textFill="#a88b34">
+         <font>
+            <Font name="DejaVu Serif Condensed Bold" size="45.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
+      <Label fx:id="thirdPlace1" layoutX="585.0" layoutY="930.0" prefHeight="0.0" prefWidth="733.0" text="3rd: FRANCESCO23K34F 24" textFill="#a88b34">
+         <font>
+            <Font name="DejaVu Serif Condensed Bold" size="45.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
+      <Label fx:id="secondPlace2" layoutX="585.0" layoutY="865.0" prefHeight="0.0" prefWidth="733.0" text="2nd: MIKE 76" textFill="#a88b34">
+         <font>
+            <Font name="DejaVu Serif Condensed Bold" size="45.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
+      <Label fx:id="fourthPlace11" layoutX="585.0" layoutY="999.0" prefHeight="0.0" prefWidth="733.0" text="4th: SPRIZETTI 23" textFill="#a88b34">
+         <font>
+            <Font name="DejaVu Serif Condensed Bold" size="45.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
    </children>
 </AnchorPane>

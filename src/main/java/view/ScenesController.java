@@ -24,6 +24,7 @@ import utils.Observable;
 import javafx.scene.image.Image;
 import java.io.IOException;
 import java.net.URL;
+import java.text.BreakIterator;
 import java.util.*;
 
 public class ScenesController extends Observable<Event> implements Initializable {
@@ -167,6 +168,14 @@ public class ScenesController extends Observable<Event> implements Initializable
     @FXML
     private ImageView endToken;
     private int maxDraw;
+    @FXML
+    private Label secondPlace;
+    @FXML
+    private Label thirdPlace;
+    @FXML
+    private Label fourthPlace;
+    @FXML
+    private Label firstPlace;
 
     /**
      * This method will change the welcome page to the login page
@@ -747,6 +756,17 @@ public class ScenesController extends Observable<Event> implements Initializable
 
     public void showWinner(GameView model) {
         winner.setText(model.getWinner().toUpperCase() + " WON!");
+        firstPlace.setText("1st: " + model.getFinalResult(1) + " " + model.getMapPlayerScore().get(model.getFinalResult(1)));
+        secondPlace.setText("2nd: " + model.getFinalResult(2) + " " + model.getMapPlayerScore().get(model.getFinalResult(2)));
+        secondPlace.setVisible(true);
+        if (model.getPlayerList().size() >= 3) {
+            thirdPlace.setText("3rd: " + model.getFinalResult(3) + " " + model.getMapPlayerScore().get(model.getFinalResult(3)));
+            thirdPlace.setVisible(true);
+            if (model.getPlayerList().size() == 4) {
+                fourthPlace.setText("4th: " + model.getFinalResult(4) + " " + model.getMapPlayerScore().get(model.getFinalResult(4)));
+                fourthPlace.setVisible(true);
+            }
+        }
     }
 }
 
