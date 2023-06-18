@@ -145,7 +145,6 @@ public class GraphicalUI extends View implements Runnable {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    GuiController.addPlayerNameToLobby(nicknames);
                 });
             }
         }

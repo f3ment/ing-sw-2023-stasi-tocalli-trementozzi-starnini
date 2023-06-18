@@ -181,7 +181,6 @@ public class ScenesController extends Observable<Event> implements Initializable
      * This method will change the welcome page to the login page
      * @param actionEvent the event that triggers the method , in this case the "play" button click
      */
-    @FXML
     public void AskLobbyInfo(ActionEvent actionEvent) throws IOException, InterruptedException {
         new Thread(()->{
             setChanged();
@@ -205,6 +204,7 @@ public class ScenesController extends Observable<Event> implements Initializable
     }
 
     @Override
+    @FXML
     /**
      * This method initialize the choice-box with the number of players
      * @param url
@@ -242,28 +242,12 @@ public class ScenesController extends Observable<Event> implements Initializable
             }).start();
         }
 
+
     @FXML
     /**
-     * This method displays the current players' nicknames in the lobby
-     * @param nicknames the list of the players' nicknames
+     * This method starts the game by sending a NEW_TURN event to the server
+     * @param username the username of the last player that joined the game
      */
-    public  void addPlayerNameToLobby(ArrayList<String> nicknames){
-        if(player1.getText().equals("WAITING PLAYER...")){
-            player1.setText(nicknames.get(0));
-        }
-        if(player2.getText().equals("WAITING PLAYER...") && nicknames.size()>1){
-            player2.setText(nicknames.get(1));
-        }
-        if(player3.getText().equals("WAITING PLAYER...") && nicknames.size()>2){
-            player3.setText(nicknames.get(2));
-        }
-        if(player4.getText().equals("WAITING PLAYER...") && nicknames.size()>3){
-            player4.setText(nicknames.get(3));
-        }
-        //todo modificare lobby page
-    }
-
-
     public void startGame(String username) {
         this.username = username;
         new Thread(()->{
@@ -274,6 +258,12 @@ public class ScenesController extends Observable<Event> implements Initializable
 
 
     @FXML
+    /**
+     * this method adds itemTiles images to the board
+     * @param s source of the image
+     * @param i row
+     * @param j column
+     */
     public void setGridImage(String s, int i, int j) {
         Image image = new Image(getClass().getResourceAsStream(s));
         ImageView tile = new ImageView(image);
@@ -286,12 +276,23 @@ public class ScenesController extends Observable<Event> implements Initializable
         boardGrid.add(tile, j, i);
     }
 
+    @FXML
+    /**
+     * when a tile is hovered, this method will set its opacity to 0.5
+     * @param tile hovered
+     */
     private void hoverOnTiles(ImageView tile) {
         if(myTurn)
             tile.setOpacity(0.5);
     }
 
+
     @FXML
+    /**
+     * this method shows the shelves and their content every turn
+     * @param model the gameView
+     * @param myName the player's name
+     */
     public void showShelves(GameView model, String myName) {
         ArrayList<String> players = new ArrayList<>(model.getMapPlayerScore().keySet());
         int Nplayers = players.size();
@@ -326,6 +327,12 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
+
+    @FXML
+    /**
+     * this method update the shelf of the player
+     * @param model the gameView
+     */
     private void updateShelf(GameView model) {
         for(int i=0; i< model.getHeightBookshelf(); i++){
             for(int j=0; j< model.getLenghtBookshelf(); j++){
@@ -339,6 +346,13 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
+    @FXML
+    /**
+     * this method update the shelves of the other players
+     * @param model the gameView
+     * @param shelfGrid the grid of the shelf
+     * @param playerName the player's name
+     */
     private void updateOtherShelves(GameView model, GridPane shelfGrid, String playerName) {
         for(int i=0; i< model.getHeightBookshelf(); i++){
             for(int j=0; j< model.getLenghtBookshelf(); j++){
@@ -352,8 +366,12 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
-
     @FXML
+    /**
+     * this method place and show the first player armchair
+     * @param model the gameView
+     * @param myName the player's name
+     */
     public void setChair(GameView model,String myName) {
         String first = model.getFirstPlayer();
         if(first.equals(myName)){
@@ -368,6 +386,11 @@ public class ScenesController extends Observable<Event> implements Initializable
     }
 
     @FXML
+    /**
+     * this method displays the two extracted common goals that are valid for the current match
+     * @param model the gameView
+     */
+
     public void setCommongoals(GameView model) {
         ImageView cg1 = new ImageView(new Image(getClass().getResourceAsStream("/Images/commongoalcards/" + model.getFirstCommonGoalScource())));
         cg1.setFitHeight(150);
@@ -395,6 +418,11 @@ public class ScenesController extends Observable<Event> implements Initializable
 
 
     @FXML
+    /**
+     * this method displays the personal goal of the player
+     * @param model the gameView
+     * @param username the player's name
+     */
     public void setPersonalGoal(GameView model, String username) {
         ImageView pGoal = new ImageView(new Image(getClass().getResourceAsStream("/Images/personalgoalcards/Personal_Goals" + model.getPersonalGoalIdByUsername(username) + ".png")));
         pGoal.setFitHeight(283);
@@ -403,6 +431,12 @@ public class ScenesController extends Observable<Event> implements Initializable
     }
 
     @FXML
+    /**
+     * this method sets player turn:
+     * if it is not the player's turn, the player cannot interact with the interface and is graphically notified
+     * @param b true if it's my turn, false otherwise
+     * @param currentPlayer the current player
+     */
     public void setMyTurn(boolean b , String currentPlayer) {
         if(!b){
             dialogText.setText(currentPlayer + " is playing,\nWait for your turn...");
@@ -412,6 +446,15 @@ public class ScenesController extends Observable<Event> implements Initializable
 
 
     @FXML
+    /**
+     * this method removes the selected tiles from the board,
+     * and it adds the selected tiles to the hand in order to send them
+     * to the server when hand is full
+     *
+     * @param i the row of the tile
+     * @param j the column of the tile
+     * @param tile the tile to be selected
+     */
     private void tileSelected(int i, int j, ImageView tile) {
         if(myTurn){
             if(drawen.size()<nDraws){
@@ -439,6 +482,12 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
+    @FXML
+    /**
+     * this method orders the tiles in the hand as the player wants
+     * @param tileCopy the tile's image to be ordered
+     * @param position the position of the tile in the hand
+     */
     private void tileOrderSelection(ImageView tileCopy, int position) {
         if(myTurn){
             if(goodDraw){
@@ -459,6 +508,10 @@ public class ScenesController extends Observable<Event> implements Initializable
     }
 
     @FXML
+    /**
+     * method invoked when the player chooses to draw one tile
+     * @param actionEvent the event that triggers the method
+     */
     public void draw1(ActionEvent actionEvent) {
         button1.setVisible(false);
         button2.setVisible(false);
@@ -468,6 +521,10 @@ public class ScenesController extends Observable<Event> implements Initializable
     }
 
     @FXML
+    /**
+     * method invoked when the player chooses to draw two tiles
+     * @param actionEvent the event that triggers the method
+     */
     public void draw2(ActionEvent actionEvent) {
         button1.setVisible(false);
         button2.setVisible(false);
@@ -477,6 +534,10 @@ public class ScenesController extends Observable<Event> implements Initializable
     }
 
     @FXML
+    /**
+     * method invoked when the player chooses to draw three tiles
+     * @param actionEvent the event that triggers the method
+     */
     public void draw3(ActionEvent actionEvent) {
         button1.setVisible(false);
         button2.setVisible(false);
@@ -486,6 +547,10 @@ public class ScenesController extends Observable<Event> implements Initializable
     }
 
     @FXML
+    /**
+     * this method shows the buttons to choose how many tiles to draw
+     * @param max the maximum number of tiles that can be drawn
+     */
     public void letDraw(int max) {
         maxDraw = max;
         switch (max){
@@ -506,6 +571,10 @@ public class ScenesController extends Observable<Event> implements Initializable
     }
 
     @FXML
+    /**
+     * this method is invoked when tiles drawn are not valid,
+     * it notifies the player, and it clears the hand making the player choose again
+     */
     public void badDraw() {
         boardGrid.setEffect(new MotionBlur(10,10));
         boardImage.setEffect(new MotionBlur(10,10));
@@ -526,6 +595,11 @@ public class ScenesController extends Observable<Event> implements Initializable
         retryButton.setVisible(true);
     }
 
+    @FXML
+    /**
+     * this method is invoked when the player has to retry drawing tiles
+     * @param actionEvent the event that triggers the method
+     */
     public void retry(ActionEvent actionEvent) {
         boardGrid.setEffect(null);
         boardImage.setEffect(new DropShadow());
@@ -534,12 +608,21 @@ public class ScenesController extends Observable<Event> implements Initializable
         letDraw(maxDraw);
     }
 
+    @FXML
+    /**
+     * this method is invoked when the player has drawn tiles correctly
+     */
     public void goodDraw() {
         goodDraw = true;
         dialogText.setText("You have drawn " + nDraws + " tiles!\nnow click them by the order\nyou want to place them in your shelf");
         nDraws=0;
     }
 
+    @FXML
+    /**
+     * this method is invoked when the player has to choose the column where to place the tiles
+     * when the player clicks on a column, the tiles are placed in the shelf accordingly
+     */
     private void insertInShelf() {
         column1.setOnMouseEntered(event -> column1.setOpacity(0.25));
         column1.setOnMouseClicked(event -> setColumn(1));
@@ -558,6 +641,11 @@ public class ScenesController extends Observable<Event> implements Initializable
         column5.setOnMouseClicked(event -> setColumn(5));
     }
 
+    @FXML
+    /**
+     * this method sends the chosen column to the model
+     * @param i the column where the tiles have to be placed
+     */
     private void setColumn(int i) {
         hand.getChildren().clear();
         column1.setOnMouseClicked(null);
@@ -576,6 +664,12 @@ public class ScenesController extends Observable<Event> implements Initializable
         }).start();
     }
 
+    @FXML
+    /**
+     * this method is invoked when the player has inserted correctly the tiles in the shelf
+     * it notifies the player, and it clears the hand, eventually it notifies the server and the turn ends
+     * @param model the model of the game
+     */
     public void insertPositive(GameView model) {
         dialogText.setText("Tiles inserted correctly!");
         updateShelf(model);
@@ -591,15 +685,25 @@ public class ScenesController extends Observable<Event> implements Initializable
         }).start();
     }
 
+    @FXML
+    /**
+     * this method is invoked when the player has inserted incorrectly the tiles in the shelf
+     * @param model the model of the game
+     */
     public void insertNegative(GameView model) {
         dialogText.setText("You can't insert tiles in that column!");
         insertInShelf();
     }
 
 
-
-
-
+    @FXML
+    /**
+     * this method returns the path of the image of the tile
+     *
+     * @param type the type of the tile
+     * @param id the id of the tile
+     * @return the path of the image of the tile
+     */
     public String pickTileImage(Type type, int id) {
         int ID = id+1;
         switch (type){
@@ -619,6 +723,12 @@ public class ScenesController extends Observable<Event> implements Initializable
         return null;
     }
 
+    @FXML
+    /**
+     * this method is invoked when the player enters the chat and sends
+     * a message to a private chat or to all players
+     * it sends the information to the model that handles the chat
+     */
     public void clickChatButton(){
 
         inizializeChatBox();
@@ -648,7 +758,11 @@ public class ScenesController extends Observable<Event> implements Initializable
             }
         });
     }
+
     @FXML
+    /**
+     * this method initializes the choice box of the chat
+     */
     private void inizializeChatBox() {
         if(choiceBox.getItems().isEmpty()){
             choiceBox.getItems().add("All");
@@ -665,10 +779,21 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
+    @FXML
+    /**
+     * this method updates the chat with a new message
+     * @param message the message to be added to the chat
+     */
     public void updateChat(ChatMessage message){
         chatMessages.add(message);
     }
 
+    @FXML
+    /**
+     * this method updates the players' scores every turn
+     * @param model the model of the game
+     * @param username the username of the player
+     */
     public void updateScores(GameView model,String username) {
         score1.setText(String.valueOf(model.getMapPlayerScore().get(username)));
         score2.setText(String.valueOf(model.getMapPlayerScore().get(name2.getText())));
@@ -680,6 +805,11 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
+    @FXML
+    /**
+     * this method updates the stack of the common goals every turn
+     * @param model the model of the game
+     */
     public void updateStack(GameView model) {
         int sizeStack1 = model.getFirstCommonGoal().size();
         int sizeStack2 = model.getSecondCommonGoal().size();
@@ -687,6 +817,16 @@ public class ScenesController extends Observable<Event> implements Initializable
         getNewStackScore(sizeStack2,model,2,stack2);
     }
 
+    @FXML
+    /**
+     * this method get the current stack size of a common
+     * goal and sets the image of the relative scoring token
+     *
+     * @param sizeStack the size of the stack
+     * @param model the model of the game
+     * @param commonNumber the number of the common goal
+     * @param stack the stack of the common goal
+     */
     private void getNewStackScore(int sizeStack,GameView model,int commonNumber,Pane stack){
         if(sizeStack == 0) {
             stack.setVisible(false);
@@ -708,6 +848,12 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
+    @FXML
+    /**
+     * this method sets the image of the scoring token
+     * @param i the number of the scoring token
+     * @param stack the stack of the common goal
+     */
     private void setStackToken ( int i,Pane stack){
         stack.getChildren().clear();
         ImageView s1 = new ImageView(new Image(getClass().getResourceAsStream("/Images/scoringtokens/scoring_" + i + ".jpg")));
@@ -719,10 +865,19 @@ public class ScenesController extends Observable<Event> implements Initializable
         stack.toFront();
     }
 
+    @FXML
+    /**
+     * this method clears the board when needed
+     */
     public void cleanBoard() {
         boardGrid.getChildren().clear();
     }
 
+    @FXML
+    /**
+     * this method sets the end game beside the player who first completes his shelf
+     * @param model the model of the game
+     */
     public void setEndGameToken(GameView model) {
         chair1.setVisible(true);
         chair1.setImage(endToken.getImage());
@@ -730,6 +885,11 @@ public class ScenesController extends Observable<Event> implements Initializable
         endToken.setVisible(false);
     }
 
+    @FXML
+    /**
+     * this method checks if the end game token has been assigned
+     * @param model the model of the game
+     */
     public void checkEndTokenAssigned(GameView model) {
         this.endGame = model.getEndGameToken();
         if(endGame){
@@ -754,6 +914,12 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
+    @FXML
+    /**
+     * this method sets the final scene and displays the winner
+     * it also shows the entire ranking of the players
+     * @param model the model of the game
+     */
     public void showWinner(GameView model) {
         winner.setText(model.getWinner().toUpperCase() + " WON!");
         firstPlace.setText("1st: " + model.getFinalResult(1) + " " + model.getMapPlayerScore().get(model.getFinalResult(1)));
