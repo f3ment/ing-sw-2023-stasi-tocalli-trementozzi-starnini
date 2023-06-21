@@ -1,5 +1,7 @@
-package model;
+package model.views;
 
+import model.ItemTiles;
+import model.Type;
 import model.views.BoxView;
 import org.junit.jupiter.api.Test;
 

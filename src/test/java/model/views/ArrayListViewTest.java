@@ -1,4 +1,4 @@
-package model;
+package model.views;
 
 import model.views.ArrayListView;
 import org.junit.jupiter.api.Test;

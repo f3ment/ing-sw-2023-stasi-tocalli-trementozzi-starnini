@@ -29,8 +29,6 @@ public class Bookshelf implements Serializable {
             try {
                 ip = new FileInputStream(configFilePath);
                 prop.load(ip);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
