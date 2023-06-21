@@ -82,6 +82,15 @@ public class GraphicalUI extends View implements Runnable {
             });
         }else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
             Platform.runLater(() -> {
+                if(message.getEvent().equals(Event.FINISH_MATCH)){
+                    try {
+                        HelloApplication.setScene("endGameScene");
+                        GuiController.showWinner(message.getModel());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                GuiController.checkEndTokenAssigned(message.getModel());
                 GuiController.setMyTurn(false , message.getModel().getCurrentPlayer().getUsername());
                 GuiController.updateScores(message.getModel(),username);
                 GuiController.updateStack(message.getModel());
@@ -111,7 +120,14 @@ public class GraphicalUI extends View implements Runnable {
             } else if (message.getEvent().equals(Event.NEW_TURN)) {
                 startNewTurn(message.getModel());
             } else if (message.getEvent().equals(Event.FINISH_MATCH)) {
-                //todo gestire finestra vincitore fine partita
+                Platform.runLater(() -> {
+                    try {
+                        HelloApplication.setScene("endGameScene");
+                        GuiController.showWinner(message.getModel());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             } else if (message.getEvent().equals(Event.LOGIN)) {
                 Platform.runLater(() -> {
                     try {
@@ -129,7 +145,6 @@ public class GraphicalUI extends View implements Runnable {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    GuiController.addPlayerNameToLobby(nicknames);
                 });
             }
         }
@@ -139,8 +154,9 @@ public class GraphicalUI extends View implements Runnable {
     private void startNewTurn(GameView model) {
         Platform.runLater(() -> {
             fillBoard(model);
+            GuiController.checkEndTokenAssigned(model);
             GuiController.setMyTurn(true, null);
-            GuiController.letDraw();
+            GuiController.letDraw(model.getMaxDrawable());
             GuiController.updateStack(model);
             GuiController.updateScores(model,username);
             GuiController.showShelves(model,username);

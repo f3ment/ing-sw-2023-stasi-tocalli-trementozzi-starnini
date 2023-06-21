@@ -34,6 +34,7 @@ public class CheckRowDifferent extends CommonGoal{
 
     @Override
     public ScoringToken validate(Bookshelf bookshelf) {
+        if (bookshelf == null) return null;
         int flag = 0;
         int rep = 0;
         int counterDiffTypes;

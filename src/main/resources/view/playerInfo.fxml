@@ -10,50 +10,53 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="675.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ScenesController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ScenesController">
    <children>
-      <ImageView fitHeight="675.0" fitWidth="1020.0">
+      <ImageView fitHeight="1080.0" fitWidth="1920.0">
          <image>
             <Image url="@../Images/misc/sfondoparquet.jpg" />
          </image>
       </ImageView>
-      <ImageView fitHeight="151.0" fitWidth="1020.0" layoutY="524.0">
+      <ImageView fitHeight="279.0" fitWidth="1920.0" layoutY="801.0">
          <image>
             <Image url="@../Images/misc/base_pagina2.jpg" />
          </image>
       </ImageView>
-      <ImageView fitHeight="90.0" fitWidth="103.0" layoutX="903.0" layoutY="564.0" opacity="0.78">
+      <ImageView fitHeight="180.0" fitWidth="221.0" layoutX="1628.0" layoutY="843.0" opacity="0.78">
          <image>
             <Image url="@../Images/Publishermaterial/Publisher.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="50.0" fitWidth="169.0" layoutX="734.0" layoutY="584.0" opacity="0.34">
+      <ImageView fitHeight="207.0" fitWidth="807.0" layoutX="557.0" layoutY="816.0" opacity="0.45">
          <image>
             <Image url="@../Images/Publishermaterial/Title2000x618px.png" />
          </image>
       </ImageView>
-      <Pane layoutX="197.0" layoutY="52.0" prefHeight="432.0" prefWidth="627.0" style="-fx-background-color: rgba(1,1,1,0.2); -fx-background-radius: 30 30 30 30;">
+      <Pane layoutX="384.0" layoutY="67.0" prefHeight="663.0" prefWidth="1153.0" style="-fx-background-color: rgba(1,1,1,0.2); -fx-background-radius: 30 30 30 30;">
          <children>
-            <Label layoutX="75.0" layoutY="120.0" text="Scegli il numero di giocatori" textFill="#610909">
+            <Label layoutX="104.0" layoutY="168.0" prefHeight="115.0" prefWidth="755.0" text="Scegli il numero di giocatori" textFill="#432005">
                <font>
-                  <Font name="DejaVuMathTeXGyre-Regular" size="20.0" />
+                  <Font name="DejaVuMathTeXGyre-Regular" size="40.0" />
                </font>
             </Label>
-            <Label layoutX="103.0" layoutY="22.0" prefHeight="44.0" prefWidth="421.0" text="INSERISCI LE TUE PREFERENZE" textFill="#610909">
+            <Label alignment="CENTER" layoutX="159.0" layoutY="20.0" prefHeight="148.0" prefWidth="835.0" text="INSERISCI LE TUE PREFERENZE" textFill="#edb426">
                <font>
-                  <Font name="DejaVu Sans Condensed Bold" size="26.0" />
+                  <Font name="DejaVu Sans Condensed Bold" size="52.0" />
                </font>
             </Label>
-            <ChoiceBox  fx:id="nPlayers" layoutX="385.0" layoutY="120.0" prefHeight="26.0" prefWidth="152.0" />
-            <Label layoutX="75.0" layoutY="193.0" text="Scegli il tuo Nickname" textFill="#610909">
+            <ChoiceBox fx:id="nPlayers" layoutX="729.0" layoutY="207.0" prefHeight="37.0" prefWidth="300.0" style="-fx-border-color: brown;" />
+            <Label layoutX="104.0" layoutY="327.0" prefHeight="55.0" prefWidth="592.0" text="Scegli il tuo Nickname" textFill="#432005">
                <font>
-                  <Font name="DejaVuMathTeXGyre-Regular" size="20.0" />
+                  <Font name="DejaVuMathTeXGyre-Regular" size="40.0" />
                </font>
             </Label>
-            <TextField fx:id="nickname" layoutX="385.0" layoutY="193.0" onAction="#handleNickname" promptText="es. MARIO" />
-            <Button fx:id="joinButton" layoutX="198.0" layoutY="288.0" mnemonicParsing="false" onAction="#sendPlayerInfo" prefHeight="79.0" prefWidth="230.0" style="-fx-background-radius: 15 15 15 15; -fx-background-color: #610909;" text="JOIN LOBBY" textFill="WHITE">
+            <TextField fx:id="nickname" layoutX="610.0" layoutY="334.0" onAction="#handleNickname" prefHeight="37.0" prefWidth="421.0" promptText="es. MARIO">
                <font>
-                  <Font size="24.0" />
+                  <Font size="35.0" />
+               </font></TextField>
+            <Button fx:id="joinButton" layoutX="380.0" layoutY="473.0" mnemonicParsing="false" onAction="#sendPlayerInfo" prefHeight="126.0" prefWidth="394.0" style="-fx-background-radius: 15 15 15 15; -fx-background-color: #432005;" text="JOIN LOBBY" textFill="WHITE">
+               <font>
+                  <Font name="DejaVu Serif Condensed Bold" size="35.0" />
                </font>
             </Button>
          </children>

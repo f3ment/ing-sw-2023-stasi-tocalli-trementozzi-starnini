@@ -6,11 +6,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import distributed.Server;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+
+import static java.lang.Math.max;
 
 public class HelloApplication extends Application {
 
@@ -27,6 +30,16 @@ public class HelloApplication extends Application {
         CurrentStage = stage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
         Parent root = loader.load();
+        Scale scale = new Scale();
+        scale.xProperty().bind(stage.widthProperty().divide(1020));
+        scale.yProperty().bind(stage.heightProperty().divide(675));
+        stage.setMinWidth(800);
+        stage.setMinHeight(600);
+        scale.setPivotX(0);
+        scale.setPivotY(0);
+        stage.setMaxHeight(2160);
+        stage.setMaxWidth(4096);
+        root.getTransforms().add(scale);
         controller = loader.getController();
         gui.setGuiController(controller);
         controller.addObserver((o, message)-> {
@@ -37,6 +50,10 @@ public class HelloApplication extends Application {
             }
         });
         stage.setTitle("MyShelfie");
+        CurrentStage.setOnCloseRequest(event -> {
+            // Terminate the program
+            System.exit(0);
+        });
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/Publishermaterial/Icon50x50px.png")));
         stage.setScene(new Scene(root));
         stage.show();
@@ -45,6 +62,12 @@ public class HelloApplication extends Application {
     public static void setScene(String source) throws IOException {
         FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource(source + ".fxml"));
         Parent root = loader.load();
+        Scale scale = new Scale();
+        scale.xProperty().bind(CurrentStage.widthProperty().divide(1920));
+        scale.yProperty().bind(CurrentStage.heightProperty().divide(1080));
+        scale.setPivotX(0);
+        scale.setPivotY(0);
+        root.getTransforms().add(scale);
         controller = loader.getController();
         gui.setGuiController(controller);
         controller.addObserver((o, message)-> {
@@ -55,7 +78,16 @@ public class HelloApplication extends Application {
             }
         });
         Scene scene = new Scene(root);
+        CurrentStage.setMinWidth(800);
+        CurrentStage.setMinHeight(600);
+        CurrentStage.setMaxHeight(2160);
+        CurrentStage.setMaxWidth(4096);
         CurrentStage.setScene(scene);
+        CurrentStage.setFullScreen(true);
+        CurrentStage.setOnCloseRequest(event -> {
+            // Terminate the program
+            System.exit(0);
+        });
         CurrentStage.setTitle("MyShelfie-" + source);
         CurrentStage.getIcons().add(new Image(HelloApplication.class.getResourceAsStream("/Images/Publishermaterial/Icon50x50px.png")));
         CurrentStage.show();
