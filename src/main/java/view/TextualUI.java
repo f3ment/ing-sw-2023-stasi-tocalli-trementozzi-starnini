@@ -686,7 +686,6 @@ public class TextualUI extends View implements Runnable {
                 if(in.contains("/to")){
                     in = in.substring(3);
                     to = in.split(" ", 2)[0];
-                    //todo parte l'eccezione se la stringa è vuota
                     try{
                         in = in.split(" ", 2)[1];
                     }catch (Exception e){

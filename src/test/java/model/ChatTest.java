@@ -7,62 +7,69 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ChatTest {
-/*
+
     @Test
     void getLastTen() {
         Chat chat = new Chat();
-
         try{
-            chat.getLast().forEach((key, value) -> System.out.println(key + " > " + value ));
+            chat.getLastTen();
         }catch (Exception e){
-            System.err.println(e.getMessage());
+            assertTrue(e instanceof NullPointerException);
+            System.out.println("ChatTest getLastTen with empty chat : OK");
         }
 
-        System.out.println("-----------------------");
+        assertTrue(chat.getActive().isEmpty());
+        System.out.println("ChatTest getActive with empty chat : OK");
+        try{
+            ChatMessage last = chat.getLast();
+        }catch (Exception e){
+            assertTrue(e instanceof NullPointerException);
+            System.out.println("ChatTest getLast with empty chat : OK");
+        }
 
-        chat.sendMessage("Myke01", "ciao", "TOKY");
-        chat.sendMessage("Myke01", "ciao", null);
-        chat.sendMessage("Myke011", "ciao1", null);
-        chat.sendMessage("Myke012", "ciao2", null);
-        chat.sendMessage("Myke013", "ciao3", null);
+        chat.sendMessage(new ChatMessage ("ciao", "Myke01", "TOKY"));
+        try{
+            ChatMessage last = chat.getLast();
+            assertEquals("ciao", last.getMessage());
+            assertTrue(last.getSender().equals("Myke01"));
+            assertTrue(last.getReceiver().equals("TOKY"));
+            System.out.println("ChatTest getLast 1 : OK");
+        }catch (Exception e){
+            assertTrue(e instanceof NullPointerException);
+            System.out.println("ChatTest getLast 1 : FAIL");
+        }
+        chat.sendMessage(new ChatMessage ("ciao", "Myke01", null));
+        chat.sendMessage(new ChatMessage ("ciao1", "Myke012", null));
+        chat.sendMessage(new ChatMessage ("ciao2", "Myke013", null));
+        chat.sendMessage(new ChatMessage ("ciao3", "Myke01", null));
+        try {
+            ChatMessage last = chat.getLast();
+            assertEquals("ciao3", last.getMessage());
+            assertTrue(last.getSender().equals("Myke01"));
+            assertTrue(last.getReceiver() == null);
+            System.out.println("ChatTest getLast 2 : OK");
+        }catch (Exception e){
+            assertTrue(e instanceof NullPointerException);
+            System.out.println("ChatTest getLast 2 : FAIL");
+        }
 
-        chat.getLastTen().forEach(e-> e.forEach((key, value) -> {
-            value.forEach((mesg, to) ->{
-                System.out.println(key +( to!=null? " to " + to + " > " + mesg : ">" + mesg) );
-            });
-        }));
-        System.out.println("-----------------------");
+        assertTrue(chat.getLastTen().size() == 5);
+        System.out.println("ChatTest getLastTen size : OK");
 
-        chat.getLastTen().forEach(e-> e.forEach((key, value) -> {
-            value.forEach((to, mesg) ->{
-                System.out.println(key +( to!=null? " to " + to + "> " + mesg : ">" + mesg) );
-            });
-        }));
-        System.out.println("-----------------------");
+        assertTrue(chat.getActive().contains("Myke01") &&
+                chat.getActive().contains("Myke012") &&
+                chat.getActive().contains("Myke013") && chat.getActive().size() == 3);
+        System.out.println("ChatTest getActive : OK");
 
-        chat.sendMessage("Myke014", "ciao4", null);
-        chat.sendMessage("Myke015", "ciao5", null);
-        chat.sendMessage("Myke016", "ciao6", null);
-        chat.sendMessage("Myke017", "ciao7", null);
-        chat.sendMessage("Myke018", "ciao8", null);
+        chat.removeActive("Myke01");
+        assertTrue(!chat.getActive().contains("Myke01") && chat.getActive().size() == 2);
+        System.out.println("ChatTest removeActive : OK");
 
-        chat.getLastTen().forEach(e-> e.forEach((key, value) -> {
-            value.forEach((to, mesg) ->{
-                System.out.println(key +( to!=null? " to " + to + "> " + mesg : ">" + mesg) );
-            });
-        }));
-        System.out.println("-----------------------");
+        assertTrue(chat.getChat().size() == 5);
+        System.out.println("ChatTest getChat : OK");
 
-        chat.sendMessage("Myke019", "ciao9", "Michi");
-        chat.sendMessage("Myke0110", "ciao10", null);
-        chat.sendMessage("Myke0111", "ciao11", null);
-
-        chat.getLastTen().forEach(e-> e.forEach((key, value) -> {
-            value.forEach((to, mesg) ->{
-                System.out.println(key +( to!=null? " to " + to + "> " + mesg : ">" + mesg) );
-            });
-        }));
-        System.out.println("-----------------------");
+        chat.removeActive("");
+        assertTrue(chat.getActive().size() == 0);
+        System.out.println("ChatTest removeActive with empty string : OK");
     }
-    */
 }

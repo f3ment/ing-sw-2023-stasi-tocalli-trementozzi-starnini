@@ -1,11 +1,11 @@
-package model;
+package model.views;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import model.views.ArrayListView;
-import model.views.BoxView;
-import model.views.GameView;
+import model.Game;
+import model.ItemTiles;
+import model.Type;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -287,12 +287,139 @@ class GameViewTest {
         assertEquals(gameView.getNumPlayer(),game.getListBookshelf().size());
     }
 
+    @Test
+    void getPlayerListTest() throws Exception {
+        ArrayList<String> nomi = new ArrayList<String>();
+        nomi.add("marco");
+        nomi.add("mario");
+        Game game = new Game(nomi);
+        model.views.GameView gameView = new GameView(game);
+        assertTrue(gameView.getPlayerList().size() == 2);
+    }
 
+    @Test
+    void testNull() {
+        try {
+            GameView game = new GameView(null);
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+        }
+    }
 
+    @Test
+    void getMapPlayerScoreTest() throws Exception {
+        ArrayList<String> nomi = new ArrayList<String>();
+        nomi.add("marco");
+        nomi.add("mario");
+        Game game = new Game(nomi);
+        model.views.GameView gameView = new GameView(game);
+        assertTrue(gameView.getMapPlayerScore().size() == 2 && gameView.getMapPlayerScore().get("marco") == 0 && gameView.getMapPlayerScore().get("mario") == 0);
+    }
 
+    @Test
+    void getMapPlayerScoreTest2() throws Exception {
+        ArrayList<String> nomi = new ArrayList<String>();
+        nomi.add("marco");
+        nomi.add("mario");
+        Game game = new Game(nomi);
+        game.getCurrentPosition().getPlayer().setScore(100);
+        model.views.GameView gameView = new GameView(game);
+        assertTrue(gameView.getMapPlayerScore().size() == 2 && (gameView.getMapPlayerScore().get("marco") == 100 || gameView.getMapPlayerScore().get("mario") == 100));
+    }
 
+    @Test
+    void getPlayerByUsername() throws Exception {
+        ArrayList<String> nomi = new ArrayList<String>();
+        nomi.add("marco");
+        nomi.add("mario");
+        Game game = new Game(nomi);
+        model.views.GameView gameView = new GameView(game);
+        assertTrue(gameView.getPlayerByUsername().size() == 2 && gameView.getPlayerByUsername().get("marco").getUsername().equals("marco") && gameView.getPlayerByUsername().get("mario").getUsername().equals("mario"));
+    }
 
+    @Test
+    void getEndGameTokenTest() throws Exception {
+        ArrayList<String> nomi = new ArrayList<String>();
+        nomi.add("marco");
+        nomi.add("mario");
+        Game game = new Game(nomi);
+        game.getCurrentPosition().getPlayer().setScore(100);
+        game.setWinner();
+        model.views.GameView gameView = new GameView(game);
+        assertFalse(gameView.getEndGameToken());
+    }
 
+    @Test
+    void getFirstCommonGoalDescriptionTest() throws Exception {
+        ArrayList<String> nomi = new ArrayList<String>();
+        nomi.add("marco");
+        nomi.add("mario");
+        Game game = new Game(nomi);
+        model.views.GameView gameView = new GameView(game);
+        assertTrue(gameView.getFirstCommonGoalDescription().equals(game.getFirstCommonGoal().toString()));
+        assertTrue(gameView.getFirstCommonGoalSource().equals(game.getFirstCommonGoal().getSource()));
+    }
 
+    @Test
+    void getSecondCommonGoalDescriptionTest() throws Exception {
+        ArrayList<String> nomi = new ArrayList<String>();
+        nomi.add("marco");
+        nomi.add("mario");
+        Game game = new Game(nomi);
+        model.views.GameView gameView = new GameView(game);
+        assertTrue(gameView.getSecondCommonGoalDescription().equals(game.getSecondCommonGoal().toString()));
+        assertTrue(gameView.getSecondCommonGoalSource().equals(game.getSecondCommonGoal().getSource()));
+    }
 
+    @Test
+    void getScoringTokenByNumberTest() throws Exception {
+        ArrayList<String> nomi = new ArrayList<String>();
+        nomi.add("marco");
+        nomi.add("mario");
+        Game game = new Game(nomi);
+        model.views.GameView gameView = new GameView(game);
+        assertTrue(gameView.getScoringTokenByNumber(1, 1).getScore() == 8);
+        assertTrue(gameView.getScoringTokenByNumber(2, 1).getScore() == 8);
+    }
+
+    @Test
+    void getPersonalGoalTest() throws Exception {
+        ArrayList<String> nomi = new ArrayList<String>();
+        nomi.add("marco");
+        nomi.add("mario");
+        nomi.add("dario");
+        nomi.add("matteo");
+        Game game = new Game(nomi);
+        model.views.GameView gameView = new GameView(game);
+
+        try{
+            gameView.getPersonalGoalByUsername(null);
+        }catch (Exception e){
+            assertTrue(e instanceof NullPointerException);
+        }
+        try{
+            gameView.getPersonalGoalIdByUsername(null);
+        }catch (Exception e){
+            assertTrue(e instanceof NullPointerException);
+        }
+
+        assertTrue(gameView.getPersonalGoalByUsername("marco").equals(game.getPlayerByNickname().get("marco").getCurrentPosition().getCurrentPGoal().getWindows()));
+        assertTrue(gameView.getPersonalGoalIdByUsername("marco") == game.getPlayerByNickname().get("marco").getCurrentPosition().getCurrentPGoal().getId());
+
+    }
+
+    @Test
+    void getMethods() throws IOException {
+        ArrayList<String> nomi = new ArrayList<String>();
+        nomi.add("marco");
+        nomi.add("mario");
+        nomi.add("dario");
+        nomi.add("matteo");
+        Game game = new Game(nomi);
+        model.views.GameView gameView = new GameView(game);
+
+        assertFalse(gameView.myBookshelfIsFull());
+
+        assertTrue(gameView.GetShelfCompletedBy() == null);
+    }
 }

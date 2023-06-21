@@ -2,16 +2,18 @@ package controller;
 import distributed.Client;
 import model.*;
 import utils.Event;
+import view.Color;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class GameController {
     private final Game game;
-
+    private final Lobby lobby;
     //private final TextualUI view;;
     //private final Client view;
-    public GameController(Game game){
+    public GameController(Game game, Lobby lobby){
+        this.lobby = lobby;
         this.game = game;
         //this.view = view;
     }
@@ -106,6 +108,8 @@ public class GameController {
                 game.setEndGame(true);
             }
             if(game.getEndGame() && game.getCurrentPosition().getPlayer().getUsername()==game.getFirstPlayer()){
+                lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage(Color.RED + "The match is ending!" + Color.RESET, Color.RED + "SERVER" + Color.RESET, null) ));
+                lobby.getChatController().update(o, new Message(Event.EXIT_CHAT, ""));
                 game.setWinner();
                 game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
             }else {
@@ -125,6 +129,8 @@ public class GameController {
         } else if (message.getEvent().equals(Event.LOGIN_TRUE)) {
             game.setChangedAndNotifyObservers(Event.LOGIN_TRUE);
         }else if (message.getEvent().equals(Event.FORCED_END_MATCH)) {
+            lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage(Color.RED + "The match is ending!" + Color.RESET, Color.RED + "SERVER" + Color.RESET, null) ));
+            lobby.getChatController().update(o, new Message(Event.EXIT_CHAT, ""));
             game.setForcedWinner(message.getUserName());
             game.setForcedCurrentPosition(message.getUserName());
             //o.update(new Message(Event.FORCED_END_MATCH));

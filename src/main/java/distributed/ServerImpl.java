@@ -72,6 +72,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     //client.update(null, Event.PING);
                 } else {
                     if (message.getEvent().equals(Event.DELETE_MATCH)) {
+                        //gamesManagerController.getLobbyByClient(client).getController().update(client, new Message(Event.SEND_MESSAGE, new ChatMessage(Color.RED + "The game is ending" + Color.RESET,Color.RED + "SERVER" + Color.RESET, null)));
                         for (String a : currentLobby.getClientsUsername()) {
                             //codice per rimuovere parola dal file properties
                             prop.remove(a);

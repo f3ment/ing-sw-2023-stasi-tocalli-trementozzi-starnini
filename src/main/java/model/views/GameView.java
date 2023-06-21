@@ -127,11 +127,11 @@ public class GameView implements Serializable {
         String desc = model.getSecondCommonGoal().toString();
         return desc;
     }
-    public String getFirstCommonGoalScource(){
+    public String getFirstCommonGoalSource(){
         return model.getFirstCommonGoal().getSource();
     }
 
-    public String getSecondCommonGoalScource(){
+    public String getSecondCommonGoalSource(){
         return model.getSecondCommonGoal().getSource();
     }
 

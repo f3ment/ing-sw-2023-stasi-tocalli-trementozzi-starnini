@@ -134,22 +134,4 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
             }
         }.start();
     }
-
-    /*public void startPingClient() {
-
-        new Thread(){
-            @Override
-            public void run() {
-                while(true){
-                    try {
-                        sleep(5000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    System.out.println("pingo");
-                    view.ping();
-                }
-            }
-        }.start();
-    }*/
 }

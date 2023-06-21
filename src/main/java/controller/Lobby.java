@@ -181,7 +181,7 @@ public class Lobby {
     public void game_init() {
         try {
             this.model = new Game(new ArrayList<String>(usersId.keySet()));
-            this.gameController = new GameController(model);
+            this.gameController = new GameController(model, this);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
