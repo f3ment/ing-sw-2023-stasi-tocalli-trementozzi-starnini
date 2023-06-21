@@ -392,10 +392,10 @@ public class ScenesController extends Observable<Event> implements Initializable
      */
 
     public void setCommongoals(GameView model) {
-        ImageView cg1 = new ImageView(new Image(getClass().getResourceAsStream("/Images/commongoalcards/" + model.getFirstCommonGoalScource())));
+        ImageView cg1 = new ImageView(new Image(getClass().getResourceAsStream("/Images/commongoalcards/" + model.getFirstCommonGoalSource())));
         cg1.setFitHeight(150);
         cg1.setFitWidth(266);
-        ImageView cg2 = new ImageView(new Image(getClass().getResourceAsStream("/Images/commongoalcards/" + model.getSecondCommonGoalScource())));
+        ImageView cg2 = new ImageView(new Image(getClass().getResourceAsStream("/Images/commongoalcards/" + model.getSecondCommonGoalSource())));
         cg2.setFitHeight(150);
         cg2.setFitWidth(266);
         common1.getChildren().add(cg1);

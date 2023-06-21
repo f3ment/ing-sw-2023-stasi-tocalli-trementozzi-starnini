@@ -53,7 +53,16 @@ public class Chat extends Observable<Event> implements Serializable {
         }
     }
     public void removeActive(String userName){
-        this.online.remove(userName);
+        if(!userName.equals("")){
+            this.online.remove(userName);
+            setChangedAndNotifyObservers(new Message(Event.EXIT_CHAT, userName));
+        }else{
+            ArrayList <String> toRemove = new ArrayList<String>(this.online);
+            for (String usr : toRemove) {
+                this.online.remove(usr);
+                setChangedAndNotifyObservers(new Message(Event.EXIT_CHAT, usr));
+            }
+        }
     }
 
     public ArrayList<ChatMessage> getChat() {

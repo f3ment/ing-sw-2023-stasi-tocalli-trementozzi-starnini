@@ -29,9 +29,7 @@ public class AppServer {
             datagramSocket.connect(InetAddress.getByName("8.8.8.8"),10002);
             String currentIp = datagramSocket.getLocalAddress().getHostAddress();
             System.setProperty("java.rmi.server.hostname",currentIp);
-        } catch (SocketException e) {
-            throw new RuntimeException(e);
-        } catch (UnknownHostException e) {
+        } catch (SocketException | UnknownHostException e) {
             throw new RuntimeException(e);
         }
 
@@ -66,6 +64,7 @@ public class AppServer {
         socketThread.start();
 
         try {
+            rmiThread.join();
             socketThread.join();
         } catch (InterruptedException e) {
             System.err.println("No connection protocol available. Exiting...");
@@ -110,4 +109,3 @@ public class AppServer {
         }
     }
 }
-//TODO gestione username.properties

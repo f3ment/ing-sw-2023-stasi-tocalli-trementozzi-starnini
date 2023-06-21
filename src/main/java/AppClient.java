@@ -63,15 +63,18 @@ public class AppClient {
 
     private static void startRmiClient() throws RemoteException, NotBoundException, UnknownHostException, SocketException {
         DatagramSocket datagramSocket = new DatagramSocket();
-        datagramSocket.connect(InetAddress.getByName("8.8.8.8"),10002);
-        String currentIp = datagramSocket.getLocalAddress().getHostAddress();
-        System.setProperty("java.rmi.server.hostname",currentIp);
-        System.out.println("Client IP: " + currentIp);
+        try{
+            datagramSocket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+            String currentIp = datagramSocket.getLocalAddress().getHostAddress();
+            System.setProperty("java.rmi.server.hostname",currentIp);
+        }catch (UnknownHostException e){
+            System.out.println("Cannot connect to google dns");
+        }
         Registry registry = LocateRegistry.getRegistry(Ip);
         Server server = (Server) registry.lookup("server");
         ClientImpl client = new ClientImpl(server);
+
         client.run();
-        //client.startPingClient();
     }
 
     private static void startSocketClient() throws RemoteException {
@@ -96,7 +99,6 @@ public class AppClient {
             }
         }.start();
         client.run();
-        //client.startPingClient();
     }
 
 
