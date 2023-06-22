@@ -4,7 +4,6 @@ import model.goals.PersonalGoal;
 
 import java.io.Serializable;
 
-//todo test
 public class TablePosition implements Serializable {
     private static final long serialVersionUID = 1L;
 

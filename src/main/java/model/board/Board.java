@@ -6,10 +6,8 @@ import model.ItemTiles;
 import model.Token;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Properties;
 
 public class Board implements Serializable {
@@ -17,7 +15,7 @@ public class Board implements Serializable {
     private static final long serialVersionUID = 1L;
     private Box[][] board;
     private Token token;
-    private int maxLength, maxHeight;
+    private final int maxLength, maxHeight;
 
     /*
      * Apertura file di configurazione
@@ -79,7 +77,6 @@ public class Board implements Serializable {
     }
 
     public boolean setBox(Bag bag){
-        ItemTiles item;
         for(int i=0;i<this.maxHeight;i++){
             for(int j=0;j<this.maxLength;j++){
                 if(getBox(i,j).getItemContained()==null && getBox(i,j).getValid()){

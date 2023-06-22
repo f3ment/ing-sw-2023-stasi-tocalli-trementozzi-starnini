@@ -2,7 +2,6 @@ import distributed.Server;
 import distributed.ClientImpl;
 import distributed.socket.middleware.ServerStub;
 import view.Color;
-import view.ScenesController;
 
 import java.net.*;
 import java.rmi.NotBoundException;
@@ -17,9 +16,6 @@ public class AppClient {
     //Default network address
     private static int Port = 1234;
     private static String Ip = "localhost";
-    
-    private static ScenesController helloController;
-
     public static void main(String[] args) throws RemoteException, NotBoundException {
         if(chooseNetworkArchitecture()==1){
             //Client selected Rmi architecture
@@ -61,7 +57,7 @@ public class AppClient {
         return choice;
     }
 
-    private static void startRmiClient() throws RemoteException, NotBoundException, UnknownHostException, SocketException {
+    private static void startRmiClient() throws RemoteException, NotBoundException, SocketException {
         DatagramSocket datagramSocket = new DatagramSocket();
         try{
             datagramSocket.connect(InetAddress.getByName("8.8.8.8"), 10002);
@@ -80,24 +76,21 @@ public class AppClient {
     private static void startSocketClient() throws RemoteException {
         ServerStub serverStub = new ServerStub(Ip, Port);
         ClientImpl client = new ClientImpl(serverStub);
-        new Thread(){
-            @Override
-            public void run() {
-                while(true){
+        new Thread(() -> {
+            while(true){
+                try {
+                    serverStub.receive(client);
+                } catch (RemoteException e) {
+                    System.err.println("Error while receiving message from server : " + e.getMessage());
                     try {
-                        serverStub.receive(client);
-                    } catch (RemoteException e) {
-                        System.err.println("Error while receiving message from server : " + e.getMessage());
-                        try {
-                            serverStub.close();
-                        } catch (RemoteException ex) {
-                            System.err.println("Cannot close connection with server. Halting...");
-                        }
-                        System.exit(1);
+                        serverStub.close();
+                    } catch (RemoteException ex) {
+                        System.err.println("Cannot close connection with server. Halting...");
                     }
+                    System.exit(1);
                 }
             }
-        }.start();
+        }).start();
         client.run();
     }
 

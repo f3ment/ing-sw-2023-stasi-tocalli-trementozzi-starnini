@@ -169,8 +169,6 @@ public class Game extends Observable<Event> implements Serializable {
         return this.board.setBox(this.bag);
     }
 
-    // todo chiamata isFull della bookshelf che a sua volta chiama setEndGame
-    // todo domanda gestione turni, eventuale multithreading come listener
     public void setEndGame(boolean finish){
         this.finish = finish;
     }
@@ -234,7 +232,6 @@ public class Game extends Observable<Event> implements Serializable {
         return secondCommonGoal;
     }
 
-    //TODO notify...
     public void setChangedAndNotifyObservers(Event arg) {
         setChanged();
         notifyObservers(new Message(arg));

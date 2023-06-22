@@ -5,7 +5,6 @@ import model.board.Board;
 
 import java.io.Serializable;
 import java.util.*;
-//todo serialize
 public class GameView implements Serializable {
     private static final long serialVersionUID = 1L;
     private final Game model;
@@ -34,8 +33,7 @@ public class GameView implements Serializable {
     public ArrayListView getPlayerList(){
         ArrayList<PlayerView> playerViews = new ArrayList<>();
         model.getListPlayer().forEach(e ->playerViews.add(new PlayerView(e)));
-        ArrayListView returnPlayerList = new ArrayListView(playerViews);
-        return returnPlayerList;
+        return new ArrayListView(playerViews);
     }
 
     public Map<String, Integer> getMapPlayerScore(){
@@ -49,7 +47,7 @@ public class GameView implements Serializable {
     }
     public ArrayListView getListBookshelf(){
         List<Bookshelf> bookshelfList= model.getListBookshelf();
-        List<ItemTiles[][]> viewBookshelfList= new ArrayList<ItemTiles[][]>();
+        List<ItemTiles[][]> viewBookshelfList= new ArrayList<>();
         for(int i=0;i<bookshelfList.size();i++){
             viewBookshelfList.add(new ItemTiles[bookshelfList.get(i).getHeight()][bookshelfList.get(i).getLength()]);
             for(int k=0;k< bookshelfList.get(i).getHeight();k++){
@@ -101,8 +99,8 @@ public class GameView implements Serializable {
     public ArrayListView getPickedCards(){
         ArrayList<ItemTiles> hand= model.getPickedCards();
         ArrayList<ItemTiles> viewHand= new ArrayList<ItemTiles>();
-        for(int i=0;i<hand.size();i++){
-            viewHand.add(hand.get(i));
+        for (ItemTiles itemTiles : hand) {
+            viewHand.add(itemTiles);
         }
         ArrayListView viewHandreturn = new ArrayListView(viewHand);
         return viewHandreturn;
@@ -119,13 +117,11 @@ public class GameView implements Serializable {
     }
 
     public String getFirstCommonGoalDescription(){
-        String desc = model.getFirstCommonGoal().toString();
-        return desc;
+        return model.getFirstCommonGoal().toString();
     }
 
     public String getSecondCommonGoalDescription(){
-        String desc = model.getSecondCommonGoal().toString();
-        return desc;
+        return model.getSecondCommonGoal().toString();
     }
     public String getFirstCommonGoalSource(){
         return model.getFirstCommonGoal().getSource();
@@ -158,8 +154,7 @@ public class GameView implements Serializable {
         for(int i=0;i<stack.size();i++){
             viewStack.add(new ScoringToken(stack.get(i).getScore(),stack.get(i).getNumber()));
         }
-        ArrayListView viewStack2= new ArrayListView(viewStack);
-        return viewStack2;
+        return new ArrayListView(viewStack);
     }
 
     public int getHeightBookshelf(){
@@ -179,8 +174,7 @@ public class GameView implements Serializable {
     }
 
     public PlayerView getCurrentPlayer(){
-        PlayerView res = new PlayerView(model.getCurrentPosition().getPlayer());
-        return res;
+        return new PlayerView(model.getCurrentPosition().getPlayer());
     }
 
 
@@ -198,11 +192,11 @@ public class GameView implements Serializable {
     }
 
     public String getFirstPlayer(){
-        return new String(model.getFirstPlayer());
+        return model.getFirstPlayer();
     }
 
     public String getWinner(){
-        return new String(model.getWinner());
+        return model.getWinner();
     }
 
     public int getMaxDrawable(){

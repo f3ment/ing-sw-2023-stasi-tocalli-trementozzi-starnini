@@ -1,6 +1,5 @@
 package model;
 
-import distributed.Client;
 import model.views.ChatView;
 import model.views.GameView;
 import utils.Event;

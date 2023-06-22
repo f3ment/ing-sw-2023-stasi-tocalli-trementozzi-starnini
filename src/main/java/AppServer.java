@@ -18,12 +18,12 @@ public class AppServer {
     private static Server server;
 
 
-    protected AppServer() throws RemoteException {
+    protected AppServer() {
     }
 
 
     public static void main(String[] args) throws RemoteException {
-        DatagramSocket datagramSocket = null;
+        DatagramSocket datagramSocket;
         try {
             datagramSocket = new DatagramSocket();
             datagramSocket.connect(InetAddress.getByName("8.8.8.8"),10002);
@@ -35,31 +35,25 @@ public class AppServer {
 
         server = new ServerImpl();
 
-        Thread rmiThread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    startRMI();
-                } catch (RemoteException e) {
-                    System.err.println("Cannot start RMI. This protocol will be disabled.");
-                }
+        Thread rmiThread = new Thread(() -> {
+            try {
+                startRMI();
+            } catch (RemoteException e) {
+                System.err.println("Cannot start RMI. This protocol will be disabled.");
             }
-        };
+        });
 
         rmiThread.start();
 
-        Thread socketThread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    startSocket();
-                } catch (RemoteException e) {
-                    System.out.print(Color.RED);
-                    System.err.println("Cannot start socket. This protocol will be disabled.");
-                    System.out.print(Color.RESET);
-                }
+        Thread socketThread = new Thread(() -> {
+            try {
+                startSocket();
+            } catch (RemoteException e) {
+                System.out.print(Color.RED);
+                System.err.println("Cannot start socket. This protocol will be disabled.");
+                System.out.print(Color.RESET);
             }
-        };
+        });
 
         socketThread.start();
 

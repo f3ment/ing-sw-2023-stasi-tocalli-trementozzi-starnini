@@ -1,8 +1,6 @@
 package distributed;
 
-//import model.Message;
 import model.Message;
-import utils.Event;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

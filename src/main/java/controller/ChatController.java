@@ -1,6 +1,5 @@
 package controller;
 
-import controller.Lobby;
 import distributed.Client;
 import model.Chat;
 import model.Message;
