@@ -5,7 +5,6 @@ import model.board.Board;
 
 import java.io.Serializable;
 import java.util.*;
-//todo serialize
 public class GameView implements Serializable {
     private static final long serialVersionUID = 1L;
     private final Game model;

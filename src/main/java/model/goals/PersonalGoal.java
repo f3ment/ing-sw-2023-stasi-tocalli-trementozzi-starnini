@@ -52,7 +52,6 @@ public class PersonalGoal implements Serializable {
         return this.done;
     }
 
-    //todo creare una exception se done è maggiore di 6 o minore di 0
     public int getScore() throws IndexOutOfBoundsException {
         if(this.done < Integer.parseInt(prop.getProperty("score.minNum")) ||
                 this.done > Integer.parseInt(prop.getProperty("score.maxNum"))) throw new IndexOutOfBoundsException();
