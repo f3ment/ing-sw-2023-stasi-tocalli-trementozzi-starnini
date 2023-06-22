@@ -298,37 +298,39 @@ public class TextualUI extends View implements Runnable {
      */
     private void menu(GameView o) {
         int choice;
-        System.out.print(Color.YELLOW_BOLD_BRIGHT);
-        System.out.println("This is the menu, select your choice : ");
-        System.out.print(Color.RESET);
-        System.out.print(Color.YELLOW);
-        System.out.println("    1) Show Common Goals ; ");
-        System.out.println("    2) Show Personal Goal ; ");
-        System.out.println("    3) Show all Bookshelves ; ");
-        System.out.println("    4) Continue to play ; ");
-        System.out.print(Color.RESET);
+        do{
+            System.out.print(Color.YELLOW_BOLD_BRIGHT);
+            System.out.println("This is the menu, select your choice : ");
+            System.out.print(Color.RESET);
+            System.out.print(Color.YELLOW);
+            System.out.println("    1) Show Common Goals ; ");
+            System.out.println("    2) Show Personal Goal ; ");
+            System.out.println("    3) Show all Bookshelves ; ");
+            System.out.println("    4) Continue to play ; ");
+            System.out.print(Color.RESET);
 
-        choice = readingInt();
-        while( choice <1 || choice >4){
-            System.err.println("Error! The selected choice is not in the menu! Retry : ");
             choice = readingInt();
-        }
-        switch (choice) {
-            case 1:
-                showFirstCommonGoal(o);
-                showSecondCommonGoal(o);
-                break;
-            case 2:
-                System.out.println("This is your personal goal : ");
-                showPersonalGoal(o);
-                break;
-            case 3:
-                showAllBookshelves(o);
-                break;
-            case 4:
-                System.out.println("Ready to play...");
-                break;
-        }
+            while (choice < 1 || choice > 4) {
+                System.err.println("Error! The selected choice is not in the menu! Retry : ");
+                choice = readingInt();
+            }
+            switch (choice) {
+                case 1:
+                    showFirstCommonGoal(o);
+                    showSecondCommonGoal(o);
+                    break;
+                case 2:
+                    System.out.println("This is your personal goal : ");
+                    showPersonalGoal(o);
+                    break;
+                case 3:
+                    showAllBookshelves(o);
+                    break;
+                case 4:
+                    System.out.println("Ready to play...");
+                    break;
+            }
+        }while(choice != 4);
 
         try {
             Thread.sleep(2000);
