@@ -13,6 +13,8 @@ import javafx.scene.effect.MotionBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import model.*;
 import model.views.GameView;
 import utils.Event;
@@ -24,7 +26,6 @@ import utils.Observable;
 import javafx.scene.image.Image;
 import java.io.IOException;
 import java.net.URL;
-import java.text.BreakIterator;
 import java.util.*;
 
 public class ScenesController extends Observable<Event> implements Initializable {
@@ -176,6 +177,12 @@ public class ScenesController extends Observable<Event> implements Initializable
     private Label fourthPlace;
     @FXML
     private Label firstPlace;
+    @FXML
+    private Circle status2;
+    @FXML
+    private Circle status3;
+    @FXML
+    private Circle status4;
 
     /**
      * This method will change the welcome page to the login page
@@ -297,9 +304,17 @@ public class ScenesController extends Observable<Event> implements Initializable
         ArrayList<String> players = new ArrayList<>(model.getMapPlayerScore().keySet());
         int Nplayers = players.size();
         name1.setText(myName);
-        updateShelf(model);
+        if(myTurn){
+            updateShelf(model);
+        }
         players.remove(myName);
         playerName2 = players.get(0).toString();
+        if(!model.getStatusByNickname(playerName2)){
+            status2.fillProperty().setValue(Paint.valueOf("RED"));
+        }else {
+            status2.fillProperty().setValue(Paint.valueOf("GREEN"));
+        }
+            playerName2 = players.get(1).toString();
         players.remove(playerName2);
         name2.setText(playerName2);
         updateOtherShelves(model,shelfGrid2,playerName2);
@@ -307,22 +322,36 @@ public class ScenesController extends Observable<Event> implements Initializable
             shelf3.setOpacity(1);
             shelfGrid3.setVisible(true);
             playerName3 = players.get(0).toString();
+            if(!model.getStatusByNickname(playerName3)){
+                status3.fillProperty().setValue(Paint.valueOf("RED"));
+                status3.setOpacity(0.75);
+            }else {
+                status3.fillProperty().setValue(Paint.valueOf("GREEN"));
+                status3.setOpacity(0.75);
+            }
             players.remove(playerName3);
             name3.setText(playerName3);
             name3.setOpacity(1);
             scoreLabel3.setVisible(true);
             score3.setVisible(true);
-            updateOtherShelves(model,shelfGrid2,playerName3);
+            updateOtherShelves(model,shelfGrid3,playerName3);
             if(Nplayers == 4){
                 shelf4.setOpacity(1);
                 shelfGrid4.setVisible(true);
                 playerName4 = players.get(0).toString();
+                if(!model.getStatusByNickname(playerName4)){
+                    status4.fillProperty().setValue(Paint.valueOf("RED"));
+                    status4.setOpacity(0.75);
+                }else {
+                    status4.fillProperty().setValue(Paint.valueOf("GREEN"));
+                    status4.setOpacity(0.75);
+                }
                 players.remove(playerName4);
                 name4.setText(playerName4);
                 name4.setOpacity(1);
                 scoreLabel4.setVisible(true);
                 score4.setVisible(true);
-                updateOtherShelves(model,shelfGrid2,playerName4);
+                updateOtherShelves(model,shelfGrid4,playerName4);
             }
         }
     }
@@ -339,7 +368,7 @@ public class ScenesController extends Observable<Event> implements Initializable
                 if(model.getCurrentBookshelf()[i][j]!=null){
                     ImageView tile = new ImageView(new Image(getClass().getResourceAsStream(pickTileImage(model.getCurrentBookshelf()[i][j].getType(),model.getCurrentBookshelf()[i][j].getId()))));
                     tile.setFitHeight(63);
-                    tile.setFitWidth(63);
+                    tile.setFitWidth(66);
                     shelfGrid.add(tile,j,i);
                 }
             }
@@ -358,7 +387,7 @@ public class ScenesController extends Observable<Event> implements Initializable
             for(int j=0; j< model.getLenghtBookshelf(); j++){
                 if((model.getPlayerByUsername().get(playerName)).getBookshelf()[i][j]!=null){
                     ImageView tile = new ImageView(new Image(getClass().getResourceAsStream(pickTileImage(( model.getPlayerByUsername().get(playerName)).getBookshelf()[i][j].getType(), (model.getPlayerByUsername().get(playerName)).getBookshelf()[i][j].getId()))));
-                    tile.setFitHeight(26);
+                    tile.setFitHeight(24);
                     tile.setFitWidth(30);
                     shelfGrid.add(tile,j,i);
                 }
@@ -881,6 +910,7 @@ public class ScenesController extends Observable<Event> implements Initializable
     public void setEndGameToken(GameView model) {
         chair1.setVisible(true);
         chair1.setImage(endToken.getImage());
+        chair1.setRotate(-13);
         endToken.setImage(null);
         endToken.setVisible(false);
     }
@@ -897,12 +927,15 @@ public class ScenesController extends Observable<Event> implements Initializable
             if(model.GetShelfCompletedBy().equals(playerName2)){
                 chair2.setVisible(true);
                 chair2.setImage(endToken.getImage());
+                chair2.setRotate(-13);
             }else if(model.GetShelfCompletedBy().equals(playerName3)){
                 chair3.setVisible(true);
                 chair3.setImage(endToken.getImage());
+                chair3.setRotate(-13);
             }else if(model.GetShelfCompletedBy().equals(playerName4)){
                 chair4.setVisible(true);
                 chair4.setImage(endToken.getImage());
+                chair4.setRotate(-13);
             }
             endToken.setImage(null);
             endToken.setVisible(false);
@@ -921,15 +954,15 @@ public class ScenesController extends Observable<Event> implements Initializable
      * @param model the model of the game
      */
     public void showWinner(GameView model) {
-        winner.setText(model.getWinner().toUpperCase() + " WON!");
-        firstPlace.setText("1st: " + model.getFinalResult(1) + " " + model.getMapPlayerScore().get(model.getFinalResult(1)));
-        secondPlace.setText("2nd: " + model.getFinalResult(2) + " " + model.getMapPlayerScore().get(model.getFinalResult(2)));
+        winner.setText(model.getPlayerNameByRanking(0) + " WON!");
+        firstPlace.setText("1st: " + model.getPlayerNameByRanking(0) + " " + model.getMapPlayerScore().get(model.getPlayerNameByRanking(0)));
+        secondPlace.setText("2nd: " + model.getPlayerNameByRanking(1) + " " + model.getMapPlayerScore().get(model.getPlayerNameByRanking(1)));
         secondPlace.setVisible(true);
         if (model.getPlayerList().size() >= 3) {
-            thirdPlace.setText("3rd: " + model.getFinalResult(3) + " " + model.getMapPlayerScore().get(model.getFinalResult(3)));
+            thirdPlace.setText("3rd: " + model.getPlayerNameByRanking(2) + " " + model.getMapPlayerScore().get(model.getPlayerNameByRanking(2)));
             thirdPlace.setVisible(true);
             if (model.getPlayerList().size() == 4) {
-                fourthPlace.setText("4th: " + model.getFinalResult(4) + " " + model.getMapPlayerScore().get(model.getFinalResult(4)));
+                fourthPlace.setText("4th: " + model.getPlayerNameByRanking(3) + " " + model.getMapPlayerScore().get(model.getPlayerNameByRanking(3)));
                 fourthPlace.setVisible(true);
             }
         }

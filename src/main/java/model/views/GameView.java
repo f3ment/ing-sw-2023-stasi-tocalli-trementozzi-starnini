@@ -184,7 +184,9 @@ public class GameView implements Serializable {
     }
 
 
-
+    public boolean getStatusByNickname(String nickname){
+        return model.getPlayerByNickname().get(nickname).getStatus();
+    }
 
 
     public ItemTiles getHand(int x){
@@ -244,8 +246,8 @@ public class GameView implements Serializable {
         return model.getShelfCompletedBy();
     }
 
-    public String getFinalResult(int position) {
-        return model.getFinalResult(position);
+    public String getPlayerNameByRanking(int position) {
+        return model.getPlayerNameByRanking(position);
     }
 }
 

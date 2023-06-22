@@ -48,7 +48,8 @@ public class GraphicalUI extends View implements Runnable {
     @Override
     /**
      * this method will be called by the server when a new message
-     * is received from the server and will update the gui
+     * is received from the server and will update the gui accordingly
+     * to the message received
      *
      * @param message the message received from the server
      */
@@ -94,6 +95,7 @@ public class GraphicalUI extends View implements Runnable {
                 GuiController.setMyTurn(false , message.getModel().getCurrentPlayer().getUsername());
                 GuiController.updateScores(message.getModel(),username);
                 GuiController.updateStack(message.getModel());
+                GuiController.showShelves(message.getModel(),username);
                 fillBoard(message.getModel());
             });
         }

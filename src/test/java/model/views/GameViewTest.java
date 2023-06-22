@@ -416,10 +416,19 @@ class GameViewTest {
         nomi.add("dario");
         nomi.add("matteo");
         Game game = new Game(nomi);
+        game.getPlayerByNickname().get("marco").setScore(100);
+        game.getPlayerByNickname().get("dario").setScore(200);
+        game.getPlayerByNickname().get("mario").setScore(300);
+        game.getPlayerByNickname().get("matteo").setScore(400);
         model.views.GameView gameView = new GameView(game);
 
         assertFalse(gameView.myBookshelfIsFull());
 
         assertTrue(gameView.GetShelfCompletedBy() == null);
+
+        assertEquals("marco", gameView.getPlayerNameByRanking(3));
+        assertEquals("matteo", gameView.getPlayerNameByRanking(0));
+        assertEquals("dario", gameView.getPlayerNameByRanking(2));
+        assertEquals("mario", gameView.getPlayerNameByRanking(1));
     }
 }

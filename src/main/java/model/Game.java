@@ -410,12 +410,18 @@ public class Game extends Observable<Event> implements Serializable {
         }
     }
 
-    public String getFinalResult(int position) {
-        Map <Integer,String> finalResult = new HashMap<>();
+    public String getPlayerNameByRanking(int position) {
+        List <Integer> finalResult = new ArrayList<>();
+
         for(TablePosition t : tablePositionList){
-            finalResult.put(t.getPlayer().getScore(),t.getPlayer().getUsername());
+            finalResult.add(t.getPlayer().getScore());
         }
-        List <Integer> finalScore = new ArrayList<>((Collection) finalResult.keySet().stream().sorted(Comparator.reverseOrder()));
-        return finalResult.get(finalScore.get(position));
+        Collections.sort(finalResult, Collections.reverseOrder());
+        for(TablePosition t : tablePositionList){
+            if(t.getPlayer().getScore()==finalResult.get(position)){
+                return t.getPlayer().getUsername();
+            }
+        }
+        return null;
     }
 }

@@ -99,6 +99,7 @@ public class Lobby {
             on=true;
             status.put(userId,true);
             usersId.put(userId,user);
+            model.getPlayerByNickname().get(userId).setStatus(true);
             Timer timer=new Timer();
             timer.schedule(new TimerTask() {
                 @Override
@@ -226,6 +227,7 @@ public class Lobby {
 
     public synchronized void setClientOffLine(String username){
         status.put(username,false);
+        model.getPlayerByNickname().get(username).setStatus(false); //set player offline
         System.out.println("morto");
         onlineplayers--;
         boolean flag=false;
