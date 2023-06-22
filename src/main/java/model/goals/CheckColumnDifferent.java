@@ -4,8 +4,8 @@ import model.Bookshelf;
 import model.ScoringToken;
 
 public class CheckColumnDifferent extends CommonGoal{
-    private int repetitions;
-    private boolean strategy; //false -> 3 max different for 3 columns , true -> verticale 2
+    private final int repetitions;
+    private final boolean strategy; //false -> 3 max different for 3 columns , true -> vertical 2
 
 
     public CheckColumnDifferent(int romanNumber, int playerNumber,
@@ -17,13 +17,11 @@ public class CheckColumnDifferent extends CommonGoal{
 
     @Override
     public String toString() {
-        String str = null;
         if(strategy){
-            str= new String("Two columns each formed by 6 different types. One column can show the same or a different combination of another column");
-        }else if(!strategy){
-            str=new String("Three columns each formed by 6 tiles of maximum three different types. One column can show the same or a different combination of another column");
+            return "Two columns each formed by 6 different types. One column can show the same or a different combination of another column";
+        }else{
+            return "Three columns each formed by 6 tiles of maximum three different types. One column can show the same or a different combination of another column";
         }
-        return str;
     }
 
     public String getSource(){
@@ -37,7 +35,7 @@ public class CheckColumnDifferent extends CommonGoal{
 
     @Override
     public ScoringToken validate(Bookshelf bookshelf) {
-        int flag = 0;
+        int flag;
         int rep = 0;
         int counterDiffTypes;
         int i,j;

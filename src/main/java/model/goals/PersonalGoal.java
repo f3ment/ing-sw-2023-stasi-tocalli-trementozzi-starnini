@@ -1,18 +1,11 @@
 package model.goals;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.Map;
 
 import model.Bookshelf;
-import model.ScoringToken;
-import model.Type;
-import view.Color;
-
-import java.security.GeneralSecurityException;
 import java.util.Properties;
 
 public class PersonalGoal implements Serializable {
@@ -62,7 +55,7 @@ public class PersonalGoal implements Serializable {
         Map<String, String> elem;
         this.done = 0;
         for (String e : windows.keySet()) {
-            elem = (Map<String, String>) windows.get(e);
+            elem = windows.get(e);
             try{
                 if (bookshelf.getItem((Integer) Integer.valueOf(elem.get("X")), (Integer) Integer.valueOf(elem.get("Y"))).getType().toString().equals(e)) {
                     done++;

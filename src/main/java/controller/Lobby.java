@@ -38,8 +38,8 @@ public class Lobby {
 
     public Lobby(int nPlayers, String userName, Client client){
         this.nPlayers = nPlayers;
-        usersId = new HashMap<String,Client>(nPlayers);
-        status=new HashMap<String,Boolean>(nPlayers);
+        usersId = new HashMap<>(nPlayers);
+        status=new HashMap<>(nPlayers);
         status.put(userName,true);
         usersId.put(userName,client);
         on=true;
@@ -51,13 +51,9 @@ public class Lobby {
                 setClientOffLine(userName);
             }
         },8000);
-        timerPlayers=new HashMap<String,Timer>(nPlayers);
+        timerPlayers=new HashMap<>(nPlayers);
         timerPlayers.put(userName,timer);
-        if(usersId.size() == nPlayers){
-            isFull = true;
-        }else{
-            isFull = false;
-        }
+        isFull = usersId.size() == nPlayers;
         onlineplayers++;
 
         chat = new Chat();
@@ -65,13 +61,13 @@ public class Lobby {
         this.chat.addObserver((o, message) -> {
             try {
                 if(client.equals(getClientByUsername(message.getUserName()))) {
-                    client.update(new Message(message.getUserName(), (Event) message.getEvent(), new ChatView(chat)));
+                    client.update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
                 }else if(message.getEvent().equals(Event.SEND_MESSAGE)){
                     if( message.getChatMessage().getReceiver()!= null && (client.equals(getClientByUsername(message.getChatMessage().getReceiver()))
                             || client.equals(getClientByUsername(message.getChatMessage().getSender())))){
-                        client.update(new Message(message.getUserName(), (Event) message.getEvent(), new ChatView(chat)));
+                        client.update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
                     }else if (message.getChatMessage().getReceiver() == null){
-                        client.update(new Message(message.getUserName(), (Event) message.getEvent(), new ChatView(chat)));
+                        client.update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
                     }
                 }
             } catch (RemoteException e) {
@@ -131,13 +127,13 @@ public class Lobby {
         this.chat.addObserver((o, message) -> {
             try {
                 if(user.equals(getClientByUsername(message.getUserName()))) {
-                    user.update(new Message(message.getUserName(), (Event) message.getEvent(), new ChatView(chat)));
+                    user.update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
                 }else if(message.getEvent().equals(Event.SEND_MESSAGE)){
                     if( message.getChatMessage().getReceiver()!= null && (user.equals(getClientByUsername(message.getChatMessage().getReceiver()))
                             || user.equals(getClientByUsername(message.getChatMessage().getSender())))){
-                        user.update(new Message(message.getUserName(), (Event) message.getEvent(), new ChatView(chat)));
+                        user.update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
                     }else if (message.getChatMessage().getReceiver() == null){
-                        user.update(new Message(message.getUserName(), (Event) message.getEvent(), new ChatView(chat)));
+                        user.update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
                     }
                 }
             } catch (RemoteException e) {
@@ -180,7 +176,7 @@ public class Lobby {
 
     public void game_init() {
         try {
-            this.model = new Game(new ArrayList<String>(usersId.keySet()));
+            this.model = new Game(new ArrayList<>(usersId.keySet()));
             this.gameController = new GameController(model, this);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -200,7 +196,7 @@ public class Lobby {
                         if(getStatusPlayer(s)) {
                             System.out.println("inoltra");
                             System.out.println(message.getEvent().toString());
-                            usersId.get(s).update(new Message(new GameView(model), (Event) message.getEvent()));
+                            usersId.get(s).update(new Message(new GameView(model), message.getEvent()));
                         }else{
                             System.out.println("death");
                         }
@@ -220,7 +216,7 @@ public class Lobby {
         return this.chatController;
     }
 
-    public synchronized String getUsernameByclient(Client client){
+    public synchronized String getUsernameByClient(Client client){
         return getClientsUsername().get(getClients().indexOf(client));
     }
 
@@ -251,10 +247,7 @@ public class Lobby {
         }
     }
     public boolean isUsernameContained(String username){
-        if(usersId.containsKey(username)){
-            return true;
-        }
-        return false;
+        return usersId.containsKey(username);
     }
 
     public Client getClientByUsername(String username){

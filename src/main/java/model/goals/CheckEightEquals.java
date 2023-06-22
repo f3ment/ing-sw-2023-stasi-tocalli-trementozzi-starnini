@@ -13,8 +13,7 @@ public class CheckEightEquals extends CommonGoal{
 
     @Override
     public String toString() {
-        String str = new String("Eight tiles of the same type, There's no restriction about the position of these tiles.");
-        return str;
+        return "Eight tiles of the same type, There's no restriction about the position of these tiles.";
     }
     public String getSource(){
         return "9.jpg";
@@ -22,7 +21,7 @@ public class CheckEightEquals extends CommonGoal{
     @Override
     public ScoringToken validate(Bookshelf bookshelf) {
         if (bookshelf == null) return null;
-        HashMap<Type,Integer> Counter = new HashMap<Type,Integer>();
+        HashMap<Type,Integer> Counter = new HashMap<>();
         Counter.put(Type.CATS , 0);
         Counter.put(Type.BOOKS , 0);
         Counter.put(Type.FRAMES , 0);

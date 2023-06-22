@@ -1,9 +1,7 @@
 package view;
 
-import javafx.scene.effect.SepiaTone;
 import model.ItemTiles;
 import model.Message;
-import model.Type;
 import model.views.BoxView;
 import model.views.GameView;
 import utils.Event;
@@ -11,8 +9,6 @@ import javafx.application.Platform;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.Set;
 
 public class GraphicalUI extends View implements Runnable {
     private ScenesController GuiController;
@@ -24,7 +20,6 @@ public class GraphicalUI extends View implements Runnable {
     private ArrayList<String> nicknames;
 
     ArrayList<String> players = new ArrayList<String>();
-    private boolean flagChat;
 
 
     @Override
@@ -67,9 +62,7 @@ public class GraphicalUI extends View implements Runnable {
 
             });
         }else if (message.getEvent().equals(Event.SEND_MESSAGE)) {
-                Platform.runLater(() -> {
-                    GuiController.updateChat(message.getChat().getLast());
-                });
+                Platform.runLater(() -> GuiController.updateChat(message.getChat().getLast()));
         }else if (message.getEvent().equals(Event.LOGIN_TRUE)) {
             Platform.runLater(() -> {
                 try {
@@ -100,21 +93,13 @@ public class GraphicalUI extends View implements Runnable {
         if (message.getModel() == null || message.getModel().getCurrentPlayer().getUsername().equals(username)) {
             myTurn = true;
             if (message.getEvent().equals(Event.PLAYER_DRAW_NEGATIVE)) {
-                Platform.runLater(() -> {
-                    GuiController.badDraw();
-                });
+                Platform.runLater(() -> GuiController.badDraw());
             } else if (message.getEvent().equals(Event.PLAYER_DRAW_POSITIVE)) {
-                Platform.runLater(() -> {
-                    GuiController.goodDraw();
-                });
+                Platform.runLater(() -> GuiController.goodDraw());
             } else if (message.getEvent().equals(Event.PLAYER_INSERT_NEGATIVE)) {
-                Platform.runLater(() -> {
-                    GuiController.insertNegative(message.getModel());
-                });
+                Platform.runLater(() -> GuiController.insertNegative(message.getModel()));
             } else if (message.getEvent().equals(Event.PLAYER_INSERT_POSITIVE)) {
-                Platform.runLater(() -> {
-                    GuiController.insertPositive(message.getModel());
-                });
+                Platform.runLater(() -> GuiController.insertPositive(message.getModel()));
             } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
                 startNewTurn(message.getModel());
             } else if (message.getEvent().equals(Event.NEW_TURN)) {

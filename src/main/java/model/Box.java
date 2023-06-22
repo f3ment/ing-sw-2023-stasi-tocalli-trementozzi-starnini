@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Box implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private boolean valid; //casella in cui si può piazzare un ItemTile
+    private final boolean valid; //casella in cui si può piazzare un ItemTile
     private ItemTiles content;
 
     public Box(boolean valid,ItemTiles content){

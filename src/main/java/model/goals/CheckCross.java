@@ -11,8 +11,7 @@ public class CheckCross extends CommonGoal{
 
     @Override
     public String toString() {
-        String str = new String("Five tiles of the same type forming an X");
-        return str;
+        return  "Five tiles of the same type forming an X";
     }
 
     public String getSource(){
@@ -34,9 +33,10 @@ public class CheckCross extends CommonGoal{
                                     bookshelf.getItem(i, j).getType().equals(bookshelf.getItem(i + 2, j + 2).getType())) {
                                 return getStack().pop();  // Esiste una <X> dello stesso tipo
                             }
-                        }catch (Exception e){
-                            continue;}
-                    } else continue;
+                        } catch (Exception e) {
+                            continue;
+                        }
+                    }
                 }
             }
             return null; // Non esiste una <X> dello stesso tipo}

@@ -12,8 +12,7 @@ public class CheckEqualsDiagonal extends CommonGoal{
 
     @Override
     public String toString() {
-        String str = new String("Five tiles of the same type forming a diagonal");
-        return str;
+        return "Five tiles of the same type forming a diagonal";
     }
     public String getSource(){
         return "11.jpg";

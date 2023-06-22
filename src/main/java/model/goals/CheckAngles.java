@@ -11,8 +11,7 @@ public class CheckAngles extends CommonGoal{
 
     @Override
     public String toString() {
-        String str = new String("Four tiles of the same type in the four corners of the bookshelf.");
-        return str;
+        return "Four tiles of the same type in the four corners of the bookshelf.";
     }
     public String getSource(){
         return "8.jpg";

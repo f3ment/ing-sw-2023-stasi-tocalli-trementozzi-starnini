@@ -4,8 +4,8 @@ import model.Bookshelf;
 import model.ScoringToken;
 
 public class CheckGroupsSameType extends CommonGoal{
-        private int repetitions;
-        private int groupLength; //true -> 4 , false -> 2
+        private final int repetitions;
+        private final int groupLength; //true -> 4 , false -> 2
 
     public CheckGroupsSameType(int romanNumber, int numberPlayers, int groupLength, int repetitions){
         super(romanNumber, numberPlayers);
@@ -21,13 +21,13 @@ public class CheckGroupsSameType extends CommonGoal{
     }
     @Override
     public String toString() {
-        String str = null;
         if(groupLength==4){
-             str = new String("Four groups each containing at least 4 tiles of the same type. The tiles of one group can be different from those of another group.");
+             return  "Four groups each containing at least 4 tiles of the same type. The tiles of one group can be different from those of another group.";
         }else if (groupLength == 2){
-            str = new String("Six groups each containing at least 2 tiles of the same type. The tiles of one group can be different from those of another group.");
+             return "Six groups each containing at least 2 tiles of the same type. The tiles of one group can be different from those of another group.";
+        }else{
+            return null;
         }
-        return str;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class CheckGroupsSameType extends CommonGoal{
         if (bookshelf == null) return null;
         boolean[][] batrix = new boolean[bookshelf.getHeight()][bookshelf.getLength()];
         int rep = 0;
-        boolean flag = false;
+        boolean flag;
         for (int i = 0; i < bookshelf.getHeight(); i++) {
             for (int j = 0; j < bookshelf.getLength(); j++) {
                 flag = false;

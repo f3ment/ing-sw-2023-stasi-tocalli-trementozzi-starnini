@@ -1,10 +1,8 @@
 package distributed;
 
 //import controller.ChatController;
-import controller.GameController;
 import controller.GamesManagerController;
 //import model.Chat;
-import model.Game;
 import controller.Lobby;
 //import model.Message;
 import model.Message;
@@ -65,8 +63,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                 if (message.getEvent().equals(Event.PING)) {
                     currentLobby = this.gamesManagerController.getLobbyByClient(client);
                     if(currentLobby!=null) {
-                        System.out.println(gamesManagerController.getLobbyByClient(client).getUsernameByclient(client));
-                        String username = gamesManagerController.getLobbyByClient(client).getUsernameByclient(client);
+                        System.out.println(gamesManagerController.getLobbyByClient(client).getUsernameByClient(client));
+                        String username = gamesManagerController.getLobbyByClient(client).getUsernameByClient(client);
                         gamesManagerController.getLobbyByClient(client).resetTimer(username);
                     }
                     //client.update(null, Event.PING);
@@ -110,7 +108,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                             InputStream in = new FileInputStream(configFilePath);
                             prop.load(in);
                         } catch (IOException ex) {
-                            System.out.println(ex);
+                            System.out.println(ex.getMessage());
                         }
                         prop.setProperty(message.getUserName(), "1");
                         String value = prop.getProperty(message.getUserName()).trim();
@@ -118,7 +116,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                         try {
                             prop.store(new FileOutputStream(configFilePath), null);
                         } catch (IOException ex) {
-                            System.out.println(ex);
+                            System.out.println(ex.getMessage());
                         }
                     }
                 }
@@ -141,7 +139,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
 
                             }
-                        }else{
                         }
                     }
                 } else {
@@ -207,43 +204,40 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         }
 
         boolean destroy=false;
-        new Thread(){
-            @Override
-            public void run(){
-                while (true){
-                    try {
-                        sleep(5000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    for(Lobby l : gamesManagerController.getLobbies_list()){
-                        if(l!=null&&l.isFull()){
-                            if(l.getCurrentPlayer()!=null&&!l.getStatusPlayer(l.getCurrentPlayer())&&!l.onlyOne()&&l.getStatusLobby()){
-                                l.getController().update(l.getClientByUsername(l.getCurrentPlayer()), new Message(Event.CONNECTION_PROBLEM));
-                            }else if(!l.validateLobby()&&l.isFull()){
-                                //for(String s:l.getClientsUsername()){
-                                    //if(l.getStatusPlayer(s)){
-                                        l.getController().update(l.getClientByUsername(l.getWinner()),new Message(l.getWinner(),Event.FORCED_END_MATCH));
-                                        //l.getClientByUsername(l.getWinner()).update(l.getClientByUsername(l.getWinner()),new Message(s,Event.FORCED_END_MATCH));
+        new Thread(() -> {
+            while (true){
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                for(Lobby l : gamesManagerController.getLobbies_list()){
+                    if(l!=null&&l.isFull()){
+                        if(l.getCurrentPlayer()!=null&&!l.getStatusPlayer(l.getCurrentPlayer())&&!l.onlyOne()&&l.getStatusLobby()){
+                            l.getController().update(l.getClientByUsername(l.getCurrentPlayer()), new Message(Event.CONNECTION_PROBLEM));
+                        }else if(!l.validateLobby()&&l.isFull()){
+                            //for(String s:l.getClientsUsername()){
+                                //if(l.getStatusPlayer(s)){
+                                    l.getController().update(l.getClientByUsername(l.getWinner()),new Message(l.getWinner(),Event.FORCED_END_MATCH));
+                                    //l.getClientByUsername(l.getWinner()).update(l.getClientByUsername(l.getWinner()),new Message(s,Event.FORCED_END_MATCH));
 
-                                        Lobbydeletion(l,index);
-                                    //}
+                                    Lobbydeletion(l,index);
                                 //}
-                            }else if(!l.getStatusLobby()&&l.isFull()){
-                                Lobbydeletion(l,index);
+                            //}
+                        }else if(!l.getStatusLobby()&&l.isFull()){
+                            Lobbydeletion(l,index);
 
-                            }
                         }
                     }
-                    for(Integer i:index){
-                        gamesManagerController.removeLobby(i);
-                    }
-                    index.clear();
-                    System.out.println(gamesManagerController.getLobbies_list().size());
-
                 }
+                for(Integer i:index){
+                    gamesManagerController.removeLobby(i);
+                }
+                index.clear();
+                System.out.println(gamesManagerController.getLobbies_list().size());
+
             }
-        }.start();
+        }).start();
     }
 
 

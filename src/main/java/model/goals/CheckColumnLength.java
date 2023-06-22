@@ -13,8 +13,7 @@ public class CheckColumnLength extends CommonGoal{
 
     @Override
     public String toString() {
-        String str = new String("Five columns of increasing or decreasing height. Starting from the first column on the left or on the right, ach next column must be made of exactly one more tile. Tile can be of any type.");
-        return str;
+        return "Five columns of increasing or decreasing height. Starting from the first column on the left or on the right, ach next column must be made of exactly one more tile. Tile can be of any type.";
     }
 
 
