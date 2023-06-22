@@ -8,6 +8,14 @@ public class CheckColumnDifferent extends CommonGoal{
     private final boolean strategy; //false -> 3 max different for 3 columns , true -> vertical 2
 
 
+    /**
+     * Constructor of the class CheckColumnDifferent that extends CommonGoal.
+     * @param romanNumber which is the number of the goal
+     * @param playerNumber which is the number of the players for creating the stack of the tokens
+     * @param repetitions which is the number of columns that must satisfy the goal
+     * @param strategy which is the strategy of the goal. If true, the goal is to fill two columns with all different Items Type ; otherwise the goal is to fill three columns
+     *                 with at most three different Items Type
+     */
     public CheckColumnDifferent(int romanNumber, int playerNumber,
                                 int repetitions, boolean strategy){
         super(romanNumber, playerNumber);
@@ -15,6 +23,10 @@ public class CheckColumnDifferent extends CommonGoal{
         this.strategy = strategy;
     }
 
+    /**
+     * Method that returns the description of the goal based on the strategy
+     * @return the description of the goal
+     */
     @Override
     public String toString() {
         if(strategy){
@@ -24,6 +36,10 @@ public class CheckColumnDifferent extends CommonGoal{
         }
     }
 
+    /**
+     * Method that returns the source of the image of the goal based on the strategy
+     * @return path of the image of the goal
+     */
     public String getSource(){
         if(strategy){
             return "2.jpg";
@@ -32,7 +48,14 @@ public class CheckColumnDifferent extends CommonGoal{
     }
 
 
-
+    /**
+     * Method that verifies if the goal is satisfied for the bookshelf passed as parameter.
+     * If the goal is satisfied, the top token of the stack of the goal is returned, otherwise null is returned.
+     * The algorithm checks for each column if it has the number of repetitions of different types of tiles and if so, it increments the counter.
+     * If the counter is greater or equal to the number of repetitions, the goal is satisfied.
+     * @param bookshelf which is the bookshelf to check
+     * @return the top token of the current stack of the goal if the goal is satisfied, null otherwise
+     */
     @Override
     public ScoringToken validate(Bookshelf bookshelf) {
         int flag;
