@@ -50,6 +50,7 @@ public class GraphicalUI extends View implements Runnable {
      */
     public void update(Message message) {
         if (message.getEvent().equals(Event.RECONNECTION)){
+            System.out.println("sono nella gui e mi è arrivato un messaggio di riconnessione");
             Platform.runLater(() -> {
                 username = GuiController.getUsername();
 

@@ -217,7 +217,7 @@ public class TextualUI extends View implements Runnable {
                         if (nPlayers < 2 || nPlayers > 4) {
                             System.out.print(Color.RED);
                             System.out.println(nPlayers + " is not valid, please try again!!");
-                            System.out.println("Choose between those values: " + Color.RED_BOLD + "2, 3, 4.");
+                            System.out.println("Choose between these values: " + Color.RED_BOLD + "2, 3, 4.");
                             System.out.print(Color.RESET);
                             System.out.print("> ");
                         }

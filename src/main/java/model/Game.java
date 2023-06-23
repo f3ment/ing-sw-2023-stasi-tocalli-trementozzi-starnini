@@ -22,6 +22,8 @@ public class Game extends Observable<Event> implements Serializable {
     private final CommonGoal firstCommonGoal;
     private final CommonGoal secondCommonGoal;
     private final List<TablePosition> tablePositionList;
+    List <Player> finalPlayerList;
+
     private final Board board;
 
     private String winner;
@@ -58,6 +60,7 @@ public class Game extends Observable<Event> implements Serializable {
         this.bag = new Bag();
         this.lastIndex = -1;
         this.endGameToken = false;
+        this.finalPlayerList = new ArrayList<>();
 
         //initializes the personal goal deck with 12 cards
         //every card is a hashmap of 6 couplets of key (Type) and value (pair of coordinates)
@@ -408,17 +411,14 @@ public class Game extends Observable<Event> implements Serializable {
     }
 
     public String getPlayerNameByRanking(int position) {
-        List <Integer> finalResult = new ArrayList<>();
-
+        List <Player> finalResult = new ArrayList<>();
         for(TablePosition t : tablePositionList){
-            finalResult.add(t.getPlayer().getScore());
-        }
-        Collections.sort(finalResult, Collections.reverseOrder());
-        for(TablePosition t : tablePositionList){
-            if(t.getPlayer().getScore()==finalResult.get(position)){
-                return t.getPlayer().getUsername();
+            if(t.getPlayer().getStatus()){
+                finalResult.add(t.getPlayer());
             }
         }
-        return null;
+        finalResult.sort(Comparator.comparing(Player::getScore));
+        Collections.reverse(finalResult);
+        return finalResult.get(position).getUsername();
     }
 }

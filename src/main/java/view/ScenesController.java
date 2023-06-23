@@ -309,12 +309,11 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
         players.remove(myName);
         playerName2 = players.get(0).toString();
-        if(!model.getStatusByNickname(playerName2)){
-            status2.fillProperty().setValue(Paint.valueOf("RED"));
-        }else {
+        if(model.getStatusByNickname(playerName2)){
             status2.fillProperty().setValue(Paint.valueOf("GREEN"));
+        }else {
+            status2.fillProperty().setValue(Paint.valueOf("RED"));
         }
-            playerName2 = players.get(1).toString();
         players.remove(playerName2);
         name2.setText(playerName2);
         updateOtherShelves(model,shelfGrid2,playerName2);
@@ -954,18 +953,27 @@ public class ScenesController extends Observable<Event> implements Initializable
      * @param model the model of the game
      */
     public void showWinner(GameView model) {
-        winner.setText(model.getPlayerNameByRanking(0) + " WON!");
-        firstPlace.setText("1st: " + model.getPlayerNameByRanking(0) + " " + model.getMapPlayerScore().get(model.getPlayerNameByRanking(0)));
-        secondPlace.setText("2nd: " + model.getPlayerNameByRanking(1) + " " + model.getMapPlayerScore().get(model.getPlayerNameByRanking(1)));
-        secondPlace.setVisible(true);
-        if (model.getPlayerList().size() >= 3) {
-            thirdPlace.setText("3rd: " + model.getPlayerNameByRanking(2) + " " + model.getMapPlayerScore().get(model.getPlayerNameByRanking(2)));
-            thirdPlace.setVisible(true);
-            if (model.getPlayerList().size() == 4) {
-                fourthPlace.setText("4th: " + model.getPlayerNameByRanking(3) + " " + model.getMapPlayerScore().get(model.getPlayerNameByRanking(3)));
-                fourthPlace.setVisible(true);
+        int onlinePlayer = 0;
+        for(String p : model.getMapPlayerScore().keySet()) {
+            if(model.getStatusByNickname(p)){
+                onlinePlayer++;
             }
         }
+        winner.setText(model.getPlayerNameByRanking(0) + " WON!");
+        firstPlace.setText("1st: " + model.getPlayerNameByRanking(0) + " " + model.getMapPlayerScore().get(model.getPlayerNameByRanking(0)));
+        if(onlinePlayer>=2){
+            secondPlace.setText("2nd: " + model.getPlayerNameByRanking(1) + " " + model.getMapPlayerScore().get(model.getPlayerNameByRanking(1)));
+            secondPlace.setVisible(true);
+            if (onlinePlayer >= 3) {
+                thirdPlace.setText("3rd: " + model.getPlayerNameByRanking(2) + " " + model.getMapPlayerScore().get(model.getPlayerNameByRanking(2)));
+                thirdPlace.setVisible(true);
+                if (onlinePlayer == 4) {
+                    fourthPlace.setText("4th: " + model.getPlayerNameByRanking(3) + " " + model.getMapPlayerScore().get(model.getPlayerNameByRanking(3)));
+                    fourthPlace.setVisible(true);
+                }
+            }
+        }
+
     }
 }
 
