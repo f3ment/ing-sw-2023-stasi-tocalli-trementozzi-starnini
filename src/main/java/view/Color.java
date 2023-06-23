@@ -1,4 +1,7 @@
 package view;
+
+import javafx.scene.paint.Paint;
+
 public enum Color {
     //Color end string, color reset
     RESET("\033[0m"),

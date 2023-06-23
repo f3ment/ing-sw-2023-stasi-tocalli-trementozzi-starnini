@@ -13,7 +13,7 @@ public class GamesManagerController {
     private ArrayList<Lobby> lobbies_list;
 
     public GamesManagerController(){
-        lobbies_list = new ArrayList<Lobby>();
+        lobbies_list = new ArrayList<>();
         lobbies = new HashMap<>();
     }
 
@@ -58,11 +58,9 @@ public class GamesManagerController {
         return true;
     }*/
     public Lobby LobbyByUsername(String username){
-        boolean flag=false;
         Lobby g=null;
         for(Lobby a:lobbies_list){
             if(a.isUsernameContained(username)){
-                flag=true;
                 g=a;
                 break;
             }

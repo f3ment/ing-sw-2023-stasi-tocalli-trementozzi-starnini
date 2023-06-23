@@ -15,8 +15,8 @@ public class Chat extends Observable<Event> implements Serializable {
     private ArrayList<String> online;
 
     public Chat() {
-        this.chat = new ArrayList<ChatMessage>();
-        online = new ArrayList<String>();
+        this.chat = new ArrayList<>();
+        online = new ArrayList<>();
     }
 
     public void setChangedAndNotifyObservers(Message message) {
@@ -57,7 +57,7 @@ public class Chat extends Observable<Event> implements Serializable {
             this.online.remove(userName);
             setChangedAndNotifyObservers(new Message(Event.EXIT_CHAT, userName));
         }else{
-            ArrayList <String> toRemove = new ArrayList<String>(this.online);
+            ArrayList <String> toRemove = new ArrayList<>(this.online);
             for (String usr : toRemove) {
                 this.online.remove(usr);
                 setChangedAndNotifyObservers(new Message(Event.EXIT_CHAT, usr));

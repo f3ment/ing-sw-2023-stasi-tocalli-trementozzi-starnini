@@ -1,7 +1,6 @@
 package model;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public class Bookshelf implements Serializable {
     private int maxDrowable;
     Properties prop = new Properties();
 
-    public Bookshelf() throws FileNotFoundException, IOException {
+    public Bookshelf() throws IOException {
 
         /*
          * Apertura file di configurazione
@@ -40,7 +39,7 @@ public class Bookshelf implements Serializable {
         this.height = Integer.parseInt(prop.getProperty("bookshelf.height"));
         this.length = Integer.parseInt(prop.getProperty("bookshelf.width"));
         this.items = new ItemTiles[this.height][this.length];
-        this.actualColumnLength= new ArrayList<Integer>();
+        this.actualColumnLength= new ArrayList<>();
         for(int i = 0; i< this.length; i++){
             this.actualColumnLength.add(0);
         }
@@ -107,7 +106,7 @@ public class Bookshelf implements Serializable {
     public int validateAdjacentRecursive(TablePosition tablePosition,int i,int j,int count,Boolean[][] batrix,Type type,boolean starting,int score,Boolean[][] occupied){
         //Bookshelf validateshelf= tablePosition.getBookshelf();
         try {
-            if (batrix[i][j]==false  && starting==false && occupied[i][j]==false) {
+            if (!batrix[i][j] && !starting && !occupied[i][j]) {
                 if (this.getItem(i, j).getType().equals(type)) {
                     count++;
                     occupied[i][j] = true;
@@ -133,7 +132,7 @@ public class Bookshelf implements Serializable {
                 } else {
                     return count;
                 }
-            } else if (starting==true&&batrix[i][j]==false&&occupied[i][j]==false) {
+            } else if (starting && !batrix[i][j] && !occupied[i][j]) {
                 occupied[i][j] = true;
                 count=1;
                 if (i < this.getHeight() - 1) {

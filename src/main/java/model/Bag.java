@@ -8,7 +8,7 @@ import java.util.Random;
 public class Bag implements Serializable {
         private static final long serialVersionUID = 1L;
         private int id;
-        private int maxCardsPerType;
+        private final int maxCardsPerType;
 
         private ArrayList<ItemTiles> items; //struttura contenente Items
         public Bag(){
@@ -32,7 +32,7 @@ public class Bag implements Serializable {
                 id = Integer.parseInt(prop.getProperty("items.diffNumbers"));
                 maxCardsPerType = Integer.parseInt(prop.getProperty("cards.maxNumberPerType"));
 
-                this.items = new ArrayList<ItemTiles>();
+                this.items = new ArrayList<>();
 
                 for(int i =0 ; i <maxCardsPerType ; i++){
                         items.add(new ItemTiles(Type.CATS, i%id));

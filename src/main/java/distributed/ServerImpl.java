@@ -1,10 +1,8 @@
 package distributed;
 
 //import controller.ChatController;
-import controller.GameController;
 import controller.GamesManagerController;
 //import model.Chat;
-import model.Game;
 import controller.Lobby;
 //import model.Message;
 import model.Message;
@@ -28,8 +26,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
     String configFilePath = "./src/main/resources/usernames.properties";
     Properties prop = new Properties();
-
-    Object lock=new Object();
 
     private static final Object syncKey = new Object();
 
@@ -67,7 +63,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                 if (message.getEvent().equals(Event.PING)) {
                     currentLobby = this.gamesManagerController.getLobbyByClient(client);
                     if(currentLobby!=null) {
-                        String username = gamesManagerController.getLobbyByClient(client).getUsernameByclient(client);
+                        String username = gamesManagerController.getLobbyByClient(client).getUsernameByClient(client);
                         gamesManagerController.getLobbyByClient(client).resetTimer(username);
                     }
                     //client.update(null, Event.PING);
@@ -111,7 +107,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                             InputStream in = new FileInputStream(configFilePath);
                             prop.load(in);
                         } catch (IOException ex) {
-                            System.out.println(ex);
+                            System.out.println(ex.getMessage());
                         }
                         prop.setProperty(message.getUserName(), "1");
                         String value = prop.getProperty(message.getUserName()).trim();
@@ -119,7 +115,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                         try {
                             prop.store(new FileOutputStream(configFilePath), null);
                         } catch (IOException ex) {
-                            System.out.println(ex);
+                            System.out.println(ex.getMessage());
                         }
                     }
                 }
@@ -203,8 +199,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         final ArrayList<Integer> index = new ArrayList<>();
         FileInputStream ip;
         try {
-
-
             ip = new FileInputStream(configFilePath);
             prop.load(ip);
         } catch (IOException e) {

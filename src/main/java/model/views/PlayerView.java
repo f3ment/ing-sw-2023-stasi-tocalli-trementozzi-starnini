@@ -6,19 +6,18 @@ import model.ScoringToken;
 import model.TablePosition;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class PlayerView {
 
-    private String username;
-    private boolean status;
-    private int score;
-    private ArrayList<ItemTiles> PickedCards;
-    private TablePosition currentPosition;
+    private final String username;
+    private final boolean status;
+    private final int score;
+    private final ArrayList<ItemTiles> PickedCards;
+    private final TablePosition currentPosition;
 
-    private Map<Integer, ScoringToken> tokens;
-    private ItemTiles[][] bookshelf;
+    private final Map<Integer, ScoringToken> tokens;
+    private final ItemTiles[][] bookshelf;
 
     public PlayerView(Player player){
         this.username = player.getUsername();
@@ -63,4 +62,5 @@ public class PlayerView {
     public ItemTiles[][] getBookshelf() {
         return bookshelf;
     }
+
 }

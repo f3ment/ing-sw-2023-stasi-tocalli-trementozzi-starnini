@@ -130,7 +130,7 @@ public class TextualUI extends View implements Runnable {
                     System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
                 }
 
-                //todo nasce eccezione perché la lobby non esiste più e di conseguenza NullPpointer su ServerImpl : 86
+                //todo nasce eccezione perché la lobby non esiste più e di conseguenza NullPointer su ServerImpl : 86
                 setChanged();
                 notifyObservers(new Message(Event.FINISH_MATCH));
             } else if (message.getModel() == null || message.getModel().getCurrentPlayer().getUsername().equals(username)) {
@@ -225,13 +225,13 @@ public class TextualUI extends View implements Runnable {
 
                     System.out.println("Hi" + Color.GREEN_BRIGHT + " " + username.toUpperCase() + "! " + Color.RESET + "Choose the number of players: ");
 
-                    int nPlayers = 0;
+                    int nPlayers;
                     do {
                         nPlayers = readingInt();
                         if (nPlayers < 2 || nPlayers > 4) {
                             System.out.print(Color.RED);
                             System.out.println(nPlayers + " is not valid, please try again!!");
-                            System.out.println("Choose between those values: " + Color.RED_BOLD + "2, 3, 4.");
+                            System.out.println("Choose between these values: " + Color.RED_BOLD + "2, 3, 4.");
                             System.out.print(Color.RESET);
                             System.out.print("> ");
                         }
@@ -288,7 +288,7 @@ public class TextualUI extends View implements Runnable {
         }
     }
     private void start(GameView o) {
-        if (o.getFirstPlayer() == o.getCurrentPlayer().getUsername() && o.getEndGame()) {
+        if (o.getFirstPlayer().equals(o.getCurrentPlayer().getUsername()) && o.getEndGame()) {
             setChanged();
             notifyObservers(new Message(Event.FINISH_MATCH));
         } else {
@@ -312,37 +312,39 @@ public class TextualUI extends View implements Runnable {
      */
     private void menu(GameView o) {
         int choice;
-        System.out.print(Color.YELLOW_BOLD_BRIGHT);
-        System.out.println("This is the menu, select your choice : ");
-        System.out.print(Color.RESET);
-        System.out.print(Color.YELLOW);
-        System.out.println("    1) Show Common Goals ; ");
-        System.out.println("    2) Show Personal Goal ; ");
-        System.out.println("    3) Show all Bookshelves ; ");
-        System.out.println("    4) Continue to play ; ");
-        System.out.print(Color.RESET);
+        do{
+            System.out.print(Color.YELLOW_BOLD_BRIGHT);
+            System.out.println("This is the menu, select your choice : ");
+            System.out.print(Color.RESET);
+            System.out.print(Color.YELLOW);
+            System.out.println("    1) Show Common Goals ; ");
+            System.out.println("    2) Show Personal Goal ; ");
+            System.out.println("    3) Show all Bookshelves ; ");
+            System.out.println("    4) Continue to play ; ");
+            System.out.print(Color.RESET);
 
-        choice = readingInt();
-        while( choice <1 || choice >4){
-            System.err.println("Error! The selected choice is not in the menu! Retry : ");
             choice = readingInt();
-        }
-        switch (choice) {
-            case 1:
-                showFirstCommonGoal(o);
-                showSecondCommonGoal(o);
-                break;
-            case 2:
-                System.out.println("This is your personal goal : ");
-                showPersonalGoal(o);
-                break;
-            case 3:
-                showAllBookshelves(o);
-                break;
-            case 4:
-                System.out.println("Ready to play...");
-                break;
-        }
+            while (choice < 1 || choice > 4) {
+                System.err.println("Error! The selected choice is not in the menu! Retry : ");
+                choice = readingInt();
+            }
+            switch (choice) {
+                case 1:
+                    showFirstCommonGoal(o);
+                    showSecondCommonGoal(o);
+                    break;
+                case 2:
+                    System.out.println("This is your personal goal : ");
+                    showPersonalGoal(o);
+                    break;
+                case 3:
+                    showAllBookshelves(o);
+                    break;
+                case 4:
+                    System.out.println("Ready to play...");
+                    break;
+            }
+        }while(choice != 4);
 
         try {
             Thread.sleep(2000);
@@ -366,7 +368,7 @@ public class TextualUI extends View implements Runnable {
         }
         System.out.print(Color.BLACK_BRIGHT + "\n");
         //System.out.print("  /");
-        //for (int i = 0; i <= 2 * o.getLenghtBoard(); i++) System.out.print("■■");
+        //for (int i = 0; i <= 2 * o.getLengthBoard(); i++) System.out.print("■■");
         System.out.print(Color.RESET);
         for (int i = 0; i < o.getHeightBoard(); i++) {
             a = i + 1;
@@ -394,9 +396,9 @@ public class TextualUI extends View implements Runnable {
             System.out.print(Color.BLACK_BRIGHT + " \n" + Color.RESET);
         }
         //System.out.print(Color.BLACK_BRIGHT + "  \\");
-        //for (int i = 0; i <= 2 * o.getLenghtBoard(); i++) System.out.print(" -");
+        //for (int i = 0; i <= 2 * o.getLengthBoard(); i++) System.out.print(" -");
         System.out.print("\n" + Color.RESET);
-        System.out.println("");
+        System.out.println();
     }
 
     /**
@@ -422,7 +424,7 @@ public class TextualUI extends View implements Runnable {
             System.out.println("<" + nick + "> " + set.getValue());
             System.out.print(Color.RESET);
         }
-        System.out.println("");
+        System.out.println();
     }
 
     /**
@@ -435,7 +437,7 @@ public class TextualUI extends View implements Runnable {
 
         for(int n=0; n<o.getNumPlayer(); n++){
             PlayerView player = (PlayerView) PlayerList.get(n);
-          // Verificarer se lo username è più lungo della board
+          // Verificare se lo username è più lungo della board
           // operare in modo differente a seconda del controllo precedente
           // lo spezzone di codice che c'è sotto è per quando gli username sono più 'corti' della bookshelf
             System.out.print(" ");
@@ -468,7 +470,7 @@ public class TextualUI extends View implements Runnable {
             for (int n = 0; n < o.getNumPlayer(); n++) {
                 //System.out.print(Color.WHITE_BRIGHT + "| " + Color.RESET);
                 for (int j = 0; j < o.getLenghtBookshelf(); j++) {
-                    ItemTiles[][] curr = (ItemTiles[][])((PlayerView) PlayerList.get(n)).getBookshelf();
+                    ItemTiles[][] curr = ((PlayerView) PlayerList.get(n)).getBookshelf();
                     ItemTiles elem;
                     try {
                         elem = curr[i][j];
@@ -483,7 +485,7 @@ public class TextualUI extends View implements Runnable {
             //System.out.print(Color.WHITE_BRIGHT + "|" + Color.RESET);
             System.out.print("\n");
         }
-        System.out.println("");
+        System.out.println();
     }
 
     /**
@@ -537,8 +539,8 @@ public class TextualUI extends View implements Runnable {
 
 
             //check on order input
-            if (order.stream().sorted().distinct().count() != o.getPickedCards().size()) {
-                System.out.println(Color.RED_BOLD + "ERROR!" + Color.RED + " Found many occurrencies of the same index!" + Color.RESET);
+            if (order.stream().distinct().count() != o.getPickedCards().size()) {
+                System.out.println(Color.RED_BOLD + "ERROR!" + Color.RED + " Found many occurrences of the same index!" + Color.RESET);
                 flag = false;
             } else {
                 flag = !order.stream().allMatch(e -> e < 0 || e >= o.getPickedCards().size());
@@ -551,7 +553,7 @@ public class TextualUI extends View implements Runnable {
             }
         } while (!flag);
 
-        System.out.println(Color.WHITE_BRIGHT + "The choosen order is : " + Color.RESET);
+        System.out.println(Color.WHITE_BRIGHT + "The chosen order is : " + Color.RESET);
         order.forEach(e -> System.out.println(e + 1 + " " + o.getHand(e).getType().getColor() + "▓▓" +Color.RESET));
         showBookshelf(o);
 
@@ -565,7 +567,7 @@ public class TextualUI extends View implements Runnable {
     }
 
     private void playerDraw(GameView o) {
-        ArrayList<ArrayList<Integer>> drawen = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> drawn = new ArrayList<>();
         int nCards, x, y;
         boolean flag;
         ArrayList<Integer> coords;
@@ -586,7 +588,7 @@ public class TextualUI extends View implements Runnable {
         }
         for (int i = 0; i < nCards; i++) {
             flag = true;
-            coords = new ArrayList<Integer>();
+            coords = new ArrayList<>();
             int z = i + 1;
             System.out.println("Insert the coordinates of the " + z + " card : ");
             System.out.print(Color.WHITE_BOLD_BRIGHT + "x : " + Color.RESET);
@@ -615,20 +617,20 @@ public class TextualUI extends View implements Runnable {
             }
             coords.add(x);
             coords.add(y);
-            for (ArrayList<Integer> el : drawen) {
-                if (el.get(0) == coords.get(0) && el.get(1) == coords.get(1)) {
-                    System.out.println(Color.RED_BOLD + "ERROR! " + Color.RED + "The choosen card has already been selected! Retry." + Color.RESET);
+            for (ArrayList<Integer> el : drawn) {
+                if (el.get(0).equals(coords.get(0)) && el.get(1).equals(coords.get(1))) {
+                    System.out.println(Color.RED_BOLD + "ERROR! " + Color.RED + "The chosen card has already been selected! Retry." + Color.RESET);
                     flag = false;
                     i--;
                     break;
                 }
             }
             if (flag) {
-                drawen.add(coords);
+                drawn.add(coords);
             }
         }
         setChanged();
-        notifyObservers(new Message(Event.PLAYER_DRAW_POSITIVE, drawen));
+        notifyObservers(new Message(Event.PLAYER_DRAW_POSITIVE, drawn));
     }
 
 
@@ -648,7 +650,7 @@ public class TextualUI extends View implements Runnable {
 
     public int readingInt() {
         int userInput;
-        Scanner input = new Scanner(System.in);
+        Scanner input;
         try {
             while (System.in.available() > 0) {
                 System.in.read(new byte[System.in.available()]);  //clear System.in

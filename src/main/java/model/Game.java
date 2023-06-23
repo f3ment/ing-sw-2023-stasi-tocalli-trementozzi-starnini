@@ -22,6 +22,8 @@ public class Game extends Observable<Event> implements Serializable {
     private final CommonGoal firstCommonGoal;
     private final CommonGoal secondCommonGoal;
     private final List<TablePosition> tablePositionList;
+    List <Player> finalPlayerList;
+
     private final Board board;
 
     private String winner;
@@ -58,6 +60,7 @@ public class Game extends Observable<Event> implements Serializable {
         this.bag = new Bag();
         this.lastIndex = -1;
         this.endGameToken = false;
+        this.finalPlayerList = new ArrayList<>();
 
         //initializes the personal goal deck with 12 cards
         //every card is a hashmap of 6 couplets of key (Type) and value (pair of coordinates)
@@ -169,8 +172,6 @@ public class Game extends Observable<Event> implements Serializable {
         return this.board.setBox(this.bag);
     }
 
-    // todo chiamata isFull della bookshelf che a sua volta chiama setEndGame
-    // todo domanda gestione turni, eventuale multithreading come listener
     public void setEndGame(boolean finish){
         this.finish = finish;
     }
@@ -234,7 +235,6 @@ public class Game extends Observable<Event> implements Serializable {
         return secondCommonGoal;
     }
 
-    //TODO notify...
     public void setChangedAndNotifyObservers(Event arg) {
         setChanged();
         notifyObservers(new Message(arg));
@@ -410,13 +410,16 @@ public class Game extends Observable<Event> implements Serializable {
         }
     }
 
-    public String getFinalResult(int position) {
-        Map <Integer,String> finalResult = new HashMap<>();
+    public String getPlayerNameByRanking(int position) {
+        List <Player> finalResult = new ArrayList<>();
         for(TablePosition t : tablePositionList){
-            finalResult.put(t.getPlayer().getScore(),t.getPlayer().getUsername());
+            if(t.getPlayer().getStatus()){
+                finalResult.add(t.getPlayer());
+            }
         }
-        List <Integer> finalScore = new ArrayList<>((Collection) finalResult.keySet().stream().sorted(Comparator.reverseOrder()));
-        return finalResult.get(finalScore.get(position));
+        finalResult.sort(Comparator.comparing(Player::getScore));
+        Collections.reverse(finalResult);
+        return finalResult.get(position).getUsername();
     }
 
     public void setCurrentPlayer(String id){

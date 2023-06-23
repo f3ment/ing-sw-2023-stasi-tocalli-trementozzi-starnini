@@ -67,7 +67,7 @@
             <Image url="@../Images/misc/fire1.png" />
          </image>
       </ImageView>
-      <Label fx:id="winner" alignment="CENTER" layoutY="267.0" prefHeight="146.0" prefWidth="1920.0" text="AMMAZZAGATTI WON!" textFill="#ffc800">
+      <Label fx:id="winner" alignment="CENTER" layoutY="267.0" prefHeight="146.0" prefWidth="1920.0" textFill="#ffc800">
          <font>
             <Font name="DejaVu Serif Condensed Bold" size="150.0" />
          </font>
@@ -80,7 +80,7 @@
             <Image url="@../Images/misc/fire2.png" />
          </image>
       </ImageView>
-      <Label fx:id="firstPlace" layoutX="585.0" layoutY="795.0" prefHeight="0.0" prefWidth="733.0" text="1st: TOKYFDRTERSD 189" textFill="#a88b34">
+      <Label fx:id="firstPlace" layoutX="585.0" layoutY="795.0" prefHeight="0.0" prefWidth="733.0" textFill="#a88b34">
          <font>
             <Font name="DejaVu Serif Condensed Bold" size="45.0" />
          </font>
@@ -88,7 +88,7 @@
             <DropShadow />
          </effect>
       </Label>
-      <Label fx:id="thirdPlace1" layoutX="585.0" layoutY="930.0" prefHeight="0.0" prefWidth="733.0" text="3rd: FRANCESCO23K34F 24" textFill="#a88b34">
+      <Label fx:id="thirdPlace" layoutX="585.0" layoutY="930.0" prefHeight="0.0" prefWidth="733.0" textFill="#a88b34">
          <font>
             <Font name="DejaVu Serif Condensed Bold" size="45.0" />
          </font>
@@ -96,7 +96,7 @@
             <DropShadow />
          </effect>
       </Label>
-      <Label fx:id="secondPlace2" layoutX="585.0" layoutY="865.0" prefHeight="0.0" prefWidth="733.0" text="2nd: MIKE 76" textFill="#a88b34">
+      <Label fx:id="secondPlace" layoutX="585.0" layoutY="865.0" prefHeight="0.0" prefWidth="733.0" textFill="#a88b34">
          <font>
             <Font name="DejaVu Serif Condensed Bold" size="45.0" />
          </font>
@@ -104,7 +104,7 @@
             <DropShadow />
          </effect>
       </Label>
-      <Label fx:id="fourthPlace11" layoutX="585.0" layoutY="999.0" prefHeight="0.0" prefWidth="733.0" text="4th: SPRIZETTI 23" textFill="#a88b34">
+      <Label fx:id="fourthPlace" layoutX="585.0" layoutY="999.0" prefHeight="0.0" prefWidth="733.0" textFill="#a88b34">
          <font>
             <Font name="DejaVu Serif Condensed Bold" size="45.0" />
          </font>

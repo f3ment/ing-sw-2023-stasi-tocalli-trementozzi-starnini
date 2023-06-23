@@ -1,14 +1,11 @@
 package distributed;
 
-import distributed.socket.middleware.ServerStub;
 import javafx.application.Application;
 import model.Message;
 import utils.Event;
 import view.*;
 
 import java.rmi.RemoteException;
-import java.rmi.server.RMIClientSocketFactory;
-import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
@@ -82,7 +79,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
                     server.update(this, message);
                 } catch (RemoteException e) {
                     System.err.println("Error while updating server : " + e.getMessage() + ". Skipping the update...");
-
                 }
             });
         }else {

@@ -533,5 +533,39 @@ String configFilePath = "./src/main/resources/config.properties";
         }
     }
 
+    @Test
+    void GetPlayerNameByRankingTest() {
+        try {
+            usernames.clear();
+            usernames.add("mario");
+            usernames.add("luca");
+            usernames.add("dario");
+            usernames.add("cassano");
+            game = new Game(usernames);
+            game.getPlayerByNickname().get("dario").setScore(10);
+            game.getPlayerByNickname().get("dario").setStatus(true);
+            game.getPlayerByNickname().get("cassano").setScore(20);
+            game.getPlayerByNickname().get("cassano").setStatus(true);
+            game.getPlayerByNickname().get("mario").setScore(30);
+            game.getPlayerByNickname().get("mario").setStatus(true);
+            game.getPlayerByNickname().get("luca").setScore(40);
+            game.getPlayerByNickname().get("luca").setStatus(true);
+            assertEquals("luca", game.getPlayerNameByRanking(0));
+            assertEquals("mario", game.getPlayerNameByRanking(1));
+            assertEquals("cassano", game.getPlayerNameByRanking(2));
+            assertEquals("dario", game.getPlayerNameByRanking(3));
+
+            game.getPlayerByNickname().get("cassano").setScore(30);
+            assertTrue(game.getPlayerNameByRanking(1).equals("mario") || game.getPlayerNameByRanking(1).equals("cassano"));
+            assertTrue(game.getPlayerNameByRanking(2).equals("mario") || game.getPlayerNameByRanking(2).equals("cassano"));
+
+            System.out.println("Test passato!");
+
+        } catch (Exception e) {
+            System.out.println("Test fallito!");
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }

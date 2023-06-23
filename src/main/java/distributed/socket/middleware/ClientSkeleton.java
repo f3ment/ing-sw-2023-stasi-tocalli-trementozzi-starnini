@@ -3,23 +3,20 @@ package distributed.socket.middleware;
 import distributed.Client;
 import distributed.Server;
 import model.Message;
-import model.views.GameView;
-import utils.Event;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 
 public class ClientSkeleton implements Client {
 
     private final ObjectOutputStream oos;
     private final ObjectInputStream ios;
 
-    private Object inputlock = new Object();
-    private Object outputlock = new Object();
+    private final Object inputlock = new Object();
+    private final Object outputlock = new Object();
 
     public ClientSkeleton(Socket socket){
         try {

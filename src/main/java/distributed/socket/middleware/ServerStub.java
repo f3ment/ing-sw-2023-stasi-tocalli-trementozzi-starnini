@@ -3,7 +3,6 @@ package distributed.socket.middleware;
 import distributed.Client;
 import distributed.Server;
 import model.Message;
-import model.views.GameView;
 import utils.Event;
 
 import java.io.IOException;
@@ -11,7 +10,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ServerStub implements Server {
@@ -23,8 +21,8 @@ public class ServerStub implements Server {
     private ObjectOutputStream oos;
     private ObjectInputStream ios;
 
-    private Object inputlock = new Object();
-    private Object outputlock = new Object();
+    private final Object inputlock = new Object();
+    private final Object outputlock = new Object();
 
     public ServerStub(String ip, int port){
         this.ip = ip;

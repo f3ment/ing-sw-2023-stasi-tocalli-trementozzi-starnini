@@ -5,7 +5,6 @@ import utils.Event;
 import view.Color;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 public class GameController {
     private final Game game;
@@ -107,7 +106,7 @@ public class GameController {
             if(game.getCurrentPosition().getBookshelf().isFull()){
                 game.setEndGame(true);
             }
-            if(game.getEndGame() && game.getCurrentPosition().getPlayer().getUsername()==game.getFirstPlayer()){
+            if(game.getEndGame() && game.getCurrentPosition().getPlayer().getUsername().equals(game.getFirstPlayer())){
                 lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage(Color.RED + "The match is ending!" + Color.RESET, Color.RED + "SERVER" + Color.RESET, null) ));
                 lobby.getChatController().update(o, new Message(Event.EXIT_CHAT, ""));
                 game.setWinner();
@@ -116,7 +115,7 @@ public class GameController {
                 if (game.checkBoardEmpty()) {
                     game.fillBoard();
                 }
-                if (!game.getEndGame() || (game.getCurrentPosition().getPlayer().getUsername() != game.getFirstPlayer() && game.getEndGame())) {
+                if (!game.getEndGame() || (!game.getCurrentPosition().getPlayer().getUsername().equals(game.getFirstPlayer()) && game.getEndGame())) {
                     changeCurrentPosition();
                     game.setChangedAndNotifyObservers(Event.PLAYER_FINISH);
                 }
