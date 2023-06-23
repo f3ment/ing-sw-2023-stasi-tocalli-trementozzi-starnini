@@ -418,4 +418,13 @@ public class Game extends Observable<Event> implements Serializable {
         List <Integer> finalScore = new ArrayList<>((Collection) finalResult.keySet().stream().sorted(Comparator.reverseOrder()));
         return finalResult.get(finalScore.get(position));
     }
+
+    public void setCurrentPlayer(String id){
+        for(TablePosition t:tablePositionList){
+            if(t.getPlayer().getUsername().equals(id)){
+                this.currentPosition=t;
+                break;
+            }
+        }
+    }
 }

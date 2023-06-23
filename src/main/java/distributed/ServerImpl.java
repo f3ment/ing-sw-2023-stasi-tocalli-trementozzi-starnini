@@ -29,6 +29,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     String configFilePath = "./src/main/resources/usernames.properties";
     Properties prop = new Properties();
 
+    Object lock=new Object();
+
     private static final Object syncKey = new Object();
 
     public ServerImpl() throws RemoteException {
@@ -65,7 +67,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                 if (message.getEvent().equals(Event.PING)) {
                     currentLobby = this.gamesManagerController.getLobbyByClient(client);
                     if(currentLobby!=null) {
-                        System.out.println(gamesManagerController.getLobbyByClient(client).getUsernameByclient(client));
                         String username = gamesManagerController.getLobbyByClient(client).getUsernameByclient(client);
                         gamesManagerController.getLobbyByClient(client).resetTimer(username);
                     }
@@ -125,7 +126,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                 if (!correctusername) {
                     if(gamesManagerController.StatusUsername(message.getUserName(), gamesManagerController.LobbyByUsername(message.getUserName()))) {
                         client.update(new Message(Event.LOGIN));
-                    }else{
+                    }else if(gamesManagerController.LobbyByUsername(message.getUserName()).isFull()){
                         if(gamesManagerController.LobbyByUsername(message.getUserName()).getStatusLobby()) {
                             if(gamesManagerController.LobbyByUsername(message.getUserName()).getOnlineplayers()==1){
                                 gamesManagerController.LobbyByUsername(message.getUserName()).resetFinalTimer();
@@ -137,12 +138,19 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                             if(gamesManagerController.LobbyByUsername(message.getUserName()).getOnlineplayers()>2){
                                 client.update(new Message(Event.RECONNECTION));
                             }else {
-                                gamesManagerController.LobbyByUsername(message.getUserName()).getController().update(client,new Message(Event.NEW_TURN));
-
+                                if(gamesManagerController.LobbyByUsername(message.getUserName()).getStatusCurrentPlayer()&&!gamesManagerController.LobbyByUsername(message.getUserName()).getCurrentPlayer().equals(message.getUserName())){
+                                    client.update(new Message(Event.RECONNECTION));
+                                }else {
+                                    gamesManagerController.LobbyByUsername(message.getUserName()).getController().update(client, new Message(Event.NEW_TURN_RECONNECTED));
+                                }
 
                             }
-                        }else{
                         }
+                    }else{
+                        gamesManagerController.LobbyByUsername(message.getUserName()).insertPlayer(client, message.getUserName());
+                        gamesManagerController.insertPlayer(client,gamesManagerController.LobbyByUsername(message.getUserName()), message.getUserName());
+                        currentLobby = gamesManagerController.getLobbyByClient(client);
+                        client.update(new Message(Event.WAIT_START_OF_MATCH, currentLobby.getClientsUsername() , currentLobby.getnPlayers()));
                     }
                 } else {
 
@@ -151,6 +159,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                 client.update(new Message(Event.WAIT_START_OF_MATCH, currentLobby.getClientsUsername() , currentLobby.getnPlayers()));
 
                     if (lobby != null) {
+                        lobby.checkStartMatch();
                         lobby.getController().update(client, new Message(Event.LOGIN_TRUE));
                     }
                 }
@@ -194,6 +203,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         final ArrayList<Integer> index = new ArrayList<>();
         FileInputStream ip;
         try {
+
+
             ip = new FileInputStream(configFilePath);
             prop.load(ip);
         } catch (IOException e) {
@@ -218,20 +229,23 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     }
                     for(Lobby l : gamesManagerController.getLobbies_list()){
                         if(l!=null&&l.isFull()){
-                            if(l.getCurrentPlayer()!=null&&!l.getStatusPlayer(l.getCurrentPlayer())&&!l.onlyOne()&&l.getStatusLobby()){
+                            if(l.validateLobby()){
+                                if(l.getOnlineplayers()==1&&l.getFinalFlag()){
+                                    l.setForcedEnd();
+                                }
+                            }
+                            if(l.getCurrentPlayer()!=null&&!l.getStatusPlayer(l.getCurrentPlayer())&&l.getOnlineplayers()!=1&&l.getStatusLobby()){
                                 l.getController().update(l.getClientByUsername(l.getCurrentPlayer()), new Message(Event.CONNECTION_PROBLEM));
                             }else if(!l.validateLobby()&&l.isFull()){
                                 //for(String s:l.getClientsUsername()){
                                     //if(l.getStatusPlayer(s)){
                                         l.getController().update(l.getClientByUsername(l.getWinner()),new Message(l.getWinner(),Event.FORCED_END_MATCH));
                                         //l.getClientByUsername(l.getWinner()).update(l.getClientByUsername(l.getWinner()),new Message(s,Event.FORCED_END_MATCH));
-
                                         Lobbydeletion(l,index);
                                     //}
                                 //}
                             }else if(!l.getStatusLobby()&&l.isFull()){
                                 Lobbydeletion(l,index);
-
                             }
                         }
                     }
@@ -239,7 +253,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                         gamesManagerController.removeLobby(i);
                     }
                     index.clear();
-                    System.out.println(gamesManagerController.getLobbies_list().size());
 
                 }
             }

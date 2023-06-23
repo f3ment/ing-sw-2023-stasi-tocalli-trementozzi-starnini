@@ -112,7 +112,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
             public void run(){
                 while (true) {
                   try{
-                      Thread.sleep(1000);
+                      Thread.sleep(200);
                   }catch (InterruptedException e){
                       throw new RuntimeException();
                   }

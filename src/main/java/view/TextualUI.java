@@ -187,7 +187,21 @@ public class TextualUI extends View implements Runnable {
                         }
                     }
                     start(message.getModel());
-                } else if (message.getEvent().equals(Event.FINISH_MATCH)) {
+                } else if(message.getEvent().equals(Event.NEW_TURN_RECONNECTED)) {
+                    System.out.println("Welcome Back");
+                    synchronized (this) {
+                        if (choice()) {
+                            while (flagChat || choosing) {
+                                try {
+                                    this.wait();
+                                } catch (InterruptedException e) {
+                                    throw new RuntimeException();
+                                }
+                            }
+                        }
+                    }
+                    start(message.getModel());
+                }else if (message.getEvent().equals(Event.FINISH_MATCH)) {
                     synchronized (this){
                         System.out.println("Game is finished!");
                     }
@@ -629,6 +643,8 @@ public class TextualUI extends View implements Runnable {
         }
         System.out.print("\n");
     }
+
+
 
     public int readingInt() {
         int userInput;

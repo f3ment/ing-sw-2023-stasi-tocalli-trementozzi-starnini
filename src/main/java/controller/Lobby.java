@@ -24,15 +24,18 @@ public class Lobby {
     private GameController gameController;
     private String id;
     private int nPlayers;
-    private HashMap<String, Client> usersId;
-    private HashMap<String,Timer> timerPlayers;
-    private HashMap<String,Boolean> status;
-    private Timer timerOneLeftPlayer=new Timer();
-    private boolean isFull;
-    private boolean on;
-    private int onlineplayers=0;
-    private boolean oneleft;
-    private boolean valid=true;
+    private HashMap<String, Client> usersId;  // link clients and their usernames
+    private HashMap<String,Timer> timerPlayers; //timers for every ping's player
+    private HashMap<String,Boolean> status;  //status online/offline players
+    private Timer timerOneLeftPlayer=new Timer();  //timer which starts when there is only one left player online
+    private boolean isFull;  //true if the match has beginned
+    private boolean on;    //there is at least one player online
+    private int onlineplayers=0;  // number of players online
+    private boolean oneleft;  //true if there is only one player online
+    private boolean valid=true; // when it becomes false, the match is forced to end
+    private boolean flagfinal;  // true when timerOneLeftPlayer starts
+
+
 
     private String winner;
 
@@ -43,6 +46,7 @@ public class Lobby {
         status.put(userName,true);
         usersId.put(userName,client);
         on=true;
+        flagfinal=true;
         oneleft=false;
         Timer timer=new Timer();
         timer.schedule(new TimerTask() {
@@ -50,7 +54,7 @@ public class Lobby {
             public void run() {
                 setClientOffLine(userName);
             }
-        },8000);
+        },500);
         timerPlayers=new HashMap<String,Timer>(nPlayers);
         timerPlayers.put(userName,timer);
         if(usersId.size() == nPlayers){
@@ -93,7 +97,7 @@ public class Lobby {
     }
 
     //returns true if usersId are full;
-
+    // insert a player in the lobby. if he already exists turn him online
     public synchronized boolean insertPlayer(Client user,String userId){
         if(isFull&&!getStatusPlayer(userId)) {
             on=true;
@@ -105,7 +109,7 @@ public class Lobby {
                 public void run() {
                     setClientOffLine(userId);
                 }
-            },8000);
+            },500);
             timerPlayers.put(userId,timer);
             onlineplayers++;
             if(onlineplayers>1){
@@ -120,7 +124,7 @@ public class Lobby {
                 public void run() {
                     setClientOffLine(userId);
                 }
-            },8000);
+            },500);
             timerPlayers.put(userId,timer);
             if(usersId.size() == nPlayers){
                 isFull = true;
@@ -155,7 +159,7 @@ public class Lobby {
             public void run() {
                 setClientOffLine(username);
             }
-        },8000);
+        },500);
         timerPlayers.put(username,timero);
     }
 
@@ -198,11 +202,9 @@ public class Lobby {
                 this.model.addObserver((o, message) -> {
                     try {
                         if(getStatusPlayer(s)) {
-                            System.out.println("inoltra");
                             System.out.println(message.getEvent().toString());
                             usersId.get(s).update(new Message(new GameView(model), (Event) message.getEvent()));
                         }else{
-                            System.out.println("death");
                         }
                     } catch (RemoteException e) {
                         System.err.println("Error while updating the client : " + e.getMessage() + ". Skipping the update...");
@@ -226,7 +228,6 @@ public class Lobby {
 
     public synchronized void setClientOffLine(String username){
         status.put(username,false);
-        System.out.println("morto");
         onlineplayers--;
         boolean flag=false;
         for(String s: status.keySet()){
@@ -234,12 +235,12 @@ public class Lobby {
                 flag=true;
             }
         }
-        if(!flag){
+        if(!flag&&isFull){
             on=false;
             resetFinalTimer();
             oneleft=false;
         }
-        if(onlineplayers==1){
+        if(onlineplayers==1&&isFull){
             oneleft=true;
             setFinalTimer();
             for(String s : usersId.keySet()){
@@ -247,6 +248,17 @@ public class Lobby {
                     winner=s;
                     break;
                 }
+            }
+        }
+    }
+
+    public void setForcedEnd(){
+        oneleft=true;
+        setFinalTimer();
+        for(String s : usersId.keySet()){
+            if(getStatusPlayer(s)){
+                winner=s;
+                break;
             }
         }
     }
@@ -285,15 +297,17 @@ public class Lobby {
     }
 
     public void setFinalTimer(){
+        flagfinal=false;
         timerOneLeftPlayer=new Timer();
         timerOneLeftPlayer.schedule(new TimerTask() {
             @Override
             public void run() {
                 valid=false;
             }
-        },60000);
+        },30000);
     }
     public void resetFinalTimer(){
+        flagfinal=true;
         timerOneLeftPlayer.cancel();
         if(onlineplayers!=1){
             oneleft=false;
@@ -311,4 +325,36 @@ public class Lobby {
     public GameView getModel() {
         return new GameView(model);
     }
+
+    public HashMap<String, Boolean> getStatusPlayers() {
+        return status;
+    }
+
+    public void checkStartMatch(){
+        boolean flag=false;
+        for(String s:status.keySet()){
+            if(status.get(s)==false){
+                flag=true;
+                break;
+            }
+        }
+        if(flag){
+            for(String s: status.keySet()){
+                if(status.get(s)){
+                    model.setCurrentPlayer(s);
+                    break;
+                }
+            }
+        }
+    }
+
+    public boolean getFinalFlag(){
+        return flagfinal;
+    }
+
+    public boolean getStatusCurrentPlayer(){
+        return status.get(getCurrentPlayer());
+    }
+
+
 }

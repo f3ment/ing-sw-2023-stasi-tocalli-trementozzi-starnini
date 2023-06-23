@@ -33,6 +33,8 @@ public class GraphicalUI extends View implements Runnable {
     }
 
 
+
+
     /**
      * this method sets the controller that will be used to change the javafx scene
      *
