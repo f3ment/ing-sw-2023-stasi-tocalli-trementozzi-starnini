@@ -417,9 +417,13 @@ class GameViewTest {
         nomi.add("matteo");
         Game game = new Game(nomi);
         game.getPlayerByNickname().get("marco").setScore(100);
+        game.getPlayerByNickname().get("marco").setStatus(true);
         game.getPlayerByNickname().get("dario").setScore(200);
+        game.getPlayerByNickname().get("dario").setStatus(true);
         game.getPlayerByNickname().get("mario").setScore(300);
+        game.getPlayerByNickname().get("mario").setStatus(true);
         game.getPlayerByNickname().get("matteo").setScore(400);
+        game.getPlayerByNickname().get("matteo").setStatus(true);
         model.views.GameView gameView = new GameView(game);
 
         assertFalse(gameView.myBookshelfIsFull());

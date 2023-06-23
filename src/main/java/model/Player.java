@@ -54,7 +54,6 @@ public class Player implements Serializable {
         this.personalGoalScore = 0;
         this.firstGoal = false;
         this.secondGoal = false;
-        this.status = true;
     }
 
     public String getUsername(){
