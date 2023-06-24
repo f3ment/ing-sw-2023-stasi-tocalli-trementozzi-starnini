@@ -65,7 +65,19 @@ public class GraphicalUI extends View implements Runnable {
                 GuiController.setMyTurn(false, "You have been reconnected succesfully \n to the game. " + message.getModel().getCurrentPlayer().getUsername());
 
             });
-        }else if (message.getEvent().equals(Event.SEND_MESSAGE)) {
+        }else if(message.getEvent().equals(Event.NEW_TURN_RECONNECTED)){
+            Platform.runLater(() -> {
+                try {
+                    username = GuiController.getUsername();
+                    HelloApplication.setScene("game");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                initGameScene(message.getModel());
+                GuiController.notifyObservers(new Message(Event.NEW_TURN));
+            });
+        }
+        else if (message.getEvent().equals(Event.SEND_MESSAGE)) {
                 Platform.runLater(() -> GuiController.updateChat(message.getChat().getLast()));
         }else if (message.getEvent().equals(Event.LOGIN_TRUE)) {
             Platform.runLater(() -> {

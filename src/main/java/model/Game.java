@@ -411,6 +411,8 @@ public class Game extends Observable<Event> implements Serializable {
         }
         finalResult.sort(Comparator.comparing(Player::getScore));
         Collections.reverse(finalResult);
+        if(position>=finalResult.size())
+            return null;
         return finalResult.get(position).getUsername();
     }
 

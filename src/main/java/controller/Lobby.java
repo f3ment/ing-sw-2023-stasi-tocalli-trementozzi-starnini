@@ -182,6 +182,11 @@ public class Lobby {
     public void game_init() {
         try {
             this.model = new Game(new ArrayList<>(usersId.keySet()));
+            for(String s:usersId.keySet()){
+                if(getStatusPlayer(s)){
+                    model.getPlayerByNickname().get(s).setStatus(true);
+                }
+            }
             this.gameController = new GameController(model, this);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -341,6 +346,10 @@ public class Lobby {
                 }
             }
         }
+    }
+
+    public  GameView getModelView(){
+        return new GameView(model);
     }
 
     public boolean getFinalFlag(){
