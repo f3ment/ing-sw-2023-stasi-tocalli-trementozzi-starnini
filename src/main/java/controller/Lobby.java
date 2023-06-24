@@ -230,7 +230,9 @@ public class Lobby {
 
     public synchronized void setClientOffLine(String username){
         status.put(username,false);
-        model.getPlayerByNickname().get(username).setStatus(false); //set player offline
+        if(isFull){
+            model.getPlayerByNickname().get(username).setStatus(false); //set player offline
+        }
         onlineplayers--;
         boolean flag=false;
         for(String s: status.keySet()){
@@ -277,10 +279,10 @@ public class Lobby {
         TablePosition position;
         try{
             position=model.getCurrentPosition();
+            return position.getPlayer().getUsername();
         }catch(NullPointerException e){
             return null;
         }
-        return position.getPlayer().getUsername();
     }
     public boolean getStatusLobby(){
         return on;
@@ -348,9 +350,6 @@ public class Lobby {
         }
     }
 
-    public  GameView getModelView(){
-        return new GameView(model);
-    }
 
     public boolean getFinalFlag(){
         return flagfinal;
