@@ -30,7 +30,9 @@ public class Game extends Observable<Event> implements Serializable {
     private boolean endGameToken;
     private String shelfCompletedBy;
 
-    //private final String lastPlayer;
+    private final String lastPlayer;
+
+    private int finalFlow=2;
 
 
     public Game(ArrayList<String> usernames) throws IOException {
@@ -101,8 +103,14 @@ public class Game extends Observable<Event> implements Serializable {
         index = randomInt.nextInt(playerNumber);
         tablePositionList.get(index).setFirstPosition(true);
         firstPlayer = tablePositionList.get(index).getPlayer().getUsername();
-        //lastPlayer = tablePositionList.
         currentPosition = tablePositionList.get(index);
+
+        if(index==0){
+            index=playerNumber-1;
+        }else{
+            index--;
+        }
+        lastPlayer = tablePositionList.get(index).getPlayer().getUsername();
 
         this.board = new Board(playerNumber);
 
@@ -269,11 +277,6 @@ public class Game extends Observable<Event> implements Serializable {
     }
 
     public void changeCurrentPosition(){
-        if(getCurrentPosition().getBookshelf().isFull()){
-            setEndGame(true);
-            getCurrentPosition().getPlayer().setScore(getCurrentPosition().getPlayer().getScore()+1);
-            setEndGameToken(true,getCurrentPosition().getPlayer().getUsername());
-        }
         validateAdjacent(getCurrentPosition());
         validateCommonGoal(getCurrentPosition());
         validatePersonalGoal(getCurrentPosition());
@@ -281,11 +284,16 @@ public class Game extends Observable<Event> implements Serializable {
     }
 
     public void updateLastScore(){
-
+        finalFlow=1;
+        validateAdjacent(getCurrentPosition());
+        validateCommonGoal(getCurrentPosition());
+        validatePersonalGoal(getCurrentPosition());
+        getCurrentPosition().getPlayer().setScore(getCurrentPosition().getPlayer().getScore()+1);
+        setEndGameToken(true,getCurrentPosition().getPlayer().getUsername());
     }
 
-    public void getLastPlayer(){
-        return;
+    public String getLastPlayer(){
+        return lastPlayer;
     }
     private void setEndGameToken(boolean b, String username) {
         this.endGameToken=b;
@@ -435,4 +443,11 @@ public class Game extends Observable<Event> implements Serializable {
         }
     }
 
+    public int getFinalFlow(){
+        return finalFlow;
+    }
+
+    public void setFinalFlow(){
+        finalFlow=3;
+    }
 }

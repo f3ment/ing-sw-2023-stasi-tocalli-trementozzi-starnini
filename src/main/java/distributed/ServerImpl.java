@@ -66,18 +66,17 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     currentLobby = this.gamesManagerController.getLobbyByClient(client);
                     if(currentLobby!=null) {
                         String username = gamesManagerController.getLobbyByClient(client).getUsernameByClient(client);
+                        System.out.println(username);
                         gamesManagerController.getLobbyByClient(client).resetTimer(username);
                     }
                     //client.update(null, Event.PING);
                 } else {
                     if (message.getEvent().equals(Event.DELETE_MATCH)) {
-                        if (currentLobby != null) {
-                            Lobbydeletion(currentLobby,destroy_array);
-                            for(Integer i:destroy_array){
-                                gamesManagerController.removeLobby(i);
-                            }
-                            destroy_array.clear();
+                        Lobbydeletion(currentLobby,destroy_array);
+                        for(Integer i:destroy_array){
+                            gamesManagerController.removeLobby(i);
                         }
+                        destroy_array.clear();
                         //todo rimuovere lobby SOLO quando nessuno è in chat e nessuno è in partita
                     }else {
                             currentLobby.getController().update(client, message);
@@ -211,7 +210,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
             throw new RuntimeException(e);
         }
 
-        boolean destroy=false;
         new Thread(){
             @Override
             public void run(){

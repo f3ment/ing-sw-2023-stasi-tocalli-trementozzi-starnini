@@ -106,9 +106,10 @@ public class GameController {
             if(game.getCurrentPosition().getBookshelf().isFull()&& !game.getEndGame()){
                 game.setEndGame(true);
             }
-            if(game.getEndGame() && game.getCurrentPosition().getPlayer().getUsername().equals(game.getFirstPlayer())){
+            if(game.getEndGame() && game.getCurrentPosition().getPlayer().getUsername().equals(game.getLastPlayer())){
                 lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage(Color.RED + "The match is ending!" + Color.RESET, Color.RED + "SERVER" + Color.RESET, null) ));
                 lobby.getChatController().update(o, new Message(Event.EXIT_CHAT, ""));
+                game.updateLastScore();
                 game.setWinner();
                 game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
             }else {
@@ -135,6 +136,7 @@ public class GameController {
             lobby.getChatController().update(o, new Message(Event.EXIT_CHAT, ""));
             game.setForcedWinner(message.getUserName());
             game.setCurrentPlayer(message.getUserName());
+            game.setFinalFlow();
             //o.update(new Message(Event.FORCED_END_MATCH));
             game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
         }

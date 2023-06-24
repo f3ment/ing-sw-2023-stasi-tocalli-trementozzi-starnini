@@ -131,8 +131,8 @@ public class TextualUI extends View implements Runnable {
                 }
 
                 //todo nasce eccezione perché la lobby non esiste più e di conseguenza NullPointer su ServerImpl : 86
-                setChanged();
-                notifyObservers(new Message(Event.FINISH_MATCH));
+                //setChanged();
+                //notifyObservers(new Message(Event.FINISH_MATCH));
             } else if (message.getModel() == null || message.getModel().getCurrentPlayer().getUsername().equals(username)) {
                 myTurn = true;
                 if (message.getEvent().equals(Event.PLAYER_DRAW_NEGATIVE)) {
@@ -204,9 +204,15 @@ public class TextualUI extends View implements Runnable {
                     start(message.getModel());
                 }else if (message.getEvent().equals(Event.FINISH_MATCH)) {
                     synchronized (this){
-                        System.out.println("Game is finished!");
+                        System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
+                        System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
                     }
-                    start(message.getModel());
+                    if(message.getModel().getFinalFlow()==2) {
+                        start(message.getModel());
+                    }else if(message.getModel().getFinalFlow()==1){
+                        setChanged();
+                        notifyObservers(new Message(Event.DELETE_MATCH));
+                    }
                 } /*else if (message.getEvent().equals(Event.FINISH_MATCH)) {
                     System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
                     System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
@@ -291,7 +297,7 @@ public class TextualUI extends View implements Runnable {
         }
     }
     private void start(GameView o) {
-        if (o.getFirstPlayer().equals(o.getCurrentPlayer().getUsername()) && o.getEndGame()) {
+        if (o.getLastPlayer().equals(o.getCurrentPlayer().getUsername()) && o.getEndGame()) {
             setChanged();
             notifyObservers(new Message(Event.FINISH_MATCH));
         } else {

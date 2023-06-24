@@ -54,7 +54,7 @@ public class Lobby {
             public void run() {
                 setClientOffLine(userName);
             }
-        },500);
+        },4000);
         timerPlayers=new HashMap<>(nPlayers);
         timerPlayers.put(userName,timer);
         isFull = usersId.size() == nPlayers;
@@ -106,7 +106,7 @@ public class Lobby {
                 public void run() {
                     setClientOffLine(userId);
                 }
-            },500);
+            },4000);
             timerPlayers.put(userId,timer);
             onlineplayers++;
             if(onlineplayers>1){
@@ -121,7 +121,7 @@ public class Lobby {
                 public void run() {
                     setClientOffLine(userId);
                 }
-            },500);
+            },4000);
             timerPlayers.put(userId,timer);
             if(usersId.size() == nPlayers){
                 isFull = true;
@@ -156,7 +156,7 @@ public class Lobby {
             public void run() {
                 setClientOffLine(username);
             }
-        },500);
+        },4000);
         timerPlayers.put(username,timero);
     }
 
@@ -230,6 +230,7 @@ public class Lobby {
 
     public synchronized void setClientOffLine(String username){
         status.put(username,false);
+        System.out.println("disconnected");
         if(isFull){
             model.getPlayerByNickname().get(username).setStatus(false); //set player offline
         }
