@@ -320,6 +320,25 @@ String configFilePath = "./src/main/resources/config.properties";
             System.out.println("Test fallito!");
             throw new RuntimeException(e);
         }
+
+        try{
+            usernames.clear();
+            usernames.add("mario");
+            usernames.add("luca");
+            usernames.add("dario");
+            usernames.add("matteo");
+            game = new Game(usernames);
+            game.getCurrentPosition().getPlayer().drawFromBoard(game.getBoard(),1,4);
+            game.getCurrentPosition().getPlayer().drawFromBoard(game.getBoard(),1,5);
+            game.getCurrentBookshelf().setChoosenColumn(9);
+            game.getCurrentBookshelf().insert(new ItemTiles(Type.CATS,1));
+            game.checkInsert(9);
+            System.out.println("Test fallito!");
+        }catch (Exception e){
+            System.out.println("Test passato!");
+        }
+
+
     }
 
 
@@ -567,5 +586,95 @@ String configFilePath = "./src/main/resources/config.properties";
         }
     }
 
+    @Test
+    public void setCurrentPlayerTest(){
+        try{
+            usernames.clear();
+            usernames.add("mario");
+            usernames.add("luca");
+            game = new Game(usernames);
+            game.setCurrentPlayer("mario");
+            assertEquals("mario", game.getCurrentPosition().getPlayer().getUsername());
+            game.setCurrentPlayer("luca");
+            assertEquals("luca", game.getCurrentPosition().getPlayer().getUsername());
+            System.out.println("Test passato!");
+        }catch (Exception e){
+            System.out.println("Test fallito!");
+            throw new RuntimeException(e);
+        }
+    }
 
+    @Test
+    public void setEndGameTokenTest(){
+        try{
+            usernames.clear();
+            usernames.add("mario");
+            usernames.add("luca");
+            game = new Game(usernames);
+            String currPlayer = game.getCurrentPosition().getPlayer().getUsername();
+            Bookshelf currBookshelf = game.getCurrentPosition().getBookshelf();
+            currBookshelf.setChoosenColumn(0);
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+
+            currBookshelf.setChoosenColumn(1);
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+
+            currBookshelf.setChoosenColumn(2);
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+
+            currBookshelf.setChoosenColumn(3);
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+
+            currBookshelf.setChoosenColumn(4);
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+            currBookshelf.insert(new ItemTiles(Type.CATS,1));
+
+            game.changeCurrentPosition();
+            assertTrue(game.getShelfCompletedBy().equals(currPlayer));
+            System.out.println("Test passato!");
+        }catch (Exception e){
+            System.out.println("Test fallito!");
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void setForcedWinnerTest(){
+        try{
+            usernames.clear();
+            usernames.add("mario");
+            usernames.add("luca");
+            game = new Game(usernames);
+            game.setForcedWinner("mario");
+            assertEquals("mario", game.getWinner());
+            System.out.println("Test passato!");
+        }catch (Exception e){
+            System.out.println("Test fallito!");
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -133,7 +133,7 @@ public class GameController {
             lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage(Color.RED + "The match is ending!" + Color.RESET, Color.RED + "SERVER" + Color.RESET, null) ));
             lobby.getChatController().update(o, new Message(Event.EXIT_CHAT, ""));
             game.setForcedWinner(message.getUserName());
-            game.setForcedCurrentPosition(message.getUserName());
+            game.setCurrentPlayer(message.getUserName());
             //o.update(new Message(Event.FORCED_END_MATCH));
             game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
         }

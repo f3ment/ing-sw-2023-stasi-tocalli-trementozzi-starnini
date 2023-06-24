@@ -306,27 +306,26 @@ public class Game extends Observable<Event> implements Serializable {
         }
     }
     public boolean checkBoardEmpty() {
-        boolean result=true;
-        for(int i=0;i<getBoard().getMaxHeight()&&result;i++){
-            for(int j=0;j<getBoard().getMaxLength()&&result;j++){
+        for(int i=0;i<getBoard().getMaxHeight();i++){
+            for(int j=0;j<getBoard().getMaxLength();j++){
                 if(getBoard().getBox(i,j).getValid()&&getBoard().getBox(i,j).getItemContained()!=null){
-                    if(i>0&&getBoard().getBox(i-1,j).getValid()&&getBoard().getBox(i-1,j).getItemContained()!=null){
-                        result=false;
+                    if(i>0 && getBoard().getBox(i-1,j).getValid() && getBoard().getBox(i-1,j).getItemContained()!=null){
+                        return false;
                     }
                     if(i<getBoard().getMaxHeight()-1 &&getBoard().getBox(i+1,j).getValid()&&getBoard().getBox(i+1,j).getItemContained()!=null){
-                        result=false;
+                        return false;
                     }
                     if(j>0&&getBoard().getBox(i,j-1).getValid()&&getBoard().getBox(i,j-1).getItemContained()!=null){
-                        result=false;
+                        return false;
                     }
                     if(j<getBoard().getMaxLength()-1&&getBoard().getBox(i,j+1).getValid()&&getBoard().getBox(i,j+1).getItemContained()!=null){
-                        result=false;
+                        return false;
                     }
 
                 }
             }
         }
-        return result;
+        return true;
     }
 
     /*
@@ -401,13 +400,6 @@ public class Game extends Observable<Event> implements Serializable {
             }
         }
         return true;
-    }
-    public void setForcedCurrentPosition(String user){
-        for(TablePosition t :tablePositionList){
-            if(t.getPlayer().getUsername().equals(user)){
-                this.currentPosition=t;
-            }
-        }
     }
 
     public String getPlayerNameByRanking(int position) {
