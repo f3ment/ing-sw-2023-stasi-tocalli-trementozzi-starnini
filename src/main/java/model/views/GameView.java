@@ -195,6 +195,10 @@ public class GameView implements Serializable {
         return model.getFirstPlayer();
     }
 
+    public String getLastPlayer(){
+        return model.getLastPlayer();
+    }
+
     public String getWinner(){
         return model.getWinner();
     }
@@ -243,5 +247,10 @@ public class GameView implements Serializable {
     public String getPlayerNameByRanking(int position) {
         return model.getPlayerNameByRanking(position);
     }
+
+    public int getFinalFlow(){
+        return model.getFinalFlow();
+    }
+
 }
 
