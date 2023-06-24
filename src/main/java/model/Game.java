@@ -30,6 +30,8 @@ public class Game extends Observable<Event> implements Serializable {
     private boolean endGameToken;
     private String shelfCompletedBy;
 
+    //private final String lastPlayer;
+
 
     public Game(ArrayList<String> usernames) throws IOException {
         super();
@@ -99,7 +101,8 @@ public class Game extends Observable<Event> implements Serializable {
         index = randomInt.nextInt(playerNumber);
         tablePositionList.get(index).setFirstPosition(true);
         firstPlayer = tablePositionList.get(index).getPlayer().getUsername();
-        currentPosition = tablePositionList.get(index);
+        //lastPlayer = tablePositionList.
+        //currentPosition = tablePositionList.get(index);
 
         this.board = new Board(playerNumber);
 
@@ -277,6 +280,13 @@ public class Game extends Observable<Event> implements Serializable {
         setCurrentPosition();
     }
 
+    public void updateLastScore(){
+
+    }
+
+    public void getLastPlayer(){
+        return;
+    }
     private void setEndGameToken(boolean b, String username) {
         this.endGameToken=b;
         this.shelfCompletedBy=username;
@@ -430,4 +440,5 @@ public class Game extends Observable<Event> implements Serializable {
             }
         }
     }
+
 }

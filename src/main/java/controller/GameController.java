@@ -103,7 +103,7 @@ public class GameController {
         } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
             //Check if re-fill board
 
-            if(game.getCurrentPosition().getBookshelf().isFull()){
+            if(game.getCurrentPosition().getBookshelf().isFull()&& !game.getEndGame()){
                 game.setEndGame(true);
             }
             if(game.getEndGame() && game.getCurrentPosition().getPlayer().getUsername().equals(game.getFirstPlayer())){

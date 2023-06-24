@@ -29,6 +29,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
     private static final Object syncKey = new Object();
 
+    private ArrayList<Integer> destroy_array = new ArrayList<>();
+
     public ServerImpl() throws RemoteException {
         super();
         initialize();
@@ -69,18 +71,15 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     //client.update(null, Event.PING);
                 } else {
                     if (message.getEvent().equals(Event.DELETE_MATCH)) {
-                        //gamesManagerController.getLobbyByClient(client).getController().update(client, new Message(Event.SEND_MESSAGE, new ChatMessage(Color.RED + "The game is ending" + Color.RESET,Color.RED + "SERVER" + Color.RESET, null)));
-                        for (String a : currentLobby.getClientsUsername()) {
-                            //codice per rimuovere parola dal file properties
-                            prop.remove(a);
-                        }
-                        for(Client c: currentLobby.getClients()){
-                            gamesManagerController.removePlayer(c);
+                        if (currentLobby != null) {
+                            Lobbydeletion(currentLobby,destroy_array);
+                            for(Integer i:destroy_array){
+                                gamesManagerController.removeLobby(i);
+                            }
+                            destroy_array.clear();
                         }
                         //todo rimuovere lobby SOLO quando nessuno è in chat e nessuno è in partita
-                        gamesManagerController.getLobbies_list().remove(currentLobby);
                     }else {
-
                             currentLobby.getController().update(client, message);
                     }
                 }
@@ -194,6 +193,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     }
 
     private void initialize(){
+        destroy_array=new ArrayList<>();
         gamesManagerController = new GamesManagerController();
         currentLobby = null;
         final ArrayList<Integer> index = new ArrayList<>();
