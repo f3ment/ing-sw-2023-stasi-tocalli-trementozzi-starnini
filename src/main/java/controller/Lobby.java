@@ -230,7 +230,9 @@ public class Lobby {
 
     public synchronized void setClientOffLine(String username){
         status.put(username,false);
-        model.getPlayerByNickname().get(username).setStatus(false); //set player offline
+        if(isFull) {
+            model.getPlayerByNickname().get(username).setStatus(false); //set player offline
+        }
         onlineplayers--;
         boolean flag=false;
         for(String s: status.keySet()){
