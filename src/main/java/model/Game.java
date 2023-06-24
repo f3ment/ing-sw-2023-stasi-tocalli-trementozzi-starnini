@@ -102,7 +102,7 @@ public class Game extends Observable<Event> implements Serializable {
         tablePositionList.get(index).setFirstPosition(true);
         firstPlayer = tablePositionList.get(index).getPlayer().getUsername();
         //lastPlayer = tablePositionList.
-        //currentPosition = tablePositionList.get(index);
+        currentPosition = tablePositionList.get(index);
 
         this.board = new Board(playerNumber);
 

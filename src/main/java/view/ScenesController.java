@@ -381,7 +381,7 @@ public class ScenesController extends Observable<Event> implements Initializable
      * @param shelfGrid the grid of the shelf
      * @param playerName the player's name
      */
-    private void updateOtherShelves(GameView model, GridPane shelfGrid, String playerName) {
+    public void updateOtherShelves(GameView model, GridPane shelfGrid, String playerName) {
         for(int i=0; i< model.getHeightBookshelf(); i++){
             for(int j=0; j< model.getLenghtBookshelf(); j++){
                 if((model.getPlayerByUsername().get(playerName)).getBookshelf()[i][j]!=null){
