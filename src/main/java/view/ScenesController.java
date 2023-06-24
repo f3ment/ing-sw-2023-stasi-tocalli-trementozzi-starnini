@@ -184,9 +184,9 @@ public class ScenesController extends Observable<Event> implements Initializable
     @FXML
     private Circle status4;
 
+
     /**
      * This method will change the welcome page to the login page
-     * @param actionEvent the event that triggers the method , in this case the "play" button click
      */
     public void AskLobbyInfo(ActionEvent actionEvent) throws IOException, InterruptedException {
         new Thread(()->{
@@ -239,6 +239,15 @@ public class ScenesController extends Observable<Event> implements Initializable
             alert.setHeaderText(null);
             alert.setContentText("Please enter the required values.");
             alert.showAndWait();
+            return;
+        }
+        if(nickname.getText().length() > 15){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Invalid nickname");
+            alert.setHeaderText(null);
+            alert.setContentText("Please enter a nickname with less than 15 characters.");
+            alert.showAndWait();
+            nickname.setText("");
             return;
         }
             matchSize = nPlayers.getValue();
@@ -301,11 +310,14 @@ public class ScenesController extends Observable<Event> implements Initializable
      * @param myName the player's name
      */
     public void showShelves(GameView model, String myName) {
+        username = myName;
         ArrayList<String> players = new ArrayList<>(model.getMapPlayerScore().keySet());
         int Nplayers = players.size();
         name1.setText(myName);
         if(myTurn){
             updateShelf(model);
+        }else {
+            updateOtherShelves(model,shelfGrid,myName);
         }
         players.remove(myName);
         playerName2 = players.get(0).toString();
@@ -386,8 +398,17 @@ public class ScenesController extends Observable<Event> implements Initializable
             for(int j=0; j< model.getLenghtBookshelf(); j++){
                 if((model.getPlayerByUsername().get(playerName)).getBookshelf()[i][j]!=null){
                     ImageView tile = new ImageView(new Image(getClass().getResourceAsStream(pickTileImage(( model.getPlayerByUsername().get(playerName)).getBookshelf()[i][j].getType(), (model.getPlayerByUsername().get(playerName)).getBookshelf()[i][j].getId()))));
-                    tile.setFitHeight(24);
-                    tile.setFitWidth(30);
+                    int height;
+                    int width;
+                    if(playerName.equals(username)){
+                        height = 63;
+                        width = 66;
+                    }else{
+                        height = 24;
+                        width = 30;
+                    }
+                    tile.setFitHeight(height);
+                    tile.setFitWidth(width);
                     shelfGrid.add(tile,j,i);
                 }
             }
@@ -974,6 +995,14 @@ public class ScenesController extends Observable<Event> implements Initializable
             }
         }
 
+    }
+
+    public void invalidNickname() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Nickname not available");
+        alert.setHeaderText(null);
+        alert.setContentText("Sorry, the nickname you selected is already taken.");
+        alert.showAndWait();
     }
 }
 

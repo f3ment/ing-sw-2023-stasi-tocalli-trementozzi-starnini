@@ -19,7 +19,8 @@ public class GraphicalUI extends View implements Runnable {
 
     private ArrayList<String> nicknames;
 
-    ArrayList<String> players = new ArrayList<String>();
+    ArrayList<String> players= new ArrayList<String>();
+    private boolean nicknamefirstTry = true;
 
 
     @Override
@@ -73,7 +74,6 @@ public class GraphicalUI extends View implements Runnable {
                         throw new RuntimeException(e);
                     }
                     initGameScene(message.getModel());
-                    System.out.println("sono in new turn reconnect");
                     startNewTurn(message.getModel());
                 });
             }
@@ -122,7 +122,6 @@ public class GraphicalUI extends View implements Runnable {
             } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
                 startNewTurn(message.getModel());
             } else if (message.getEvent().equals(Event.NEW_TURN)) {
-                System.out.println("sono in new turn");
                 startNewTurn(message.getModel());
             } else if (message.getEvent().equals(Event.FINISH_MATCH)) {
                 Platform.runLater(() -> {
@@ -136,7 +135,11 @@ public class GraphicalUI extends View implements Runnable {
             } else if (message.getEvent().equals(Event.LOGIN)) {
                 Platform.runLater(() -> {
                     try {
-                        HelloApplication.setScene("playerInfo");
+                        if(!nicknamefirstTry){
+                            GuiController.invalidNickname();
+                        }else
+                            HelloApplication.setScene("playerInfo");
+                            nicknamefirstTry = false;
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -157,7 +160,6 @@ public class GraphicalUI extends View implements Runnable {
     }
 
     private void startNewTurn(GameView model) {
-        System.out.println("sono in start new turn");
         Platform.runLater(() -> {
             fillBoard(model);
             GuiController.checkEndTokenAssigned(model);
@@ -178,9 +180,6 @@ public class GraphicalUI extends View implements Runnable {
     }
 
 
-
-
-//todo capire perchè java heap error quando c'è il refill
     private void fillBoard(GameView o) {
        GuiController.cleanBoard();
        for(int i=0;i<o.getHeightBoard();i++){

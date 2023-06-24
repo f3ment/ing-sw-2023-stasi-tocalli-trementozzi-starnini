@@ -221,8 +221,10 @@ public class TextualUI extends View implements Runnable {
                         this.username = input.nextLine();
                         if (this.username.equals("")) {
                             System.out.println(Color.RED + "Username can't be an empty string! Retry!!" + Color.RESET);
+                        } else if (this.username.length() > 15) {
+                            System.out.println(Color.RED + "Username can't be longer than 15 characters! Retry!!" + Color.RESET);
                         }
-                    } while (this.username.equals(""));
+                    } while (this.username.equals("") || this.username.length() > 15);
 
                     System.out.println("Hi" + Color.GREEN_BRIGHT + " " + username.toUpperCase() + "! " + Color.RESET + "Choose the number of players: ");
 
