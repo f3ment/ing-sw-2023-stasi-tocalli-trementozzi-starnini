@@ -175,6 +175,7 @@ public class TextualUI extends View implements Runnable {
                     }
                     start(message.getModel());
                 } else if (message.getEvent().equals(Event.NEW_TURN)) {
+                    showAllScore(message.getModel());
                     synchronized (this) {
                         if (choice()) {
                             while (flagChat || choosing) {
