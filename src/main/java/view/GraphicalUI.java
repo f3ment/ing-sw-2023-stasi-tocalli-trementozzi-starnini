@@ -52,7 +52,6 @@ public class GraphicalUI extends View implements Runnable {
      */
     public void update(Message message) {
         if (message.getEvent().equals(Event.RECONNECTION)){
-            System.out.println("sono nella gui e mi è arrivato un messaggio di riconnessione");
             Platform.runLater(() -> {
                 username = GuiController.getUsername();
 
@@ -63,19 +62,22 @@ public class GraphicalUI extends View implements Runnable {
                 }
                 initGameScene(message.getModel());
                 GuiController.setMyTurn(false, "You have been reconnected succesfully \n to the game. " + message.getModel().getCurrentPlayer().getUsername());
-
             });
         }else if(message.getEvent().equals(Event.NEW_TURN_RECONNECTED)){
-            Platform.runLater(() -> {
-                try {
-                    username = GuiController.getUsername();
-                    HelloApplication.setScene("game");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                initGameScene(message.getModel());
-                GuiController.notifyObservers(new Message(Event.NEW_TURN));
-            });
+            username = GuiController.getUsername();
+            if(message.getModel().getCurrentPlayer().getUsername().equals(username)){
+                Platform.runLater(() -> {
+                    try {
+                        HelloApplication.setScene("game");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    initGameScene(message.getModel());
+                    System.out.println("sono in new turn reconnect");
+                    startNewTurn(message.getModel());
+                });
+            }
+
         }
         else if (message.getEvent().equals(Event.SEND_MESSAGE)) {
                 Platform.runLater(() -> GuiController.updateChat(message.getChat().getLast()));
@@ -120,6 +122,7 @@ public class GraphicalUI extends View implements Runnable {
             } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
                 startNewTurn(message.getModel());
             } else if (message.getEvent().equals(Event.NEW_TURN)) {
+                System.out.println("sono in new turn");
                 startNewTurn(message.getModel());
             } else if (message.getEvent().equals(Event.FINISH_MATCH)) {
                 Platform.runLater(() -> {
@@ -154,6 +157,7 @@ public class GraphicalUI extends View implements Runnable {
     }
 
     private void startNewTurn(GameView model) {
+        System.out.println("sono in start new turn");
         Platform.runLater(() -> {
             fillBoard(model);
             GuiController.checkEndTokenAssigned(model);

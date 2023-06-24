@@ -124,6 +124,7 @@ public class GameController {
         }else if(message.getEvent().equals(Event.NEW_TURN_RECONNECTED)){
             game.setChangedAndNotifyObservers(Event.NEW_TURN_RECONNECTED);
         }else if(message.getEvent().equals(Event.NEW_TURN)){
+            System.out.println("sono in new turn server");
             game.setChangedAndNotifyObservers(Event.NEW_TURN);
         }else if(message.getEvent().equals(Event.FINISH_MATCH)){
             game.setWinner();
