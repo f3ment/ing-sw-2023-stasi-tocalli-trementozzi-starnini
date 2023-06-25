@@ -63,6 +63,8 @@ public class GraphicalUI extends View implements Runnable {
                 }
                 initGameScene(message.getModel());
                 GuiController.setMyTurn(false, "You have been reconnected succesfully \n to the game. " + message.getModel().getCurrentPlayer().getUsername());
+                message.getChat().getChat().forEach(e -> GuiController.updateChat(e));
+
             });
         }else if(message.getEvent().equals(Event.NEW_TURN_RECONNECTED)){
             username = GuiController.getUsername();
@@ -74,6 +76,7 @@ public class GraphicalUI extends View implements Runnable {
                         throw new RuntimeException(e);
                     }
                     initGameScene(message.getModel());
+                    message.getChat().getChat().forEach(e -> GuiController.updateChat(e));
                     startNewTurn(message.getModel());
                 });
             }

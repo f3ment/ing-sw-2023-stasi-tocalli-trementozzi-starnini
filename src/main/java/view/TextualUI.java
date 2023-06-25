@@ -80,7 +80,7 @@ public class TextualUI extends View implements Runnable {
                 System.out.println("Now you can play.");
                 this.notifyAll();
             }
-        } else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
+        } else if( !message.getEvent().equals(Event.RECONNECTION) && !message.getEvent().equals(Event.NEW_TURN_RECONNECTED)&& message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
             if(!flagChat && !choosing){
                 synchronized (this){
                     if (myTurn && !flagChat) {
@@ -120,8 +120,23 @@ public class TextualUI extends View implements Runnable {
         }
 
         if (message.getEvent().equals(Event.RECONNECTION)) {
-            synchronized (this){
-                System.out.println("you are in tha match!");
+            lobbyExist = true;
+            new Thread(() -> {
+                while (true) {
+                    readingForChat();
+                }
+            }).start();
+            System.out.println("you are in tha match!");
+            synchronized (this) {
+                if (choice()) {
+                    while (flagChat) {
+                        try {
+                            this.wait();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException();
+                        }
+                    }
+                }
             }
         } else {
             if (message.getEvent().equals(Event.FINISH_MATCH)) {
@@ -189,6 +204,12 @@ public class TextualUI extends View implements Runnable {
                     }
                     start(message.getModel());
                 } else if(message.getEvent().equals(Event.NEW_TURN_RECONNECTED)) {
+                    lobbyExist = true;
+                    new Thread(() -> {
+                        while (true) {
+                            readingForChat();
+                        }
+                    }).start();
                     System.out.println("Welcome Back");
                     synchronized (this) {
                         if (choice()) {

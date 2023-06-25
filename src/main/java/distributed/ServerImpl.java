@@ -130,10 +130,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                             gamesManagerController.insertPlayer(client,gamesManagerController.LobbyByUsername(message.getUserName()), message.getUserName());
 
                             if(gamesManagerController.LobbyByUsername(message.getUserName()).getOnlineplayers()>2){
-                                client.update(new Message(gamesManagerController.LobbyByUsername(message.getUserName()).getModel(),Event.RECONNECTION));
+                                client.update(new Message(Event.RECONNECTION,gamesManagerController.LobbyByUsername(message.getUserName()).getChat(),gamesManagerController.LobbyByUsername(message.getUserName()).getModel()));
                             }else {
                                 if(gamesManagerController.LobbyByUsername(message.getUserName()).getStatusCurrentPlayer()&&!gamesManagerController.LobbyByUsername(message.getUserName()).getCurrentPlayer().equals(message.getUserName())){
-                                    client.update(new Message(gamesManagerController.LobbyByUsername(message.getUserName()).getModel(),Event.RECONNECTION));
+                                    client.update(new Message(Event.RECONNECTION,gamesManagerController.LobbyByUsername(message.getUserName()).getChat(),gamesManagerController.LobbyByUsername(message.getUserName()).getModel()));
+
                                 }else {
                                     gamesManagerController.LobbyByUsername(message.getUserName()).getController().update(client, new Message(Event.NEW_TURN_RECONNECTED));
                                 }

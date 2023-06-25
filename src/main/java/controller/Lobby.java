@@ -205,7 +205,7 @@ public class Lobby {
                     try {
                         if(getStatusPlayer(s)) {
                             System.out.println(message.getEvent().toString());
-                            usersId.get(s).update(new Message(new GameView(model), message.getEvent()));
+                            usersId.get(s).update(new Message(message.getEvent(), new ChatView(chat),new GameView(model)));
                         }else{
                         }
                     } catch (RemoteException e) {
@@ -220,6 +220,9 @@ public class Lobby {
         return gameController;
     }
 
+    public ChatView getChat() {
+        return new ChatView(chat);
+    }
     public ChatController getChatController() {
         return this.chatController;
     }
