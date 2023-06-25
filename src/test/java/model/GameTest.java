@@ -1,6 +1,7 @@
 package model;
 
 import model.board.Board;
+import model.views.GameView;
 import org.junit.jupiter.api.Test;
 
 import model.goals.PersonalGoal;
@@ -655,6 +656,22 @@ String configFilePath = "./src/main/resources/config.properties";
 
             game.changeCurrentPosition();
             assertTrue(game.getShelfCompletedBy().equals(currPlayer));
+            System.out.println("Test passato!");
+        }catch (Exception e){
+            System.out.println("Test fallito!");
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void getStatusByNicknameTest(){
+        try{
+            usernames.clear();
+            usernames.add("mario");
+            usernames.add("luca");
+            game = new Game(usernames);
+            game.getPlayerByNickname().get("mario").setStatus(true);
+            assertTrue(new GameView(game).getStatusByNickname("mario"));
             System.out.println("Test passato!");
         }catch (Exception e){
             System.out.println("Test fallito!");

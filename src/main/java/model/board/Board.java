@@ -57,11 +57,7 @@ public class Board implements Serializable {
     }
 
     public Box getBox(int i, int j) throws IndexOutOfBoundsException{
-        if(this.board[i][j]==null){
-            throw new IndexOutOfBoundsException();
-        }else{
-            return this.board[i][j];
-        }
+        return this.board[i][j];
     }
     public ItemTiles draw(int i, int j) {
         ItemTiles res = getBox(i, j).getItemContained();
