@@ -1,9 +1,11 @@
 package view;
 
+import com.google.gson.JsonArray;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 //import javafx.event.Event;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -27,6 +29,7 @@ import javafx.scene.image.Image;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ScenesController extends Observable<Event> implements Initializable {
     @FXML
@@ -195,8 +198,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         }).start();
     }
 
-
-    @FXML
     /**
      * This method retrieve the nickname from the textfield
      * @param actionEvent the event that triggers the method , in this case the "nickname" textfield
@@ -210,13 +211,13 @@ public class ScenesController extends Observable<Event> implements Initializable
         return username;
     }
 
-    @Override
-    @FXML
+
     /**
      * This method initialize the choice-box with the number of players
      * @param url
      * @param resourceBundle
      */
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<Integer> options = FXCollections.observableArrayList(
                 2,
@@ -227,7 +228,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         nPlayers.setValue(2);
     }
 
-    @FXML
     /**
      * this method collect the player's info and change the scene to lobby
      * @param actionEvent the event that triggers the method , in this case the "join" button click
@@ -258,8 +258,6 @@ public class ScenesController extends Observable<Event> implements Initializable
             }).start();
         }
 
-
-    @FXML
     /**
      * This method starts the game by sending a NEW_TURN event to the server
      * @param username the username of the last player that joined the game
@@ -273,7 +271,6 @@ public class ScenesController extends Observable<Event> implements Initializable
     }
 
 
-    @FXML
     /**
      * this method adds itemTiles images to the board
      * @param s source of the image
@@ -292,7 +289,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         boardGrid.add(tile, j, i);
     }
 
-    @FXML
     /**
      * when a tile is hovered, this method will set its opacity to 0.5
      * @param tile hovered
@@ -302,8 +298,6 @@ public class ScenesController extends Observable<Event> implements Initializable
             tile.setOpacity(0.5);
     }
 
-
-    @FXML
     /**
      * this method shows the shelves and their content every turn
      * @param model the gameView
@@ -367,13 +361,12 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
-
-    @FXML
     /**
      * this method update the shelf of the player
      * @param model the gameView
      */
     private void updateShelf(GameView model) {
+        cleanShelf(shelfGrid);
         for(int i=0; i< model.getHeightBookshelf(); i++){
             for(int j=0; j< model.getLenghtBookshelf(); j++){
                 if(model.getCurrentBookshelf()[i][j]!=null){
@@ -386,7 +379,18 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
-    @FXML
+    /**
+     * this method clean the shelf and remove references to Imageviews
+     * @param shelfGrid the grid of the shelf
+     */
+    private void cleanShelf(GridPane shelfGrid) {
+        for (Node node : shelfGrid.getChildren()) {
+            if (node instanceof ImageView) {
+                ((ImageView) node).setImage(null);}
+        }
+        shelfGrid.getChildren().clear();
+    }
+
     /**
      * this method update the shelves of the other players
      * @param model the gameView
@@ -394,6 +398,7 @@ public class ScenesController extends Observable<Event> implements Initializable
      * @param playerName the player's name
      */
     public void updateOtherShelves(GameView model, GridPane shelfGrid, String playerName) {
+        cleanShelf(shelfGrid);
         for(int i=0; i< model.getHeightBookshelf(); i++){
             for(int j=0; j< model.getLenghtBookshelf(); j++){
                 if((model.getPlayerByUsername().get(playerName)).getBookshelf()[i][j]!=null){
@@ -415,7 +420,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
-    @FXML
     /**
      * this method place and show the first player armchair
      * @param model the gameView
@@ -434,7 +438,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
-    @FXML
     /**
      * this method displays the two extracted common goals that are valid for the current match
      * @param model the gameView
@@ -465,8 +468,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         stack2.toFront();
     }
 
-
-    @FXML
     /**
      * this method displays the personal goal of the player
      * @param model the gameView
@@ -479,7 +480,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         personalGoal.getChildren().add(pGoal);
     }
 
-    @FXML
     /**
      * this method sets player turn:
      * if it is not the player's turn, the player cannot interact with the interface and is graphically notified
@@ -494,7 +494,6 @@ public class ScenesController extends Observable<Event> implements Initializable
     }
 
 
-    @FXML
     /**
      * this method removes the selected tiles from the board,
      * and it adds the selected tiles to the hand in order to send them
@@ -531,7 +530,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
-    @FXML
     /**
      * this method orders the tiles in the hand as the player wants
      * @param tileCopy the tile's image to be ordered
@@ -556,7 +554,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
-    @FXML
     /**
      * method invoked when the player chooses to draw one tile
      * @param actionEvent the event that triggers the method
@@ -569,7 +566,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         dialogText.setText("Select 1 tile from the living room");
     }
 
-    @FXML
     /**
      * method invoked when the player chooses to draw two tiles
      * @param actionEvent the event that triggers the method
@@ -582,7 +578,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         dialogText.setText("Select 2 tiles from the living room");
     }
 
-    @FXML
     /**
      * method invoked when the player chooses to draw three tiles
      * @param actionEvent the event that triggers the method
@@ -595,7 +590,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         dialogText.setText("Select 3 tiles from the living room");
     }
 
-    @FXML
     /**
      * this method shows the buttons to choose how many tiles to draw
      * @param max the maximum number of tiles that can be drawn
@@ -619,7 +613,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         dialogText.setText("Choose how many tiles \nyou want to draw ");
     }
 
-    @FXML
     /**
      * this method is invoked when tiles drawn are not valid,
      * it notifies the player, and it clears the hand making the player choose again
@@ -638,13 +631,17 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
         for(ImageView tile : playerHand){
             tile.setVisible(true);
-            hand.getChildren().clear();
         }
+        for(Node node : hand.getChildren()){
+            if(node instanceof ImageView){
+                ((ImageView) node).setImage(null);
+            }
+        }
+        hand.getChildren().clear();
         playerHand.clear();
         retryButton.setVisible(true);
     }
 
-    @FXML
     /**
      * this method is invoked when the player has to retry drawing tiles
      * @param actionEvent the event that triggers the method
@@ -657,7 +654,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         letDraw(maxDraw);
     }
 
-    @FXML
     /**
      * this method is invoked when the player has drawn tiles correctly
      */
@@ -667,7 +663,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         nDraws=0;
     }
 
-    @FXML
     /**
      * this method is invoked when the player has to choose the column where to place the tiles
      * when the player clicks on a column, the tiles are placed in the shelf accordingly
@@ -690,7 +685,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         column5.setOnMouseClicked(event -> setColumn(5));
     }
 
-    @FXML
     /**
      * this method sends the chosen column to the model
      * @param i the column where the tiles have to be placed
@@ -713,7 +707,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         }).start();
     }
 
-    @FXML
     /**
      * this method is invoked when the player has inserted correctly the tiles in the shelf
      * it notifies the player, and it clears the hand, eventually it notifies the server and the turn ends
@@ -722,6 +715,11 @@ public class ScenesController extends Observable<Event> implements Initializable
     public void insertPositive(GameView model) {
         dialogText.setText("Tiles inserted correctly!");
         updateShelf(model);
+        for(Node node : hand.getChildren()){
+            if(node instanceof ImageView){
+                ((ImageView) node).setImage(null);
+            }
+        }
         hand.getChildren().clear();
         tileOrder.clear();
         playerHand.clear();
@@ -734,7 +732,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         }).start();
     }
 
-    @FXML
     /**
      * this method is invoked when the player has inserted incorrectly the tiles in the shelf
      * @param model the model of the game
@@ -744,8 +741,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         insertInShelf();
     }
 
-
-    @FXML
     /**
      * this method returns the path of the image of the tile
      *
@@ -772,7 +767,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         return null;
     }
 
-    @FXML
     /**
      * this method is invoked when the player enters the chat and sends
      * a message to a private chat or to all players
@@ -808,7 +802,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         });
     }
 
-    @FXML
     /**
      * this method initializes the choice box of the chat
      */
@@ -828,7 +821,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
-    @FXML
     /**
      * this method updates the chat with a new message
      * @param message the message to be added to the chat
@@ -837,7 +829,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         chatMessages.add(message);
     }
 
-    @FXML
     /**
      * this method updates the players' scores every turn
      * @param model the model of the game
@@ -854,7 +845,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
-    @FXML
     /**
      * this method updates the stack of the common goals every turn
      * @param model the model of the game
@@ -866,7 +856,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         getNewStackScore(sizeStack2,model,2,stack2);
     }
 
-    @FXML
     /**
      * this method get the current stack size of a common
      * goal and sets the image of the relative scoring token
@@ -897,7 +886,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
-    @FXML
     /**
      * this method sets the image of the scoring token
      * @param i the number of the scoring token
@@ -914,11 +902,12 @@ public class ScenesController extends Observable<Event> implements Initializable
         stack.toFront();
     }
 
-    @FXML
     /**
      * this method clears the board when needed
      */
     public void cleanBoard() {
+        for(ImageView i : boardGrid.getChildren().stream().filter(node -> node instanceof ImageView).map(node -> (ImageView) node).collect(Collectors.toList()))
+            i.setImage(null);
         boardGrid.getChildren().clear();
     }
 
@@ -935,7 +924,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         endToken.setVisible(false);
     }
 
-    @FXML
     /**
      * this method checks if the end game token has been assigned
      * @param model the model of the game
@@ -967,7 +955,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
-    @FXML
     /**
      * this method sets the final scene and displays the winner
      * it also shows the entire ranking of the players
@@ -997,6 +984,9 @@ public class ScenesController extends Observable<Event> implements Initializable
 
     }
 
+    /**
+     *method that alert players to choose another nickname when registering to a lobby
+     */
     public void invalidNickname() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Nickname not available");
