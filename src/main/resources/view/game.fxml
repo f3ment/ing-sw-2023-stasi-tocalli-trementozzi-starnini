@@ -4,6 +4,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DialogPane?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Tab?>
@@ -132,6 +133,7 @@
                         <Pane fx:id="common1" layoutX="1120.0" layoutY="61.0" prefHeight="150.0" prefWidth="266.0" rotate="12.5">
                            <children>
                               <Pane fx:id="stack1" layoutX="155.0" layoutY="29.0" prefHeight="78.0" prefWidth="80.0" rotate="-8.5" />
+                              <DialogPane fx:id="description1" headerText="   FIRST COMMON GOAL" layoutX="261.0" layoutY="-26.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" rotate="-12.5" visible="false" />
                            </children>
                            <effect>
                               <DropShadow />
@@ -140,6 +142,7 @@
                         <Pane fx:id="common2" layoutX="1130.0" layoutY="240.0" prefHeight="150.0" prefWidth="266.0" rotate="12.5">
                            <children>
                               <Pane fx:id="stack2" layoutX="155.0" layoutY="29.0" prefHeight="78.0" prefWidth="80.0" rotate="-8.5" />
+                              <DialogPane fx:id="description2" headerText="   SECOND COMMON GOAL" layoutX="115.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" rotate="-12.5" visible="false" />
                            </children>
                            <effect>
                               <DropShadow />
