@@ -21,7 +21,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxWidth="1920.0" prefHeight="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ScenesController">
+<AnchorPane maxWidth="1920.0" prefHeight="1080.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ScenesController">
    <children>
       <TabPane focusTraversable="false" prefHeight="1080.0" prefWidth="1920.0" snapToPixel="false">
          <tabs>
@@ -335,7 +335,7 @@
               <content>
                 <AnchorPane prefHeight="1049.0" prefWidth="1920.0">
                      <children>
-                        <ListView fx:id="chatArea" prefHeight="1049.0" prefWidth="1920.0" />
+                        <ListView fx:id="chatArea" prefHeight="895.0" prefWidth="1920.0" />
                         <TextField fx:id="chatInputText" layoutX="572.0" layoutY="930.0" prefHeight="26.0" prefWidth="777.0" promptText="Send messages..." />
                         <ChoiceBox fx:id="choiceBox" layoutX="572.0" layoutY="905.0" prefWidth="150.0" />
                      </children>

@@ -827,6 +827,7 @@ public class ScenesController extends Observable<Event> implements Initializable
      */
     public void updateChat(ChatMessage message){
         chatMessages.add(message);
+        chatArea.scrollTo(chatArea.getItems().size()-1);
     }
 
     /**
