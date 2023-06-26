@@ -107,9 +107,14 @@ public class GameController {
                 game.setEndGame(true);
             }
             if(game.getEndGame() && game.getCurrentPosition().getPlayer().getUsername().equals(game.getLastPlayer())){
-                lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage(Color.RED + "The match is ending!" + Color.RESET, Color.RED + "SERVER" + Color.RESET, null) ));
+                lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage("The match is ending!",  "SERVER", null) ));
                 lobby.getChatController().update(o, new Message(Event.EXIT_CHAT, ""));
                 game.updateLastScore();
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 game.setWinner();
                 game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
             }else {

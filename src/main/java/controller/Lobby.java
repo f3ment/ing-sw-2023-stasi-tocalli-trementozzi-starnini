@@ -64,14 +64,16 @@ public class Lobby {
         chatController = new ChatController(chat);
         this.chat.addObserver((o, message) -> {
             try {
-                if(client.equals(getClientByUsername(message.getUserName()))) {
-                    client.update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
-                }else if(message.getEvent().equals(Event.SEND_MESSAGE)){
-                    if( message.getChatMessage().getReceiver()!= null && (client.equals(getClientByUsername(message.getChatMessage().getReceiver()))
-                            || client.equals(getClientByUsername(message.getChatMessage().getSender())))){
-                        client.update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
-                    }else if (message.getChatMessage().getReceiver() == null){
-                        client.update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
+                if (getStatusPlayer(userName)) {
+                    if (usersId.get(userName).equals(getClientByUsername(message.getUserName()))) {
+                        usersId.get(userName).update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
+                    } else if (message.getEvent().equals(Event.SEND_MESSAGE)) {
+                        if (message.getChatMessage().getReceiver() != null && (usersId.get(userName).equals(getClientByUsername(message.getChatMessage().getReceiver()))
+                                || usersId.get(userName).equals(getClientByUsername(message.getChatMessage().getSender())))) {
+                            usersId.get(userName).update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
+                        } else if (message.getChatMessage().getReceiver() == null) {
+                            usersId.get(userName).update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
+                        }
                     }
                 }
             } catch (RemoteException e) {
@@ -115,6 +117,24 @@ public class Lobby {
         }else if(!isFull){
             status.put(userId,true);
             usersId.put(userId,user);
+            this.chat.addObserver((o, message) -> {
+                try {
+                    if (getStatusPlayer(userId)) {
+                        if (usersId.get(userId).equals(getClientByUsername(message.getUserName()))) {
+                            usersId.get(userId).update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
+                        } else if (message.getEvent().equals(Event.SEND_MESSAGE)) {
+                            if (message.getChatMessage().getReceiver() != null && (usersId.get(userId).equals(getClientByUsername(message.getChatMessage().getReceiver()))
+                                    || usersId.get(userId).equals(getClientByUsername(message.getChatMessage().getSender())))) {
+                                usersId.get(userId).update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
+                            } else if (message.getChatMessage().getReceiver() == null) {
+                                usersId.get(userId).update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
+                            }
+                        }
+                    }
+                } catch (RemoteException e) {
+                    System.err.println("Error while updating the client : " + e.getMessage() + ". Skipping the update...");
+                }
+            });
             Timer timer=new Timer();
             timer.schedule(new TimerTask() {
                 @Override
@@ -128,23 +148,6 @@ public class Lobby {
             }
             onlineplayers++;
         }
-
-        this.chat.addObserver((o, message) -> {
-            try {
-                if(user.equals(getClientByUsername(message.getUserName()))) {
-                    user.update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
-                }else if(message.getEvent().equals(Event.SEND_MESSAGE)){
-                    if( message.getChatMessage().getReceiver()!= null && (user.equals(getClientByUsername(message.getChatMessage().getReceiver()))
-                            || user.equals(getClientByUsername(message.getChatMessage().getSender())))){
-                        user.update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
-                    }else if (message.getChatMessage().getReceiver() == null){
-                        user.update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
-                    }
-                }
-            } catch (RemoteException e) {
-                System.err.println("Error while updating the client : " + e.getMessage() + ". Skipping the update...");
-            }
-        });
         return true;
     }
 
@@ -200,19 +203,19 @@ public class Lobby {
                 }
             });
         }*/
-       for (String s : usersId.keySet()) {
-                this.model.addObserver((o, message) -> {
-                    try {
-                        if(getStatusPlayer(s)) {
-                            System.out.println(message.getEvent().toString());
-                            usersId.get(s).update(new Message(message.getEvent(), new ChatView(chat),new GameView(model)));
-                        }else{
-                        }
-                    } catch (RemoteException e) {
-                        System.err.println("Error while updating the client : " + e.getMessage() + ". Skipping the update...");
-
+        for (String s : usersId.keySet()) {
+            this.model.addObserver((o, message) -> {
+                try {
+                    if(getStatusPlayer(s)) {
+                        System.out.println(message.getEvent().toString());
+                        usersId.get(s).update(new Message(message.getEvent(), new ChatView(chat),new GameView(model)));
+                    }else{
                     }
-                });
+                } catch (RemoteException e) {
+                    System.err.println("Error while updating the client : " + e.getMessage() + ". Skipping the update...");
+
+                }
+            });
         }
     }
 
