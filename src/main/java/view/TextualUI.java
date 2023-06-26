@@ -124,15 +124,41 @@ public class TextualUI extends View implements Runnable {
                 System.out.println("you are in tha match!");
             }
         } else {
-            if (message.getEvent().equals(Event.FINISH_MATCH)) {
+            if (message.getEvent().equals(Event.FINISH_MATCH)){
                 synchronized (this) {
-                    System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
-                    System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
-                }
+                    if(!message.getModel().getCurrentPlayer().getUsername().equals(username)){
+                            System.out.println("il mio username è "+ username);
+                            System.out.println("il giocatore corrente è: " + message.getModel().getCurrentPlayer().getUsername());
+                            System.out.println("il giocatore finale è: " + message.getModel().getLastPlayer());
+                            System.out.println(message.getModel().getFinalFlow());
+                            showAllScore(message.getModel());
+                            System.out.println(message.getModel().getMapPlayerScore());
+                            System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
+                            System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
 
-                //todo nasce eccezione perché la lobby non esiste più e di conseguenza NullPointer su ServerImpl : 86
-                //setChanged();
-                //notifyObservers(new Message(Event.FINISH_MATCH));
+                    }else {
+                        System.out.println("il flag vale " + message.getModel().getFinalFlow());
+                        System.out.println("siamo nel gran finale!");
+                        if (message.getModel().getFinalFlow() != 4) {
+                            showAllScore(message.getModel());
+                            System.out.println(message.getModel().getMapPlayerScore());
+                            System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
+                            System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
+                            if (message.getModel().getFinalFlow() == 2) {
+                                start(message.getModel());
+                            } else if (message.getModel().getFinalFlow() == 1) {
+                                setChanged();
+                                notifyObservers(new Message(Event.DELETE_MATCH));
+                            }
+                        } else {
+                            System.out.println(message.getModel().getMapPlayerScore());
+                            System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
+                            System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
+                            setChanged();
+                            notifyObservers(new Message(Event.DELETE_MATCH));
+                        }
+                    }
+                }
             } else if (message.getModel() == null || message.getModel().getCurrentPlayer().getUsername().equals(username)) {
                 myTurn = true;
                 if (message.getEvent().equals(Event.PLAYER_DRAW_NEGATIVE)) {
@@ -202,23 +228,7 @@ public class TextualUI extends View implements Runnable {
                         }
                     }
                     start(message.getModel());
-                }else if (message.getEvent().equals(Event.FINISH_MATCH)) {
-                    synchronized (this){
-                        System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
-                        System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
-                    }
-                    if(message.getModel().getFinalFlow()==2) {
-                        start(message.getModel());
-                    }else if(message.getModel().getFinalFlow()==1){
-                        setChanged();
-                        notifyObservers(new Message(Event.DELETE_MATCH));
-                    }
-                } /*else if (message.getEvent().equals(Event.FINISH_MATCH)) {
-                    System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
-                    System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
-                //setChanged();
-                //notifyObservers(new Message(Event.DELETE_MATCH));
-            } */ else if (message.getEvent().equals(Event.LOGIN)) {
+                }else if (message.getEvent().equals(Event.LOGIN)) {
                     //System.out.println(Color.RED_BRIGHT + "Username NOT valid! Try again..." + Color.RESET)
                     System.out.println("Choose your Nickname: ");
                     do {
@@ -297,7 +307,8 @@ public class TextualUI extends View implements Runnable {
         }
     }
     private void start(GameView o) {
-        if (o.getLastPlayer().equals(o.getCurrentPlayer().getUsername()) && o.getEndGame()) {
+        if (o.getFirstPlayer().equals(o.getCurrentPlayer().getUsername()) && o.getEndGame()) {
+            System.out.println("siamo alla fine ce la faremo");
             setChanged();
             notifyObservers(new Message(Event.FINISH_MATCH));
         } else {
@@ -435,6 +446,8 @@ public class TextualUI extends View implements Runnable {
         }
         System.out.println();
     }
+
+
 
     /**
      *  Method that shows all bookshelves of all players with their username in horizontal

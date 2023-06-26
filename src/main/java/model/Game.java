@@ -27,12 +27,19 @@ public class Game extends Observable<Event> implements Serializable {
     private final Board board;
 
     private String winner;
+
+    private String firstFinisher;
     private boolean endGameToken;
     private String shelfCompletedBy;
 
     private final String lastPlayer;
 
     private int finalFlow=2;
+
+
+
+
+
 
 
     public Game(ArrayList<String> usernames) throws IOException {
@@ -212,7 +219,9 @@ public class Game extends Observable<Event> implements Serializable {
         }
         return players;
     }
-
+    public String getFirstPlayer(){
+        return firstPlayer;
+    }
 
     public List<Bookshelf> getListBookshelf(){
         List<Bookshelf> list= new ArrayList<Bookshelf>();
@@ -251,9 +260,6 @@ public class Game extends Observable<Event> implements Serializable {
         notifyObservers(new Message(arg));
     }
 
-    public String getFirstPlayer() {
-        return firstPlayer;
-    }
 
     public void setWinner() {
         int score=0;
@@ -447,7 +453,19 @@ public class Game extends Observable<Event> implements Serializable {
         return finalFlow;
     }
 
-    public void setFinalFlow(){
+    public void setFinalForcedFlow(){
         finalFlow=3;
     }
+
+    public void setRegularFlow(){
+        finalFlow=4;
+    }
+
+    public void setFirstFinisher(String id){
+        this.firstFinisher=id;
+    }
+    public String getFirstFinisher(){
+        return this.firstFinisher;
+    }
+
 }

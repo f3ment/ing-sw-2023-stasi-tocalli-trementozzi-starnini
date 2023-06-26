@@ -89,6 +89,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
 
     @Override
     public void update(Message message) throws RemoteException {
+        //if message.finale--> clientimpl.close();
         new Thread(() -> view.update(message)).start();
     }
 

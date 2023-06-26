@@ -105,29 +105,37 @@ public class GameController {
 
             if(game.getCurrentPosition().getBookshelf().isFull()&& !game.getEndGame()){
                 game.setEndGame(true);
+                game.setFirstFinisher(game.getCurrentPosition().getPlayer().getUsername());
             }
-            if(game.getEndGame() && game.getCurrentPosition().getPlayer().getUsername().equals(game.getLastPlayer())){
+            if(game.getEndGame() && game.getCurrentPosition().getPlayer().getUsername().equals(game.getLastPlayer())&&game.getFinalFlow()!=3){//&&game.getFirstFinisher().equals(game.getCurrentPosition().getPlayer().getUsername())
                 lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage(Color.RED + "The match is ending!" + Color.RESET, Color.RED + "SERVER" + Color.RESET, null) ));
                 lobby.getChatController().update(o, new Message(Event.EXIT_CHAT, ""));
                 game.updateLastScore();
+                System.out.println("il booleano finale vale "+ game.getFinalFlow());
                 game.setWinner();
                 game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
             }else {
                 if (game.checkBoardEmpty()) {
                     game.fillBoard();
                 }
-                if (!game.getEndGame() || (!game.getCurrentPosition().getPlayer().getUsername().equals(game.getFirstPlayer()) && game.getEndGame())) {
+                if (!game.getEndGame() || (!game.getCurrentPosition().getPlayer().getUsername().equals(game.getFirstPlayer()) && game.getEndGame())||(game.getCurrentPosition().getPlayer().getUsername().equals(game.getFirstPlayer()) && game.getEndGame()&&game.getFirstFinisher().equals(game.getFirstPlayer()))) {
                     changeCurrentPosition();
+                    if(game.getEndGame() && (game.getCurrentPosition().getPlayer().getUsername().equals(game.getFirstPlayer()) && game.getEndGame())){
+                        System.out.println("andiamo ezechiele!!");
+                    }
                     game.setChangedAndNotifyObservers(Event.PLAYER_FINISH);
                 }
             }
         }else if(message.getEvent().equals(Event.NEW_TURN_RECONNECTED)){
             game.setChangedAndNotifyObservers(Event.NEW_TURN_RECONNECTED);
         }else if(message.getEvent().equals(Event.NEW_TURN)){
-            System.out.println("sono in new turn server");
             game.setChangedAndNotifyObservers(Event.NEW_TURN);
         }else if(message.getEvent().equals(Event.FINISH_MATCH)){
             game.setWinner();
+            if(game.getFinalFlow()!=1) {
+                game.setRegularFlow();
+            }
+            System.out.println(game.getFinalFlow());
             game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
         } else if (message.getEvent().equals(Event.LOGIN_TRUE)) {
             game.setChangedAndNotifyObservers(Event.LOGIN_TRUE);
@@ -136,7 +144,7 @@ public class GameController {
             lobby.getChatController().update(o, new Message(Event.EXIT_CHAT, ""));
             game.setForcedWinner(message.getUserName());
             game.setCurrentPlayer(message.getUserName());
-            game.setFinalFlow();
+            game.setFinalForcedFlow();
             //o.update(new Message(Event.FORCED_END_MATCH));
             game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
         }

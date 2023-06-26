@@ -66,7 +66,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     currentLobby = this.gamesManagerController.getLobbyByClient(client);
                     if(currentLobby!=null) {
                         String username = gamesManagerController.getLobbyByClient(client).getUsernameByClient(client);
-                        System.out.println(username);
                         gamesManagerController.getLobbyByClient(client).resetTimer(username);
                     }
                     //client.update(null, Event.PING);
@@ -226,8 +225,15 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                                     l.setForcedEnd();
                                 }
                             }
-                            if(l.getCurrentPlayer()!=null&&!l.getStatusPlayer(l.getCurrentPlayer())&&l.getOnlineplayers()!=1&&l.getStatusLobby()){
+                            if(l.getEndGame()&&!l.getStatusPlayer(l.getFirstPlayer())){
+                                l.setFlagFirstPlayer();
+                            }
+                            if(l.getCurrentPlayer()!=null&&!l.getStatusPlayer(l.getCurrentPlayer())&&l.getOnlineplayers()!=1&&l.getStatusLobby()&&((!l.getFlagFirstPlayer())||(l.getFlagFirstPlayer()&&!l.getFirstPlayer().equals(l.getCurrentPlayer())))){
                                 l.getController().update(l.getClientByUsername(l.getCurrentPlayer()), new Message(Event.CONNECTION_PROBLEM));
+                            }else if(l.getCurrentPlayer()!=null&&!l.getStatusPlayer(l.getCurrentPlayer())&&l.getOnlineplayers()!=1&&l.getStatusLobby()&&l.getCurrentPlayer().equals(l.getFirstPlayer())&&l.getFlagFirstPlayer()){
+                                l.updateLastScore();//setflow a 1
+                                l.getController().update(l.getClientByUsername(l.getCurrentPlayer()), new Message(Event.FINISH_MATCH));//update end match
+                                Lobbydeletion(l,index);
                             }else if(!l.validateLobby()&&l.isFull()){
                                 //for(String s:l.getClientsUsername()){
                                     //if(l.getStatusPlayer(s)){

@@ -34,6 +34,8 @@ public class Lobby {
     private boolean oneleft;  //true if there is only one player online
     private boolean valid=true; // when it becomes false, the match is forced to end
     private boolean flagfinal;  // true when timerOneLeftPlayer starts
+    private boolean flagFirstPlayer;
+
 
 
 
@@ -48,6 +50,7 @@ public class Lobby {
         on=true;
         flagfinal=true;
         oneleft=false;
+        flagFirstPlayer=false;
         Timer timer=new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -350,7 +353,9 @@ public class Lobby {
             }
         }
     }
-
+    public String getFirstPlayer(){
+        return model.getFirstPlayer();
+    }
 
     public boolean getFinalFlag(){
         return flagfinal;
@@ -360,5 +365,23 @@ public class Lobby {
         return status.get(getCurrentPlayer());
     }
 
+    public boolean getEndGame(){
+        return model.getEndGame();
+    }
 
+    public String getFirstFinisher(){
+        return model.getFirstFinisher();
+    }
+
+    public boolean getFlagFirstPlayer(){
+        return flagFirstPlayer;
+    }
+
+    public void setFlagFirstPlayer(){
+        flagFirstPlayer=true;
+    }
+
+    public void updateLastScore(){
+        model.updateLastScore();
+    }
 }

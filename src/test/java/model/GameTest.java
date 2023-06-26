@@ -586,6 +586,10 @@ String configFilePath = "./src/main/resources/config.properties";
         }
     }
 
+    public String getFirstPlayer(){
+        return getFirstPlayer();
+    }
+
     @Test
     public void setCurrentPlayerTest(){
         try{
