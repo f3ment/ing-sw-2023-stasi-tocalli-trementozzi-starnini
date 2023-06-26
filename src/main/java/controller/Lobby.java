@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * This class represents a lobby of a game. It contains the game model, the chat, the chat controller, the game controller
+ */
 public class Lobby {
 
     private Game model;
@@ -39,6 +42,12 @@ public class Lobby {
 
     private String winner;
 
+    /**
+     * Lobby constructor that insert the first player in the lobby and initialize the game model and controller
+     * @param nPlayers number of players
+     * @param userName username of the first player
+     * @param client client of the first player
+     */
     public Lobby(int nPlayers, String userName, Client client){
         this.nPlayers = nPlayers;
         usersId = new HashMap<>(nPlayers);
@@ -82,20 +91,36 @@ public class Lobby {
         });
     }
 
+    /**
+     * This method returns the id of the lobby
+     * @return the id of the lobby
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * This method sets the lobby id
+     * @param id the id of the lobby
+     */
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * @return the size of the lobby
+     */
     public int getnPlayers() {
         return nPlayers;
     }
 
-    //returns true if usersId are full;
-    // insert a player in the lobby. if he already exists turn him online
+
+    /**
+     * This method inserts a player in the lobby
+     * @param user the client of the player
+     * @param userId the username of the player
+     * @return true if the lobby is full false otherwise
+     */
     public synchronized boolean insertPlayer(Client user,String userId){
         if(isFull&&!getStatusPlayer(userId)) {
             on=true;
@@ -151,6 +176,10 @@ public class Lobby {
         return true;
     }
 
+    /**
+     * This method rreset a player's timer
+     * @param username the username of the player which timer has to be reset
+     */
     public void resetTimer(String username){
         timerPlayers.get(username).cancel();
         Timer timero=new Timer();

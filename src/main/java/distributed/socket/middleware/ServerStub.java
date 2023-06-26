@@ -12,6 +12,12 @@ import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.Arrays;
 
+/**
+ * This class is the stub of the server.
+ * It implements the server interface and it is used by the client to communicate with the server.
+ * This class together with the ServerSkeleton class implements the middleware between the client and the server in the socket implementation
+ * so that the model and the view are not aware of the communication protocol.
+ */
 public class ServerStub implements Server {
 
 
@@ -29,6 +35,12 @@ public class ServerStub implements Server {
         this.port = port;
     }
 
+    /**
+     * This method is used by the client to register to the server.
+     * It creates the socket and the input and output streams.
+     * @param client the client that wants to register to the server
+     * @throws RemoteException if the client cannot be registered
+     */
     public void register(Client client) throws RemoteException {
         try {
             this.socket = new Socket(ip, port);
@@ -47,8 +59,6 @@ public class ServerStub implements Server {
         }
     }
 
-
-    //client che manda gli oggetti
     @Override
     public void update(Client client, Message message) throws RemoteException {
         if(message.getEvent().equals(Event.FINISH_MATCH)){
@@ -72,6 +82,11 @@ public class ServerStub implements Server {
 
     }
 
+    /**
+     * This method receives a message from the server and notifies the client.
+     * @param client the client that wants to receive a message
+     * @throws RemoteException if the message cannot be received
+     */
     public void receive(Client client) throws RemoteException{
         Message message;
             try {
@@ -84,9 +99,12 @@ public class ServerStub implements Server {
                 throw new RemoteException("Cannot cast Message " + e.getMessage());
             }
         client.update(message);
-
     }
 
+    /**
+     * This method closes the socket.
+     * @throws RemoteException if the socket cannot be closed
+     */
     public void close() throws RemoteException {
         try {
             socket.close();

@@ -5,13 +5,26 @@ import model.Chat;
 import model.Message;
 import utils.Event;
 
+/**
+ * ChatController class
+ * This class is responsible for updating the chat
+ */
 public class ChatController {
     private Chat chat;
 
+    /**
+     * Constructor
+     * @param chat The Chat object
+     */
     public ChatController(Chat chat) {
         this.chat = chat;
     }
 
+    /**
+     * Updates the chat
+     * @param client The client that sent the message
+     * @param msg The message sent by the client
+     */
     public void update(Client client, Message msg){
         if(client==null){
             return;

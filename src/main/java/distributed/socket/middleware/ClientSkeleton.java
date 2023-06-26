@@ -10,6 +10,11 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
 
+/**
+ * ClientSkeleton is a class that implements the Client interface. It is used to communicate with the client.
+ * This class is used to manage the communication between the server and the client so that the model and the view
+ * are not aware of the communication protocol.
+ */
 public class ClientSkeleton implements Client {
 
     private final ObjectOutputStream oos;
@@ -18,6 +23,10 @@ public class ClientSkeleton implements Client {
     private final Object inputlock = new Object();
     private final Object outputlock = new Object();
 
+    /**
+     * Constructor
+     * @param socket Socket to communicate with the client
+     */
     public ClientSkeleton(Socket socket){
         try {
             this.oos = new ObjectOutputStream(socket.getOutputStream());
@@ -32,6 +41,11 @@ public class ClientSkeleton implements Client {
 
     }
 
+    /**
+     * Method used to receive a message from the client and send it to the server
+     * @param server Server to communicate with
+     * @throws RemoteException if the server cannot be reached
+     */
     public void receive(Server server) throws RemoteException{
         Message message;
         try {
@@ -46,6 +60,11 @@ public class ClientSkeleton implements Client {
         server.update(this, message);
     }
 
+    /**
+     * Method used to send a message to the client by serializing it and sending it through the socket output stream
+     * @param message Message to send to the client
+     * @throws RemoteException if the client cannot be reached
+     */
     @Override
     public void update(Message message) throws RemoteException {
         try{

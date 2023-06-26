@@ -190,6 +190,7 @@ public class GraphicalUI extends View implements Runnable {
         GuiController.setChair(model,username);
         GuiController.setCommongoals(model);
         GuiController.setPersonalGoal(model,username);
+        GuiController.updateScores(model,username);
     }
 
 
