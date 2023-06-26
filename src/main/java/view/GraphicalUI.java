@@ -23,12 +23,13 @@ public class GraphicalUI extends View implements Runnable {
     private boolean nicknamefirstTry = true;
 
 
+    /**
+     * This method is used to initialize the graphical interface.
+     */
     @Override
     public void run() {
-        System.out.println("sono nella gui");
+        System.out.println("Graphical interface is starting...");
     }
-
-
 
 
     /**
@@ -41,16 +42,15 @@ public class GraphicalUI extends View implements Runnable {
     }
 
 
-    //todo implementare un eventHandler per ogni evento che arriva dal server (idem per testuale)
 
-    @Override
     /**
-     * this method will be called by the server when a new message
-     * is received from the server and will update the gui accordingly
-     * to the message received
+     * This method is called by the server when a new message
+     * is received from it.
+     * It handles the content of the message and updates the gui accordingly.
      *
      * @param message the message received from the server
      */
+    @Override
     public void update(Message message) {
         if (message.getEvent().equals(Event.RECONNECTION)){
             Platform.runLater(() -> {
@@ -62,7 +62,9 @@ public class GraphicalUI extends View implements Runnable {
                     throw new RuntimeException(e);
                 }
                 initGameScene(message.getModel());
-                GuiController.setMyTurn(false, "You have been reconnected succesfully \n to the game. " + message.getModel().getCurrentPlayer().getUsername());
+                GuiController.setMyTurn(false, "You have been reconnected successfully \n to the game. " + message.getModel().getCurrentPlayer().getUsername());
+                message.getChat().getChat().forEach(e -> GuiController.updateChat(e));
+
             });
         }else if(message.getEvent().equals(Event.NEW_TURN_RECONNECTED)){
             username = GuiController.getUsername();
@@ -74,6 +76,7 @@ public class GraphicalUI extends View implements Runnable {
                         throw new RuntimeException(e);
                     }
                     initGameScene(message.getModel());
+                    message.getChat().getChat().forEach(e -> GuiController.updateChat(e));
                     startNewTurn(message.getModel());
                 });
             }
@@ -159,6 +162,12 @@ public class GraphicalUI extends View implements Runnable {
 
     }
 
+    /**
+     *this method is invoked when the current player has to play, letting
+     * him/her draw and interact with the game scene, while updating it with
+     * the new model state
+     * @param model the gameview received from the server
+     */
     private void startNewTurn(GameView model) {
         Platform.runLater(() -> {
             fillBoard(model);
@@ -171,15 +180,24 @@ public class GraphicalUI extends View implements Runnable {
         });
     }
 
+    /**
+     * This method will initialize the graphical game scene with objects retrieved from the model
+     * @param model the gameview received from the server
+     */
     private void initGameScene(GameView model) {
         fillBoard(model);
         GuiController.showShelves(model,username);
         GuiController.setChair(model,username);
         GuiController.setCommongoals(model);
         GuiController.setPersonalGoal(model,username);
+        GuiController.updateScores(model,username);
     }
 
 
+    /**
+     * This method will fill the board with the tiles received from the server
+     * @param o the gameview received from the server
+     */
     private void fillBoard(GameView o) {
        GuiController.cleanBoard();
        for(int i=0;i<o.getHeightBoard();i++){

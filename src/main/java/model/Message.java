@@ -39,6 +39,12 @@ public class Message implements Serializable {
         this.coords = coords;
     }
 
+    public Message(Event arg, ChatView chat, GameView model){
+        this.event = arg;
+        this.chat = chat;
+        this.model = model;
+    }
+
     public Message(String username, Event arg, ChatView chat){
         this.userName = username;
         this.event = arg;

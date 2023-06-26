@@ -16,9 +16,11 @@ import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
+/**
+* This class implements server.
+* It links the model and the controller to the communication protocol.
+*/
 public class ServerImpl extends UnicastRemoteObject implements Server {
-    //private ChatController chatController;
-    //private Chat chatModel;
 
     private Lobby currentLobby;
 
@@ -31,26 +33,54 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
     private ArrayList<Integer> destroy_array = new ArrayList<>();
 
+    /**
+     * Initialize the server.
+     * @throws RemoteException if the remote object cannot be exported
+     */
     public ServerImpl() throws RemoteException {
         super();
         initialize();
     }
 
+    /**
+     * Initialize the server.
+     * @param port the port number on which the server accepts requests
+     * @throws RemoteException if the remote object cannot be exported
+     */
     public ServerImpl(int port) throws RemoteException {
         super(port);
         initialize();
     }
 
+    /**
+     * Initialize the server.
+     * @param port the port number on which the server accepts requests
+     * @param csf the client-side socket factory for making calls to the remote object
+     * @param ssf the server-side socket factory for receiving remote calls
+     * @throws RemoteException if the remote object cannot be exported
+     */
     public ServerImpl(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
         super(port, csf, ssf);
         initialize();
     }
 
+    /**
+     * register a client to the server
+     * @param client Client object to be registered
+     * @throws RemoteException if the remote object cannot be exported
+     */
     @Override
     public void register(Client client) throws RemoteException{
         System.out.println(Color.GREEN_BRIGHT + "Client correctly registered" + Color.RESET);
     }
 
+    /**
+     * This method receive clients messages and redirects them
+     * to the right game controller based on the client lobby
+     * @param client  Client that sends the message
+     * @param message Message object
+     * @throws RemoteException if the remote object cannot be exported
+     */
     @Override
     public void update(Client client, Message message) throws RemoteException {
         currentLobby = this.gamesManagerController.getLobbyByClient(client);
@@ -129,10 +159,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                             gamesManagerController.insertPlayer(client,gamesManagerController.LobbyByUsername(message.getUserName()), message.getUserName());
 
                             if(gamesManagerController.LobbyByUsername(message.getUserName()).getOnlineplayers()>2){
-                                client.update(new Message(gamesManagerController.LobbyByUsername(message.getUserName()).getModel(),Event.RECONNECTION));
+                                client.update(new Message(Event.RECONNECTION,gamesManagerController.LobbyByUsername(message.getUserName()).getChat(),gamesManagerController.LobbyByUsername(message.getUserName()).getModel()));
                             }else {
                                 if(gamesManagerController.LobbyByUsername(message.getUserName()).getStatusCurrentPlayer()&&!gamesManagerController.LobbyByUsername(message.getUserName()).getCurrentPlayer().equals(message.getUserName())){
-                                    client.update(new Message(gamesManagerController.LobbyByUsername(message.getUserName()).getModel(),Event.RECONNECTION));
+                                    client.update(new Message(Event.RECONNECTION,gamesManagerController.LobbyByUsername(message.getUserName()).getChat(),gamesManagerController.LobbyByUsername(message.getUserName()).getModel()));
+
                                 }else {
                                     gamesManagerController.LobbyByUsername(message.getUserName()).getController().update(client, new Message(Event.NEW_TURN_RECONNECTED));
                                 }
@@ -166,10 +197,13 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     }
 
 
-
+    /**
+     * deletes a lobby
+     * @param l lobby to delete
+     * @param index index of lobby to delete
+     */
     public void Lobbydeletion(Lobby l,ArrayList<Integer> index){
         for (String a : l.getClientsUsername()) {
-            //codice per rimuovere parola dal file properties
             FileInputStream ip;
             try {
                 ip = new FileInputStream(configFilePath);
@@ -190,6 +224,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         index.add(gamesManagerController.getLobbies_list().indexOf(l));
     }
 
+    /**
+     * initializes the server and starts the thread for the server
+     */
     private void initialize(){
         destroy_array=new ArrayList<>();
         gamesManagerController = new GamesManagerController();

@@ -6,20 +6,32 @@ import view.Color;
 
 import java.util.ArrayList;
 
+/**
+ * Class GameController
+ * This class is the controller of a lobby game
+ * It serves as an intermediary between the model and the view, and it is used to update the model and the view
+ * when a player performs an action or when the model changes its state
+ */
 public class GameController {
     private final Game game;
     private final Lobby lobby;
-    //private final TextualUI view;;
-    //private final Client view;
+
+    /**
+     * Constructor of the class GameController
+     * @param game the game model
+     * @param lobby game's lobby
+     */
     public GameController(Game game, Lobby lobby){
         this.lobby = lobby;
         this.game = game;
         //this.view = view;
     }
 
-    /*
-    * method to draw tiles from the model board
-    * */
+    /**
+     * Method that checks if the chosen tiles are valid and if they are, it draws them from the board
+     * @param coords coordinates of the tiles to draw
+     * @return true if the draw is successful, false otherwise
+     */
     private boolean draw(ArrayList<ArrayList<Integer>> coords){
         if(game.checkDraw(coords)){
             for (ArrayList<Integer> i : coords){
@@ -32,16 +44,16 @@ public class GameController {
     }
 
 
-
-
-
-
+    /**
+     * Method that checks if the chosen tiles can be inserted in the selected column
+     * and if they are, it inserts them in the player's bookshelf
+     *
+     * @param columnNumber the column where the player wants to insert the tiles
+     * @param insertionOrder the order in which the player wants to insert the tiles
+     * @return true if the insertion is successful, false otherwise
+     */
     private boolean insert(int columnNumber, ArrayList<Integer> insertionOrder ){
         if(game.checkInsert(columnNumber)){
-            //test
-            /*for(int i=0;i<game.getCurrentPosition().getPlayer().getPickedCards().size();i++){
-                System.out.println(insertionOrder.get(i));
-            }*/
             int size= game.getCurrentPosition().getPlayer().getPickedCards().size();
             for(int i=0;i<size;i++){
                 try {
@@ -68,14 +80,22 @@ public class GameController {
         }
     }
 
-    /*
-     * method that checks if the chosen column has enough space to insert all the tiles
-     */
 
+
+    /**
+     * Method that changes the current position of the game to the next one
+     * in order to let the next player play
+     */
     private void changeCurrentPosition(){
         game.changeCurrentPosition();
     }
 
+    /**
+     * Method that updates the model when a player performs an action by changing model state
+     * and notifying the observers of the model if the action is valid
+     * @param o client that has to be updated
+     * @param message message that contains the event to be performed
+     */
     public void update(Client o,Message message) {
         if(o==null){
             return;
@@ -120,9 +140,6 @@ public class GameController {
                 }
                 if (!game.getEndGame() || (!game.getCurrentPosition().getPlayer().getUsername().equals(game.getFirstPlayer()) && game.getEndGame())||(game.getCurrentPosition().getPlayer().getUsername().equals(game.getFirstPlayer()) && game.getEndGame()&&game.getFirstFinisher().equals(game.getFirstPlayer()))) {
                     changeCurrentPosition();
-                    if(game.getEndGame() && (game.getCurrentPosition().getPlayer().getUsername().equals(game.getFirstPlayer()) && game.getEndGame())){
-                        System.out.println("andiamo ezechiele!!");
-                    }
                     game.setChangedAndNotifyObservers(Event.PLAYER_FINISH);
                 }
             }

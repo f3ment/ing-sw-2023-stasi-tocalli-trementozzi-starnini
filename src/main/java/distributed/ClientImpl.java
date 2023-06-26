@@ -9,8 +9,11 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
-//unicast remote object serve a comunicare a rmi che tutte le istanze
-//della classe sono esportate , sono raggiungibili tramite invocazioni remote.
+/**
+ * This class implements client.
+ * It links the user's view (either textual or graphical)
+ * to the communication protocol.
+ */
 public class ClientImpl extends UnicastRemoteObject implements Client, Runnable {
 
     private final View view;
@@ -71,6 +74,10 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
         return graphicSettings;
     }
 
+    /** This method is used to initialize the client with the server to which it is connected.
+     * @param server the server to which the client is connected
+     * @throws RemoteException if the server is unreachable
+     */
     private void initialize(Server server) throws RemoteException{
         server.register(this);
         if(choice == 1){
@@ -87,12 +94,21 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
         }
     }
 
+    /**
+     * This method is used to send a message to the user interface.
+     * @param message message to be sent to the user
+     * @throws RemoteException if the server is unreachable
+     */
     @Override
     public void update(Message message) throws RemoteException {
         //if message.finale--> clientimpl.close();
         new Thread(() -> view.update(message)).start();
     }
 
+    /**
+     * This method is used to start the client interface thread
+     * and the thread that periodically sends a ping message to the server.
+     */
     @Override
     public void run() {
         if(choice == 1)
