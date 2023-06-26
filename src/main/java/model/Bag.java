@@ -5,12 +5,24 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
 
+
+/**
+ * Bag class
+ * This class is responsible for managing the bag.
+ * It contains the items.
+ * It is used by Board class to create the board as a matrix of boxes; in fact, each box contains an item which is extracted from the bag.
+ */
 public class Bag implements Serializable {
         private static final long serialVersionUID = 1L;
         private int id;
         private final int maxCardsPerType;
 
         private ArrayList<ItemTiles> items; //struttura contenente Items
+
+        /**
+         * Constructor for the Bag class that initializes the items.
+         * It reads the number of items from the config.properties file.
+         */
         public Bag(){
                 /*
                  * Apertura file di configurazione
@@ -54,7 +66,12 @@ public class Bag implements Serializable {
                 }
         }
 
-        //estrazione random di un ItemTiles con conseguente rimozione dalla struttura dati
+
+        /**
+         * Extracts a random item from the bag.
+         * @return the extracted item
+         * @throws NegativeArraySizeException if the bag is empty
+         */
         public ItemTiles extract() throws NegativeArraySizeException{
                 int randomIndex;
                 Random rand = new Random();
@@ -66,7 +83,10 @@ public class Bag implements Serializable {
                 }
         }
 
-        //returns the number of items left in the bag
+        /**
+         * Returns the number of items left in the bag.
+         * @return the number of items left in the bag
+         */
         public int getLeftItems(){
                 return items.size();
         }
