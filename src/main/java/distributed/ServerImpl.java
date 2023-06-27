@@ -103,12 +103,10 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                 //client.update(null, Event.PING);
             } else {
                 if (message.getEvent().equals(Event.DELETE_MATCH)) {
-                    if(currentLobby.getStatusLobby()){
-                        for (Client c : currentLobby.getClients()) {
-                            if(currentLobby.getStatusPlayer(currentLobby.getUsernameByClient(c))){
-                                c.update(new Message(Event.CLIENT_CLOSE));
-                            }
-                        }
+                    try {
+                        Thread.sleep(15000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
                     }
                     Lobbydeletion(currentLobby,destroy_array);
                     for(Integer i:destroy_array){

@@ -70,13 +70,16 @@ public class TextualUI extends View implements Runnable {
                 System.err.println(e.getMessage());
             }
         }else if (message.getEvent().equals(Event.SEND_MESSAGE)) {
-                ChatMessage last = message.getChat().getLast();
-                if (last.getSender().equals("SERVER")){
-                    flagChat = false;
-                }
-                if (!last.getSender().equals(username) && message.getChat().getActive().contains(username)) {
-                    System.out.println( last.getSender() + (last.getReceiver()!=null && last.getReceiver().equals(username)? " to You" : "") + " > " + last.getMessage());
-                }
+            ChatMessage last = message.getChat().getLast();
+            if (!last.getSender().equals(username) && message.getChat().getActive().contains(username)) {
+                System.out.println( last.getSender() + (last.getReceiver()!=null && last.getReceiver().equals(username)? " to You" : "") + " > " + last.getMessage());
+            }
+            if (last.getSender().equals("SERVER")){
+                flagChat = false;
+                setChanged();
+                notifyObservers(new Message(Event.EXIT_CHAT, username));
+            }
+
         }else if(message.getEvent().equals(Event.EXIT_CHAT) && message.getUserName().equals(username)){
             //flagChat = false;
             synchronized (this){
@@ -146,14 +149,14 @@ public class TextualUI extends View implements Runnable {
             if (message.getEvent().equals(Event.FINISH_MATCH)){
                 synchronized (this) {
                     if(!message.getModel().getCurrentPlayer().getUsername().equals(username)){
-                            System.out.println("il mio username è "+ username);
-                            System.out.println("il giocatore corrente è: " + message.getModel().getCurrentPlayer().getUsername());
-                            System.out.println("il giocatore finale è: " + message.getModel().getLastPlayer());
-                            System.out.println(message.getModel().getFinalFlow());
-                            showAllScore(message.getModel());
-                            System.out.println(message.getModel().getMapPlayerScore());
-                            System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
-                            System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
+                        System.out.println("il mio username è "+ username);
+                        System.out.println("il giocatore corrente è: " + message.getModel().getCurrentPlayer().getUsername());
+                        System.out.println("il giocatore finale è: " + message.getModel().getLastPlayer());
+                        System.out.println(message.getModel().getFinalFlow());
+                        showAllScore(message.getModel());
+                        System.out.println(message.getModel().getMapPlayerScore());
+                        System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
+                        System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
 
                     }else {
                         System.out.println("il flag vale " + message.getModel().getFinalFlow());
@@ -177,14 +180,13 @@ public class TextualUI extends View implements Runnable {
                             notifyObservers(new Message(Event.DELETE_MATCH));
                         }
                     }
-                    if(message.getModel().getFinalFlow()!=2||(message.getModel().getFinalFlow()==2&&!message.getModel().getCurrentPlayer().getUsername().equals(username))){
+                    if(message.getModel().getFinalFlow()!=2){
                         try{
-                            Thread.sleep(3000);
+                            Thread.sleep(5000);
                         }catch (InterruptedException e){
                             throw new RuntimeException();
                         }
-                        setChanged();
-                        notifyObservers(new Message(Event.CLIENT_CLOSE));
+                        close();
                     }
                 }
             } else if (message.getModel() == null || message.getModel().getCurrentPlayer().getUsername().equals(username)) {

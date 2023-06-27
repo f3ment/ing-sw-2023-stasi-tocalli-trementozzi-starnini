@@ -103,6 +103,12 @@ public class GraphicalUI extends View implements Runnable {
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        this.close();
                     });
                 }else {
                     if (message.getModel().getFinalFlow() != 4) {
@@ -126,7 +132,17 @@ public class GraphicalUI extends View implements Runnable {
                                 GuiController.setChanged();
                                 GuiController.notifyObservers(new Message(Event.DELETE_MATCH));
                             });
+
                         }
+                        if(message.getModel().getFinalFlow()!=2){
+                            try {
+                                Thread.sleep(5000);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            this.close();
+                        }
+
                     } else {
                         Platform.runLater(() -> {
                             try {
@@ -137,6 +153,12 @@ public class GraphicalUI extends View implements Runnable {
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
+                            try {
+                                Thread.sleep(5000);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            this.close();
                         });
 
                     }

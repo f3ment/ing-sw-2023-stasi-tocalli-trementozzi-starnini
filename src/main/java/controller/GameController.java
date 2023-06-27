@@ -126,7 +126,6 @@ public class GameController {
             game.checkFinalControl();
             if(game.getEndGame() && game.getCurrentPosition().getPlayer().getUsername().equals(game.getLastPlayer())&&game.getFinalFlow()!=3){//&&game.getFirstFinisher().equals(game.getCurrentPosition().getPlayer().getUsername())
                 lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage(Color.RED + "The match is ending!" + Color.RESET, Color.RED + "SERVER" + Color.RESET, null) ));
-                lobby.getChatController().update(o, new Message(Event.EXIT_CHAT, ""));
                 changeCurrentPosition();
                 System.out.println("il booleano finale vale "+ game.getFinalFlow());
                 game.setWinner();
@@ -151,7 +150,6 @@ public class GameController {
             }
             if(game.getFinalFlow()==1||game.getFinalFlow()==4){
                 lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage(Color.RED + "The match is ending!" + Color.RESET, Color.RED + "SERVER" + Color.RESET, null) ));
-                lobby.getChatController().update(o, new Message(Event.EXIT_CHAT, ""));
             }
             System.out.println(game.getFinalFlow());
             game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
@@ -159,7 +157,6 @@ public class GameController {
             game.setChangedAndNotifyObservers(Event.LOGIN_TRUE);
         }else if (message.getEvent().equals(Event.FORCED_END_MATCH)) {
             lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage(Color.RED + "The match is ending!" + Color.RESET, Color.RED + "SERVER" + Color.RESET, null) ));
-            lobby.getChatController().update(o, new Message(Event.EXIT_CHAT, ""));
             game.setForcedWinner(message.getUserName());
             game.setCurrentPlayer(message.getUserName());
             game.setFinalForcedFlow();
