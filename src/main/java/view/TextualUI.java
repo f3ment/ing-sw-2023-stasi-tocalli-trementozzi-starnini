@@ -260,6 +260,9 @@ public class TextualUI extends View implements Runnable {
                     start(message.getModel());
                 }else if (message.getEvent().equals(Event.LOGIN)) {
                     //System.out.println(Color.RED_BRIGHT + "Username NOT valid! Try again..." + Color.RESET)
+                    if(message.getUserName()!=null){
+                        System.out.println(message.getUserName());
+                    }
                     System.out.println("Choose your Nickname: ");
                     do {
                         System.out.print("> ");

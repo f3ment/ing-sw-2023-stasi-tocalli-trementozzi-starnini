@@ -154,7 +154,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                 }
                 if (!correctusername) {
                     if(gamesManagerController.StatusUsername(message.getUserName(), gamesManagerController.LobbyByUsername(message.getUserName()))) {
-                        client.update(new Message(Event.LOGIN));
+                        client.update(new Message(Event.LOGIN, Color.RED_BOLD + message.getUserName()+" Is Already Playing" + Color.RESET));
+                    }else if(!gamesManagerController.StatusUsername(message.getUserName(), gamesManagerController.LobbyByUsername(message.getUserName()))&&gamesManagerController.LobbyByUsername(message.getUserName()).getnPlayers()!=message.getnPlayers()) {
+                        client.update(new Message(Event.LOGIN,Color.RED_BOLD + message.getUserName()+" is playing in a Lobby with a different number of players" + Color.RESET));
                     }else if(gamesManagerController.LobbyByUsername(message.getUserName()).isFull()){
                         if(gamesManagerController.LobbyByUsername(message.getUserName()).getStatusLobby()) {
                             if(gamesManagerController.LobbyByUsername(message.getUserName()).getOnlineplayers()==1){
