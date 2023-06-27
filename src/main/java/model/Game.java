@@ -379,7 +379,14 @@ public class Game extends Observable<Event> implements Serializable {
             setCurrentPosition();
         }
     }
-    //todo javadoc
+
+    public void checkFinalControl(){
+        if(getCurrentPosition().getBookshelf().isFull()&& !getEndGame()){
+            setEndGame(true);
+            setFirstFinisher(getCurrentPosition().getPlayer().getUsername());
+        }
+    }
+
     public void updateLastScore(){
         finalFlow=1;
         validateAdjacent(getCurrentPosition());
