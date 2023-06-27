@@ -266,8 +266,13 @@ public class GraphicalUI extends View implements Runnable {
        }
     }
 
-    public void close(){
-        System.exit(1);
+    public void close() {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.exit(0);
     }
 
 
