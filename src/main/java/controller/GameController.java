@@ -106,7 +106,7 @@ public class GameController {
             }
             game.getCurrentPosition().getPlayer().clearHand();
             changeCurrentPosition();
-            game.setChangedAndNotifyObservers(Event.PLAYER_FINISH);
+            game.setChangedAndNotifyObservers(Event.NEW_TURN);
         }else if (message.getEvent().equals(Event.PLAYER_DRAW_POSITIVE)) {
             if(draw(message.getCoords())){
                 game.setChangedAndNotifyObservers(Event.PLAYER_DRAW_POSITIVE);
