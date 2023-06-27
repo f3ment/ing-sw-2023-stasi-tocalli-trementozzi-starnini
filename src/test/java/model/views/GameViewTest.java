@@ -435,4 +435,32 @@ class GameViewTest {
         assertEquals("dario", gameView.getPlayerNameByRanking(2));
         assertEquals("mario", gameView.getPlayerNameByRanking(1));
     }
+
+    @Test
+    void getLastPlayerTest() throws IOException {
+        ArrayList<String> nomi = new ArrayList<String>();
+        nomi.add("marco");
+        nomi.add("mario");
+        nomi.add("dario");
+        nomi.add("matteo");
+        Game game = new Game(nomi);
+        model.views.GameView gameView = new GameView(game);
+        game.changeCurrentPosition();
+        game.changeCurrentPosition();
+        game.changeCurrentPosition();
+        assertEquals(game.getCurrentPosition().getPlayer().getUsername(), gameView.getLastPlayer());
+    }
+
+    @Test
+    void getFinalFlowTest() throws IOException {
+        ArrayList<String> nomi = new ArrayList<String>();
+        nomi.add("marco");
+        nomi.add("mario");
+        nomi.add("dario");
+        nomi.add("matteo");
+        Game game = new Game(nomi);
+        model.views.GameView gameView = new GameView(game);
+        game.setFinalForcedFlow();
+        assertEquals(gameView.getFinalFlow(),3);
+    }
 }

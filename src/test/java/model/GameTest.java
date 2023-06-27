@@ -281,6 +281,9 @@ String configFilePath = "./src/main/resources/config.properties";
             game.getCurrentPosition().getPlayer().setScore(10);
             game.changeCurrentPosition();
             game.getCurrentPosition().getPlayer().setScore(5);
+            for(Player p : game.getListPlayer()){
+                p.setStatus(true);
+            }
             game.setWinner();
             assertEquals(game.getFirstPlayer(), game.getWinner());
             System.out.println("Test passato!");
@@ -698,5 +701,29 @@ String configFilePath = "./src/main/resources/config.properties";
             System.out.println("Test fallito!");
             throw new RuntimeException(e);
         }
+    }
+
+    @Test
+    public void getFinalFlowTest() throws IOException {
+        usernames.clear();
+        usernames.add("mario");
+        usernames.add("luca");
+        usernames.add("dario");
+        Game game = new Game(usernames);
+        game.setFinalForcedFlow();
+        assertEquals(3,game.getFinalFlow());
+        game.setRegularFlow();
+        assertEquals(4,game.getFinalFlow());
+    }
+
+    @Test
+    public void getFirstFinisherTest() throws IOException {
+        usernames.clear();
+        usernames.add("mario");
+        usernames.add("luca");
+        usernames.add("dario");
+        Game game = new Game(usernames);
+        game.setFirstFinisher("mario");
+        assertEquals("mario",game.getFirstFinisher());
     }
 }

@@ -85,5 +85,10 @@ public class MessageTest {
         Message test11 = new Message(userName, event);
         assertTrue(test11.getEvent().equals(event) && test11.getUserName().equals(userName));
         System.out.println("MessageTest test11 : OK");
+
+        Message test12 = new Message(event, chat ,model);
+        assertTrue(test12.getEvent().equals(event) && test12.getChat().equals(chat) && test12.getModel().equals(model));
+        System.out.println("MessageTest test12 : OK");
+
     }
 }
