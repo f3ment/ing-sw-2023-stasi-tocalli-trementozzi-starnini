@@ -123,10 +123,7 @@ public class GameController {
         } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
             //Check if re-fill board
 
-            if(game.getCurrentPosition().getBookshelf().isFull()&& !game.getEndGame()){
-                game.setEndGame(true);
-                game.setFirstFinisher(game.getCurrentPosition().getPlayer().getUsername());
-            }
+            game.checkFinalControl();
             if(game.getEndGame() && game.getCurrentPosition().getPlayer().getUsername().equals(game.getLastPlayer())&&game.getFinalFlow()!=3){//&&game.getFirstFinisher().equals(game.getCurrentPosition().getPlayer().getUsername())
                 lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage(Color.RED + "The match is ending!" + Color.RESET, Color.RED + "SERVER" + Color.RESET, null) ));
                 lobby.getChatController().update(o, new Message(Event.EXIT_CHAT, ""));

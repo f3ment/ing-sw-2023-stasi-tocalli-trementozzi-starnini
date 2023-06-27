@@ -658,6 +658,7 @@ String configFilePath = "./src/main/resources/config.properties";
             currBookshelf.insert(new ItemTiles(Type.CATS,1));
             currBookshelf.insert(new ItemTiles(Type.CATS,1));
 
+            game.checkFinalControl();
             game.changeCurrentPosition();
             assertTrue(game.getShelfCompletedBy().equals(currPlayer));
             System.out.println("Test passato!");
