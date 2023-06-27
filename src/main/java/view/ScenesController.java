@@ -269,12 +269,14 @@ public class ScenesController extends Observable<Event> implements Initializable
      * This method starts the game by sending a NEW_TURN event to the server
      * @param username the username of the last player that joined the game
      */
-    public void startGame(String username) {
+    public void startGame(String username, boolean myTurn) {
         this.username = username;
-        new Thread(()->{
-            setChanged();
-            notifyObservers(new Message(Event.NEW_TURN));
-        }).start();
+        if (myTurn) {
+            new Thread(()->{
+                setChanged();
+                notifyObservers(new Message(Event.NEW_TURN));
+            }).start();
+        }
     }
 
 

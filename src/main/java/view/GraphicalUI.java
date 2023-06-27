@@ -92,7 +92,7 @@ public class GraphicalUI extends View implements Runnable {
                     throw new RuntimeException(e);
                 }
                 initGameScene(message.getModel());
-                GuiController.startGame(username);
+                GuiController.startGame(username, message.getModel().getCurrentPlayer().getUsername().equals(username));
             });
         } else if (message.getEvent().equals(Event.FINISH_MATCH)){
                 if(!message.getModel().getCurrentPlayer().getUsername().equals(username)){
