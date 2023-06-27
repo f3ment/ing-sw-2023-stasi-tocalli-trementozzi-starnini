@@ -116,12 +116,14 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
             this.close();
         }else if(message.getEvent().equals(Event.PING)){
             timerPong.cancel();
+            timerPong=new Timer();
             timerPong.schedule(new TimerTask() {
                 @Override
                 public void run() {
+                    System.out.println("chiudo");
                     view.close();
                 }
-            },8000);
+            },12000);
         }else {
             new Thread(() -> view.update(message)).start();
         }
@@ -155,14 +157,14 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
                        sr.update(cl,new Message(Event.PING));
                    }catch (RemoteException e){
                        Thread.interrupted();
-                       System.err.println("Error while updating server : " + e.getMessage() + ". Skipping the update...");
-                       System.out.println("Error server side");
+                       System.err.println("Error server side! Terminal is closing...");
                        try {
                            Thread.sleep(5000);
                        } catch (InterruptedException ex) {
                            throw new RuntimeException(ex);
+
                        }
-                       //view.close();
+                       view.close();
                        //TODO close per cli e gui
                    }
                 }
@@ -174,9 +176,10 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
         timerPong.schedule(new TimerTask() {
             @Override
             public void run() {
+                System.out.println("chiudo");
                 view.close();
             }
-        },8000);
+        },12000);
     }
 
     public void close(){
