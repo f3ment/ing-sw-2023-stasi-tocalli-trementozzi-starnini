@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Properties;
 
+/**
+ * This class represents the bookshelf of the game.
+ */
 public class Bookshelf implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -17,6 +20,10 @@ public class Bookshelf implements Serializable {
     private int maxDrowable;
     Properties prop = new Properties();
 
+    /**
+     * Constructor of the class.
+     * @throws IOException
+     */
     public Bookshelf() throws IOException {
 
         /*
@@ -46,6 +53,11 @@ public class Bookshelf implements Serializable {
         this.full = false;
     }
 
+    /**
+     * This method inserts a card in the bookshelf.
+     * @param card is the card to insert.
+     * @throws Exception if the bookshelf is full.
+     */
     public void insert(ItemTiles card) throws Exception{
         if(actualColumnLength.get(choosenColumn)!=this.height){
             items[getHeight()-1-actualColumnLength.get(choosenColumn)][choosenColumn]=card;
@@ -55,6 +67,12 @@ public class Bookshelf implements Serializable {
         }
     }
 
+
+    /**
+     * This method sets the column in which the player wants to insert the card.
+     * @param choosenColumn is the column chosen by the player.
+     * @throws Exception if the column chosen is not valid.
+     */
     public void setChoosenColumn(int choosenColumn) throws Exception{
         if(choosenColumn >=0 && choosenColumn <this.length){
             this.choosenColumn = choosenColumn;
@@ -63,11 +81,23 @@ public class Bookshelf implements Serializable {
         }
     }
 
+    /**
+     * This method returns the max number of drawable cards that can be inserted in the bookshelf.
+     * @return the max number of drawable cards.
+     */
     public int getMaxDrowable(){
         int min;
         min = actualColumnLength.stream().reduce( 6,( a, b)-> a<=b ? a : b);
         return Math.min(height - min, maxDrowable);
     }
+
+    /**
+     * This method returns the item at the position (i,j) of the bookshelf.
+     * @param i is the row of the bookshelf.
+     * @param j is the column of the bookshelf.
+     * @return the card in the position (i,j) of the bookshelf.
+     * @throws Exception if the position (i,j) is not valid.
+     */
     public ItemTiles getItem(int i, int j) throws Exception{
         if(items[i][j] != null){
             return items[i][j];
@@ -76,14 +106,23 @@ public class Bookshelf implements Serializable {
         }
     }
 
+    /**
+     * @return the height of the bookshelf.
+     */
     public int getHeight() {
         return height;
     }
 
+    /**
+     * @return the length of the bookshelf.
+     */
     public int getLength() {
         return length;
     }
 
+    /**
+     * @return A list of the actual length of each column of the bookshelf based on the number of cards contained.
+     */
     public ArrayList getColumnsSize(){
         return this.actualColumnLength;
     }
@@ -98,11 +137,26 @@ public class Bookshelf implements Serializable {
         return true;
     }
 
+    /**
+     * @return the column chosen by the player.
+     */
     public int getChoosenColumn() {
         return choosenColumn;
     }
 
 
+    /**
+     * @param tablePosition is the position of the player
+     * @param i
+     * @param j
+     * @param count
+     * @param batrix
+     * @param type
+     * @param starting
+     * @param score
+     * @param occupied
+     * @return
+     */
     public int validateAdjacentRecursive(TablePosition tablePosition,int i,int j,int count,Boolean[][] batrix,Type type,boolean starting,int score,Boolean[][] occupied){
         //Bookshelf validateshelf= tablePosition.getBookshelf();
         try {

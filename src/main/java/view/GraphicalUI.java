@@ -94,16 +94,56 @@ public class GraphicalUI extends View implements Runnable {
                 initGameScene(message.getModel());
                 GuiController.startGame(username);
             });
-        }else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
-            Platform.runLater(() -> {
-                if(message.getEvent().equals(Event.FINISH_MATCH)){
-                    try {
-                        HelloApplication.setScene("endGameScene");
-                        GuiController.showWinner(message.getModel());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+        } else if (message.getEvent().equals(Event.FINISH_MATCH)){
+                if(!message.getModel().getCurrentPlayer().getUsername().equals(username)){
+                    Platform.runLater(() -> {
+                        try {
+                            HelloApplication.setScene("endGameScene");
+                            GuiController.showWinner(message.getModel());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                }else {
+                    if (message.getModel().getFinalFlow() != 4) {
+                        Platform.runLater(() -> {
+                            try {
+                                HelloApplication.setScene("endGameScene");
+                                GuiController.showWinner(message.getModel());
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                        if (message.getModel().getFinalFlow() == 2) {
+                            if (message.getModel().getFirstPlayer().equals(message.getModel().getCurrentPlayer().getUsername()) && message.getModel().getEndGame()) {
+                                Platform.runLater(() -> {
+                                    GuiController.setChanged();
+                                    GuiController.notifyObservers(new Message(Event.FINISH_MATCH));
+                                });
+                            }
+                        } else if (message.getModel().getFinalFlow() == 1) {
+                            Platform.runLater(() -> {
+                                GuiController.setChanged();
+                                GuiController.notifyObservers(new Message(Event.DELETE_MATCH));
+                            });
+                        }
+                    } else {
+                        Platform.runLater(() -> {
+                            try {
+                                HelloApplication.setScene("endGameScene");
+                                GuiController.showWinner(message.getModel());
+                                GuiController.setChanged();
+                                GuiController.notifyObservers(new Message(Event.DELETE_MATCH));
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+
                     }
                 }
+
+        } else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
+            Platform.runLater(() -> {
                 GuiController.checkEndTokenAssigned(message.getModel());
                 GuiController.setMyTurn(false , message.getModel().getCurrentPlayer().getUsername());
                 GuiController.updateScores(message.getModel(),username);
@@ -126,15 +166,6 @@ public class GraphicalUI extends View implements Runnable {
                 startNewTurn(message.getModel());
             } else if (message.getEvent().equals(Event.NEW_TURN)) {
                 startNewTurn(message.getModel());
-            } else if (message.getEvent().equals(Event.FINISH_MATCH)) {
-                Platform.runLater(() -> {
-                    try {
-                        HelloApplication.setScene("endGameScene");
-                        GuiController.showWinner(message.getModel());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
             } else if (message.getEvent().equals(Event.LOGIN)) {
                 Platform.runLater(() -> {
                     try {
