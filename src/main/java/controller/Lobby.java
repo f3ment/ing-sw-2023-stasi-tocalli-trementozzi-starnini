@@ -416,7 +416,7 @@ public class Lobby {
         flagFirstPlayer=true;
     }
 
-    public void updateLastScore(){
-        model.updateLastScore();
+    public void ChangeCurrentPosition(){
+        model.changeCurrentPosition();
     }
 }

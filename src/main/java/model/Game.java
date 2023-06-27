@@ -297,14 +297,7 @@ public class Game extends Observable<Event> implements Serializable {
         }
     }
 
-    public void updateLastScore(){
-        finalFlow=1;
-        validateAdjacent(getCurrentPosition());
-        validateCommonGoal(getCurrentPosition());
-        validatePersonalGoal(getCurrentPosition());
-        getCurrentPosition().getPlayer().setScore(getCurrentPosition().getPlayer().getScore()+1);
-        setEndGameToken(true,getCurrentPosition().getPlayer().getUsername());
-    }
+
 
     public String getLastPlayer(){
         return lastPlayer;
