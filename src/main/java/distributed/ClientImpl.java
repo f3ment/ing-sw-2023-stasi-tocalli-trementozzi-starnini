@@ -8,6 +8,8 @@ import view.*;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * This class implements client.
@@ -20,6 +22,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
     private final int choice;
     private final Server sr;
     private final Client cl=this;
+
+    private Timer timerPong;
 
     /**
      * This method is used to create a new client and initialize it with the
@@ -110,6 +114,14 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
                 throw new RuntimeException(e);
             }
             this.close();
+        }else if(message.getEvent().equals(Event.PING)){
+            timerPong.cancel();
+            timerPong.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    view.close();
+                }
+            },8000);
         }else {
             new Thread(() -> view.update(message)).start();
         }
@@ -120,7 +132,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
      * and the thread that periodically sends a ping message to the server.
      */
     @Override
-    public void run() {
+    public void run() throws RuntimeException {
         if(choice == 1)
             new Thread(view::run).start();
         else
@@ -156,9 +168,18 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
                 }
             }
         }.start();
+
+
+        timerPong=new Timer();
+        timerPong.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                view.close();
+            }
+        },8000);
     }
 
-    private void close(){
+    public void close(){
         view.close();
     }
 }

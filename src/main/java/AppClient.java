@@ -69,8 +69,7 @@ public class AppClient {
         Registry registry = LocateRegistry.getRegistry(Ip);
         Server server = (Server) registry.lookup("server");
         ClientImpl client = new ClientImpl(server);
-
-        client.run();
+            client.run();
     }
 
     private static void startSocketClient() throws RemoteException {
@@ -91,7 +90,7 @@ public class AppClient {
                 }
             }
         }).start();
-        client.run();
+            client.run();
     }
 
 

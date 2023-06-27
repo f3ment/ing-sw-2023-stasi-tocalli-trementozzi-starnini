@@ -94,6 +94,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                  *different clients notify players game's choices
                  */
                 if (message.getEvent().equals(Event.PING)) {
+                    client.update(new Message(Event.PING));
                     currentLobby = this.gamesManagerController.getLobbyByClient(client);
                     if(currentLobby!=null) {
                         String username = gamesManagerController.getLobbyByClient(client).getUsernameByClient(client);
@@ -280,13 +281,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                                 l.getController().update(l.getClientByUsername(l.getCurrentPlayer()), new Message(Event.FINISH_MATCH));//update end match
                                 Lobbydeletion(l,index);
                             }else if(!l.validateLobby()&&l.isFull()){
-                                //for(String s:l.getClientsUsername()){
-                                    //if(l.getStatusPlayer(s)){
                                         l.getController().update(l.getClientByUsername(l.getWinner()),new Message(l.getWinner(),Event.FORCED_END_MATCH));
-                                        //l.getClientByUsername(l.getWinner()).update(l.getClientByUsername(l.getWinner()),new Message(s,Event.FORCED_END_MATCH));
                                         Lobbydeletion(l,index);
-                                    //}
-                                //}
                             }else if(!l.getStatusLobby()&&l.isFull()){
                                 Lobbydeletion(l,index);
                             }
