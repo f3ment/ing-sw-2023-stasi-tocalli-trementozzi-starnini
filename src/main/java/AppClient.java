@@ -81,7 +81,7 @@ public class AppClient {
                 try {
                     serverStub.receive(client);
                 } catch (RemoteException e) {
-                    System.err.println("Error while receiving message from server : " + e.getMessage());
+                    System.err.println("Error while receiving message from server.Closing connection...");
                     try {
                         serverStub.close();
                     } catch (RemoteException ex) {

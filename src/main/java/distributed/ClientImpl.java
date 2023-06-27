@@ -103,6 +103,12 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
     public void update(Message message) throws RemoteException {
         //if message.finale--> clientimpl.close();
         if(message.getEvent().equals(Event.CLIENT_CLOSE)){
+            System.out.println("Client is closing...");
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             this.close();
         }else {
             new Thread(() -> view.update(message)).start();
