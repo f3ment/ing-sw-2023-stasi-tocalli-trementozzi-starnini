@@ -373,7 +373,7 @@ public class Game extends Observable<Event> implements Serializable {
             getCurrentPosition().getPlayer().setScore(getCurrentPosition().getPlayer().getScore()+1);
             setEndGameToken(true,getCurrentPosition().getPlayer().getUsername());
         }
-        if(getCurrentPosition().getPlayer().getUsername().equals(getFirstFinisher())&&getCurrentPosition().getPlayer().getUsername().equals(getLastPlayer())){
+        if(getCurrentPosition().getPlayer().getUsername().equals(getFirstFinisher()) && getCurrentPosition().getPlayer().getUsername().equals(getLastPlayer())){
             finalFlow=1;
         }else {
             setCurrentPosition();
