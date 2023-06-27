@@ -348,8 +348,10 @@ public class TextualUI extends View implements Runnable {
             System.out.print(Color.GREEN_BOLD_BRIGHT);
             System.out.println(o.getCurrentPlayer().getUsername() + ", it's your turn!");
             System.out.print(Color.RESET);
-            menu(o);
-            showBoard(o);
+            synchronized (this){
+                menu(o);
+                showBoard(o);
+            }
             playerDraw(o);
         }
     }
