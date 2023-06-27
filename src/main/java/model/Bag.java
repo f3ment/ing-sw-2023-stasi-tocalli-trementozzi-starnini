@@ -5,16 +5,21 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
 
+/**
+ * This class represents the bag of the game. It contains all the items that will be used during the game.
+ */
 public class Bag implements Serializable {
         private static final long serialVersionUID = 1L;
         private int id;
         private final int maxCardsPerType;
 
         private ArrayList<ItemTiles> items; //struttura contenente Items
+
+        /**
+         * Constructor of the class Bag. It creates a new bag with all the items that will be used during the game.
+         */
         public Bag(){
-                /*
-                 * Apertura file di configurazione
-                 * */
+
                 String configFilePath = "./src/main/resources/config.properties";
                 Properties prop = new Properties();
 
@@ -54,7 +59,11 @@ public class Bag implements Serializable {
                 }
         }
 
-        //estrazione random di un ItemTiles con conseguente rimozione dalla struttura dati
+        /**
+         * This method extracts a random item from the bag.
+         * @return the item extracted from the bag.
+         * @throws NegativeArraySizeException if the bag is empty.
+         */
         public ItemTiles extract() throws NegativeArraySizeException{
                 int randomIndex;
                 Random rand = new Random();
@@ -66,7 +75,10 @@ public class Bag implements Serializable {
                 }
         }
 
-        //returns the number of items left in the bag
+        /**
+         * This method returns the number of items left in the bag.
+         * @return the number of items left in the bag.
+         */
         public int getLeftItems(){
                 return items.size();
         }

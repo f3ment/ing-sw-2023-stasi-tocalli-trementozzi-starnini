@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Properties;
 
+/**
+ * This class represents the board of the game
+ */
 public class Board implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -17,13 +20,17 @@ public class Board implements Serializable {
     private Token token;
     private final int maxLength, maxHeight;
 
-    /*
-     * Apertura file di configurazione
-     * */
+
     String configFilePath = "./src/main/resources/config.properties";
     Properties prop = new Properties();
 
 
+    /**
+     * Constructor of the class, based on the player number it fills
+     * the board with the right number of tiles chosen randomly at a
+     * specified positions on the board
+     * @param numPlayers number of players
+     */
     public Board(int numPlayers){
         FileInputStream ip;
 
@@ -56,22 +63,51 @@ public class Board implements Serializable {
 
     }
 
+    /**
+     * This method returns the box at the specified position
+     * @param i row index
+     * @param j column index
+     * @return the box at the specified position
+     * @throws IndexOutOfBoundsException
+     */
     public Box getBox(int i, int j) throws IndexOutOfBoundsException{
         return this.board[i][j];
     }
+
+    /**
+     * This method returns the ItemTiles contained in the box
+     * at the specified position, and then it empties the box
+     * @param i row index
+     * @param j column index
+     * @return the ItemTiles contained in the box at the specified position
+     */
     public ItemTiles draw(int i, int j) {
         ItemTiles res = getBox(i, j).getItemContained();
         getBox(i,j).setContent(null);
         return res;
     }
+
+    /**
+     * Sets the final token on the board
+     * @param token the token to set
+     */
     public void setToken(Token token) {
         this.token = token;
     }
 
+    /**
+     * Returns the final token on the board
+     * @return the final token on the board
+     */
     public Token getToken() {
         return token;
     }
 
+    /**
+     * This method fills the board with tiles extracted from the bag
+     * @param bag the bag from which to extract the tiles
+     * @return true if the board is full, false otherwise
+     */
     public boolean setBox(Bag bag){
         for(int i=0;i<this.maxHeight;i++){
             for(int j=0;j<this.maxLength;j++){
@@ -83,9 +119,16 @@ public class Board implements Serializable {
         return true; //board is full
     }
 
+    /**
+     * @return the maximum height of the board
+     */
     public int getMaxHeight() {
         return maxHeight;
     }
+
+    /**
+     * @return the maximum length of the board
+     */
     public int getMaxLength() {
         return maxLength;
     }
