@@ -5,8 +5,16 @@ import model.goals.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * This class is used to generate the 12 common goals for the game.
+ */
 public class CommonGoalsGenerator {
     private final CommonGoal first, second;
+
+    /**
+     * This constructor generates the 12 common goals and randomly chooses 2 of them.
+     * @param playerNumber the number of the player
+     */
     public CommonGoalsGenerator(int playerNumber){
         ArrayList<CommonGoal> commonGoals = new ArrayList<>();
         commonGoals.add( new CheckAngles(0,playerNumber));
@@ -35,10 +43,16 @@ public class CommonGoalsGenerator {
 
     }
 
+    /**
+     * @return the first common goal extracted
+     */
     public CommonGoal getFirst() {
         return first;
     }
 
+    /**
+     * @return the second common goal extracted
+     */
     public CommonGoal getSecond() {
         return second;
     }

@@ -146,19 +146,20 @@ public class Bookshelf implements Serializable {
 
 
     /**
+     * This method returns the score of the player based on the number of adjacent cards of the same type.
+     * It is a recursive method that counts the number of adjacent cards of the same type through the whole player shelf
      * @param tablePosition is the position of the player
-     * @param i
-     * @param j
-     * @param count
-     * @param batrix
-     * @param type
-     * @param starting
-     * @param score
-     * @param occupied
-     * @return
+     * @param i is the row of the bookshelf
+     * @param j is the column of the bookshelf
+     * @param count is the number of adjacent cards
+     * @param batrix is a matrix of booleans that indicates if a cell has been already counted  for objective
+     * @param type is the type of the card
+     * @param starting true if the current cell is the first of the sequence
+     * @param score the current temporary score computed by the recursion so far
+     * @param occupied is a matrix of booleans that indicates if a cell contains a card
+     * @return the score accumulated by the player with adjacent cards of the same type
      */
     public int validateAdjacentRecursive(TablePosition tablePosition,int i,int j,int count,Boolean[][] batrix,Type type,boolean starting,int score,Boolean[][] occupied){
-        //Bookshelf validateshelf= tablePosition.getBookshelf();
         try {
             if (!batrix[i][j] && !starting && !occupied[i][j]) {
                 if (this.getItem(i, j).getType().equals(type)) {
@@ -212,27 +213,9 @@ public class Bookshelf implements Serializable {
                     );
                     score += Integer.parseInt(prop.getProperty("score.adj"+count));
                     batrix[i][j] = true;
-                    //System.out.println(this.getItem(i, j).getType());
-                    //System.out.println(count);
                 }else{
                     occupied[i][j] = false;
                 }
-                /*if(count==3){
-                    score+=2;
-                } else if (count==4) {
-                    score+=3;
-                } else if (count==5) {
-                    score+=5;
-                } else if (count>=6) {
-                    score+=8;
-                }
-                if(count>=3){
-                    batrix[i][j]=true;
-                    System.out.println(this.getItem(i, j).getType());
-                    System.out.println(count);
-                }else{
-                    occupied[i][j] = false;
-                }*/
                 count = 0;
                 if (j < this.getLength() - 1) {
                     score = validateAdjacentRecursive(tablePosition, i, j + 1, count, batrix, null, true, score, occupied);
