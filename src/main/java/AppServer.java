@@ -39,7 +39,7 @@ public class AppServer {
             try {
                 startRMI();
             } catch (RemoteException e) {
-                System.err.println("Cannot start RMI. This protocol will be disabled.");
+                System.err.println( Color.RED_BOLD +  "Cannot start RMI. This protocol will be disabled." + Color.RESET);
             }
         });
 

@@ -333,8 +333,10 @@ public class TextualUI extends View implements Runnable {
                             }
                         }
                     }
-                    setChanged();
-                    notifyObservers(new Message(Event.NEW_TURN));
+                    if(message.getModel().getCurrentPlayer().getUsername().equals(message.getModel().getFirstPlayer())){
+                        setChanged();
+                        notifyObservers(new Message(Event.NEW_TURN));
+                    }
                 }
             }
         }
@@ -348,10 +350,8 @@ public class TextualUI extends View implements Runnable {
             System.out.print(Color.GREEN_BOLD_BRIGHT);
             System.out.println(o.getCurrentPlayer().getUsername() + ", it's your turn!");
             System.out.print(Color.RESET);
-            synchronized (this){
-                menu(o);
-                showBoard(o);
-            }
+            menu(o);
+            showBoard(o);
             playerDraw(o);
         }
     }

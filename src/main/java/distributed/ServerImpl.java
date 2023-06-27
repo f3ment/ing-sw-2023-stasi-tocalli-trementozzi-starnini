@@ -87,122 +87,122 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         currentLobby = this.gamesManagerController.getLobbyByClient(client);
         //CHAT UPDATE
         if (currentLobby != null && (message.getEvent().equals(Event.GET_CHAT) || message.getEvent().equals(Event.EXIT_CHAT) || message.getEvent().equals(Event.SEND_MESSAGE))) {
-                currentLobby.getChatController().update(client, message);
-            } else if (!message.getEvent().equals(Event.GAME_INIT) && !message.getEvent().equals(Event.LOGIN)) {
-                //GAME UPDATE
-                /*
-                 *different clients notify players game's choices
-                 */
-                if (message.getEvent().equals(Event.PING)) {
-                    client.update(new Message(Event.PING));
-                    currentLobby = this.gamesManagerController.getLobbyByClient(client);
-                    if(currentLobby!=null) {
-                        String username = gamesManagerController.getLobbyByClient(client).getUsernameByClient(client);
-                        gamesManagerController.getLobbyByClient(client).resetTimer(username);
+            currentLobby.getChatController().update(client, message);
+        } else if (!message.getEvent().equals(Event.GAME_INIT) && !message.getEvent().equals(Event.LOGIN)) {
+            //GAME UPDATE
+            /*
+             *different clients notify players game's choices
+             */
+            if (message.getEvent().equals(Event.PING)) {
+                client.update(new Message(Event.PING));
+                currentLobby = this.gamesManagerController.getLobbyByClient(client);
+                if(currentLobby!=null) {
+                    String username = gamesManagerController.getLobbyByClient(client).getUsernameByClient(client);
+                    gamesManagerController.getLobbyByClient(client).resetTimer(username);
+                }
+                //client.update(null, Event.PING);
+            } else {
+                if (message.getEvent().equals(Event.DELETE_MATCH)) {
+
+
+                    while(currentLobby.getStatusLobby()){
+
                     }
-                    //client.update(null, Event.PING);
+                    Lobbydeletion(currentLobby,destroy_array);
+                    for(Integer i:destroy_array){
+                        gamesManagerController.removeLobby(i);
+                    }
+                    destroy_array.clear();
+                    //todo rimuovere lobby SOLO quando nessuno è in chat e nessuno è in partita
+                }else {
+                    currentLobby.getController().update(client, message);
+                }
+            }
+            /*
+             * player sends nickname and number of players to join a lobby
+             * */
+        } else if (message.getEvent().equals(Event.LOGIN)) {
+            boolean correctusername = true;
+            synchronized (syncKey) {
+                FileInputStream ip;
+                {
+                    try {
+                        ip = new FileInputStream(configFilePath);
+                        prop.load(ip);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                if (prop.containsKey(message.getUserName())) {
+                    //client.update(null, Event.LOGIN);
+                    correctusername = false;
                 } else {
-                    if (message.getEvent().equals(Event.DELETE_MATCH)) {
+                    try {
+                        InputStream in = new FileInputStream(configFilePath);
+                        prop.load(in);
+                    } catch (IOException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    prop.setProperty(message.getUserName(), "1");
+                    String value = prop.getProperty(message.getUserName()).trim();
 
-
-                        while(currentLobby.getStatusLobby()){
-
-                        }
-                        Lobbydeletion(currentLobby,destroy_array);
-                        for(Integer i:destroy_array){
-                            gamesManagerController.removeLobby(i);
-                        }
-                        destroy_array.clear();
-                        //todo rimuovere lobby SOLO quando nessuno è in chat e nessuno è in partita
-                    }else {
-                            currentLobby.getController().update(client, message);
+                    try {
+                        prop.store(new FileOutputStream(configFilePath), null);
+                    } catch (IOException ex) {
+                        System.out.println(ex.getMessage());
                     }
                 }
-                /*
-                 * player sends nickname and number of players to join a lobby
-                 * */
-            } else if (message.getEvent().equals(Event.LOGIN)) {
-                boolean correctusername = true;
-                synchronized (syncKey) {
-                    FileInputStream ip;
-                    {
-                        try {
-                            ip = new FileInputStream(configFilePath);
-                            prop.load(ip);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+            }
+            if (!correctusername) {
+                if(gamesManagerController.StatusUsername(message.getUserName(), gamesManagerController.LobbyByUsername(message.getUserName()))) {
+                    client.update(new Message(Event.LOGIN, Color.RED_BOLD + message.getUserName()+" Is Already Playing" + Color.RESET));
+                }else if(!gamesManagerController.StatusUsername(message.getUserName(), gamesManagerController.LobbyByUsername(message.getUserName()))&&gamesManagerController.LobbyByUsername(message.getUserName()).getnPlayers()!=message.getnPlayers()) {
+                    client.update(new Message(Event.LOGIN,Color.RED_BOLD + message.getUserName()+" is playing in a Lobby with a different number of players" + Color.RESET));
+                }else if(gamesManagerController.LobbyByUsername(message.getUserName()).isFull()){
+                    if(gamesManagerController.LobbyByUsername(message.getUserName()).getStatusLobby()) {
+                        if(gamesManagerController.LobbyByUsername(message.getUserName()).getOnlineplayers()==1){
+                            gamesManagerController.LobbyByUsername(message.getUserName()).resetFinalTimer();
                         }
-                    }
-                    if (prop.containsKey(message.getUserName())) {
-                        //client.update(null, Event.LOGIN);
-                        correctusername = false;
-                    } else {
-                        try {
-                            InputStream in = new FileInputStream(configFilePath);
-                            prop.load(in);
-                        } catch (IOException ex) {
-                            System.out.println(ex.getMessage());
-                        }
-                        prop.setProperty(message.getUserName(), "1");
-                        String value = prop.getProperty(message.getUserName()).trim();
 
-                        try {
-                            prop.store(new FileOutputStream(configFilePath), null);
-                        } catch (IOException ex) {
-                            System.out.println(ex.getMessage());
-                        }
-                    }
-                }
-                if (!correctusername) {
-                    if(gamesManagerController.StatusUsername(message.getUserName(), gamesManagerController.LobbyByUsername(message.getUserName()))) {
-                        client.update(new Message(Event.LOGIN, Color.RED_BOLD + message.getUserName()+" Is Already Playing" + Color.RESET));
-                    }else if(!gamesManagerController.StatusUsername(message.getUserName(), gamesManagerController.LobbyByUsername(message.getUserName()))&&gamesManagerController.LobbyByUsername(message.getUserName()).getnPlayers()!=message.getnPlayers()) {
-                        client.update(new Message(Event.LOGIN,Color.RED_BOLD + message.getUserName()+" is playing in a Lobby with a different number of players" + Color.RESET));
-                    }else if(gamesManagerController.LobbyByUsername(message.getUserName()).isFull()){
-                        if(gamesManagerController.LobbyByUsername(message.getUserName()).getStatusLobby()) {
-                            if(gamesManagerController.LobbyByUsername(message.getUserName()).getOnlineplayers()==1){
-                                gamesManagerController.LobbyByUsername(message.getUserName()).resetFinalTimer();
-                            }
-
-                            gamesManagerController.LobbyByUsername(message.getUserName()).insertPlayer(client, message.getUserName());
-                            gamesManagerController.insertPlayer(client,gamesManagerController.LobbyByUsername(message.getUserName()), message.getUserName());
-
-                            if(gamesManagerController.LobbyByUsername(message.getUserName()).getOnlineplayers()>2){
-                                client.update(new Message(Event.RECONNECTION,gamesManagerController.LobbyByUsername(message.getUserName()).getChat(),gamesManagerController.LobbyByUsername(message.getUserName()).getModel()));
-                            }else {
-                                if(gamesManagerController.LobbyByUsername(message.getUserName()).getStatusCurrentPlayer()&&!gamesManagerController.LobbyByUsername(message.getUserName()).getCurrentPlayer().equals(message.getUserName())){
-                                    client.update(new Message(Event.RECONNECTION,gamesManagerController.LobbyByUsername(message.getUserName()).getChat(),gamesManagerController.LobbyByUsername(message.getUserName()).getModel()));
-
-                                }else {
-                                    gamesManagerController.LobbyByUsername(message.getUserName()).getController().update(client, new Message(Event.NEW_TURN_RECONNECTED));
-                                }
-
-                            }
-                        }
-                    }else{
                         gamesManagerController.LobbyByUsername(message.getUserName()).insertPlayer(client, message.getUserName());
                         gamesManagerController.insertPlayer(client,gamesManagerController.LobbyByUsername(message.getUserName()), message.getUserName());
-                        currentLobby = gamesManagerController.getLobbyByClient(client);
-                        client.update(new Message(Event.WAIT_START_OF_MATCH, currentLobby.getClientsUsername() , currentLobby.getnPlayers()));
+
+                        if(gamesManagerController.LobbyByUsername(message.getUserName()).getOnlineplayers()>2){
+                            client.update(new Message(Event.RECONNECTION,gamesManagerController.LobbyByUsername(message.getUserName()).getChat(),gamesManagerController.LobbyByUsername(message.getUserName()).getModel()));
+                        }else {
+                            if(gamesManagerController.LobbyByUsername(message.getUserName()).getStatusCurrentPlayer()&&!gamesManagerController.LobbyByUsername(message.getUserName()).getCurrentPlayer().equals(message.getUserName())){
+                                client.update(new Message(Event.RECONNECTION,gamesManagerController.LobbyByUsername(message.getUserName()).getChat(),gamesManagerController.LobbyByUsername(message.getUserName()).getModel()));
+
+                            }else {
+                                gamesManagerController.LobbyByUsername(message.getUserName()).getController().update(client, new Message(Event.NEW_TURN_RECONNECTED));
+                            }
+
+                        }
                     }
-                } else {
+                }else{
+                    gamesManagerController.LobbyByUsername(message.getUserName()).insertPlayer(client, message.getUserName());
+                    gamesManagerController.insertPlayer(client,gamesManagerController.LobbyByUsername(message.getUserName()), message.getUserName());
+                    currentLobby = gamesManagerController.getLobbyByClient(client);
+                    client.update(new Message(Event.WAIT_START_OF_MATCH, currentLobby.getClientsUsername() , currentLobby.getnPlayers()));
+                }
+            } else {
 
                 Lobby lobby = this.gamesManagerController.addPlayerToLobby(client, message.getnPlayers(), message.getUserName());
                 currentLobby = gamesManagerController.getLobbyByClient(client);
                 client.update(new Message(Event.WAIT_START_OF_MATCH, currentLobby.getClientsUsername() , currentLobby.getnPlayers()));
 
-                    if (lobby != null) {
-                        lobby.checkStartMatch();
-                        lobby.getController().update(client, new Message(Event.LOGIN_TRUE));
-                    }
+                if (lobby != null) {
+                    lobby.checkStartMatch();
+                    lobby.getController().update(client, new Message(Event.LOGIN_TRUE));
                 }
-                /*
-                 * hit by the client for server connection and starting of the login procedures
-                 * */
-            } else {
-                //System.out.println(Color.RED_BRIGHT + "Username NOT valid" + Color.RESET);
-                client.update(new Message(Event.LOGIN));
             }
+            /*
+             * hit by the client for server connection and starting of the login procedures
+             * */
+        } else {
+            //System.out.println(Color.RED_BRIGHT + "Username NOT valid" + Color.RESET);
+            client.update(new Message(Event.LOGIN));
+        }
     }
 
 

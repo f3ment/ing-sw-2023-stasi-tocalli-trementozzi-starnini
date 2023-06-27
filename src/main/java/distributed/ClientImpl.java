@@ -116,11 +116,11 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
             this.close();
         }else if(message.getEvent().equals(Event.PING)){
             timerPong.cancel();
-            timerPong=new Timer();
+            timerPong = new Timer();
             timerPong.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    System.out.println("chiudo");
+                    System.err.println(Color.RED_BOLD + "Server unreachable!" + Color.RESET);
                     view.close();
                 }
             },12000);
@@ -137,12 +137,13 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
     public void run() throws RuntimeException {
         if(choice == 1)
             new Thread(view::run).start();
-        else
+        else {
             new Thread(() -> {
                 view.run();
                 HelloApplication.setGui((GraphicalUI) view);
                 Application.launch(HelloApplication.class);
             }).start();
+        }
 
         new Thread(){
             @Override
@@ -157,7 +158,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
                        sr.update(cl,new Message(Event.PING));
                    }catch (RemoteException e){
                        Thread.interrupted();
-                       System.err.println("Error server side! Terminal is closing...");
+                       System.err.println(Color.RED_BOLD + "Error server side! Terminal is closing..." + Color.RESET);
                        try {
                            Thread.sleep(5000);
                        } catch (InterruptedException ex) {
@@ -176,7 +177,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
         timerPong.schedule(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("chiudo");
+                System.err.println(Color.RED_BOLD + "Server unreachable!" + Color.RESET);
                 view.close();
             }
         },12000);

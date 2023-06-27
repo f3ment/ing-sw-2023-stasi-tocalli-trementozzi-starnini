@@ -91,7 +91,7 @@ public class AppClient {
                 }
             }
         }).start();
-            client.run();
+        client.run();
     }
 
 
@@ -123,7 +123,7 @@ public class AppClient {
             String ip = IpAddress.nextLine();
 
             if (!isNumeric(ip) && !ip.equals("localhost") && !ip.equals("")) {
-                System.err.println(Color.RED + "Not numeric input! please try again..." + Color.RESET);
+                System.err.println(Color.RED_BOLD + "Not numeric input! please try again..." + Color.RESET);
             } else{
                 if (!ip.equals("")) {
                     Ip = ip;

@@ -375,20 +375,10 @@ public class Lobby {
     }
 
     public void checkStartMatch(){
-        boolean flag=false;
-        for(String s:status.keySet()){
-            if(status.get(s)==false){
-                flag=true;
-                break;
-            }
-        }
-        if(flag){
-            for(String s: status.keySet()){
-                if(status.get(s)){
-                    model.setCurrentPlayer(s);
-                    break;
-                }
-            }
+        if(!status.get(model.getFirstPlayer())){
+            do{
+                model.changeCurrentPosition();
+            }while (!status.get(model.getCurrentPosition().getPlayer().getUsername()));
         }
     }
     public String getFirstPlayer(){
