@@ -162,7 +162,7 @@ public class Game extends Observable<Event> implements Serializable {
     }
 
     /**
-     *
+     * This method checks how many personal goal objectives the player has achieved and assigns the relative score
      * @param tablePosition the table position of the player
      */
     public void validatePersonalGoal(TablePosition tablePosition){
@@ -173,8 +173,12 @@ public class Game extends Observable<Event> implements Serializable {
         tablePosition.getPlayer().setScore(tablePosition.getPlayer().getScore() + tablePosition.getPlayer().getPersonalGoalScore());
     }
 
-    //validateAdjacent(position,0,0,0,batrix di false,null,true,0,occupied di false)
-//void
+    /**
+     * This method checks if the player has achieved the adjacency objective thanks to the
+     * validateAdjacentRecursive() function and after that it assigns the relative score
+     * @param tablePosition the table position of the player
+     * @return the score assigned to the player
+     */
     public int validateAdjacent(TablePosition tablePosition){
         Boolean[][] batrix = new Boolean[tablePosition.getBookshelf().getHeight()]
                 [tablePosition.getBookshelf().getLength()];
@@ -196,16 +200,33 @@ public class Game extends Observable<Event> implements Serializable {
     }
 
 
+    /**
+     * This method fills the board with tiles extracted from the bag
+     * @return true if the bag is empty, false otherwise
+     */
     public boolean fillBoard(){
         return this.board.setBox(this.bag);
     }
 
+
+    /**
+     * Sets the game to the last round if a player has completed the shelf
+     * @param finish true if a player has completed the shelf, false otherwise
+     */
     public void setEndGame(boolean finish){
         this.finish = finish;
     }
+
+    /**
+     * @return true if a player has completed the shelf, false otherwise
+     */
     public boolean getEndGame(){
         return this.finish;
     }
+
+    /**
+     * This method change the current position of the player to the next one in the table position list
+     */
     public void setCurrentPosition(){
         int newCurrentIndex=tablePositionList.indexOf(currentPosition)+1;
         if(newCurrentIndex==tablePositionList.size()){
@@ -214,6 +235,9 @@ public class Game extends Observable<Event> implements Serializable {
         currentPosition=tablePositionList.get(newCurrentIndex);
     }
 
+    /**
+     * @return A list of all the players in the game
+     */
     public List<Player> getListPlayer(){
         List<Player> list = new ArrayList<Player>();
         for(int i=0; i<tablePositionList.size(); i++){
@@ -222,6 +246,9 @@ public class Game extends Observable<Event> implements Serializable {
         return list;
     }
 
+    /**
+     * @return A map of all the players in the game with their nickname as key
+     */
     public Map<String, Player> getPlayerByNickname() {
         Map<String,Player> players = new HashMap<>();
         for(int i=0; i<tablePositionList.size(); i++){
@@ -229,10 +256,17 @@ public class Game extends Observable<Event> implements Serializable {
         }
         return players;
     }
+
+    /**
+     * @return The username of the first player in the table position list
+     */
     public String getFirstPlayer(){
         return firstPlayer;
     }
 
+    /**
+     * @return A list of all the bookshelves in the game
+     */
     public List<Bookshelf> getListBookshelf(){
         List<Bookshelf> list= new ArrayList<Bookshelf>();
         for(int i=0;i<tablePositionList.size();i++){
@@ -241,42 +275,69 @@ public class Game extends Observable<Event> implements Serializable {
         return list;
     }
 
+
+    /**
+     * @return The current TablePosition of the player who is playing
+     */
     public TablePosition getCurrentPosition() {
         return currentPosition;
     }
 
+    /**
+     * @return The current Bookshelf of the player who is playing
+     */
     public Bookshelf getCurrentBookshelf(){
         return currentPosition.getBookshelf();
     }
 
+    /**
+     * @return The board object of the game
+     */
     public Board getBoard() {
         return board;
     }
 
+    /**
+     * @return The tiles drawn by the current player during its turn
+     */
     public ArrayList<ItemTiles> getPickedCards(){
         return currentPosition.getPlayer().getPickedCards();
     }
 
+    /**
+     * @return The first common goal of the game
+     */
     public CommonGoal getFirstCommonGoal() {
         return firstCommonGoal;
     }
 
+    /**
+     * @return The second common goal of the game
+     */
     public CommonGoal getSecondCommonGoal() {
         return secondCommonGoal;
     }
 
+    /**
+     * This method notify al the observers of the game with the event passed as argument
+     * and set the changed flag to true to notify the observers that a change has occurred
+     * @param arg The event to be notified to the observers
+     */
     public void setChangedAndNotifyObservers(Event arg) {
         setChanged();
         notifyObservers(new Message(arg));
     }
 
 
+    /**
+     * This method sets the winner of the game by checking the score of all the players
+     */
     public void setWinner() {
         int score=0;
         String winner = "init"; //initialize to avoid this.winner error *can't assign a nullable variable
 
         for(TablePosition o: tablePositionList){
-            if(o.getPlayer().getScore()>score){
+            if(o.getPlayer().getScore()>score && o.getPlayer().getStatus()){
                 winner=o.getPlayer().getUsername();
                 score=o.getPlayer().getScore();
             }
@@ -284,14 +345,26 @@ public class Game extends Observable<Event> implements Serializable {
         this.winner= winner;
     }
 
+    /**
+     * This method sets the winner of the game forcibly by providing the username of the player
+     * @param username The username of the player to be set as winner
+     */
     public void setForcedWinner(String username){
         this.winner=username;
     }
 
+    /**
+     * @return The username of the winner of the game
+     */
     public String getWinner() {
         return winner;
     }
 
+    /**
+     * This method is called at the end of every turn and it calls the validation methods for
+     * the game objectives, it checks a player has completed the shelf and eventually it sets the
+     * new current player
+     */
     public void changeCurrentPosition(){
         validateAdjacent(getCurrentPosition());
         validateCommonGoal(getCurrentPosition());
@@ -306,7 +379,7 @@ public class Game extends Observable<Event> implements Serializable {
             setCurrentPosition();
         }
     }
-
+    //todo javadoc
     public void updateLastScore(){
         finalFlow=1;
         validateAdjacent(getCurrentPosition());
@@ -316,24 +389,42 @@ public class Game extends Observable<Event> implements Serializable {
         setEndGameToken(true,getCurrentPosition().getPlayer().getUsername());
     }
 
+    /**
+     * @return The username of the last player in the table position list
+     */
     public String getLastPlayer(){
         return lastPlayer;
     }
+
+    /**
+     * This method is called at the end of the game and it sets the first finisher of the shelf
+     * @param b The boolean value to be set as end game token
+     * @param username The username of the player who completed the shelf
+     */
     private void setEndGameToken(boolean b, String username) {
         this.endGameToken=b;
         this.shelfCompletedBy=username;
     }
 
+    /**
+     * @return The boolean value of the end game token
+     */
     public boolean getEndGameToken(){
         return this.endGameToken;
     }
+
+    /**
+     * @return The username of the first player who completed the shelf
+     */
     public String getShelfCompletedBy() {
         return shelfCompletedBy;
     }
 
-    /*
-     * check if there is a column in the shelf with enough space to insert all the chosen tiles
-     * if not return false
+
+    /**
+     * This method checks if the selected column has enough space to insert the picked tiles
+     * @param columnNumber The column number to be checked
+     * @return True if the column has enough space to insert the picked tiles, false otherwise
      */
     public boolean checkInsert(int columnNumber){
         try {
@@ -347,6 +438,12 @@ public class Game extends Observable<Event> implements Serializable {
             return false;
         }
     }
+
+    /**
+     * This method checks if the board has just single tiles in it and if so it returns true
+     * so that the board will be refilled.
+     * @return True if the board is empty, false otherwise
+     */
     public boolean checkBoardEmpty() {
         for(int i=0;i<getBoard().getMaxHeight();i++){
             for(int j=0;j<getBoard().getMaxLength();j++){
@@ -370,16 +467,20 @@ public class Game extends Observable<Event> implements Serializable {
         return true;
     }
 
-    /*
-     *method that checks the board's coordinates chosen by the
-     *player from where to pick the tiles: coords should contain
-     * one , two or three pairs of coordinates based on the player choice
+    /**
+     *method that checks the board's coordinates chosen by the player and returns true if they are valid:
+     * -the coordinates are on the board
+     * -check if chosen tiles are on the same row
+     * -otherwise it checks if chosen tiles are on the same column
+     * -check if the chosen tiles are adjacent
+     * -check if every tile has at least free side
+     * @param coords one,two or three pairs of coordinates based on the player choice
      * [[int x1,int y1],[int x2,int y2],[int x3 ,int y3]]
+     *
+     * @return true if the coordinates are valid, false otherwise
      */
     public boolean checkDraw(ArrayList<ArrayList<Integer>> coords){
-        /*
-         *check if chosen tiles are on the same row
-         */
+
         boolean notValid = false;
         ArrayList<Integer> x = new ArrayList<Integer>(3);
         ArrayList<Integer> y = new ArrayList<Integer>(3);
@@ -392,19 +493,11 @@ public class Game extends Observable<Event> implements Serializable {
             }
         }
         if(notValid){
-            /*
-             *check if chosen tiles are on the same column
-             */
             for(int i=1;i<coords.size();i++){
                 if(coords.get(0).get(1) != coords.get(i).get(1))
                     return false;
             }
         }
-        /*
-         *check if chosen tiles are adjacent
-         */
-        //ArrayList<Integer> a=x.stream().sorted().collect(Collectors.toList(Integer));
-        //List b=y.stream().sorted().collect(Collectors.toList());
         Collections.sort(x);
         Collections.sort(y);
         notValid=false;
@@ -418,9 +511,6 @@ public class Game extends Observable<Event> implements Serializable {
                     return false;
             }
         }
-        /*
-         *check if chosen tiles have at least one free side
-         */
         for(ArrayList<Integer> elem : coords){
             if(!getBoard().getBox(elem.get(0),elem.get(1)).getValid()) {
                 return false;
@@ -444,6 +534,10 @@ public class Game extends Observable<Event> implements Serializable {
         return true;
     }
 
+    /**This method returns the name of the player in the ranking position passed as parameter
+     * @param position the position of the player in the ranking
+     * @return the name of the player in the position passed as parameter
+     */
     public String getPlayerNameByRanking(int position) {
         List <Player> finalResult = new ArrayList<>();
         for(TablePosition t : tablePositionList){
@@ -458,6 +552,10 @@ public class Game extends Observable<Event> implements Serializable {
         return finalResult.get(position).getUsername();
     }
 
+    /**
+     * This method sets the current player
+     * @param id the id of the player
+     */
     public void setCurrentPlayer(String id){
         for(TablePosition t:tablePositionList){
             if(t.getPlayer().getUsername().equals(id)){
@@ -467,17 +565,28 @@ public class Game extends Observable<Event> implements Serializable {
         }
     }
 
+    /**
+     * This method returns the final flow of the match based on which player has finished first
+     * @return the final flow of the match
+     */
     public int getFinalFlow(){
         return finalFlow;
     }
 
+    /**
+     * This method sets the final flow of the match to 3 when all players have disconnected
+     */
     public void setFinalForcedFlow(){
         finalFlow=3;
     }
 
+    /**
+     * This method sets the final flow of the match to 4
+     */
     public void setRegularFlow(){
         finalFlow=4;
     }
+
 
     public void setFirstFinisher(String id){
         this.firstFinisher=id;
