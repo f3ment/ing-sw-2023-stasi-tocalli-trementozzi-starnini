@@ -11,6 +11,10 @@ import utils.Observable;
 import java.io.*;
 import java.util.*;
 
+/**
+ * This class represents the game itself, it contains all the information about the game status,
+ * all the references to the model objects and  all the methods to modify the status of the model.
+ */
 public class Game extends Observable<Event> implements Serializable {
     private static final long serialVersionUID = 1L;
     private int lastIndex;
@@ -37,11 +41,11 @@ public class Game extends Observable<Event> implements Serializable {
     private int finalFlow=2;
 
 
-
-
-
-
-
+    /**
+     * The game constructor, it initializes the game status and the model objects based on the number of player
+     * @param usernames list of the players' usernames in the game
+     * @throws IOException if the config file is not found
+     */
     public Game(ArrayList<String> usernames) throws IOException {
         super();
         /*
@@ -130,31 +134,37 @@ public class Game extends Observable<Event> implements Serializable {
 
         this.finish = false;
     }
+
+    /**
+     * This method checks if the current player has not already achieved the two common goals and if
+     * the two common goals are still available to be completed and if so
+     * it calls the validate method for the common goals, otherwise it does nothing
+     * @param tablePosition the table position of the player
+     */
     public void validateCommonGoal(TablePosition tablePosition) {
         ScoringToken res;
         //check if player at current tableposition has already achieved the first common goal
-        if(!tablePosition.getPlayer().hasCompletedFirst() && !firstCommonGoal.getCompleted()){
-            System.out.println("sto validando il primo obiettivo comune, hasCompletedFirst = " + tablePosition.getPlayer().hasCompletedFirst());
+        if(!tablePosition.getPlayer().hasCompletedFirst() && !firstCommonGoal.getCompleted()) {
             //add token to current player returned from validate
-            tablePosition.getPlayer().setToken(firstCommonGoal.validate(tablePosition.getBookshelf()),firstCommonGoal.getRomanNumber());
-            if(firstCommonGoal.getStack().isEmpty()){
+            tablePosition.getPlayer().setToken(firstCommonGoal.validate(tablePosition.getBookshelf()), firstCommonGoal.getRomanNumber());
+            if (firstCommonGoal.getStack().isEmpty()) {
                 firstCommonGoal.setCompleted(true);
             }
-        }else{
-            System.out.println("il primo obiettivo comune è già stato completato");
         }
         //check if player at current tableposition has already achieved the second common goal
         if(!tablePosition.getPlayer().hasCompletedSecond() && !secondCommonGoal.getCompleted()){
-            System.out.println("sto validando il secondo obiettivo comune, hasCompletedSecond = " + tablePosition.getPlayer().hasCompletedSecond());
             //add token to current player returned from validate
             tablePosition.getPlayer().setToken(secondCommonGoal.validate(tablePosition.getBookshelf()),secondCommonGoal.getRomanNumber());
             if (secondCommonGoal.getStack().isEmpty()) {
                 secondCommonGoal.setCompleted(true);
             }
-        }else{
-            System.out.println("il secondo obiettivo comune è già stato completato");
         }
     }
+
+    /**
+     *
+     * @param tablePosition the table position of the player
+     */
     public void validatePersonalGoal(TablePosition tablePosition){
         int res = tablePosition.getCurrentPGoal().validate(tablePosition.getBookshelf());
         int currentPersonalScore = tablePosition.getPlayer().getPersonalGoalScore();
