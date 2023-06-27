@@ -384,14 +384,5 @@ public class GameView implements Serializable {
         return model.getPlayerNameByRanking(position);
     }
 
-    /**
-     * This method returns an int that specifies the final flow of the game based on what
-     * player's position has completed its shelf first
-     * @return the final flow based on the int value
-     */
-    public int getFinalFlow(){
-        return model.getFinalFlow();
-    }
-
 }
 

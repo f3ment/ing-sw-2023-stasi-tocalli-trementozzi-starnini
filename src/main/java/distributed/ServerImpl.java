@@ -87,6 +87,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         currentLobby = this.gamesManagerController.getLobbyByClient(client);
         //CHAT UPDATE
         if (currentLobby != null && (message.getEvent().equals(Event.GET_CHAT) || message.getEvent().equals(Event.EXIT_CHAT) || message.getEvent().equals(Event.SEND_MESSAGE))) {
+            System.out.println("entra server");
             currentLobby.getChatController().update(client, message);
         } else if (!message.getEvent().equals(Event.GAME_INIT) && !message.getEvent().equals(Event.LOGIN)) {
             //GAME UPDATE
@@ -103,6 +104,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                 //client.update(null, Event.PING);
             } else {
                 if (message.getEvent().equals(Event.DELETE_MATCH)) {
+                    currentLobby.getController().update(client, new Message(Event.CLIENT_CLOSE));
                     try {
                         Thread.sleep(15000);
                     } catch (InterruptedException e) {
@@ -113,7 +115,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                         gamesManagerController.removeLobby(i);
                     }
                     destroy_array.clear();
-                    //todo rimuovere lobby SOLO quando nessuno è in chat e nessuno è in partita
                 }else {
                     currentLobby.getController().update(client, message);
                 }
@@ -265,24 +266,19 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                         throw new RuntimeException(e);
                     }
                     for(Lobby l : gamesManagerController.getLobbies_list()){
-                        if(l!=null&&l.isFull()){
+                        if(l!=null && l.isFull() && !l.isToRemove()){
                             if(l.validateLobby()){
                                 if(l.getOnlineplayers()==1&&l.getFinalFlag()){
                                     l.setForcedEnd();
                                 }
                             }
-                            if(l.getEndGame()&&!l.getStatusPlayer(l.getFirstPlayer())){
-                                l.setFlagFirstPlayer();
-                            }
-                            if(l.getCurrentPlayer()!=null&&!l.getStatusPlayer(l.getCurrentPlayer())&&l.getOnlineplayers()!=1&&l.getStatusLobby()&&((!l.getFlagFirstPlayer())||(l.getFlagFirstPlayer()&&!l.getFirstPlayer().equals(l.getCurrentPlayer())))){
+
+                            if(l.getCurrentPlayer()!=null && !l.getStatusPlayer(l.getCurrentPlayer()) && l.getOnlineplayers()>1 && !l.getEndGame()){
                                 l.getController().update(l.getClientByUsername(l.getCurrentPlayer()), new Message(Event.CONNECTION_PROBLEM));
-                            }else if(l.getCurrentPlayer()!=null&&!l.getStatusPlayer(l.getCurrentPlayer())&&l.getOnlineplayers()!=1&&l.getStatusLobby()&&l.getCurrentPlayer().equals(l.getFirstPlayer())&&l.getFlagFirstPlayer()){
-                                l.ChangeCurrentPosition();
-                                l.getController().update(l.getClientByUsername(l.getCurrentPlayer()), new Message(Event.FINISH_MATCH));//update end match
-                                Lobbydeletion(l,index);
-                            }else if(!l.validateLobby()&&l.isFull()){
-                                        l.getController().update(l.getClientByUsername(l.getWinner()),new Message(l.getWinner(),Event.FORCED_END_MATCH));
-                                        Lobbydeletion(l,index);
+                            }else if(!l.validateLobby() && l.isFull()){
+                                l.getController().update(l.getClientByUsername(l.getWinner()),new Message(l.getWinner(),Event.FORCED_END_MATCH));
+                                l.setToRemove(true);
+                                //Lobbydeletion(l,index);
                             }else if(!l.getStatusLobby()&&l.isFull()){
                                 Lobbydeletion(l,index);
                             }

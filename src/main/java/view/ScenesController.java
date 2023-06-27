@@ -1026,6 +1026,16 @@ public class ScenesController extends Observable<Event> implements Initializable
         alert.setContentText("Sorry, the nickname you selected is already taken.");
         alert.showAndWait();
     }
+
+    public void deleteMatch(){
+        new Thread(){
+            @Override
+            public void run(){
+                setChanged();
+                notifyObservers(new Message(Event.DELETE_MATCH));
+            }
+        }.start();
+    }
 }
 
 

@@ -37,7 +37,17 @@ public class Lobby {
     private boolean oneleft;  //true if there is only one player online
     private boolean valid=true; // when it becomes false, the match is forced to end
     private boolean flagfinal;  // true when timerOneLeftPlayer starts
-    private boolean flagFirstPlayer;
+    private boolean toRemove;
+
+    public void setToRemove(boolean toRemove) {
+        this.toRemove = toRemove;
+    }
+
+
+    public boolean isToRemove() {
+        return toRemove;
+    }
+
 
 
 
@@ -59,7 +69,6 @@ public class Lobby {
         on=true;
         flagfinal=true;
         oneleft=false;
-        flagFirstPlayer=false;
         Timer timer=new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -399,14 +408,6 @@ public class Lobby {
 
     public String getFirstFinisher(){
         return model.getFirstFinisher();
-    }
-
-    public boolean getFlagFirstPlayer(){
-        return flagFirstPlayer;
-    }
-
-    public void setFlagFirstPlayer(){
-        flagFirstPlayer=true;
     }
 
     public void ChangeCurrentPosition(){

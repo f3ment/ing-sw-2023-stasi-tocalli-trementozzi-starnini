@@ -10,6 +10,7 @@ import model.ItemTiles;
 import model.views.PlayerView;
 import utils.*;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
 public class TextualUI extends View implements Runnable {
@@ -75,12 +76,11 @@ public class TextualUI extends View implements Runnable {
                 System.out.println( last.getSender() + (last.getReceiver()!=null && last.getReceiver().equals(username)? " to You" : "") + " > " + last.getMessage());
             }
             if (last.getSender().equals("SERVER")){
-                flagChat = false;
-                setChanged();
-                notifyObservers(new Message(Event.EXIT_CHAT, username));
+                System.err.println("The Match is finished, visualize results by typing '/exit'");
             }
 
         }else if(message.getEvent().equals(Event.EXIT_CHAT) && message.getUserName().equals(username)){
+            System.out.println("arriva");
             //flagChat = false;
             synchronized (this){
                 System.out.println("----------------------------");
@@ -148,45 +148,13 @@ public class TextualUI extends View implements Runnable {
         } else {
             if (message.getEvent().equals(Event.FINISH_MATCH)){
                 synchronized (this) {
-                    if(!message.getModel().getCurrentPlayer().getUsername().equals(username)){
-                        System.out.println("il mio username è "+ username);
-                        System.out.println("il giocatore corrente è: " + message.getModel().getCurrentPlayer().getUsername());
-                        System.out.println("il giocatore finale è: " + message.getModel().getLastPlayer());
-                        System.out.println(message.getModel().getFinalFlow());
-                        showAllScore(message.getModel());
-                        System.out.println(message.getModel().getMapPlayerScore());
-                        System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
-                        System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
+                    showAllScore(message.getModel());
+                    System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
+                    System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
 
-                    }else {
-                        System.out.println("il flag vale " + message.getModel().getFinalFlow());
-                        System.out.println("siamo nel gran finale!");
-                        if (message.getModel().getFinalFlow() != 4) {
-                            showAllScore(message.getModel());
-                            System.out.println(message.getModel().getMapPlayerScore());
-                            System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
-                            System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
-                            if (message.getModel().getFinalFlow() == 2) {
-                                start(message.getModel());
-                            } else if (message.getModel().getFinalFlow() == 1) {
-                                setChanged();
-                                notifyObservers(new Message(Event.DELETE_MATCH));
-                            }
-                        } else {
-                            System.out.println(message.getModel().getMapPlayerScore());
-                            System.out.println(Color.RED_BOLD_BRIGHT + "---END OF THE GAME---" + Color.RESET);
-                            System.out.println(Color.GREEN_BRIGHT + "THE WINNER IS ==>" + message.getModel().getWinner() + Color.RESET);
-                            setChanged();
-                            notifyObservers(new Message(Event.DELETE_MATCH));
-                        }
-                    }
-                    if(message.getModel().getFinalFlow()!=2){
-                        try{
-                            Thread.sleep(5000);
-                        }catch (InterruptedException e){
-                            throw new RuntimeException();
-                        }
-                        close();
+                    if(message.getModel().getCurrentPlayer().getUsername().equals(username)){
+                        setChanged();
+                        notifyObservers(new Message(Event.DELETE_MATCH));
                     }
                 }
             } else if (message.getModel() == null || message.getModel().getCurrentPlayer().getUsername().equals(username)) {
@@ -217,19 +185,6 @@ public class TextualUI extends View implements Runnable {
                     setChanged();
                     notifyObservers(new Message(Event.PLAYER_FINISH));
                     //todo adjust events with start method
-                } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
-                    synchronized (this) {
-                        if (choice()) {
-                            while (flagChat) {
-                                try {
-                                    this.wait();
-                                } catch (InterruptedException e) {
-                                    throw new RuntimeException();
-                                }
-                            }
-                        }
-                    }
-                    start(message.getModel());
                 } else if (message.getEvent().equals(Event.NEW_TURN)) {
                     showAllScore(message.getModel());
                     synchronized (this) {
@@ -348,18 +303,12 @@ public class TextualUI extends View implements Runnable {
         }
     }
     private void start(GameView o) {
-        if (o.getFirstPlayer().equals(o.getCurrentPlayer().getUsername()) && o.getEndGame()) {
-            System.out.println("siamo alla fine ce la faremo");
-            setChanged();
-            notifyObservers(new Message(Event.FINISH_MATCH));
-        } else {
-            System.out.print(Color.GREEN_BOLD_BRIGHT);
-            System.out.println(o.getCurrentPlayer().getUsername() + ", it's your turn!");
-            System.out.print(Color.RESET);
-            menu(o);
-            showBoard(o);
-            playerDraw(o);
-        }
+        System.out.print(Color.GREEN_BOLD_BRIGHT);
+        System.out.println(o.getCurrentPlayer().getUsername() + ", it's your turn!");
+        System.out.print(Color.RESET);
+        menu(o);
+        showBoard(o);
+        playerDraw(o);
     }
 
     /**

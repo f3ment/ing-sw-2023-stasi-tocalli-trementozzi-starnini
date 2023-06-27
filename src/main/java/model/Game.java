@@ -38,7 +38,6 @@ public class Game extends Observable<Event> implements Serializable {
 
     private final String lastPlayer;
 
-    private int finalFlow=2;
 
 
     /**
@@ -373,11 +372,7 @@ public class Game extends Observable<Event> implements Serializable {
             getCurrentPosition().getPlayer().setScore(getCurrentPosition().getPlayer().getScore()+1);
             setEndGameToken(true,getCurrentPosition().getPlayer().getUsername());
         }
-        if(getCurrentPosition().getPlayer().getUsername().equals(getFirstFinisher()) && getCurrentPosition().getPlayer().getUsername().equals(getLastPlayer())){
-            finalFlow=1;
-        }else {
-            setCurrentPosition();
-        }
+        setCurrentPosition();
     }
 
     /**
@@ -565,28 +560,6 @@ public class Game extends Observable<Event> implements Serializable {
                 break;
             }
         }
-    }
-
-    /**
-     * This method returns the final flow of the match based on which player has finished first
-     * @return the final flow of the match
-     */
-    public int getFinalFlow(){
-        return finalFlow;
-    }
-
-    /**
-     * This method sets the final flow of the match to 3 when all players have disconnected
-     */
-    public void setFinalForcedFlow(){
-        finalFlow=3;
-    }
-
-    /**
-     * This method sets the final flow of the match to 4
-     */
-    public void setRegularFlow(){
-        finalFlow=4;
     }
 
 

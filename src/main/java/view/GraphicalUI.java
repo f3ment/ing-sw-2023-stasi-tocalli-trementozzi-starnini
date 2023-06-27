@@ -95,75 +95,18 @@ public class GraphicalUI extends View implements Runnable {
                 GuiController.startGame(username, message.getModel().getCurrentPlayer().getUsername().equals(username));
             });
         } else if (message.getEvent().equals(Event.FINISH_MATCH)){
-                if(!message.getModel().getCurrentPlayer().getUsername().equals(username)){
-                    Platform.runLater(() -> {
-                        try {
-                            HelloApplication.setScene("endGameScene");
-                            GuiController.showWinner(message.getModel());
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                        this.close();
-                    });
-                }else {
-                    if (message.getModel().getFinalFlow() != 4) {
-                        Platform.runLater(() -> {
-                            try {
-                                HelloApplication.setScene("endGameScene");
-                                GuiController.showWinner(message.getModel());
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
-                        if (message.getModel().getFinalFlow() == 2) {
-                            if (message.getModel().getFirstPlayer().equals(message.getModel().getCurrentPlayer().getUsername()) && message.getModel().getEndGame()) {
-                                Platform.runLater(() -> {
-                                    GuiController.setChanged();
-                                    GuiController.notifyObservers(new Message(Event.FINISH_MATCH));
-                                });
-                            }
-                        } else if (message.getModel().getFinalFlow() == 1) {
-                            Platform.runLater(() -> {
-                                GuiController.setChanged();
-                                GuiController.notifyObservers(new Message(Event.DELETE_MATCH));
-                            });
 
-                        }
-                        if(message.getModel().getFinalFlow()!=2){
-                            try {
-                                Thread.sleep(5000);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            this.close();
-                        }
-
-                    } else {
-                        Platform.runLater(() -> {
-                            try {
-                                HelloApplication.setScene("endGameScene");
-                                GuiController.showWinner(message.getModel());
-                                GuiController.setChanged();
-                                GuiController.notifyObservers(new Message(Event.DELETE_MATCH));
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                            try {
-                                Thread.sleep(5000);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            this.close();
-                        });
-
-                    }
+            Platform.runLater(() -> {
+                try {
+                    HelloApplication.setScene("endGameScene");
+                    GuiController.showWinner(message.getModel());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-
+                if(message.getModel().getCurrentPlayer().getUsername().equals(username)){
+                    GuiController.deleteMatch();
+                }
+            });
         } else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
             Platform.runLater(() -> {
                 GuiController.checkEndTokenAssigned(message.getModel());
@@ -184,8 +127,6 @@ public class GraphicalUI extends View implements Runnable {
                 Platform.runLater(() -> GuiController.insertNegative(message.getModel()));
             } else if (message.getEvent().equals(Event.PLAYER_INSERT_POSITIVE)) {
                 Platform.runLater(() -> GuiController.insertPositive(message.getModel()));
-            } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
-                startNewTurn(message.getModel());
             } else if (message.getEvent().equals(Event.NEW_TURN)) {
                 startNewTurn(message.getModel());
             } else if (message.getEvent().equals(Event.LOGIN)) {

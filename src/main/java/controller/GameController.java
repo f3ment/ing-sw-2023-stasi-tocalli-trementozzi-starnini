@@ -123,45 +123,39 @@ public class GameController {
         } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
             //Check if re-fill board
 
+            //caso base
+            if (game.checkBoardEmpty()) {
+                game.fillBoard();
+            }
             game.checkFinalControl();
-            if(game.getEndGame() && game.getCurrentPosition().getPlayer().getUsername().equals(game.getLastPlayer())&&game.getFinalFlow()!=3){//&&game.getFirstFinisher().equals(game.getCurrentPosition().getPlayer().getUsername())
-                lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage(Color.RED + "The match is ending!" + Color.RESET, Color.RED + "SERVER" + Color.RESET, null) ));
+            do{
                 changeCurrentPosition();
-                System.out.println("il booleano finale vale "+ game.getFinalFlow());
+                //problema thread concorrente
+            }while(!lobby.getStatusCurrentPlayer() && lobby.getEndGame() && !lobby.getCurrentPlayer().equals(lobby.getFirstPlayer()));
+            if (lobby.validateLobby() && lobby.getEndGame() && lobby.getCurrentPlayer().equals(lobby.getFirstPlayer())){
+                lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage("The match is ending!" , "SERVER", null)));
                 game.setWinner();
                 game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
+                if(!lobby.getStatusPlayer(lobby.getFirstPlayer())){
+                    update(o, new Message(Event.DELETE_MATCH));
+                }
             }else {
-                if (game.checkBoardEmpty()) {
-                    game.fillBoard();
-                }
-                if (!game.getEndGame() || (!game.getCurrentPosition().getPlayer().getUsername().equals(game.getFirstPlayer()) && game.getEndGame())||(game.getCurrentPosition().getPlayer().getUsername().equals(game.getFirstPlayer()) && game.getEndGame()&&game.getFirstFinisher().equals(game.getFirstPlayer()))) {
-                    changeCurrentPosition();
-                    game.setChangedAndNotifyObservers(Event.PLAYER_FINISH);
-                }
+                game.setChangedAndNotifyObservers(Event.NEW_TURN);
             }
         }else if(message.getEvent().equals(Event.NEW_TURN_RECONNECTED)){
             game.setChangedAndNotifyObservers(Event.NEW_TURN_RECONNECTED);
         }else if(message.getEvent().equals(Event.NEW_TURN)){
             game.setChangedAndNotifyObservers(Event.NEW_TURN);
-        }else if(message.getEvent().equals(Event.FINISH_MATCH)){
-            game.setWinner();
-            if(game.getFinalFlow()!=1) {
-                game.setRegularFlow();
-            }
-            if(game.getFinalFlow()==1||game.getFinalFlow()==4){
-                lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage(Color.RED + "The match is ending!" + Color.RESET, Color.RED + "SERVER" + Color.RESET, null) ));
-            }
-            System.out.println(game.getFinalFlow());
-            game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
         } else if (message.getEvent().equals(Event.LOGIN_TRUE)) {
             game.setChangedAndNotifyObservers(Event.LOGIN_TRUE);
         }else if (message.getEvent().equals(Event.FORCED_END_MATCH)) {
-            lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage(Color.RED + "The match is ending!" + Color.RESET, Color.RED + "SERVER" + Color.RESET, null) ));
+            lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage( "The match is ending!" ,  "SERVER" , null) ));
             game.setForcedWinner(message.getUserName());
             game.setCurrentPlayer(message.getUserName());
-            game.setFinalForcedFlow();
             //o.update(new Message(Event.FORCED_END_MATCH));
             game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
+        } else if (message.getEvent().equals(Event.CLIENT_CLOSE)) {
+            game.setChangedAndNotifyObservers(Event.CLIENT_CLOSE);
         }
     }
 
