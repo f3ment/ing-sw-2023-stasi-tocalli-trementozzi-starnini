@@ -143,26 +143,29 @@ public class Lobby {
                 oneleft=false;
             }
         }else if(!isFull){
-            status.put(userId,true);
-            usersId.put(userId,user);
-            this.chat.addObserver((o, message) -> {
-                try {
-                    if (getStatusPlayer(userId)) {
-                        if (usersId.get(userId).equals(getClientByUsername(message.getUserName()))) {
-                            usersId.get(userId).update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
-                        } else if (message.getEvent().equals(Event.SEND_MESSAGE)) {
-                            if (message.getChatMessage().getReceiver() != null && (usersId.get(userId).equals(getClientByUsername(message.getChatMessage().getReceiver()))
-                                    || usersId.get(userId).equals(getClientByUsername(message.getChatMessage().getSender())))) {
+            if(!usersId.containsKey(userId)){
+                this.chat.addObserver((o, message) -> {
+                    try {
+                        if (getStatusPlayer(userId)) {
+                            if (usersId.get(userId).equals(getClientByUsername(message.getUserName()))) {
                                 usersId.get(userId).update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
-                            } else if (message.getChatMessage().getReceiver() == null) {
-                                usersId.get(userId).update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
+                            } else if (message.getEvent().equals(Event.SEND_MESSAGE)) {
+                                if (message.getChatMessage().getReceiver() != null && (usersId.get(userId).equals(getClientByUsername(message.getChatMessage().getReceiver()))
+                                        || usersId.get(userId).equals(getClientByUsername(message.getChatMessage().getSender())))) {
+                                    usersId.get(userId).update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
+                                } else if (message.getChatMessage().getReceiver() == null) {
+                                    usersId.get(userId).update(new Message(message.getUserName(), message.getEvent(), new ChatView(chat)));
+                                }
                             }
                         }
+                    } catch (RemoteException e) {
+                        System.err.println("Error while updating the client : " + e.getMessage() + ". Skipping the update...");
                     }
-                } catch (RemoteException e) {
-                    System.err.println("Error while updating the client : " + e.getMessage() + ". Skipping the update...");
-                }
-            });
+                });
+            }
+            status.put(userId,true);
+            usersId.put(userId,user);
+
             Timer timer=new Timer();
             timer.schedule(new TimerTask() {
                 @Override
