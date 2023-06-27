@@ -7,6 +7,10 @@ import utils.Event;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * This class represent message objects that are sent between server and client
+ * It contains all the information needed to update the view or the model of the game
+ */
 public class Message implements Serializable {
     private static final long serialVersionUID = 1L;
     private  ArrayList<String> nicknames;

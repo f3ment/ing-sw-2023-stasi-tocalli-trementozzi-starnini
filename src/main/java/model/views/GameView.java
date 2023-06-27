@@ -343,7 +343,6 @@ public class GameView implements Serializable {
                 return player.getCurrentPosition().getCurrentPGoal().getWindows();
             }
         }
-        //todo exception no player with that username
         throw new NullPointerException("No player with this username found.");
     }
 
@@ -358,7 +357,6 @@ public class GameView implements Serializable {
                 return player.getCurrentPosition().getCurrentPGoal().getId();
             }
         }
-        //todo exception no player with that username
         throw new NullPointerException("No player with this username found.");
     }
 

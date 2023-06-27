@@ -380,6 +380,10 @@ public class Game extends Observable<Event> implements Serializable {
         }
     }
 
+    /**
+     * This method is called at the end of the game, and it checks if a player
+     * has completed the shelf setting him/her as the first finisher
+     */
     public void checkFinalControl(){
         if(getCurrentPosition().getBookshelf().isFull()&& !getEndGame()){
             setEndGame(true);
