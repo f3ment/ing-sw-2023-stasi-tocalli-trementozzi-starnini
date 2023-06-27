@@ -130,7 +130,7 @@ public class GameController {
             if(game.getEndGame() && game.getCurrentPosition().getPlayer().getUsername().equals(game.getLastPlayer())&&game.getFinalFlow()!=3){//&&game.getFirstFinisher().equals(game.getCurrentPosition().getPlayer().getUsername())
                 lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage(Color.RED + "The match is ending!" + Color.RESET, Color.RED + "SERVER" + Color.RESET, null) ));
                 lobby.getChatController().update(o, new Message(Event.EXIT_CHAT, ""));
-                game.updateLastScore();
+                changeCurrentPosition();
                 System.out.println("il booleano finale vale "+ game.getFinalFlow());
                 game.setWinner();
                 game.setChangedAndNotifyObservers(Event.FINISH_MATCH);

@@ -244,6 +244,9 @@ public class GraphicalUI extends View implements Runnable {
        }
     }
 
+    public void close(){
+        System.exit(1);
+    }
 
 
 }

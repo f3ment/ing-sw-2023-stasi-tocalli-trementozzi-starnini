@@ -173,6 +173,15 @@ public class TextualUI extends View implements Runnable {
                             notifyObservers(new Message(Event.DELETE_MATCH));
                         }
                     }
+                    if(message.getModel().getFinalFlow()!=2||(message.getModel().getFinalFlow()==2&&!message.getModel().getCurrentPlayer().getUsername().equals(username))){
+                        try{
+                            Thread.sleep(3000);
+                        }catch (InterruptedException e){
+                            throw new RuntimeException();
+                        }
+                        setChanged();
+                        notifyObservers(new Message(Event.CLIENT_CLOSE));
+                    }
                 }
             } else if (message.getModel() == null || message.getModel().getCurrentPlayer().getUsername().equals(username)) {
                 myTurn = true;
@@ -827,5 +836,8 @@ public class TextualUI extends View implements Runnable {
             }
             System.out.println(Color.WHITE_BRIGHT + " |" +Color.RESET);
         }
+    }
+    public void close(){
+        System.exit(1);
     }
 }
