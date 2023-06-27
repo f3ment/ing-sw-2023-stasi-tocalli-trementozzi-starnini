@@ -129,6 +129,8 @@ public class GameController {
                 lobby.getChatController().update(o, new Message(Event.EXIT_CHAT, ""));
                 changeCurrentPosition();
                 System.out.println("il booleano finale vale "+ game.getFinalFlow());
+                lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage(Color.RED + "The match is ending!" + Color.RESET, Color.RED + "SERVER" + Color.RESET, null) ));
+                lobby.getChatController().update(o, new Message(Event.EXIT_CHAT, ""));
                 game.setWinner();
                 game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
             }else {
@@ -148,6 +150,10 @@ public class GameController {
             game.setWinner();
             if(game.getFinalFlow()!=1) {
                 game.setRegularFlow();
+            }
+            if(game.getFinalFlow()==1||game.getFinalFlow()==4){
+                lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage(Color.RED + "The match is ending!" + Color.RESET, Color.RED + "SERVER" + Color.RESET, null) ));
+                lobby.getChatController().update(o, new Message(Event.EXIT_CHAT, ""));
             }
             System.out.println(game.getFinalFlow());
             game.setChangedAndNotifyObservers(Event.FINISH_MATCH);

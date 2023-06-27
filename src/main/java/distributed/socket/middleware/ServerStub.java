@@ -61,20 +61,15 @@ public class ServerStub implements Server {
 
     @Override
     public void update(Client client, Message message) throws RemoteException {
-        if(message.getEvent().equals(Event.CLIENT_CLOSE)){
-            close();
-        } else {
-            try {
-                synchronized (outputlock){
-                    oos.writeObject(message);
-                    oos.reset();
-                    oos.flush();
-                }
-            } catch (IOException e) {
-                throw new RemoteException("Cannot send Message : " + e.getMessage() );
+        try {
+            synchronized (outputlock){
+                oos.writeObject(message);
+                oos.reset();
+                oos.flush();
             }
+        } catch (IOException e) {
+            throw new RemoteException("Cannot send Message : " + e.getMessage());
         }
-
     }
 
     /**
@@ -84,15 +79,22 @@ public class ServerStub implements Server {
      */
     public void receive(Client client) throws RemoteException{
         Message message;
-            try {
-                synchronized (inputlock){
-                    message = (Message) ios.readObject();
-                }
-            } catch (IOException e) {
-                throw new RemoteException("Cannot receive Message : " + e.getMessage() + Arrays.toString(e.getStackTrace()));
-            } catch (ClassNotFoundException e) {
-                throw new RemoteException("Cannot cast Message " + e.getMessage());
+        try {
+            synchronized (inputlock){
+                message = (Message) ios.readObject();
             }
+        } catch (IOException e) {
+            throw new RemoteException("Cannot receive Message : " + e.getMessage() + Arrays.toString(e.getStackTrace()));
+        } catch (ClassNotFoundException e) {
+            throw new RemoteException("Cannot cast Message " + e.getMessage());
+        }
+        if(message.getEvent() == Event.CLIENT_CLOSE){
+            try {
+                close();
+            } catch (RemoteException e) {
+                System.err.println("Cannot close socket : " + e.getMessage());
+            }
+        }
         client.update(message);
     }
 
@@ -104,7 +106,7 @@ public class ServerStub implements Server {
         try {
             socket.close();
         }catch(IOException e){
-            throw new RemoteException("Cannot close socket " + e.getMessage());
+            throw new RemoteException(e.getMessage());
         }
     }
 }

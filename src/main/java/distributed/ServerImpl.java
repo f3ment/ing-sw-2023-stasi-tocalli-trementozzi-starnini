@@ -5,6 +5,7 @@ import controller.GamesManagerController;
 //import model.Chat;
 import controller.Lobby;
 //import model.Message;
+import model.ChatMessage;
 import model.Message;
 import utils.Event;
 import view.Color;
@@ -101,6 +102,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     //client.update(null, Event.PING);
                 } else {
                     if (message.getEvent().equals(Event.DELETE_MATCH)) {
+
+
+                        while(currentLobby.getStatusLobby()){
+
+                        }
                         Lobbydeletion(currentLobby,destroy_array);
                         for(Integer i:destroy_array){
                             gamesManagerController.removeLobby(i);
@@ -268,7 +274,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                             if(l.getCurrentPlayer()!=null&&!l.getStatusPlayer(l.getCurrentPlayer())&&l.getOnlineplayers()!=1&&l.getStatusLobby()&&((!l.getFlagFirstPlayer())||(l.getFlagFirstPlayer()&&!l.getFirstPlayer().equals(l.getCurrentPlayer())))){
                                 l.getController().update(l.getClientByUsername(l.getCurrentPlayer()), new Message(Event.CONNECTION_PROBLEM));
                             }else if(l.getCurrentPlayer()!=null&&!l.getStatusPlayer(l.getCurrentPlayer())&&l.getOnlineplayers()!=1&&l.getStatusLobby()&&l.getCurrentPlayer().equals(l.getFirstPlayer())&&l.getFlagFirstPlayer()){
-                                l.updateLastScore();//setflow a 1
+                                l.ChangeCurrentPosition();
                                 l.getController().update(l.getClientByUsername(l.getCurrentPlayer()), new Message(Event.FINISH_MATCH));//update end match
                                 Lobbydeletion(l,index);
                             }else if(!l.validateLobby()&&l.isFull()){
