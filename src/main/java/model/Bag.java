@@ -5,8 +5,12 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
 
+
 /**
- * This class represents the bag of the game. It contains all the items that will be used during the game.
+ * Bag class
+ * This class is responsible for managing the bag.
+ * It contains the items.
+ * It is used by Board class to create the board as a matrix of boxes; in fact, each box contains an item which is extracted from the bag.
  */
 public class Bag implements Serializable {
         private static final long serialVersionUID = 1L;
@@ -16,7 +20,8 @@ public class Bag implements Serializable {
         private ArrayList<ItemTiles> items; //struttura contenente Items
 
         /**
-         * Constructor of the class Bag. It creates a new bag with all the items that will be used during the game.
+         * Constructor for the Bag class that initializes the items.
+         * It reads the number of items from the config.properties file.
          */
         public Bag(){
 
@@ -59,10 +64,11 @@ public class Bag implements Serializable {
                 }
         }
 
+
         /**
-         * This method extracts a random item from the bag.
-         * @return the item extracted from the bag.
-         * @throws NegativeArraySizeException if the bag is empty.
+         * Extracts a random item from the bag.
+         * @return the extracted item
+         * @throws NegativeArraySizeException if the bag is empty
          */
         public ItemTiles extract() throws NegativeArraySizeException{
                 int randomIndex;
@@ -76,8 +82,8 @@ public class Bag implements Serializable {
         }
 
         /**
-         * This method returns the number of items left in the bag.
-         * @return the number of items left in the bag.
+         * Returns the number of items left in the bag.
+         * @return the number of items left in the bag
          */
         public int getLeftItems(){
                 return items.size();

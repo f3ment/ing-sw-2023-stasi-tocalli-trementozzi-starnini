@@ -43,6 +43,11 @@ public class ScenesController extends Observable<Event> implements Initializable
     @FXML
     private Label scoreLabel1;
     @FXML
+    private DialogPane description1;
+    @FXML
+    private DialogPane description2;
+
+    @FXML
     private Label score1;
     @FXML
     private Label name1;
@@ -186,6 +191,8 @@ public class ScenesController extends Observable<Event> implements Initializable
     private Circle status3;
     @FXML
     private Circle status4;
+    private boolean isHovered1;
+    private boolean isHovered2;
 
 
     /**
@@ -452,6 +459,26 @@ public class ScenesController extends Observable<Event> implements Initializable
         cg2.setFitWidth(266);
         common1.getChildren().add(cg1);
         common2.getChildren().add(cg2);
+
+        description1.setContentText(model.getFirstCommonGoalDescription());
+        description2.setContentText(model.getSecondCommonGoalDescription());
+        common1.setOnMouseEntered(event -> {
+            isHovered1 = true;
+            description1.setVisible(true);
+            });
+        common1.setOnMouseExited(event -> {
+            isHovered1 = false;
+            description1.setVisible(false);
+        });
+        common2.setOnMouseEntered(event -> {
+            isHovered2 = true;
+            description2.setVisible(true);
+        });
+        common2.setOnMouseExited(event -> {
+            isHovered2 = false;
+            description2.setVisible(false);
+        });
+
         ImageView s1 = new ImageView(new Image(getClass().getResourceAsStream("/Images/scoringtokens/scoring_8.jpg")));
         s1.setFitWidth(80);
         s1.setFitHeight(78);
@@ -466,6 +493,8 @@ public class ScenesController extends Observable<Event> implements Initializable
         stack2.getChildren().add(s2);
         stack2.setVisible(true);
         stack2.toFront();
+        description1.toFront();
+        description2.toFront();
     }
 
     /**
