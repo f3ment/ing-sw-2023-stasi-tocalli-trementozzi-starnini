@@ -847,6 +847,11 @@ public class TextualUI extends View implements Runnable {
         }
     }
     public void close(){
-        System.exit(1);
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.exit(0);
     }
 }
