@@ -61,14 +61,9 @@ public class ServerStub implements Server {
 
     @Override
     public void update(Client client, Message message) throws RemoteException {
-        /*if(message.getEvent().equals(Event.FINISH_MATCH)){
-            try {
-                Thread.sleep(10000);
-            }catch (InterruptedException e){
-                System.err.println("Interrupted Exception");
-            }
+        if(message.getEvent().equals(Event.CLIENT_CLOSE)){
             close();
-        } else {*/
+        } else {
             try {
                 synchronized (outputlock){
                     oos.writeObject(message);
@@ -78,7 +73,7 @@ public class ServerStub implements Server {
             } catch (IOException e) {
                 throw new RemoteException("Cannot send Message : " + e.getMessage() );
             }
-        //}
+        }
 
     }
 
