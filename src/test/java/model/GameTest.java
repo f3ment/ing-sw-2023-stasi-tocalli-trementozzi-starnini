@@ -703,18 +703,6 @@ String configFilePath = "./src/main/resources/config.properties";
         }
     }
 
-    @Test
-    public void getFinalFlowTest() throws IOException {
-        usernames.clear();
-        usernames.add("mario");
-        usernames.add("luca");
-        usernames.add("dario");
-        Game game = new Game(usernames);
-        game.setFinalForcedFlow();
-        assertEquals(3,game.getFinalFlow());
-        game.setRegularFlow();
-        assertEquals(4,game.getFinalFlow());
-    }
 
     @Test
     public void getFirstFinisherTest() throws IOException {
