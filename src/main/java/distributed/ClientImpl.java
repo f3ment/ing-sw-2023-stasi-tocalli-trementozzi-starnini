@@ -158,7 +158,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
                        sr.update(cl,new Message(Event.PING));
                    }catch (RemoteException e){
                        Thread.interrupted();
-                       System.err.println(Color.RED_BOLD + "Error server side! Terminal is closing..." + Color.RESET);
+                       System.err.println(Color.RED_BOLD + "Terminal is closing..." + Color.RESET);
                        try {
                            Thread.sleep(5000);
                        } catch (InterruptedException ex) {

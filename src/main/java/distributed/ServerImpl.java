@@ -104,17 +104,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                 //client.update(null, Event.PING);
             } else {
                 if (message.getEvent().equals(Event.DELETE_MATCH)) {
-                    currentLobby.getController().update(client, new Message(Event.CLIENT_CLOSE));
-                    try {
-                        Thread.sleep(15000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    Lobbydeletion(currentLobby,destroy_array);
-                    for(Integer i:destroy_array){
-                        gamesManagerController.removeLobby(i);
-                    }
-                    destroy_array.clear();
+                    deleteMatch(client);
                 }else {
                     currentLobby.getController().update(client, message);
                 }
@@ -195,6 +185,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                 if (lobby != null) {
                     lobby.checkStartMatch();
                     lobby.getController().update(client, new Message(Event.LOGIN_TRUE));
+                    lobby.setServer(this);
                 }
             }
             /*
@@ -272,10 +263,12 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                                     l.setForcedEnd();
                                 }
                             }
-
-                            if(l.getCurrentPlayer()!=null && !l.getStatusPlayer(l.getCurrentPlayer()) && l.getOnlineplayers()>1 && !l.getEndGame()){
-                                l.getController().update(l.getClientByUsername(l.getCurrentPlayer()), new Message(Event.CONNECTION_PROBLEM));
-                            }else if(!l.validateLobby() && l.isFull()){
+                            synchronized (l.getChangePosition()){
+                                if(l.getCurrentPlayer()!=null && !l.getStatusPlayer(l.getCurrentPlayer()) && l.getOnlineplayers()>1){
+                                    l.getController().update(l.getClientByUsername(l.getCurrentPlayer()), new Message(Event.CONNECTION_PROBLEM));
+                                }
+                            }
+                            if(!l.validateLobby() && l.isFull()){
                                 l.getController().update(l.getClientByUsername(l.getWinner()),new Message(l.getWinner(),Event.FORCED_END_MATCH));
                                 l.setToRemove(true);
                                 //Lobbydeletion(l,index);
@@ -294,5 +287,17 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         }.start();
     }
 
-
+        public void deleteMatch(Client client){
+            currentLobby.getController().update(client, new Message(Event.CLIENT_CLOSE));
+            try {
+                Thread.sleep(15000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            Lobbydeletion(currentLobby,destroy_array);
+            for(Integer i:destroy_array){
+                gamesManagerController.removeLobby(i);
+            }
+            destroy_array.clear();
+        }
 }
