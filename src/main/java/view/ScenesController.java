@@ -241,20 +241,12 @@ public class ScenesController extends Observable<Event> implements Initializable
      */
     public void sendPlayerInfo(ActionEvent actionEvent) throws IOException {
         if (nickname.getText().isEmpty() || nPlayers.getValue() == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Input required");
-            alert.setHeaderText(null);
-            alert.setContentText("Please enter the required values.");
-            alert.showAndWait();
+            showAlert("Please enter the required values.");
             return;
         }
         if(nickname.getText().length() > 15){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Invalid nickname");
-            alert.setHeaderText(null);
-            alert.setContentText("Please enter a nickname with less than 15 characters.");
-            alert.showAndWait();
-            nickname.setText("");
+            showAlert("Please enter a nickname with less than 15 characters.");
+            showAlert("Please enter a nickname with less than 15 characters.");
             return;
         }
             matchSize = nPlayers.getValue();
@@ -721,7 +713,10 @@ public class ScenesController extends Observable<Event> implements Initializable
      * @param i the column where the tiles have to be placed
      */
     private void setColumn(int i) {
-        hand.getChildren().clear();
+        for(Node tile : hand.getChildren()){
+            if(tile instanceof ImageView)
+                tile.setVisible(false);
+        }
         column1.setOnMouseClicked(null);
         column2.setOnMouseClicked(null);
         column3.setOnMouseClicked(null);
@@ -768,7 +763,12 @@ public class ScenesController extends Observable<Event> implements Initializable
      * @param model the model of the game
      */
     public void insertNegative(GameView model) {
-        dialogText.setText("You can't insert tiles in that column!");
+        dialogText.setText("You can't insert tiles in that column!\nPlease choose another one");
+        for(Node node : hand.getChildren()){
+            if(node instanceof ImageView){
+                node.setVisible(true);
+            }
+        }
         insertInShelf();
     }
 
@@ -994,14 +994,14 @@ public class ScenesController extends Observable<Event> implements Initializable
      */
     public void showWinner(GameView model) {
         int onlinePlayer = 0;
-        for(String p : model.getMapPlayerScore().keySet()) {
-            if(model.getStatusByNickname(p)){
+        for (String p : model.getMapPlayerScore().keySet()) {
+            if (model.getStatusByNickname(p)) {
                 onlinePlayer++;
             }
         }
         winner.setText(model.getPlayerNameByRanking(0) + " WON!");
         firstPlace.setText("1st: " + model.getPlayerNameByRanking(0) + " " + model.getMapPlayerScore().get(model.getPlayerNameByRanking(0)));
-        if(onlinePlayer>=2){
+        if (onlinePlayer >= 2) {
             secondPlace.setText("2nd: " + model.getPlayerNameByRanking(1) + " " + model.getMapPlayerScore().get(model.getPlayerNameByRanking(1)));
             secondPlace.setVisible(true);
             if (onlinePlayer >= 3) {
@@ -1013,20 +1013,12 @@ public class ScenesController extends Observable<Event> implements Initializable
                 }
             }
         }
-
     }
+
 
     /**
-     *method that alert players to choose another nickname when registering to a lobby
+     * this method sends to the server the request to delete the match
      */
-    public void invalidNickname() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Nickname not available");
-        alert.setHeaderText(null);
-        alert.setContentText("Sorry, the nickname you selected is already taken.");
-        alert.showAndWait();
-    }
-
     public void deleteMatch(){
         new Thread(){
             @Override
@@ -1035,6 +1027,19 @@ public class ScenesController extends Observable<Event> implements Initializable
                 notifyObservers(new Message(Event.DELETE_MATCH));
             }
         }.start();
+    }
+
+    /**
+     * this method shows an alert when the player tries to log into a lobby with an unavailable nickname
+     * or when the player tries to reconnect to his lobby with a different lobby size
+     * @param errorMessage the error message to be displayed in the alert
+     */
+    public void showAlert(String errorMessage) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Please retry");
+        alert.setHeaderText(null);
+        alert.setContentText(errorMessage.substring(7,errorMessage.length()-4));
+        alert.showAndWait();
     }
 }
 

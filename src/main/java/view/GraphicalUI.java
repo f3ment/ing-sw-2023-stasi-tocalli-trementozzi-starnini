@@ -19,8 +19,9 @@ public class GraphicalUI extends View implements Runnable {
 
     private ArrayList<String> nicknames;
 
+    private boolean lastScene = false;
+
     ArrayList<String> players= new ArrayList<String>();
-    private boolean nicknamefirstTry = true;
 
 
     /**
@@ -83,7 +84,9 @@ public class GraphicalUI extends View implements Runnable {
 
         }
         else if (message.getEvent().equals(Event.SEND_MESSAGE)) {
-                Platform.runLater(() -> GuiController.updateChat(message.getChat().getLast()));
+                if(!lastScene){
+                    Platform.runLater(() -> GuiController.updateChat(message.getChat().getLast()));
+                }
         }else if (message.getEvent().equals(Event.LOGIN_TRUE)) {
             Platform.runLater(() -> {
                 try {
@@ -98,6 +101,7 @@ public class GraphicalUI extends View implements Runnable {
 
             Platform.runLater(() -> {
                 try {
+                    lastScene = true;
                     HelloApplication.setScene("endGameScene");
                     GuiController.showWinner(message.getModel());
                 } catch (IOException e) {
@@ -132,11 +136,10 @@ public class GraphicalUI extends View implements Runnable {
             } else if (message.getEvent().equals(Event.LOGIN)) {
                 Platform.runLater(() -> {
                     try {
-                        if(!nicknamefirstTry){
-                            GuiController.invalidNickname();
+                        if(message.getUserName()!=null){
+                            GuiController.showAlert(message.getUserName());
                         }else
                             HelloApplication.setScene("playerInfo");
-                            nicknamefirstTry = false;
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
