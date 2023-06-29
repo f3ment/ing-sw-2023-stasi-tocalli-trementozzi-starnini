@@ -94,9 +94,8 @@ public class ServerStub implements Server {
             } catch (RemoteException e) {
                 System.err.println("Cannot close socket : " + e.getMessage());
             }
-        }else {
-            client.update(message);
         }
+        client.update(message);
     }
 
     /**

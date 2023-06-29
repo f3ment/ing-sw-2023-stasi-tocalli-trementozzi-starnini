@@ -421,15 +421,6 @@ public class Lobby {
         return model.getEndGame();
     }
 
-    public boolean containsClient(Client c){
-        String s= getUsernameByClient(c);
-        if(getClientsUsername().contains(s)){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
     public String getFirstFinisher(){
         return model.getFirstFinisher();
     }

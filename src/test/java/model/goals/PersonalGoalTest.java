@@ -26,7 +26,7 @@ class PersonalGoalTest {
         PersonalGoal pg;
         Bookshelf bookshelf;
         try {
-            windows = gson.fromJson(new FileReader (getClass().getResourceAsStream("/personalGoals.json").toString()),
+            windows = gson.fromJson(new FileReader("./src/test/resources/personalGoals.json"),
                     new TypeToken<Map<String, Map<String, Map<String, String>>>>() {}.getType());
 
             pg  = new PersonalGoal(windows.get("1"), 1);
@@ -92,7 +92,7 @@ class PersonalGoalTest {
 
 
         try {
-            windows = gson.fromJson(new FileReader (getClass().getResourceAsStream("/personalGoals.json").toString()),
+            windows = gson.fromJson(new FileReader("./src/test/resources/personalGoals.json"),
                     new TypeToken<Map<String, Map<String, Map<String, String>>>>() {}.getType());
                     PersonalGoal pg  = new PersonalGoal(windows.get("1"),1);
                     assertNotNull(pg.getWindows());
