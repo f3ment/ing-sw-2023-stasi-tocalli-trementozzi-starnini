@@ -82,7 +82,7 @@ public class TextualUI extends View implements Runnable {
             if (!last.getSender().equals(username) && message.getChat().getActive().contains(username)) {
                 System.out.println( last.getSender() + (last.getReceiver()!=null && last.getReceiver().equals(username)? " to You" : "") + " > " + last.getMessage());
             }
-            if (last.getSender().equals("SERVER")){
+            if (last.getSender().equals("SERVER")||flagChat==true){
                 System.err.println("The Match is finished, visualize results by typing '/exit'");
             }
 

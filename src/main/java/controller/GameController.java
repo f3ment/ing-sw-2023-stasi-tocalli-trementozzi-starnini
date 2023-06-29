@@ -4,6 +4,7 @@ import model.*;
 import utils.Event;
 import view.Color;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 /**
@@ -128,16 +129,20 @@ public class GameController {
                 game.fillBoard();
             }
             game.checkFinalControl();
-            do{
-                changeCurrentPosition();
-                //problema thread concorrente
-            }while(!lobby.getStatusCurrentPlayer() && lobby.getEndGame() && !lobby.getCurrentPlayer().equals(lobby.getFirstPlayer()));
+            synchronized(lobby.getChangePosition()) {
+                do {
+                    changeCurrentPosition();
+                    //problema thread concorrente
+                } while (!lobby.getStatusCurrentPlayer() && lobby.getEndGame() && !lobby.getCurrentPlayer().equals(lobby.getFirstPlayer()));
+            }
+
             if (lobby.validateLobby() && lobby.getEndGame() && lobby.getCurrentPlayer().equals(lobby.getFirstPlayer())){
                 lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage("The match is ending!" , "SERVER", null)));
                 game.setWinner();
                 game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
                 if(!lobby.getStatusPlayer(lobby.getFirstPlayer())){
-                    update(o, new Message(Event.DELETE_MATCH));
+                    lobby.setToRemove(true);
+                    lobby.getServer().deleteMatch(o);
                 }
             }else {
                 game.setChangedAndNotifyObservers(Event.NEW_TURN);

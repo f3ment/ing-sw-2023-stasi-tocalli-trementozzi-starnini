@@ -1,6 +1,7 @@
 package controller;
 
 import distributed.Client;
+import distributed.ServerImpl;
 import model.Chat;
 import model.Game;
 import model.Message;
@@ -38,6 +39,9 @@ public class Lobby {
     private boolean valid=true; // when it becomes false, the match is forced to end
     private boolean flagfinal;  // true when timerOneLeftPlayer starts
     private boolean toRemove;
+    private Object changePosition;
+
+    private ServerImpl server;
 
     public void setToRemove(boolean toRemove) {
         this.toRemove = toRemove;
@@ -69,6 +73,7 @@ public class Lobby {
         on=true;
         flagfinal=true;
         oneleft=false;
+        changePosition=new Object();
         Timer timer=new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -226,6 +231,16 @@ public class Lobby {
         return new ArrayList<>(usersId.keySet());
     }
 
+    public void setServer(ServerImpl server) {
+        this.server = server;
+    }
+
+    public Object getChangePosition(){
+        return changePosition;
+    }
+    public ServerImpl getServer(){
+        return server;
+    }
     public void game_init() {
         try {
             this.model = new Game(new ArrayList<>(usersId.keySet()));
