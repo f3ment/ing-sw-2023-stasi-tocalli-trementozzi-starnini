@@ -28,11 +28,11 @@ public class Bag implements Serializable {
                 String configFilePath = "./src/main/resources/config.properties";
                 Properties prop = new Properties();
 
-                FileInputStream ip;
+                InputStream ip;
 
                 {
                         try {
-                                ip = new FileInputStream(configFilePath);
+                                ip = getClass().getClassLoader().getResourceAsStream("/config.properties");
                                 prop.load(ip);
                         } catch (IOException e) {
                                 throw new RuntimeException(e);

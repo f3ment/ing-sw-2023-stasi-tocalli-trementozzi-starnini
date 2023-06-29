@@ -7,6 +7,7 @@ import model.Token;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Properties;
 
@@ -32,11 +33,11 @@ public class Board implements Serializable {
      * @param numPlayers number of players
      */
     public Board(int numPlayers){
-        FileInputStream ip;
+        InputStream ip;
 
         {
             try {
-                ip = new FileInputStream(configFilePath);
+                ip = getClass().getClassLoader().getResourceAsStream("/config.properties");
                 prop.load(ip);
             } catch (IOException e) {
                 throw new RuntimeException(e);

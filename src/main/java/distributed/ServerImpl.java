@@ -5,7 +5,6 @@ import controller.GamesManagerController;
 //import model.Chat;
 import controller.Lobby;
 //import model.Message;
-import model.ChatMessage;
 import model.Message;
 import utils.Event;
 import view.Color;
@@ -151,14 +150,14 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     client.update(new Message(Event.LOGIN,Color.RED_BOLD + message.getUserName()+" is playing in a Lobby with a different number of players" + Color.RESET));
                 }else if(gamesManagerController.LobbyByUsername(message.getUserName()).isFull()){
                     if(gamesManagerController.LobbyByUsername(message.getUserName()).getStatusLobby()) {
-                        if(gamesManagerController.LobbyByUsername(message.getUserName()).getOnlineplayers()==1){
+                        if(gamesManagerController.LobbyByUsername(message.getUserName()).getOnlinePlayers()==1){
                             gamesManagerController.LobbyByUsername(message.getUserName()).resetFinalTimer();
                         }
 
                         gamesManagerController.LobbyByUsername(message.getUserName()).insertPlayer(client, message.getUserName());
                         gamesManagerController.insertPlayer(client,gamesManagerController.LobbyByUsername(message.getUserName()), message.getUserName());
 
-                        if(gamesManagerController.LobbyByUsername(message.getUserName()).getOnlineplayers()>2){
+                        if(gamesManagerController.LobbyByUsername(message.getUserName()).getOnlinePlayers()>2){
                             client.update(new Message(Event.RECONNECTION,gamesManagerController.LobbyByUsername(message.getUserName()).getChat(),gamesManagerController.LobbyByUsername(message.getUserName()).getModel()));
                         }else {
                             if(gamesManagerController.LobbyByUsername(message.getUserName()).getStatusCurrentPlayer()&&!gamesManagerController.LobbyByUsername(message.getUserName()).getCurrentPlayer().equals(message.getUserName())){
@@ -259,12 +258,12 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     for(Lobby l : gamesManagerController.getLobbies_list()){
                         if(l!=null && l.isFull() && !l.isToRemove()){
                             if(l.validateLobby()){
-                                if(l.getOnlineplayers()==1&&l.getFinalFlag()){
+                                if(l.getOnlinePlayers()==1&&l.getFinalFlag()){
                                     l.setForcedEnd();
                                 }
                             }
                             synchronized (l.getChangePosition()){
-                                if(l.getCurrentPlayer()!=null && !l.getStatusPlayer(l.getCurrentPlayer()) && l.getOnlineplayers()>1){
+                                if(l.getCurrentPlayer()!=null && !l.getStatusPlayer(l.getCurrentPlayer()) && l.getOnlinePlayers()>1){
                                     l.getController().update(l.getClientByUsername(l.getCurrentPlayer()), new Message(Event.CONNECTION_PROBLEM));
                                 }
                             }

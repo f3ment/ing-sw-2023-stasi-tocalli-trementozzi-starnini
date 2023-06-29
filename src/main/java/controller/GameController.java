@@ -122,30 +122,37 @@ public class GameController {
                 game.setChangedAndNotifyObservers(Event.PLAYER_INSERT_NEGATIVE);
             }
         } else if (message.getEvent().equals(Event.PLAYER_FINISH)) {
-            //Check if re-fill board
 
-            //caso base
             if (game.checkBoardEmpty()) {
                 game.fillBoard();
             }
             game.checkFinalControl();
             synchronized(lobby.getChangePosition()) {
-                do {
-                    changeCurrentPosition();
-                    //problema thread concorrente
-                } while (!lobby.getStatusCurrentPlayer() && lobby.getEndGame() && !lobby.getCurrentPlayer().equals(lobby.getFirstPlayer()));
+                try {
+                    do {
+                        changeCurrentPosition();
+                    } while (!lobby.getStatusCurrentPlayer() && lobby.getEndGame() && !lobby.getCurrentPlayer().equals(lobby.getFirstPlayer()));
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
             }
 
-            if (lobby.validateLobby() && lobby.getEndGame() && lobby.getCurrentPlayer().equals(lobby.getFirstPlayer())){
-                lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage("The match is ending!" , "SERVER", null)));
-                game.setWinner();
-                game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
-                if(!lobby.getStatusPlayer(lobby.getFirstPlayer())){
-                    lobby.setToRemove(true);
-                    lobby.getServer().deleteMatch(o);
+            try {
+                System.out.println("\n\n\n\n\n\n\n\nCurrent player:\n" +
+                        lobby.validateLobby() + "\n" + lobby.getEndGame() + "\n" + lobby.getCurrentPlayer().equals(lobby.getFirstPlayer()));
+                if (lobby.validateLobby() && lobby.getEndGame() && lobby.getCurrentPlayer().equals(lobby.getFirstPlayer())){
+                    lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage("The match is ending!" , "SERVER", null)));
+                    game.setWinner();
+                    game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
+                    if(!lobby.getStatusPlayer(lobby.getFirstPlayer())){
+                        lobby.setToRemove(true);
+                        lobby.getServer().deleteMatch(o);
+                    }
+                }else {
+                    game.setChangedAndNotifyObservers(Event.NEW_TURN);
                 }
-            }else {
-                game.setChangedAndNotifyObservers(Event.NEW_TURN);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         }else if(message.getEvent().equals(Event.NEW_TURN_RECONNECTED)){
             game.setChangedAndNotifyObservers(Event.NEW_TURN_RECONNECTED);
@@ -157,7 +164,6 @@ public class GameController {
             lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage( "The match is ending!" ,  "SERVER" , null) ));
             game.setForcedWinner(message.getUserName());
             game.setCurrentPlayer(message.getUserName());
-            //o.update(new Message(Event.FORCED_END_MATCH));
             game.setChangedAndNotifyObservers(Event.FINISH_MATCH);
         } else if (message.getEvent().equals(Event.CLIENT_CLOSE)) {
             game.setChangedAndNotifyObservers(Event.CLIENT_CLOSE);

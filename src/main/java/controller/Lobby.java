@@ -354,7 +354,7 @@ public class Lobby {
         return on;
     }
 
-    public synchronized int getOnlineplayers(){
+    public synchronized int getOnlinePlayers(){
         return onlineplayers;
     }
     public synchronized boolean onlyOne(){
@@ -428,4 +428,9 @@ public class Lobby {
     public void ChangeCurrentPosition(){
         model.changeCurrentPosition();
     }
+
+    public void setEndGame(boolean b) {
+        model.setEndGame(b);
+    }
+
 }

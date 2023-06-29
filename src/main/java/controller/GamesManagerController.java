@@ -140,8 +140,8 @@ public class GamesManagerController {
     }
 
     /**
-     * This method removes a client from a lobby.
-     * @param client The client that will be removed from the lobby.
+     * This method removes a client from the lobby-client map.
+     * @param client The client that will be removed from the map.
      */
     public void removePlayer(Client client){
         lobbies.remove(client);

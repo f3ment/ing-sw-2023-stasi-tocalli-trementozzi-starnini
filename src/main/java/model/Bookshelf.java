@@ -2,9 +2,11 @@ package model;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Properties;
+
 
 /**
  * This class represents the bookshelf of the game.
@@ -26,22 +28,19 @@ public class Bookshelf implements Serializable {
      */
     public Bookshelf() throws IOException {
 
-        /*
-         * Apertura file di configurazione
-         * */
-        String configFilePath = "./src/main/resources/config.properties";
-        FileInputStream ip;
+        String configFilePath = "/config.properties";
+        //FileInputStream ip;
+        InputStream ip;
         {
+
             try {
-                ip = new FileInputStream(configFilePath);
+                ip = getClass().getClassLoader().getResourceAsStream("/config.properties");
                 prop.load(ip);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         }
 
-        //this.height = 6;
-        //this.length = 5;
         this.maxDrowable = Integer.parseInt(prop.getProperty("cards.maxDrowable"));
         this.height = Integer.parseInt(prop.getProperty("bookshelf.height"));
         this.length = Integer.parseInt(prop.getProperty("bookshelf.width"));

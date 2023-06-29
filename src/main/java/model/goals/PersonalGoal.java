@@ -2,6 +2,7 @@ package model.goals;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -30,11 +31,11 @@ public class PersonalGoal implements Serializable {
      * @param id which is the id of the goal
      */
     public PersonalGoal(Map<String, Map<String, String>> windows, int id){
-        FileInputStream ip;
+        InputStream ip;
 
         {
             try {
-                ip = new FileInputStream(configFilePath);
+                ip = getClass().getClassLoader().getResourceAsStream("/config.properties");
                 prop.load(ip);
             }catch (IOException e) {
                 throw new RuntimeException(e);

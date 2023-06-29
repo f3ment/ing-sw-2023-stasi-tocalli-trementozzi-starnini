@@ -3,6 +3,7 @@ import model.board.Board;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,11 +47,11 @@ public class Player implements Serializable {
      * @param username the player username
      */
     public Player(TablePosition currentPosition,String username){
-        FileInputStream ip;
+        InputStream ip;
 
         {
             try {
-                ip = new FileInputStream(configFilePath);
+                ip = getClass().getClassLoader().getResourceAsStream("/config.properties");
                 prop.load(ip);
             } catch (IOException e) {
                 throw new RuntimeException(e);
