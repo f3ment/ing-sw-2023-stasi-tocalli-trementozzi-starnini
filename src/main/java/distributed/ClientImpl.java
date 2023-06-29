@@ -19,7 +19,7 @@ import java.util.TimerTask;
 public class ClientImpl extends UnicastRemoteObject implements Client, Runnable {
 
     private final View view;
-    private final int choice;
+    private int choice;
     private final Server sr;
     private final Client cl=this;
 
@@ -40,6 +40,27 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
         else{
             view = new GraphicalUI();
         }
+        sr=server;
+        try {
+            initialize(server);
+        } catch (RemoteException e){
+            System.err.println(Color.RED_BOLD + "Server unreachable!" );
+            System.err.println(Color.RED + "Client is unable to establish a connection to the server, either because the server is offline or there is an issue with the network connection.\n\n");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * clientImpl constructor used by tests
+     * it avoids opening a console input choice and instead provide it automatically
+     * to start the game with a textual interface
+     * @param server the server to which the client is connected
+     * @param test boolean value used to identify the constructor used by tests
+     * @throws RemoteException if the server is unreachable
+     */
+    public ClientImpl(Server server, boolean test) throws RemoteException {
+        super();
+        view = new TextualUI();
         sr=server;
         try {
             initialize(server);

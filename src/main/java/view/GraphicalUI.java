@@ -100,6 +100,7 @@ public class GraphicalUI extends View implements Runnable {
                     throw new RuntimeException(e);
                 }
                 initGameScene(message.getModel());
+                message.getChat().getChat().forEach(e -> GuiController.updateChat(e));
                 GuiController.startGame(username, message.getModel().getCurrentPlayer().getUsername().equals(username));
             });
         } else if (message.getEvent().equals(Event.FINISH_MATCH)){
@@ -156,6 +157,7 @@ public class GraphicalUI extends View implements Runnable {
                     try {
                         HelloApplication.setScene("Lobby");
                         GuiController.setUsername(username);
+                        message.getChat().getChat().forEach(e -> GuiController.updateChat(e));
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

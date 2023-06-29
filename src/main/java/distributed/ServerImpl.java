@@ -174,13 +174,13 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     gamesManagerController.LobbyByUsername(message.getUserName()).insertPlayer(client, message.getUserName());
                     gamesManagerController.insertPlayer(client,gamesManagerController.LobbyByUsername(message.getUserName()), message.getUserName());
                     currentLobby = gamesManagerController.getLobbyByClient(client);
-                    client.update(new Message(Event.WAIT_START_OF_MATCH, currentLobby.getClientsUsername() , currentLobby.getnPlayers()));
+                    client.update(new Message(Event.WAIT_START_OF_MATCH, currentLobby.getClientsUsername() , currentLobby.getnPlayers(),currentLobby.getChat()));
                 }
             } else {
 
                 Lobby lobby = this.gamesManagerController.addPlayerToLobby(client, message.getnPlayers(), message.getUserName());
                 currentLobby = gamesManagerController.getLobbyByClient(client);
-                client.update(new Message(Event.WAIT_START_OF_MATCH, currentLobby.getClientsUsername() , currentLobby.getnPlayers()));
+                client.update(new Message(Event.WAIT_START_OF_MATCH, currentLobby.getClientsUsername() , currentLobby.getnPlayers(),currentLobby.getChat()));
 
                 if (lobby != null) {
                     lobby.checkStartMatch();

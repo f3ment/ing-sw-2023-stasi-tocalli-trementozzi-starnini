@@ -160,6 +160,13 @@ public class Message implements Serializable {
         this.userName=userName;
     }
 
+    public Message(Event event, ArrayList<String> clientsUsername, int i, ChatView chat) {
+        this.event = event;
+        this.nicknames = clientsUsername;
+        this.nPlayers = i;
+        this.chat = chat;
+    }
+
 
     /**
      * @return the number of players in the game

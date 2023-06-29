@@ -854,6 +854,7 @@ public class ScenesController extends Observable<Event> implements Initializable
         }
     }
 
+
     /**
      * this method updates the chat with a new message
      * @param message the message to be added to the chat
@@ -1042,6 +1043,7 @@ public class ScenesController extends Observable<Event> implements Initializable
         alert.setContentText(errorMessage.substring(7,errorMessage.length()-4));
         alert.showAndWait();
     }
+
 }
 
 
