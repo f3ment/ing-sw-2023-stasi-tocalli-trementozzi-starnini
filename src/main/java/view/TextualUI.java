@@ -193,8 +193,8 @@ public class TextualUI extends View implements Runnable {
                     notifyObservers(new Message(Event.PLAYER_FINISH));
                     //todo adjust events with start method
                 } else if (message.getEvent().equals(Event.NEW_TURN)) {
-                    showAllScore(message.getModel());
                     synchronized (this) {
+                        showAllScore(message.getModel());
                         if (choice()) {
                             while (flagChat || choosing) {
                                 try {

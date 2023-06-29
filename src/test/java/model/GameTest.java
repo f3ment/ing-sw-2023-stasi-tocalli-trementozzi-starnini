@@ -22,7 +22,7 @@ String configFilePath = "./src/main/resources/config.properties";
 
     {
         try {
-            ip = new FileInputStream(configFilePath);
+            ip =(FileInputStream) getClass().getResourceAsStream("/config.properties");
             prop.load(ip);
         } catch (IOException e) {
             throw new RuntimeException(e);

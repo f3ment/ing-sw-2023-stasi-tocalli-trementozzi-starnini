@@ -159,4 +159,9 @@ public class GamesManagerController {
         }
 
     }
+
+    public ArrayList<Client> getCurrentClients(){
+        return new ArrayList<>(lobbies.keySet());
+    }
+
 }
