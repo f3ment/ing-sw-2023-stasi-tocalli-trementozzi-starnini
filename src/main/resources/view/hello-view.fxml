@@ -23,12 +23,12 @@
                 <Image url="@../Images/misc/base_pagina2.jpg" />
             </image>
         </ImageView>
-        <ImageView fitHeight="90.0" fitWidth="103.0" layoutX="909.0" layoutY="565.0" opacity="0.78">
+        <ImageView fitHeight="90.0" fitWidth="103.0" layoutX="909.0" layoutY="554.0" opacity="0.78">
             <image>
                 <Image url="@../Images/Publishermaterial/Publisher.png" />
             </image>
         </ImageView>
-        <ImageView fitHeight="50.0" fitWidth="169.0" layoutX="740.0" layoutY="601.0" opacity="0.34">
+        <ImageView fitHeight="50.0" fitWidth="169.0" layoutX="740.0" layoutY="587.0" opacity="0.34">
             <image>
                 <Image url="@../Images/Publishermaterial/Title2000x618px.png" />
             </image>

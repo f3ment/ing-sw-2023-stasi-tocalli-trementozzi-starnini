@@ -22,7 +22,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxWidth="1920.0" prefHeight="1080.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ScenesController">
+<AnchorPane maxWidth="1920.0" prefHeight="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ScenesController">
    <children>
       <TabPane focusTraversable="false" prefHeight="1080.0" prefWidth="1920.0" snapToPixel="false">
          <tabs>
@@ -153,7 +153,7 @@
                               <DropShadow />
                            </effect>
                         </Pane>
-                        <Pane layoutX="58.0" layoutY="873.0" prefHeight="153.0" prefWidth="683.0" style="-fx-background-radius: 12; -fx-border-color: rgb(112,58,4); -fx-border-radius: 8; -fx-border-width: 6; -fx-background-color: rgb(222,184,135);">
+                        <Pane layoutX="58.0" layoutY="849.0" prefHeight="153.0" prefWidth="683.0" style="-fx-background-radius: 12; -fx-border-color: rgb(112,58,4); -fx-border-radius: 8; -fx-border-width: 6; -fx-background-color: rgb(222,184,135);">
                            <children>
                               <Label fx:id="dialogText" layoutX="32.0" layoutY="15.0" prefHeight="123.0" prefWidth="620.0">
                                  <font>
@@ -233,7 +233,7 @@
                               <Image url="@../Images/misc/firstplayertoken.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="74.0" layoutY="718.0">
+                        <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="74.0" layoutY="700.0">
                            <image>
                               <Image url="@../Images/misc/cat.png" />
                            </image>

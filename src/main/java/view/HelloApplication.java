@@ -15,6 +15,11 @@ import java.rmi.RemoteException;
 
 import static java.lang.Math.max;
 
+/**
+ * This class is the starting point for the GUI Thread.
+ * It loads the first scene and sets its scene controller, adding also all the observers of the View.
+ * It also changes different scenes during the game.
+ */
 public class HelloApplication extends Application {
 
     private static Server Server;
@@ -25,6 +30,11 @@ public class HelloApplication extends Application {
 
     private static Stage CurrentStage;
 
+    /**
+     * This method is the starting point for the GUI Thread that sets the first scene and its controller.
+     * @param stage the stage to be set
+     * @throws IOException if the FXML file is not found
+     */
     @Override
     public void start(Stage stage) throws IOException {
         CurrentStage = stage;
@@ -59,6 +69,11 @@ public class HelloApplication extends Application {
         stage.show();
     }
 
+    /**
+     * This method is used to change the scenes during the game by passing a fxml source as a parameter.
+     * @param source the name of the FXML file to be loaded
+     * @throws IOException if the FXML file is not found
+     */
     public static void setScene(String source) throws IOException {
         FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource(source + ".fxml"));
         Parent root = loader.load();
@@ -92,10 +107,19 @@ public class HelloApplication extends Application {
         CurrentStage.getIcons().add(new Image(HelloApplication.class.getResourceAsStream("/Images/Publishermaterial/Icon50x50px.png")));
         CurrentStage.show();
     }
+
+    /**
+     * @param gui it saves a reference to the {@code GraphicalUI}
+     *
+     */
     public static void  setGui(GraphicalUI gui){
         HelloApplication.gui = gui;
     }
 
+    /**
+     * @param server It saves a reference to the {@code Server} inorder to update it from the scene controller
+     * @param client It saves a reference to the {@code Client} inorder to update the server from the right client
+     */
     public static void setClientServer(Server server, ClientImpl client){
         Server = server;
         Client = client;

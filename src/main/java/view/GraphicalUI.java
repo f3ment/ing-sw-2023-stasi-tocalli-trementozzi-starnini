@@ -10,6 +10,11 @@ import javafx.application.Platform;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * This class is used to handle the graphical interface of the game.
+ * It is directly updated by the client of changes in the model and when so, it
+ * calls the controller of GUI scenes to update the scene accordingly.
+ */
 public class GraphicalUI extends View implements Runnable {
     private ScenesController GuiController;
 
@@ -150,6 +155,7 @@ public class GraphicalUI extends View implements Runnable {
                     nicknames = message.getNicknames();
                     try {
                         HelloApplication.setScene("Lobby");
+                        GuiController.setUsername(username);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -210,6 +216,9 @@ public class GraphicalUI extends View implements Runnable {
        }
     }
 
+    /**
+     * This method will close the client process.
+     */
     public void close() {
         try {
             Thread.sleep(5000);

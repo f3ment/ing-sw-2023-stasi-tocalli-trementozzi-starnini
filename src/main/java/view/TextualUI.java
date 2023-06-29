@@ -13,6 +13,12 @@ import utils.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
+
+/**
+ * This class is the textual user interface of the game.
+ * It receives messages from the server and update the CLI accordingly,
+ * and it sends messages to the server when the view is modified by the user.
+ */
 public class TextualUI extends View implements Runnable {
 
     private String username;
@@ -23,6 +29,7 @@ public class TextualUI extends View implements Runnable {
     private boolean firstChat;
     private boolean choosing = false;
 
+    //////////////////////////////////////////////todo---------------------------------------------
     @Override
     public void run() {
         System.out.print(Color.BLACK_BACKGROUND);

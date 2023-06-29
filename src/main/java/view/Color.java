@@ -1,7 +1,8 @@
 package view;
 
-import javafx.scene.paint.Paint;
-
+/**
+ * Color class for console output
+ */
 public enum Color {
     //Color end string, color reset
     RESET("\033[0m"),
@@ -78,10 +79,16 @@ public enum Color {
 
     private final String code;
 
+    /**
+     * @param code color code
+     */
     Color(String code) {
         this.code = code;
     }
 
+    /**
+     * @return color code
+     */
     @Override
     public String toString() {
         return code;

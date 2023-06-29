@@ -5,6 +5,16 @@ import model.Message;
 import java.util.Vector;
 
 
+/**
+ * This class represents an observable object, or "data"
+ * in the model-view paradigm. It can be subclassed to represent an object that the application
+ * wants to have observed. An observable object can have one or more observers. An observer may be any object that
+ * implements interface {@link Observer}. After an observable instance changes, an application calling the
+ * {@code Observable}'s {@code notifyObservers} method causes all of its observers to be notified of the change by a
+ * call to their {@code update} method.
+ *
+ * @param <Event> Enum of events that can be observed
+ */
 public abstract class Observable<Event extends Enum<Event>> {
     private boolean changed = false;
     private Vector<Observer<? extends Observable<Event>, Event>> obs;
@@ -47,6 +57,11 @@ public abstract class Observable<Event extends Enum<Event>> {
     }
 
 
+    /**
+     * If this object has changed, as indicated by the {@code hasChanged} method, then notify all of its observers
+     *
+     * @param message Message to be sent to observers
+     */
     public void notifyObservers(Message message) {
         /*
          * a temporary array buffer, used as a snapshot of the state of
@@ -93,11 +108,17 @@ public abstract class Observable<Event extends Enum<Event>> {
         changed = true;
     }
 
+    /**
+     * Indicates that this object has no longer changed, or that it has already notified all of its observers of its
+     */
     protected synchronized void clearChanged() {
         changed = false;
     }
 
 
+    /**
+     * @return {@code true} if and only if this object has changed.
+     */
     public synchronized boolean hasChanged() {
         return changed;
     }

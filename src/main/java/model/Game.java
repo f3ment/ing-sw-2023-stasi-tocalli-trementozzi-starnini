@@ -563,9 +563,17 @@ public class Game extends Observable<Event> implements Serializable {
     }
 
 
+    /**
+     * This method sets the first finisher of the shelf
+     * @param id the id of the player to be set as first finisher of the shelf
+     */
     public void setFirstFinisher(String id){
         this.firstFinisher=id;
     }
+
+    /**
+     * @return the first finisher of the shelf
+     */
     public String getFirstFinisher(){
         return this.firstFinisher;
     }
