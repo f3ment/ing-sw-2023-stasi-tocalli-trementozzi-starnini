@@ -33,11 +33,11 @@ public class Board implements Serializable {
      * @param numPlayers number of players
      */
     public Board(int numPlayers){
-        InputStream ip;
+        FileInputStream ip;
 
         {
             try {
-                ip = getClass().getClassLoader().getResourceAsStream("/config.properties");
+                ip = new FileInputStream(configFilePath);
                 prop.load(ip);
             } catch (IOException e) {
                 throw new RuntimeException(e);

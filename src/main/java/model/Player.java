@@ -47,11 +47,11 @@ public class Player implements Serializable {
      * @param username the player username
      */
     public Player(TablePosition currentPosition,String username){
-        InputStream ip;
+        FileInputStream ip;
 
         {
             try {
-                ip = getClass().getClassLoader().getResourceAsStream("/config.properties");
+                ip = new FileInputStream(configFilePath);
                 prop.load(ip);
             } catch (IOException e) {
                 throw new RuntimeException(e);

@@ -28,13 +28,13 @@ public class Bookshelf implements Serializable {
      */
     public Bookshelf() throws IOException {
 
-        String configFilePath = "/config.properties";
+        String configFilePath = "./src/main/resources/config.properties";
         //FileInputStream ip;
-        InputStream ip;
+        FileInputStream ip;
         {
 
             try {
-                ip = getClass().getClassLoader().getResourceAsStream("/config.properties");
+                ip = new FileInputStream(configFilePath);
                 prop.load(ip);
             } catch (IOException e) {
                 e.printStackTrace();
