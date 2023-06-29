@@ -1,6 +1,5 @@
 package view;
 
-import com.google.gson.JsonArray;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -213,6 +212,9 @@ public class ScenesController extends Observable<Event> implements Initializable
         username = nickname.getText();
     }
 
+    public void setUsername (String username) {
+        this.username = username;
+    }
 
     public String getUsername() {
         return username;
@@ -805,7 +807,7 @@ public class ScenesController extends Observable<Event> implements Initializable
      */
     public void clickChatButton(){
 
-        inizializeChatBox();
+        initializeChatBox();
 
         chatInputText.setOnAction(event -> {
             if(!chatInputText.getText().equals("")){
@@ -836,7 +838,7 @@ public class ScenesController extends Observable<Event> implements Initializable
     /**
      * this method initializes the choice box of the chat
      */
-    private void inizializeChatBox() {
+    private void initializeChatBox() {
         if(choiceBox.getItems().isEmpty()){
             choiceBox.getItems().add("All");
             if (playerName2 != null) {
@@ -943,7 +945,6 @@ public class ScenesController extends Observable<Event> implements Initializable
         boardGrid.getChildren().clear();
     }
 
-    @FXML
     /**
      * this method sets the end game beside the player who first completes his shelf
      * @param model the model of the game
