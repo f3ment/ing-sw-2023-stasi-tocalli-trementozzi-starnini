@@ -31,11 +31,11 @@ public class PersonalGoal implements Serializable {
      * @param id which is the id of the goal
      */
     public PersonalGoal(Map<String, Map<String, String>> windows, int id){
-        InputStream ip;
+        FileInputStream ip;
 
         {
             try {
-                ip = getClass().getClassLoader().getResourceAsStream("/config.properties");
+                ip = new FileInputStream(configFilePath);
                 prop.load(ip);
             }catch (IOException e) {
                 throw new RuntimeException(e);
