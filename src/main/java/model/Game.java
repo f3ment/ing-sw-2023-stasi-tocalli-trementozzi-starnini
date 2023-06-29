@@ -55,7 +55,7 @@ public class Game extends Observable<Event> implements Serializable {
         InputStream ip;
         {
             try {
-                ip = getClass().getClassLoader().getResourceAsStream("/config.properties");
+                ip = getClass().getClassLoader().getResourceAsStream("config.properties");
                 prop.load(ip);
             } catch (IOException e) {
                 throw new RuntimeException(e);
