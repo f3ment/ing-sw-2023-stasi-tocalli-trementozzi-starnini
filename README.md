@@ -34,3 +34,33 @@ Model-View-Controller - MVC per progettare l'intero sistema.
 | Resilienza alle disconnessioni |     ![#c5f015](https://via.placeholder.com/15/008000/000000?text=+)      |
 | Chat                           |     ![#c5f015](https://via.placeholder.com/15/008000/000000?text=+)      |
 |Persistenza|     ![#c5f015](https://via.placeholder.com/15/ff0000/000000?text=+)      |
+
+
+## Requisiti di esecuzione
+
+Per eseguire correttamente il server e il client, assicurati di avere installato sul tuo sistema:
+
+- [Java Development Kit (JDK)](https://www.oracle.com/it/java/technologies/downloads/) versione 20 o successiva.
+
+## Esecuzione del Server
+
+Per avviare il server, segui questi passaggi:
+
+1. Apri il terminale o la riga di comando.
+2. Posizionati nella directory in cui si trova il file eseguibile `softeng-gc46-server.jar`.
+3. Esegui il seguente comando:
+
+   ```bash
+   java -jar softeng-gc46-server.jar
+
+
+## Esecuzione del Client
+
+Per avviare il client, segui questi passaggi:
+
+1. Apri il terminale o la riga di comando.
+2. Posizionati nella directory in cui si trova il file eseguibile `softeng-gc46-client.jar`.
+3. Esegui il seguente comando:
+
+   ```bash
+   java -jar softeng-gc46-client.jar
