@@ -12,7 +12,7 @@ import model.Message;
  *                     that this observer is observing
  * @param <Event> the enumeration of the event that this observer is observing
  *
- * @implNote
+ *
  * This class is a Generic Implementation of the deprecated {@link java.util.Observer}.
  */
 public interface Observer<SubjectType extends Observable<Event>, Event extends Enum<Event>> {
