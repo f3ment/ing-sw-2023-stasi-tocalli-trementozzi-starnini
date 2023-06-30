@@ -8,8 +8,7 @@
 
 Implementazione del gioco da tavolo [MyShelfie](https://www.craniocreations.it/prodotto/my-shelfie).
 
-Il progetto consiste nell'implementazione di un sistema distribuito con tecnologia client-server. Per ogni
-partita verrà lanciata una istanza del server in grado di gestire una partita alla volta e due o più client
+Il progetto consiste nell'implementazione di un sistema distribuito con tecnologia client-server. Una istanza del server è in grado di gestire più partite contemporaneamente e due o più client
 (uno per giocatore) che possono partecipare ad una sola partita alla volta. Si richiede l'utilizzo del pattern
 Model-View-Controller - MVC per progettare l'intero sistema.
 
