@@ -197,7 +197,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                                 }
                             }
                             synchronized (l.getChangePosition()){
-                                if(l.getCurrentPlayer()!=null && !l.getStatusPlayer(l.getCurrentPlayer()) && l.getOnlinePlayers()>1){
+                                if(l.getCurrentPlayer()!=null && !l.getStatusPlayer(l.getCurrentPlayer()) && l.getOnlinePlayers()>1&&!l.isToRemove()){
                                     l.getController().update(l.getClientByUsername(l.getCurrentPlayer()), new Message(Event.CONNECTION_PROBLEM));
                                 }
                             }

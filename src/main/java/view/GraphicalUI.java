@@ -119,7 +119,11 @@ public class GraphicalUI extends View implements Runnable {
             });
         } else if( message.getModel()!= null && !message.getModel().getCurrentPlayer().getUsername().equals(username)){
             Platform.runLater(() -> {
-                GuiController.checkEndTokenAssigned(message.getModel());
+                try {
+                    GuiController.checkEndTokenAssigned(message.getModel());
+                }catch (Exception e){
+
+                }
                 GuiController.setMyTurn(false , message.getModel().getCurrentPlayer().getUsername());
                 GuiController.updateScores(message.getModel(),username);
                 GuiController.updateStack(message.getModel());
