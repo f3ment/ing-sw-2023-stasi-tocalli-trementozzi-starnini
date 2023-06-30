@@ -27,6 +27,12 @@ public class TextualUI extends View implements Runnable {
     private boolean lobbyExist = false;
     private boolean firstChat;
     private boolean choosing = false;
+
+    /**
+     * This is the run method that is called when starting the textuaUI.
+     * It prints the welcome message of the game and sends a notify event to the model
+     * to start the game.
+     */
     @Override
     public void run() {
         System.out.print(Color.BLACK_BACKGROUND);
@@ -61,6 +67,13 @@ public class TextualUI extends View implements Runnable {
         notifyObservers(new Message(Event.GAME_INIT));
 
     }
+
+    /**
+     * This method update the textual view when it receives a message from the server.
+     * It handles all the possible events that can be received and notify the model
+     * when a user interact and modify the view.
+     * @param message is the message received from the server.
+     */
     public void update(Message message) {
         if(message.getEvent().equals(Event.GET_CHAT) && message.getUserName().equals(username)){
             this.flagChat = true;
@@ -300,6 +313,13 @@ public class TextualUI extends View implements Runnable {
             }
         }
     }
+
+    /**
+     * The start method is called when a player starts his turn.
+     * It shows all the game elements in the console and displays a
+     * simple menu to choose among some different actions
+     * @param o is the GameView object that contains all the information about the game
+     */
     private void start(GameView o) {
         System.out.print(Color.GREEN_BOLD_BRIGHT);
         System.out.println(o.getCurrentPlayer().getUsername() + ", it's your turn!");
@@ -510,10 +530,19 @@ public class TextualUI extends View implements Runnable {
         }
     }
 
+    /**
+     * This method prints a single tile to the console
+     * @param elem ItemTiles object that contains the type of the tile
+     */
     private void showItemTile(ItemTiles elem) {
         System.out.print(" " + elem.getType().getColor() + "▓▓" + Color.RESET);
     }
 
+    /**
+     * This method handles the insertion of the cards in the bookshelf
+     * It sends an event to the server when the player selects a playable column to insert the cards
+     * @param o GameView object that contains all the information about the game
+     */
     private void playerInsert(GameView o) {
         ArrayList<Integer> order = new ArrayList<>();
         int column;
@@ -558,6 +587,10 @@ public class TextualUI extends View implements Runnable {
 
     }
 
+    /**
+     * This method handles the drawing of the cards from the board
+     * @param o GameView object that contains all the information about the game
+     */
     private void playerDraw(GameView o) {
         ArrayList<ArrayList<Integer>> drawn = new ArrayList<>();
         int nCards, x, y;
@@ -626,6 +659,10 @@ public class TextualUI extends View implements Runnable {
     }
 
 
+    /**
+     * THis method displays the player current picked cards
+     * @param o GameView object that contains all the information about the game
+     */
     void showHand(GameView o) {
         for (int i = 0; i < o.getPickedCards().size(); i++) {
             System.out.print(i + 1 + "  ");
@@ -639,7 +676,10 @@ public class TextualUI extends View implements Runnable {
     }
 
 
-
+    /**
+     * This method reads an int input form the console
+     * @return the number read form the console
+     */
     public int readingInt() {
         int userInput;
         Scanner input;
@@ -668,13 +708,26 @@ public class TextualUI extends View implements Runnable {
     }
 
 
+    /**
+     * This method shows the first common goal of the game
+     * @param o GameView object that contains all the information about the game
+     */
     public void showFirstCommonGoal(GameView o){
         System.out.println(Color.YELLOW_BOLD_BRIGHT + "1st Common goal: " + Color.YELLOW + o.getFirstCommonGoalDescription() + Color.RESET);
     }
+
+    /**
+     * This method shows the second common goal of the game
+     * @param o GameView object that contains all the information about the game
+     */
     public void showSecondCommonGoal(GameView o){
         System.out.println(Color.YELLOW_BOLD_BRIGHT + "2nd Common goal: " + Color.YELLOW + o.getSecondCommonGoalDescription() + Color.RESET);
     }
 
+    /**
+     * This method is used to read from the game chat and manage
+     * all the events related to it
+     */
     public synchronized void readingForChat(){
         if(lobbyExist && firstChat ){
             this.firstChat = false;
@@ -708,6 +761,9 @@ public class TextualUI extends View implements Runnable {
         }
     }
 
+    /**
+     * @return true if the player is in the chat, false otherwise
+     */
     public boolean choice(){
         boolean flagErr;
         if(!flagChat && !choosing){
@@ -737,6 +793,10 @@ public class TextualUI extends View implements Runnable {
         return flagChat;
     }
 
+    /**
+     * This method shows the personal goal of the player
+     * @param o GameView object that contains all the information about the game
+     */
     public void showPersonalGoal(GameView o){
         Map<String, String> elem;
         boolean found;
@@ -777,6 +837,10 @@ public class TextualUI extends View implements Runnable {
             System.out.println(Color.WHITE_BRIGHT + " |" +Color.RESET);
         }
     }
+
+    /**
+     * This method is used to shut down the client instance when  a match is finished
+     */
     public void close(){
         try {
             Thread.sleep(5000);

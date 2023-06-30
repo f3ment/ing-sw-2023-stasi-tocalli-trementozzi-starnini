@@ -11,6 +11,12 @@ import java.rmi.registry.Registry;
 import java.util.Objects;
 import java.util.Scanner;
 
+/**
+ * This is the main class of the client.
+ * It is responsible for starting the client and choosing the network architecture.
+ * It also asks the user for the server's IP address and port number and then
+ * starts the client and connects it to the server.
+ */
 public class AppClient {
 
     private static int Port = 1234;
@@ -28,8 +34,11 @@ public class AppClient {
             startSocketClient();
         }
     }
-    
-    
+
+
+    /**
+     * @return 1 if the user wants to use RMI, 2 if the user wants to use SOCKET
+     */
     public static int chooseNetworkArchitecture(){
         int choice;
         System.out.println("Welcome to MyShelfie!\nPlease choose what architecture do you want to connect with:\n" +
@@ -53,6 +62,12 @@ public class AppClient {
         return choice;
     }
 
+    /**
+     * Starts the client using RMI architecture.
+     * @throws RemoteException if the server is not reachable
+     * @throws NotBoundException if the server is not bound
+     * @throws SocketException if the socket is not reachable
+     */
     private static void startRmiClient() throws RemoteException, NotBoundException, SocketException {
         DatagramSocket datagramSocket = new DatagramSocket();
         try{
@@ -68,6 +83,10 @@ public class AppClient {
             client.run();
     }
 
+    /**
+     * Starts the client using SOCKET architecture.
+     * @throws RemoteException if the server is not reachable
+     */
     private static void startSocketClient() throws RemoteException {
         ServerStub serverStub = new ServerStub(Ip, Port);
         ClientImpl client = new ClientImpl(serverStub);
@@ -91,7 +110,9 @@ public class AppClient {
     }
 
 
-
+    /**
+     * Asks the user for the server's IP address and port number.
+     */
     private static void chooseNetworkAddress(){
 
         System.out.println("Now enter the" + Color.BLUE_BRIGHT + " Port Number " +Color.RESET + "and the " +Color.BLUE_BRIGHT+ "IP address "+Color.RESET +"of the server you want to join");
@@ -131,6 +152,11 @@ public class AppClient {
         }
     }
 
+    /**
+     * Checks if a string is numeric.
+     * @param str the string to check
+     * @return
+     */
     private static boolean isNumeric(String str){
         return str != null && str.matches("[0-9.]+");
     }

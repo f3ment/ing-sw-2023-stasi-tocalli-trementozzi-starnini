@@ -12,6 +12,13 @@ import java.rmi.registry.Registry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * This class is the entry point of the server application.
+ * It starts the RMI and the Socket server.
+ * It also sets the java.rmi.server.hostname property to the current IP address.
+ * This is needed to allow the client to connect to the server.
+ *
+ */
 public class AppServer {
 
     private static final ExecutorService executorService = Executors.newCachedThreadPool();
@@ -22,6 +29,11 @@ public class AppServer {
     }
 
 
+    /**
+         * This method starts the server allowing the RMI and Socket Architecture.
+     * @param args the command line arguments
+     * @throws RemoteException if the RMI server cannot be started
+     */
     public static void main(String[] args) throws RemoteException {
         DatagramSocket datagramSocket;
         try {
@@ -65,6 +77,10 @@ public class AppServer {
         }
     }
 
+    /**
+     * This method starts the socket server.
+     * @throws RemoteException if the socket server cannot be started
+     */
     public static void startSocket() throws RemoteException {
 
         try (ServerSocket serverSocket = new ServerSocket(1234)) {
@@ -93,6 +109,10 @@ public class AppServer {
         }
     }
 
+    /**
+     * This method starts the RMI server.
+     * @throws RemoteException if the RMI server cannot be started
+     */
     private static void startRMI() throws RemoteException{
         Registry registry = LocateRegistry.createRegistry(1099);
         try {
