@@ -52,11 +52,13 @@ public class Game extends Observable<Event> implements Serializable {
          * */
         String configFilePath = "./src/main/resources/config.properties";
         Properties prop = new Properties();
-        FileInputStream ip;
+        //FileInputStream ip;
         {
             try {
-                ip = new FileInputStream(configFilePath);
-                prop.load(ip);
+                //ip = new FileInputStream(configFilePath);
+                //prop.load(ip);
+                prop.load(Game.class.getResourceAsStream("/config.properties"));
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -80,7 +82,9 @@ public class Game extends Observable<Event> implements Serializable {
         //every card is a hashmap of 6 couplets of key (Type) and value (pair of coordinates)
 
         // 1. JSON file to Java object
-        Map<String, Map<String, Map<String, String>>> windows = gson.fromJson(new FileReader("./src/main/resources/personalGoals.json"),
+        /*Map<String, Map<String, Map<String, String>>> windows = gson.fromJson(new FileReader("./src/main/resources/personalGoals.json"),
+                new TypeToken<Map<String, Map<String, Map<String, String>>>>() {}.getType());*/
+        Map<String, Map<String, Map<String, String>>> windows = gson.fromJson(new BufferedReader(new InputStreamReader(Game.class.getResourceAsStream("/personalGoals.json"))),
                 new TypeToken<Map<String, Map<String, Map<String, String>>>>() {}.getType());
         //Best Practice
         //object.forEach((key, value) -> value.values().forEach(i -> System.out.println(i.get("X"))));
