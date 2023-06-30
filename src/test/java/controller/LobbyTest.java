@@ -3,10 +3,10 @@ package controller;
 import distributed.Client;
 import distributed.ClientImpl;
 import distributed.ServerImpl;
+import model.ChatMessage;
 import model.Game;
 import model.Message;
 import model.views.ChatView;
-import model.views.GameView;
 import org.junit.jupiter.api.Test;
 import utils.Event;
 
@@ -134,7 +134,7 @@ class LobbyTest {
         Client client = new ClientImpl(new ServerImpl(),true);
         Lobby lobby = new Lobby(2, "toky", client);
         lobby.insertPlayer(new ClientImpl(new ServerImpl(),true),"mike");
-        assertTrue(lobby.getChat() instanceof ChatView);
+        assertTrue(lobby.getChatView() instanceof ChatView);
     }
 
     @Test
@@ -280,7 +280,23 @@ class LobbyTest {
         assertNotEquals(first,lobby.getCurrentPlayer());
     }
 
+    @Test
+    public void insertNotFull() throws RemoteException{
+        Client client = new ClientImpl(new ServerImpl(),true);
+        ServerImpl g = new ServerImpl();
+        Client c= new ClientImpl(g,true);
+        Client v= new ClientImpl(g,true);
+        Client a= new ClientImpl(g,true);
+        g.update(v,new Message(Event.LOGIN,3,"arrivederci"));
+        g.update(a,new Message(Event.LOGIN,3,"arrivederci"));
+        Lobby lobby = new Lobby(2, "toky", client);
+        lobby.getChat().setChangedAndNotifyObservers(new Message(Event.SEND_MESSAGE,new ChatMessage("sdf","dfgh","dfg")));
+        lobby.getChat().setChangedAndNotifyObservers(new Message(Event.SEND_MESSAGE,new ChatMessage("sdf","toky","dfg")));
+        lobby.insertPlayer(c,"tok");
+        lobby.getChat().setChangedAndNotifyObservers(new Message(Event.SEND_MESSAGE,new ChatMessage("sdf","tok","dfg")));
+        lobby.getChat().setChangedAndNotifyObservers(new Message(Event.SEND_MESSAGE,new ChatMessage("sdf","234567","dfg")));
 
+    }
 
 
 

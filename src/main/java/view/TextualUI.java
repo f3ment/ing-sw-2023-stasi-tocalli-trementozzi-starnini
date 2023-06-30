@@ -10,7 +10,6 @@ import model.ItemTiles;
 import model.views.PlayerView;
 import utils.*;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -28,8 +27,6 @@ public class TextualUI extends View implements Runnable {
     private boolean lobbyExist = false;
     private boolean firstChat;
     private boolean choosing = false;
-
-    //////////////////////////////////////////////todo---------------------------------------------
     @Override
     public void run() {
         System.out.print(Color.BLACK_BACKGROUND);
@@ -87,7 +84,6 @@ public class TextualUI extends View implements Runnable {
             }
 
         }else if(message.getEvent().equals(Event.EXIT_CHAT) && message.getUserName().equals(username)){
-            //flagChat = false;
             synchronized (this){
                 System.out.println("----------------------------");
                 System.out.println("Now you can play.");
@@ -116,7 +112,6 @@ public class TextualUI extends View implements Runnable {
                                 throw new RuntimeException();
                             }
                         }
-                        //showBookshelf(o); -> non si può usare perché mostriamo la currentBookshelf che non corrisponde a quella del giocatore in attesa
                     }
                 }
             }
@@ -173,7 +168,6 @@ public class TextualUI extends View implements Runnable {
                 } else if (message.getEvent().equals(Event.PLAYER_DRAW_POSITIVE)) {
                     synchronized (this){
                         System.out.println(Color.GREEN + "Cards picked correctly!" + Color.RESET);
-                        //show picked cards
                         showHand(message.getModel());
                     }
                     playerInsert(message.getModel());
@@ -190,7 +184,6 @@ public class TextualUI extends View implements Runnable {
                     }
                     setChanged();
                     notifyObservers(new Message(Event.PLAYER_FINISH));
-                    //todo adjust events with start method
                 } else if (message.getEvent().equals(Event.NEW_TURN)) {
                     synchronized (this) {
                         showAllScore(message.getModel());
@@ -450,9 +443,6 @@ public class TextualUI extends View implements Runnable {
 
         for(int n=0; n<o.getNumPlayer(); n++){
             PlayerView player = (PlayerView) PlayerList.get(n);
-          // Verificare se lo username è più lungo della board
-          // operare in modo differente a seconda del controllo precedente
-          // lo spezzone di codice che c'è sotto è per quando gli username sono più 'corti' della bookshelf
             System.out.print(" ");
             String nick = player.getUsername();
             if(nick.equals(username)){
@@ -525,11 +515,9 @@ public class TextualUI extends View implements Runnable {
     }
 
     private void playerInsert(GameView o) {
-        //scan input
         ArrayList<Integer> order = new ArrayList<>();
         int column;
         boolean flag;
-        //controllo input ordine
         do {
             flag = true;
             System.out.println(Color.WHITE_BRIGHT + "Insert in which order do you want to insert cards : " + Color.RESET);
@@ -544,8 +532,6 @@ public class TextualUI extends View implements Runnable {
                 order.add(index - 1);
             }
 
-
-            //check on order input
             if (order.stream().distinct().count() != o.getPickedCards().size()) {
                 System.out.println(Color.RED_BOLD + "ERROR!" + Color.RED + " Found many occurrences of the same index!" + Color.RESET);
                 flag = false;
@@ -567,7 +553,6 @@ public class TextualUI extends View implements Runnable {
         System.out.println("Now insert in which column would you like to insert your cards. ");
         System.out.println("REMEMBER : it must be between 1 and " + o.getLenghtBookshelf() + ".");
         column = readingInt() - 1;
-        //choose column
         setChanged();
         notifyObservers(new Message(Event.PLAYER_INSERT_POSITIVE, column, order));
 
@@ -660,7 +645,7 @@ public class TextualUI extends View implements Runnable {
         Scanner input;
         try {
             while (System.in.available() > 0) {
-                System.in.read(new byte[System.in.available()]);  //clear System.in
+                System.in.read(new byte[System.in.available()]);
             }
         }catch (IOException e){
             System.out.println("error reading");

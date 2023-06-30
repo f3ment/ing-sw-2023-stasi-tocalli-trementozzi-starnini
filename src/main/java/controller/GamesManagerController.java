@@ -100,26 +100,6 @@ public class GamesManagerController {
        return a.getStatusPlayer(username);
     }
 
-   /* public void checkClientsConnections(){
-        new Thread(){
-            @Override
-            public void run() {
-                String username;
-                while(true){
-                    for(Lobby a : lobbies_list){
-                        for(String user: a.getClientsUsername() ){
-                            if(!a.getStatusPlayer(user)){
-                                username=new String(user);
-                                lobbies.
-                            }
-                        }
-                    }
-                }
-            }
-        }.start();
-    }*/
-
-
     /**
      * This method is used to get the list of existing lobbies.
      * @return The list of lobbies.

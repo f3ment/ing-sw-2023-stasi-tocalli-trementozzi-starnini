@@ -28,16 +28,16 @@ public class Lobby {
     private GameController gameController;
     private String id;
     private int nPlayers;
-    private HashMap<String, Client> usersId;  // link clients and their usernames
-    private HashMap<String,Timer> timerPlayers; //timers for every ping's player
-    private HashMap<String,Boolean> status;  //status online/offline players
-    private Timer timerOneLeftPlayer=new Timer();  //timer which starts when there is only one left player online
-    private boolean isFull;  //true if the match has beginned
-    private boolean on;    //there is at least one player online
-    private int onlineplayers=0;  // number of players online
-    private boolean oneleft;  //true if there is only one player online
-    private boolean valid=true; // when it becomes false, the match is forced to end
-    private boolean flagfinal;  // true when timerOneLeftPlayer starts
+    private HashMap<String, Client> usersId;
+    private HashMap<String,Timer> timerPlayers;
+    private HashMap<String,Boolean> status;
+    private Timer timerOneLeftPlayer=new Timer();
+    private boolean isFull;
+    private boolean on;
+    private int onlineplayers=0;
+    private boolean oneleft;
+    private boolean valid=true;
+    private boolean flagfinal;
     private boolean toRemove;
     private Object changePosition;
 
@@ -270,8 +270,12 @@ public class Lobby {
         return gameController;
     }
 
-    public ChatView getChat() {
+    public ChatView getChatView() {
         return new ChatView(chat);
+    }
+
+   public Chat getChat(){
+        return this.chat;
     }
     public ChatController getChatController() {
         return this.chatController;
@@ -350,7 +354,6 @@ public class Lobby {
     public synchronized void setOne(boolean value){
         oneleft=value;
     }
-
     public void setFinalTimer(){
         flagfinal=false;
         timerOneLeftPlayer=new Timer();
@@ -359,7 +362,7 @@ public class Lobby {
             public void run() {
                 valid=false;
             }
-        },30000);
+        },60000);
     }
     public void resetFinalTimer(){
         flagfinal=true;

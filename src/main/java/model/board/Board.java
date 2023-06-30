@@ -4,11 +4,8 @@ import model.Bag;
 import model.Box;
 import model.ItemTiles;
 import model.Token;
-import model.goals.PersonalGoal;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Properties;
 
@@ -21,9 +18,6 @@ public class Board implements Serializable {
     private Box[][] board;
     private Token token;
     private final int maxLength, maxHeight;
-
-
-    String configFilePath = "./src/main/resources/config.properties";
     Properties prop = new Properties();
 
 
@@ -38,8 +32,6 @@ public class Board implements Serializable {
 
         {
             try {
-                //ip = new FileInputStream(configFilePath);
-                //prop.load(ip);
                 prop.load(Board.class.getResourceAsStream("/config.properties"));
             } catch (IOException e) {
                 throw new RuntimeException(e);

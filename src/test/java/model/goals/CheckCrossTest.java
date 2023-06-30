@@ -13,8 +13,6 @@ import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 
 
 class CheckCrossTest {
@@ -30,7 +28,6 @@ class CheckCrossTest {
 
         try {
 
-            //testing positive: CATS cross at the down left corner
             /**
              *   0 1 2 3 4
              * 0
@@ -70,7 +67,6 @@ class CheckCrossTest {
 
 
         try{
-            //testing negative case
 
             bookshelf = new Bookshelf();
 

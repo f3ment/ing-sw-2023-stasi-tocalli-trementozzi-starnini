@@ -1,10 +1,7 @@
 package model;
 import model.board.Board;
-import model.goals.PersonalGoal;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,13 +25,8 @@ public class Player implements Serializable {
     private ArrayList<ItemTiles> PickedCards;
     private final TablePosition currentPosition;
 
-    Map<Integer,ScoringToken> tokens; //common goal
+    Map<Integer,ScoringToken> tokens;
 
-
-    /*
-     * Apertura file di configurazione
-     * */
-    String configFilePath = "./src/main/resources/config.properties";
     Properties prop = new Properties();
     private int personalGoalScore;
     private boolean firstGoal;
@@ -48,12 +40,9 @@ public class Player implements Serializable {
      * @param username the player username
      */
     public Player(TablePosition currentPosition,String username){
-        //FileInputStream ip;
 
         {
             try {
-                //ip = new FileInputStream(configFilePath);
-                //prop.load(ip);
                 prop.load(Player.class.getResourceAsStream("/config.properties"));
 
             } catch (IOException e) {

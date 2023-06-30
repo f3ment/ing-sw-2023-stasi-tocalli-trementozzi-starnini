@@ -4,7 +4,6 @@ import model.Bookshelf;
 import model.ItemTiles;
 import model.ScoringToken;
 import model.Type;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

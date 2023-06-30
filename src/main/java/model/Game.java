@@ -47,16 +47,10 @@ public class Game extends Observable<Event> implements Serializable {
      */
     public Game(ArrayList<String> usernames) throws IOException {
         super();
-        /*
-         * Config file opening
-         * */
-        String configFilePath = "./src/main/resources/config.properties";
+
         Properties prop = new Properties();
-        //FileInputStream ip;
         {
             try {
-                //ip = new FileInputStream(configFilePath);
-                //prop.load(ip);
                 prop.load(Game.class.getResourceAsStream("/config.properties"));
 
             } catch (IOException e) {
@@ -78,24 +72,10 @@ public class Game extends Observable<Event> implements Serializable {
         this.endGameToken = false;
         this.finalPlayerList = new ArrayList<>();
 
-        //initializes the personal goal deck with 12 cards
-        //every card is a hashmap of 6 couplets of key (Type) and value (pair of coordinates)
 
-        // 1. JSON file to Java object
-        /*Map<String, Map<String, Map<String, String>>> windows = gson.fromJson(new FileReader("./src/main/resources/personalGoals.json"),
-                new TypeToken<Map<String, Map<String, Map<String, String>>>>() {}.getType());*/
         Map<String, Map<String, Map<String, String>>> windows = gson.fromJson(new BufferedReader(new InputStreamReader(Game.class.getResourceAsStream("/personalGoals.json"))),
                 new TypeToken<Map<String, Map<String, Map<String, String>>>>() {}.getType());
-        //Best Practice
-        //object.forEach((key, value) -> value.values().forEach(i -> System.out.println(i.get("X"))));
 
-        // Ours
-        /*
-        object.entrySet().stream().forEach(e-> {
-            e.getValue().entrySet().stream().map(
-                    k -> k.getValue()).forEach(i -> System.out.println(i.get("X")));
-        });
-        */
         this.tablePositionList = new ArrayList<>();
         ArrayList<Map<String, Map<String, String>>> windowsArr = new ArrayList<>();
         for(int i = 0; i< windows.size(); i++){
@@ -146,17 +126,13 @@ public class Game extends Observable<Event> implements Serializable {
      */
     public void validateCommonGoal(TablePosition tablePosition) {
         ScoringToken res;
-        //check if player at current tableposition has already achieved the first common goal
         if(!tablePosition.getPlayer().hasCompletedFirst() && !firstCommonGoal.getCompleted()) {
-            //add token to current player returned from validate
             tablePosition.getPlayer().setToken(firstCommonGoal.validate(tablePosition.getBookshelf()), firstCommonGoal.getRomanNumber());
             if (firstCommonGoal.getStack().isEmpty()) {
                 firstCommonGoal.setCompleted(true);
             }
         }
-        //check if player at current tableposition has already achieved the second common goal
         if(!tablePosition.getPlayer().hasCompletedSecond() && !secondCommonGoal.getCompleted()){
-            //add token to current player returned from validate
             tablePosition.getPlayer().setToken(secondCommonGoal.validate(tablePosition.getBookshelf()),secondCommonGoal.getRomanNumber());
             if (secondCommonGoal.getStack().isEmpty()) {
                 secondCommonGoal.setCompleted(true);
@@ -337,7 +313,7 @@ public class Game extends Observable<Event> implements Serializable {
      */
     public void setWinner() {
         int score=0;
-        String winner = "init"; //initialize to avoid this.winner error *can't assign a nullable variable
+        String winner = "init";
 
         for(TablePosition o: tablePositionList){
             if(o.getPlayer().getScore()>score && o.getPlayer().getStatus()){
@@ -435,7 +411,6 @@ public class Game extends Observable<Event> implements Serializable {
             }
             return true;
         } catch (Exception e) {
-            //column not correct
             return false;
         }
     }

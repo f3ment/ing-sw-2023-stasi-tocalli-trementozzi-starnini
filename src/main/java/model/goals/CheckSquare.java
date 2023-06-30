@@ -1,5 +1,4 @@
 package model.goals;
-// 1
 import model.Bookshelf;
 import model.ScoringToken;
 

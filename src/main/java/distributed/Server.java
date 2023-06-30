@@ -4,7 +4,6 @@ import model.Message;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 
 /**
  * Server interface

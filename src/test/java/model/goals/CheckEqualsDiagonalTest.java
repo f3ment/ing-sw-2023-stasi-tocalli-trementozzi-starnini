@@ -213,7 +213,6 @@ class CheckEqualsDiagonalTest {
         try{
             bookshelf = new Bookshelf();
 
-            //tipi diversi sulle diagonali
             bookshelf.setChoosenColumn(4);
             bookshelf.insert(new ItemTiles(Type.CATS, 1));
             bookshelf.insert(new ItemTiles(Type.CATS, 1));

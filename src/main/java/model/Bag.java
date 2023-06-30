@@ -1,6 +1,5 @@
 package model;
 
-import model.goals.PersonalGoal;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -19,23 +18,17 @@ public class Bag implements Serializable {
         private int id;
         private final int maxCardsPerType;
 
-        private ArrayList<ItemTiles> items; //struttura contenente Items
-
+        private ArrayList<ItemTiles> items;
         /**
          * Constructor for the Bag class that initializes the items.
          * It reads the number of items from the config.properties file.
          */
         public Bag(){
 
-                String configFilePath = "./src/main/resources/config.properties";
                 Properties prop = new Properties();
-
-                //FileInputStream ip;
 
                 {
                         try {
-                                //ip = new FileInputStream(configFilePath);
-                                //prop.load(ip);
                                 prop.load(Bag.class.getResourceAsStream("/config.properties"));
                         } catch (IOException e) {
                                 throw new RuntimeException(e);

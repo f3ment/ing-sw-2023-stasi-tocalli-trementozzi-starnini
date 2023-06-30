@@ -15,12 +15,11 @@ class CheckColumnDifferentTest {
     private ScoringToken scoringToken;
     private CommonGoal cm;
     @Test
-    //colonne da 6 elementi diversi, 2 ripetizioni
     void validateSixDiff() {
         cm = new CheckColumnDifferent(1, 4,2 , true);
         try{
             bookshelf = new Bookshelf();
-            //2 full columns with 6 different items each
+
             bookshelf.setChoosenColumn(0);
             bookshelf.insert(new ItemTiles(Type.CATS,1));
             bookshelf.insert(new ItemTiles(Type.FRAMES,1));
@@ -47,7 +46,6 @@ class CheckColumnDifferentTest {
         }
 
         try{
-            //one bookshelf cell empty
             bookshelf = new Bookshelf();
 
             bookshelf.setChoosenColumn(0);
@@ -73,7 +71,6 @@ class CheckColumnDifferentTest {
         }
 
         try{
-            //one column with 5 different items and one with 6 different items
             bookshelf = new Bookshelf();
 
             bookshelf.setChoosenColumn(0);
@@ -129,7 +126,6 @@ class CheckColumnDifferentTest {
     }
 
     @Test
-        //colonne da max 3 elementi diversi, 3 ripetizioni
     void validateThreeDiff(){
         cm = new CheckColumnDifferent(1, 4,3 , false);
         try{
@@ -170,7 +166,6 @@ class CheckColumnDifferentTest {
         }
 
         try {
-            //three columns with 3 different types each
             bookshelf = new Bookshelf();
 
             bookshelf.setChoosenColumn(0);
@@ -205,7 +200,6 @@ class CheckColumnDifferentTest {
         }
 
         try {
-            //three columns with 3 different types each but the second column has 5 items
             bookshelf = new Bookshelf();
 
             bookshelf.setChoosenColumn(0);

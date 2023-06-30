@@ -1,10 +1,8 @@
 package model;
 
-import model.TablePosition;
+
 import model.goals.PersonalGoal;
 import org.junit.jupiter.api.Test;
-
-import javax.swing.text.TabExpander;
 
 import java.io.IOException;
 import java.util.Arrays;

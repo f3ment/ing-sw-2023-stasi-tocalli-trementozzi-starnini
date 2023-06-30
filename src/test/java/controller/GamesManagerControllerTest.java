@@ -75,6 +75,11 @@ class GamesManagerControllerTest {
         lobby = gamesManagerController.addPlayerToLobby(client, 2, "mike");
         gamesManagerController.removePlayer(client);
         assertNull(gamesManagerController.getLobbyByClient(client));
+        try{
+            gamesManagerController.removeLobby(4);
+        }catch (Exception e){
+            System.out.println("right");
+        }
     }
 
 
@@ -88,5 +93,14 @@ class GamesManagerControllerTest {
         gamesManagerController.removeLobby(0);
         assertTrue(gamesManagerController.getLobbies_list().isEmpty());
     }
-
+    @Test
+    void getClientsTest() throws RemoteException{
+        GamesManagerController gamesManagerController = new GamesManagerController();
+        Client client = new ClientImpl(new ServerImpl(),true);
+        Lobby lobby = gamesManagerController.addPlayerToLobby(client, 2, "toky");
+        assertNull(lobby);
+        lobby = gamesManagerController.addPlayerToLobby(client, 2, "mike");
+        assertTrue(gamesManagerController.getClients("toky"));
+        assertFalse(gamesManagerController.getClients("rick"));
+    }
 }

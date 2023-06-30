@@ -3,12 +3,9 @@ package model;
 import model.goals.PersonalGoal;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static junit.framework.Assert.assertNull;
+import java.util.HashMap;
+
 import static junit.framework.Assert.assertTrue;
 class ScoringTokenTest {
     private ScoringToken scoringtoken;

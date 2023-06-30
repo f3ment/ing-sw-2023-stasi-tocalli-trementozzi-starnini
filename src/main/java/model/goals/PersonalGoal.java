@@ -1,8 +1,6 @@
 package model.goals;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -14,10 +12,6 @@ public class PersonalGoal implements Serializable {
     private final int height;
     private final int length;
     private final int id;
-    /*
-     * Apertura file di configurazione
-     * */
-    String configFilePath = "./src/main/resources/config.properties";
     Properties prop = new Properties();
 
 
@@ -31,11 +25,8 @@ public class PersonalGoal implements Serializable {
      * @param id which is the id of the goal
      */
     public PersonalGoal(Map<String, Map<String, String>> windows, int id){
-        //FileInputStream ip;
-
         {
             try {
-                //ip = new FileInputStream(configFilePath);
                 prop.load(PersonalGoal.class.getResourceAsStream("/config.properties"));
             }catch (IOException e) {
                 throw new RuntimeException(e);

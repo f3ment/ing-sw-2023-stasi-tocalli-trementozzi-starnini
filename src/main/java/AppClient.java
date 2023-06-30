@@ -13,13 +13,10 @@ import java.util.Scanner;
 
 public class AppClient {
 
-    //Default network address
     private static int Port = 1234;
     private static String Ip = "localhost";
     public static void main(String[] args) throws RemoteException, NotBoundException {
         if(chooseNetworkArchitecture()==1){
-            //Client selected Rmi architecture
-            //todo non chiedere porta
             chooseNetworkAddress();
             try {
                 startRmiClient();
@@ -27,7 +24,6 @@ public class AppClient {
                 System.out.println("failed to start rmi connection");
             }
         }else{
-            //client selected Socket architecture
             chooseNetworkAddress();
             startSocketClient();
         }

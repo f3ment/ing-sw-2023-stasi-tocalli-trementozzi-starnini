@@ -26,7 +26,6 @@ class CheckEightEqualsTest {
 
         try {
 
-            //testing positive case: #CATS == 8
 
             /**
              *   0 1 2 3 4
@@ -74,7 +73,6 @@ class CheckEightEqualsTest {
         }
 
         try {
-            //testing negative case: #CATS = 7
             /**
              *   0 1 2 3 4
              * 0

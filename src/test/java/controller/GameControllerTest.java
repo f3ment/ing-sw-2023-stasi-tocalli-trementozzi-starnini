@@ -1,6 +1,5 @@
 package controller;
 
-import distributed.Client;
 import distributed.ClientImpl;
 import distributed.ServerImpl;
 import model.Game;

@@ -2,7 +2,6 @@ package model.board;
 
 import model.*;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -86,7 +85,6 @@ class BoardTest {
         String expectedMessage = "out of bounds for length";
         String actualMessage = exception.getMessage();
 
-        //System.out.println("------------------Messaggi------------------\nExpected: " + expectedMessage + "\nActual: " + actualMessage + "\n");
         assertTrue(actualMessage.contains(expectedMessage));
     }
 

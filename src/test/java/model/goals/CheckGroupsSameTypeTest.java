@@ -20,12 +20,12 @@ public class CheckGroupsSameTypeTest {
 
     @BeforeAll
     static void initAll(){
-        System.out.println("<< Inizio dei test 'CheckGroupsSameTypeTest' >>");
+        System.out.println("<< Start test 'CheckGroupsSameTypeTest' >>");
     }
 
     @BeforeEach
     void testInit(){
-        System.out.println("<< Nuovo Test ["+i+"] >>");
+        System.out.println("<< New Test ["+i+"] >>");
         i++;
     }
 

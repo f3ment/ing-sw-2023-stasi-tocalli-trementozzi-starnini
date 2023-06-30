@@ -1,8 +1,6 @@
 package model;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -16,7 +14,7 @@ public class Bookshelf implements Serializable {
 
     private Boolean full;
     private final int length , height;
-    private ArrayList<Integer> actualColumnLength; //ogni colonna è rappresentato da un numero per gli elementi contenuti
+    private ArrayList<Integer> actualColumnLength;
     private ItemTiles[][] items;
     private int choosenColumn;
     private int maxDrowable;
@@ -28,13 +26,8 @@ public class Bookshelf implements Serializable {
      */
     public Bookshelf() throws IOException {
 
-        String configFilePath = "./src/main/resources/config.properties";
-        //FileInputStream ip;
         {
-
             try {
-                //ip = new FileInputStream(configFilePath);
-                //prop.load(ip);
                 prop.load(Bookshelf.class.getResourceAsStream("/config.properties"));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -204,7 +197,6 @@ public class Bookshelf implements Serializable {
 
                 if (count >= Integer.parseInt(
                         prop.getProperty("score.MinlimitParameter"))) {
-                    //Check if count is higher than limit value
                     if (count > Integer.parseInt(
                             prop.getProperty("score.MaxlimitParameter")
                     )) count = Integer.parseInt(

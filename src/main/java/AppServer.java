@@ -73,7 +73,6 @@ public class AppServer {
                 executorService.submit(() -> {
                     try {
                         ClientSkeleton clientSkeleton = new ClientSkeleton(socket);
-                        //gameMangerController's instance
                         server.register(clientSkeleton);
                         while (true) {
                             clientSkeleton.receive(server);

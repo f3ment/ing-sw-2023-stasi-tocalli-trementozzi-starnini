@@ -15,8 +15,6 @@ import java.util.*;
 public class Chat extends Observable<Event> implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    //sender -> to -> message
-    //if to is null, then the message is sent to evryone
     private ArrayList<ChatMessage> chat;
     private ArrayList<String> online;
 

@@ -4,10 +4,8 @@ package view;
  * Color class for console output
  */
 public enum Color {
-    //Color end string, color reset
-    RESET("\033[0m"),
 
-    // Regular Colors. Normal color, no bold, background color etc.
+    RESET("\033[0m"),
     BLACK("\033[0;30m"),    // BLACK
     RED("\033[0;31m"),      // RED
     GREEN("\033[0;32m"),    // GREEN
