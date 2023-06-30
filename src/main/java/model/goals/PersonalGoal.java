@@ -86,7 +86,6 @@ public class PersonalGoal implements Serializable {
             }
 
         }
-        System.out.println("done: "+done);
         return getScore();
     }
 

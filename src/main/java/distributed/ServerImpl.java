@@ -86,7 +86,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         currentLobby = this.gamesManagerController.getLobbyByClient(client);
         //CHAT UPDATE
         if (currentLobby != null && (message.getEvent().equals(Event.GET_CHAT) || message.getEvent().equals(Event.EXIT_CHAT) || message.getEvent().equals(Event.SEND_MESSAGE))) {
-            System.out.println("entra server");
             currentLobby.getChatController().update(client, message);
         } else if (!message.getEvent().equals(Event.GAME_INIT) && !message.getEvent().equals(Event.LOGIN)) {
             //GAME UPDATE
@@ -100,7 +99,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     String username = gamesManagerController.getLobbyByClient(client).getUsernameByClient(client);
                     gamesManagerController.getLobbyByClient(client).resetTimer(username);
                 }
-                //client.update(null, Event.PING);
             } else {
                 if (message.getEvent().equals(Event.DELETE_MATCH)) {
                     deleteMatch(client);
@@ -191,7 +189,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
              * hit by the client for server connection and starting of the login procedures
              * */
         } else {
-            //System.out.println(Color.RED_BRIGHT + "Username NOT valid" + Color.RESET);
             client.update(new Message(Event.LOGIN));
         }
     }
@@ -280,7 +277,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                         gamesManagerController.removeLobby(i);
                     }
                     index.clear();
-
                 }
             }
         }.start();

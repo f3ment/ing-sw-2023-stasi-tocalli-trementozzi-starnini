@@ -253,26 +253,14 @@ public class Lobby {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        /*for(Client c:usersId.values()){
-            this.model.addObserver((o, message) -> {
-                try {
-                    c.update(new Message(new GameView(model), (Event) message.getEvent()));
-                } catch (RemoteException e) {
-                    System.err.println("Error while updating the client : " + e.getMessage() + ". Skipping the update...");
-                }
-            });
-        }*/
         for (String s : usersId.keySet()) {
             this.model.addObserver((o, message) -> {
                 try {
                     if(getStatusPlayer(s)) {
-                        System.out.println(message.getEvent().toString());
                         usersId.get(s).update(new Message(message.getEvent(), new ChatView(chat),new GameView(model)));
                     }else{
                     }
                 } catch (RemoteException e) {
-                    System.err.println("Error while updating the client : " + e.getMessage() + ". Skipping the update...");
-
                 }
             });
         }
@@ -295,7 +283,6 @@ public class Lobby {
 
     public synchronized void setClientOffLine(String username){
         status.put(username,false);
-        System.out.println("disconnected");
         if(isFull){
             model.getPlayerByNickname().get(username).setStatus(false); //set player offline
         }

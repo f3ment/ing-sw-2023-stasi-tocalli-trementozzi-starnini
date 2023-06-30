@@ -82,12 +82,11 @@ public class TextualUI extends View implements Runnable {
             if (!last.getSender().equals(username) && message.getChat().getActive().contains(username)) {
                 System.out.println( last.getSender() + (last.getReceiver()!=null && last.getReceiver().equals(username)? " to You" : "") + " > " + last.getMessage());
             }
-            if (last.getSender().equals("SERVER")||flagChat==true){
+            if (last.getSender().equals("SERVER")&&flagChat==true){
                 System.err.println("The Match is finished, visualize results by typing '/exit'");
             }
 
         }else if(message.getEvent().equals(Event.EXIT_CHAT) && message.getUserName().equals(username)){
-            System.out.println("arriva");
             //flagChat = false;
             synchronized (this){
                 System.out.println("----------------------------");
@@ -227,7 +226,6 @@ public class TextualUI extends View implements Runnable {
                     }
                     start(message.getModel());
                 }else if (message.getEvent().equals(Event.LOGIN)) {
-                    //System.out.println(Color.RED_BRIGHT + "Username NOT valid! Try again..." + Color.RESET)
                     if(message.getUserName()!=null){
                         System.out.println(message.getUserName());
                     }
@@ -384,8 +382,7 @@ public class TextualUI extends View implements Runnable {
             System.out.print("  " + a);
         }
         System.out.print(Color.BLACK_BRIGHT + "\n");
-        //System.out.print("  /");
-        //for (int i = 0; i <= 2 * o.getLengthBoard(); i++) System.out.print("■■");
+
         System.out.print(Color.RESET);
         for (int i = 0; i < o.getHeightBoard(); i++) {
             a = i + 1;
@@ -395,7 +392,6 @@ public class TextualUI extends View implements Runnable {
                 if (box.getValid()) {
                     ItemTiles el = box.getItemContained();
                     if (el != null) {
-                        //System.out.print(" " + el.getType().toString().charAt(0));
                         showItemTile(el);
 
                     } else {
@@ -412,8 +408,6 @@ public class TextualUI extends View implements Runnable {
 
             System.out.print(Color.BLACK_BRIGHT + " \n" + Color.RESET);
         }
-        //System.out.print(Color.BLACK_BRIGHT + "  \\");
-        //for (int i = 0; i <= 2 * o.getLengthBoard(); i++) System.out.print(" -");
         System.out.print("\n" + Color.RESET);
         System.out.println();
     }
@@ -477,23 +471,19 @@ public class TextualUI extends View implements Runnable {
         }
         System.out.print("\n");
         for(int n=0; n<o.getNumPlayer(); n++) {
-            //System.out.print(Color.WHITE_BRIGHT + "| " + Color.RESET);
             for (int j = 0; j < o.getLenghtBookshelf(); j++) {
                 System.out.print(Color.WHITE_BRIGHT + "  " + (j + 1) + Color.RESET);
             }
             System.out.print("  ");
         }
-        //System.out.print(Color.WHITE_BRIGHT + "|" + Color.RESET);
         System.out.print("\n");
         for (int i = 0; i < o.getHeightBookshelf(); i++) {
             for (int n = 0; n < o.getNumPlayer(); n++) {
-                //System.out.print(Color.WHITE_BRIGHT + "| " + Color.RESET);
                 for (int j = 0; j < o.getLenghtBookshelf(); j++) {
                     ItemTiles[][] curr = ((PlayerView) PlayerList.get(n)).getBookshelf();
                     ItemTiles elem;
                     try {
                         elem = curr[i][j];
-                        //System.out.print(" " + elem.getType().toString().charAt(0));
                         showItemTile(elem);
                     } catch (Exception e) {
                         System.out.print(Color.BLACK_BRIGHT + " ▓▓" + Color.RESET);
@@ -501,7 +491,6 @@ public class TextualUI extends View implements Runnable {
                 }
                 System.out.print("  ");
             }
-            //System.out.print(Color.WHITE_BRIGHT + "|" + Color.RESET);
             System.out.print("\n");
         }
         System.out.println();
@@ -522,7 +511,6 @@ public class TextualUI extends View implements Runnable {
                 ItemTiles el;
                 el = o.getCurrentBookshelf()[i][j];
                 if (el != null) {
-                    //System.out.print(" " + el.getType().toString().charAt(0));
                     showItemTile(el);
                 } else {
                     System.out.print(Color.BLACK_BRIGHT + " ▓▓" + Color.RESET);

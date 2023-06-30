@@ -155,7 +155,6 @@ public class GamesManagerController {
         try{
             lobbies_list.remove(index);
         }catch (IndexOutOfBoundsException e){
-            System.out.println("There aren't lobbies to remove");
         }
 
     }

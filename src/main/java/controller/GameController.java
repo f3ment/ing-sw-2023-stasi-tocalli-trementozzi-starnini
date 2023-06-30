@@ -138,8 +138,6 @@ public class GameController {
             }
 
             try {
-                System.out.println("\n\n\n\n\n\n\n\nCurrent player:\n" +
-                        lobby.validateLobby() + "\n" + lobby.getEndGame() + "\n" + lobby.getCurrentPlayer().equals(lobby.getFirstPlayer()));
                 if (lobby.validateLobby() && lobby.getEndGame() && lobby.getCurrentPlayer().equals(lobby.getFirstPlayer())){
                     lobby.getChatController().update(o, new Message(Event.SEND_MESSAGE, new ChatMessage("The match is ending!" , "SERVER", null)));
                     game.setWinner();
