@@ -113,7 +113,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
              * */
         } else if (message.getEvent().equals(Event.LOGIN)) {
             boolean correctusername = true;
-            synchronized (syncKey) {
+            /*synchronized (syncKey) {
                 FileInputStream ip;
                 {
                     try {
@@ -141,8 +141,13 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     } catch (IOException ex) {
                         System.out.println(ex.getMessage());
                     }
+                }*/
+                synchronized (gamesManagerController) {
+                    if (gamesManagerController.getClients(message.getUserName())) {
+                        correctusername = false;
+                    }
                 }
-            }
+
             if (!correctusername) {
                 if(gamesManagerController.StatusUsername(message.getUserName(), gamesManagerController.LobbyByUsername(message.getUserName()))) {
                     client.update(new Message(Event.LOGIN, Color.RED_BOLD + message.getUserName()+" Is Already Playing" + Color.RESET));
@@ -203,7 +208,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
      * @param index index of lobby to delete
      */
     public void Lobbydeletion(Lobby l,ArrayList<Integer> index){
-        for (String a : l.getClientsUsername()) {
+        /*for (String a : l.getClientsUsername()) {
             FileInputStream ip;
             try {
                 ip = new FileInputStream(configFilePath);
@@ -217,7 +222,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }
+        }*/
         for(Client c: l.getClients()){
             gamesManagerController.removePlayer(c);
         }
@@ -232,7 +237,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         gamesManagerController = new GamesManagerController();
         currentLobby = null;
         final ArrayList<Integer> index = new ArrayList<>();
-        FileInputStream ip;
+        /*FileInputStream ip;
         try {
             ip = new FileInputStream(configFilePath);
             prop.load(ip);
@@ -244,7 +249,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
             prop.store(new FileOutputStream(configFilePath), null);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
+        }*/
 
         new Thread(){
             @Override

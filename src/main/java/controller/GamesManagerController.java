@@ -159,4 +159,16 @@ public class GamesManagerController {
         }
 
     }
+
+    /**
+     * @return true if the server contains the client, false otherwise.
+     */
+    public synchronized boolean getClients(String s){
+        for(Lobby l:lobbies_list){
+            if(l.isUsernameContained(s)){
+                return true;
+            }
+        }
+        return false;
+    }
 }
