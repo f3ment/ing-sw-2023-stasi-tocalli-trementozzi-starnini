@@ -30,12 +30,12 @@ public class Bookshelf implements Serializable {
 
         String configFilePath = "./src/main/resources/config.properties";
         //FileInputStream ip;
-        FileInputStream ip;
         {
 
             try {
-                ip = new FileInputStream(configFilePath);
-                prop.load(ip);
+                //ip = new FileInputStream(configFilePath);
+                //prop.load(ip);
+                prop.load(Bookshelf.class.getResourceAsStream("/config.properties"));
             } catch (IOException e) {
                 e.printStackTrace();
             }

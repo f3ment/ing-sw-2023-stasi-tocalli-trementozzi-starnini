@@ -4,6 +4,7 @@ import model.Bag;
 import model.Box;
 import model.ItemTiles;
 import model.Token;
+import model.goals.PersonalGoal;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -33,12 +34,13 @@ public class Board implements Serializable {
      * @param numPlayers number of players
      */
     public Board(int numPlayers){
-        FileInputStream ip;
+        //FileInputStream ip;
 
         {
             try {
-                ip = new FileInputStream(configFilePath);
-                prop.load(ip);
+                //ip = new FileInputStream(configFilePath);
+                //prop.load(ip);
+                prop.load(Board.class.getResourceAsStream("/config.properties"));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

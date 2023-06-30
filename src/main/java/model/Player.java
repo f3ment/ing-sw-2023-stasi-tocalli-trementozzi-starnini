@@ -1,5 +1,6 @@
 package model;
 import model.board.Board;
+import model.goals.PersonalGoal;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -47,12 +48,14 @@ public class Player implements Serializable {
      * @param username the player username
      */
     public Player(TablePosition currentPosition,String username){
-        FileInputStream ip;
+        //FileInputStream ip;
 
         {
             try {
-                ip = new FileInputStream(configFilePath);
-                prop.load(ip);
+                //ip = new FileInputStream(configFilePath);
+                //prop.load(ip);
+                prop.load(Player.class.getResourceAsStream("/config.properties"));
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

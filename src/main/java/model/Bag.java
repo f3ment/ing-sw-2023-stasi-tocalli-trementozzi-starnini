@@ -1,5 +1,7 @@
 package model;
 
+import model.goals.PersonalGoal;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -28,12 +30,13 @@ public class Bag implements Serializable {
                 String configFilePath = "./src/main/resources/config.properties";
                 Properties prop = new Properties();
 
-                FileInputStream ip;
+                //FileInputStream ip;
 
                 {
                         try {
-                                ip = new FileInputStream(configFilePath);
-                                prop.load(ip);
+                                //ip = new FileInputStream(configFilePath);
+                                //prop.load(ip);
+                                prop.load(Bag.class.getResourceAsStream("/config.properties"));
                         } catch (IOException e) {
                                 throw new RuntimeException(e);
                         }
